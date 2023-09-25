@@ -1130,10 +1130,10 @@ comment={This report provides a comprehensive review of the intelligence and sec
 @blog{DeMarzi2023,
   title={Bullshit Graph Database Performance Benchmarks},
   author={De Marzi, Max},
-  howpublished={blog}
+  howpublished={blog},
   year={2023},
   month={Jan},
-  note={Accessed 04 Sep 23}
+  note={Accessed 04 Sep 23},
   abstract={N/A},
   url={https://maxdemarzi.com/2023/01/11/bullshit-graph-database-performance-benchmarks/},
   comment={Max De Marzi's blog post is a review of the graph benchmark released by Memgraph. The blog is a biting criticism of how Memgraph conducted the tests and possible bias in their reporting. In particular, Max criticizes Memgraph for developing a bespoke system for measuring performance rather than using the industry standard "Gatling" to control the tests. Gatling is commercial load-testing software. Overall it is a vitriolic attack on Memgraph, and some of the criticisms of Max are addressed in the benchmark itself (e.g. why they only report the 99th percentile results. Based on these criticisms, it is evident that any new benchmark needs to be very clear about what it brings to the table that previously did not exist.)}
@@ -1146,7 +1146,7 @@ comment={This report provides a comprehensive review of the intelligence and sec
   year={2022},
   month={Apr},
   abstract={N/A},
-  note={Accessed 04 Sep 23}
+  note={Accessed 04 Sep 23},
   url={https://memgraph.com/blog/memgraph-vs-neo4j-performance-benchmark-comparison},
   comment={Written on behalf of Memgraph (a Neo4J competitor), Javor's blog post summarizes a benchmarking effort made between the leading commercial graph database, Neo4J, and Memgraph's graph database. While there is inherent bias, it is useful to note how they approached the benchmark. Their metrics covered temporal (latency in MS, Queries per Second) and Memory (Peak memory usage). They ran three types of 'business' workloads - single, mixed, and realistic. Single repeats the same query, mixed varies between several query types, and realistic varies according to usage patterns seen in the real world. One of the criticisms of the benchmark was providing the data and queries written in Cypher (the graph query language), however, that sets it up for a more realistic use case. Few people will just directly import masses of data into their database directly. Importantly for HIVE, this experimental design consideration will reflect the reality of a 'streaming' data effect. Additionally, it highlights the impact that caching can have on performance, and so to get a 'worst' case performance, they run the queries on a 'cold' start. The most load-intensive query they run in their workloads is a 'k-hop' or 'explosion' query, which is effectively a BFS of the graph to a specified depth. The benchmark does make the dataset available, but the post does not discuss it in any real detail. It is a useful post, and worth chasing down scientific publications to validate their design choices. The benchmark is here: \url{https://memgraph.com/benchgraph/} and the code is here: \url{https://github.com/memgraph/memgraph/tree/master/tests/mgbench}}
 }  
