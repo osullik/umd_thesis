@@ -1126,3 +1126,69 @@ comment={This report provides a comprehensive review of the intelligence and sec
   abstract={Data-driven systems need to be evaluated to establish trust in the scientific approach and its applicability. In particular, this is true for Knowledge Graph (KG) Question Answering (QA), where complex data structures are made accessible via natural-language interfaces. Evaluating the capabilities of these systems has been a driver for the community for more than ten years while establishing different KGQA benchmark datasets. However, comparing different approaches is cumbersome. The lack of existing and curated leaderboards leads to a missing global view over the research field and could inject mistrust into the results. In particular, the latest and most-used datasets in the KGQA community, LC-QuAD and QALD, miss providing central and up-to-date points of trust. In this paper, we survey and analyze a wide range of evaluation results with significant coverage of 100 publications and 98 systems from the last decade. We provide a new central and open leaderboard for any KGQA benchmark dataset as a focal point for the community - this https URL. Our analysis highlights existing problems during the evaluation of KGQA systems. Thus, we will point to possible improvements for future evaluations.},
   comment={The benchmark estaboished by Perevalov in 2022 for Knowledge Graph Question answering provides a short discussion about the requirement of a KGQA benchmark to be transparent and trustworthy, noting that the lack of standardization may lead to a 'replication crisis' where researchers may not be able to replicate each other's findings. They create a github repositiory for researchers to self-report their results but have no meaningful discussion of queries, workloads etc. The benchmark is not suitable for our work into assessing the relative suitability of hardware for graph-processing applications.}
 }
+
+@blog{DeMarzi2023,
+  title={Bullshit Graph Database Performance Benchmarks},
+  author={De Marzi, Max},
+  howpublished={blog}
+  year={2023},
+  month={Jan},
+  note={Accessed 04 Sep 23}
+  abstract={N/A},
+  url={https://maxdemarzi.com/2023/01/11/bullshit-graph-database-performance-benchmarks/},
+  comment={Max De Marzi's blog post is a review of the graph benchmark released by Memgraph. The blog is a biting criticism of how Memgraph conducted the tests and possible bias in their reporting. In particular, Max criticizes Memgraph for developing a bespoke system for measuring performance rather than using the industry standard "Gatling" to control the tests. Gatling is commercial load-testing software. Overall it is a vitriolic attack on Memgraph, and some of the criticisms of Max are addressed in the benchmark itself (e.g. why they only report the 99th percentile results. Based on these criticisms, it is evident that any new benchmark needs to be very clear about what it brings to the table that previously did not exist.)}
+  }
+
+@misc{Javor2022,
+  title={Memgraph vs. Neo4j: A Performance Comparison},
+  author={Javor, Ante},
+  howpublished={blog},
+  year={2022},
+  month={Apr},
+  abstract={N/A},
+  note={Accessed 04 Sep 23}
+  url={https://memgraph.com/blog/memgraph-vs-neo4j-performance-benchmark-comparison},
+  comment={Written on behalf of Memgraph (a Neo4J competitor), Javor's blog post summarizes a benchmarking effort made between the leading commercial graph database, Neo4J, and Memgraph's graph database. While there is inherent bias, it is useful to note how they approached the benchmark. Their metrics covered temporal (latency in MS, Queries per Second) and Memory (Peak memory usage). They ran three types of 'business' workloads - single, mixed, and realistic. Single repeats the same query, mixed varies between several query types, and realistic varies according to usage patterns seen in the real world. One of the criticisms of the benchmark was providing the data and queries written in Cypher (the graph query language), however, that sets it up for a more realistic use case. Few people will just directly import masses of data into their database directly. Importantly for HIVE, this experimental design consideration will reflect the reality of a 'streaming' data effect. Additionally, it highlights the impact that caching can have on performance, and so to get a 'worst' case performance, they run the queries on a 'cold' start. The most load-intensive query they run in their workloads is a 'k-hop' or 'explosion' query, which is effectively a BFS of the graph to a specified depth. The benchmark does make the dataset available, but the post does not discuss it in any real detail. It is a useful post, and worth chasing down scientific publications to validate their design choices. The benchmark is here: \url{https://memgraph.com/benchgraph/} and the code is here: \url{https://github.com/memgraph/memgraph/tree/master/tests/mgbench}}
+}  
+
+@misc{Javor2022,
+  title={Memgraph vs. Neo4j: A Performance Comparison},
+  author={Javor, Ante},
+  howpublished={blog},
+  year={2022},
+  month={Nov},
+  abstract={N/A},
+  note={Accessed 04 Sep 23},
+  url={https://medium.com/memgraph/introduction-to-benchgraph-and-its-architecture-e64dbfb2ac4f},
+  abstract={N/A},
+  comment={The blog is written on behalf of Memgraph, and is an explanation of their benchmarking architecture. They describe the python-based experiment framework that sits atop the experiment architecture's lower level files. Of note, they highlight that Docker imposes a significant performance overhead on the experiments. For merging with QUICC, this is a consideration to declare up-front. Their benchmark process includes measurements of creation time, as well as restoration from snapshot - it is more focused on a produciton grad GDBMS than the graphs themselves. They deliberately measure cold-start performance to get the 'worst-case' scenario for their graph benchmark. Overall it provides a useful framework to consider for the design of a benchmark suite.}
+  }
+
+@misc{Memgraph2023,
+  title={Benchgraph Methodology},
+  author={Memgraph},
+  howpublished={Github Readme},
+  year={2023},
+  month={May},
+  abstract={N/A},
+  note={Commit: ab38161cd2b1b9eaeda952eb51d2167727fdd447; Accessed 04 Sep 23},
+  url={https://github.com/memgraph/memgraph/blob/master/tests/mgbench/README.md},
+  abstract={N/A},
+  comment={Memgraph provides the methodology (and code) for their BenchGraph graph database benchmark on their GitHub. It describes the methodology and several of their design choices. First, they identify the primitive operations they test as: "write", "read", "update", "aggregate" and "analyze". They use three datasets - a small medium and large. Each of them are social-media style scale-free graphs. They present no statistical (or other) summaries of the graphs. They acknowledge the need to support different hardware types in testing and to that end provide a framework to test two different hardware platforms. While trivial (and in this case dependent on what is capable of running the GDBMS under test) it highlights the need for cross-hardware tests. The benchmark itself overall is a good starting point for designing a graph dataset - it includes datasets of varying size (but not type), reference queries, reference code, and support for multiple hardware platforms. It is limited in that it focuses on GDBMS, rather than graphs in the abstract sense. A weakness of their benchmark is the use of the Neo4J bolt protocol for loading the data, which is known to impose significant latency on data.}
+  }
+
+@techreport{Mcnight2021,
+title={Trillion Edge Knowledge Graph},
+author={McKnight Consulting (Sponsored by Stardog},
+year={2021},
+month={Jun},
+note={Accessed 04 Sep 2023, Sponsored by Stardog},
+url={https://info.stardog.com/trillion-triple-benchmark},
+abstract={The requirement for enterprise data to deliver value to the business has never been stronger. However, enterprises often trip over their own data when the business landscape shifts or new information needs arise. Conventional relational database management systems worked acceptably well when the enterprise data landscape was itself predominantly structured. But the world has changed. The enterprise data landscape is increasingly voluminous, varied, and changing. The emergence of IoT, the rise in unstructured data volume, increasing relevance of external data, and the trend towards hybrid multi-cloud environments are challenges that must be overcome with each new request for data. Data strategies centered around relational data systems are rarely sufficient anymore, especially as the requirements to connect data across the enterprise increase.
+How can enterprises create a proactive, responsive data strategy? Enterprise data fabrics offer a new path forward. A data fabric weaves together data from internal silos and external sources and creates a seamless network of information. They must support the full gambit of the connected enterprise.
+The forerunners to the modern data fabric have been data federation and virtualization technologies. Many of these platforms have failed to deliver true inter-connectedness at scale with performance, because they are hampered by bottlenecks inherent in all the databases and data stores in the query chain. Rather than tackle the data fabric with another abstraction layer, it makes more sense to leverage a database technology that was engineered for data relationships—a graph database.
+Graph databases provide tremendous utility to an organization whenever that organization has connected data. Functions are made available to understand the data relationships, prioritization of nodes in the relationship can be determined, and the visualization makes it easier for users to search, investigate, and analyze data, and expose patterns and trends in the data. A Knowledge Graph is a type of data integration platform that takes components from graph databases, data virtualization, query federation, and semantic inference capabilities and is designed to meet the organization's requirements to connect diverse forms of connected knowledge.
+An enterprise today inevitably has many data stores with data interesting to a Knowledge Graph. There are Operational Databases, Operational Big Data Stores, Operational Data Hubs, Master Data Management, Data Warehouses, Data Marts, Data Lakes, Analytic Big Data Applications, etc., and they are spread across multiple cloud platforms. Not to mention all of the “application data silos” that exist in the public clouds and other cloud-based apps and platforms. Physically consolidating data for a Knowledge Graph can be prohibitive. Yet that is necessary when you cannot use data from its natural locations in the architecture. With Stardog, we set out to build a demonstration of an enterprise-class Knowledge Graph that consists of materialized and virtualized graphs that span multiple cloud platforms.
+This is the first demonstration of a massive Knowledge Graph that consists of materialized and virtual graphs that span multiple cloud platforms. We show that it is possible to have a one trillion-edge Knowledge Graph with sub-second query times without storing all the data in a central location. This capability has the ability to usher in a new era where the Knowledge Graph is a powerful component of company profitability and competitive advantage.},
+comment={The consulting company McKnight produced a benchmark report on the performance of Stardog, at the request of Stardog. While there is inherent bias in the study, it warrants some attention. First, their approach to data storage replicated a 'real world' use case, with the trillion edges they note in the title being spread between native RDF in Stardog and other non-triple stores. Their data is generated with the Berlin SPARQL Benchmark (BSBM). Their measured metric is query latency, but given that their test server had 1TB of RAM, it indicates that they intended to hold most of the graph in memory on a single system, this will reduce the impact of network latency on their results. Their reference queries are derived from the BSBM and consist of simple 'explore' queries, ignoring the more computationally challenging inference-based queries that distinguish knowledge graphs from 'normal' graphs. Any meaningful knowledge graph benchmark needs to have inference benchmarks (though admittedly, many outsource their reasoner). Their choice of the BSBM is concerning because it is around 20 years old at this point, and not likely to be reflective of the scale-free data we frequently see associated with graph processing now.}
+}
