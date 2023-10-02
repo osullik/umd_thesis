@@ -1127,6 +1127,8 @@ comment={This report provides a comprehensive review of the intelligence and sec
   comment={The benchmark estaboished by Perevalov in 2022 for Knowledge Graph Question answering provides a short discussion about the requirement of a KGQA benchmark to be transparent and trustworthy, noting that the lack of standardization may lead to a 'replication crisis' where researchers may not be able to replicate each other's findings. They create a github repositiory for researchers to self-report their results but have no meaningful discussion of queries, workloads etc. The benchmark is not suitable for our work into assessing the relative suitability of hardware for graph-processing applications.}
 }
 
+#Updates 23 Sep 23
+
 @blog{DeMarzi2023,
   title={Bullshit Graph Database Performance Benchmarks},
   author={De Marzi, Max},
@@ -1191,4 +1193,102 @@ Graph databases provide tremendous utility to an organization whenever that orga
 An enterprise today inevitably has many data stores with data interesting to a Knowledge Graph. There are Operational Databases, Operational Big Data Stores, Operational Data Hubs, Master Data Management, Data Warehouses, Data Marts, Data Lakes, Analytic Big Data Applications, etc., and they are spread across multiple cloud platforms. Not to mention all of the “application data silos” that exist in the public clouds and other cloud-based apps and platforms. Physically consolidating data for a Knowledge Graph can be prohibitive. Yet that is necessary when you cannot use data from its natural locations in the architecture. With Stardog, we set out to build a demonstration of an enterprise-class Knowledge Graph that consists of materialized and virtualized graphs that span multiple cloud platforms.
 This is the first demonstration of a massive Knowledge Graph that consists of materialized and virtual graphs that span multiple cloud platforms. We show that it is possible to have a one trillion-edge Knowledge Graph with sub-second query times without storing all the data in a central location. This capability has the ability to usher in a new era where the Knowledge Graph is a powerful component of company profitability and competitive advantage.},
 comment={The consulting company McKnight produced a benchmark report on the performance of Stardog, at the request of Stardog. While there is inherent bias in the study, it warrants some attention. First, their approach to data storage replicated a 'real world' use case, with the trillion edges they note in the title being spread between native RDF in Stardog and other non-triple stores. Their data is generated with the Berlin SPARQL Benchmark (BSBM). Their measured metric is query latency, but given that their test server had 1TB of RAM, it indicates that they intended to hold most of the graph in memory on a single system, this will reduce the impact of network latency on their results. Their reference queries are derived from the BSBM and consist of simple 'explore' queries, ignoring the more computationally challenging inference-based queries that distinguish knowledge graphs from 'normal' graphs. Any meaningful knowledge graph benchmark needs to have inference benchmarks (though admittedly, many outsource their reasoner). Their choice of the BSBM is concerning because it is around 20 years old at this point, and not likely to be reflective of the scale-free data we frequently see associated with graph processing now.}
+}
+
+# Updates 02 Oct 23
+
+@article{Fortunato2007,
+  title={Resolution limit in community detection},
+  author={Fortunato, Santo and Barthelemy, Marc},
+  journal={Proceedings of the national academy of sciences},
+  volume={104},
+  number={1},
+  pages={36--41},
+  year={2007},
+  publisher={National Academy of Sciences},
+  groups={community_detection,graph_datasets},
+  abstract={Detecting community structure is fundamental for uncovering the links between structure and function in complex networks and for practical applications in many disciplines such as biology and sociology. A popular method now widely used relies on the optimization of a quantity called modularity, which is a quality index for a partition of a network into communities. We find that modularity optimization may fail to identify modules smaller than a scale which depends on the total size of the network and on the degree of interconnectedness of the modules, even in cases where modules are unambiguously defined. This finding is confirmed through several examples, both in artificial and in real social, biological, and technological networks, where we show that modularity optimization indeed does not resolve a large number of modules. A check of the modules obtained through modularity optimization is thus necessary, and we provide here key elements for the assessment of the reliability of this community detection method.},
+  comment={Fortunato and Barthélemy's 2007 work explored whether a resolution limit exists in modularity optimization. Their study was driven by a perceived lack of formal rigor in the application of Modularity Optimization to Community Detection Problems and the lack of baseline understanding of performance. Starting with their definition of community as 'a subgraph whose members are more tightly connected than the broader graph', the paper is a theoretical analysis of the problem that uses trivial and extreme data to derive the conclusion that modularity is not scale-independent. That is, a scaling factor exists where a community with a density of internal links of the order of the square root of 2 times the number of links in the graph will not be resolved by modularity optimization.These 'loosely connected' communities are instead combined. They identify two particular pain points in the shape of the data that impact the accuracy of the modularity optimization. First, is when small communities coexist with large ones (heterogeneous communities). The second occurs when the community size distribution is broad. Towards a data generator, they note that a graph with 'perfect' modularity is a closed ring with each node only connected to its two closest neighbors. Or in a hierarchical view, communities that are only connected through single bridging nodes}
+}
+
+@article{Lancichinetti2008,
+  title={Benchmark graphs for testing community detection algorithms},
+  author={Lancichinetti, Andrea and Fortunato, Santo and Radicchi, Filippo},
+  journal={Physical review E},
+  volume={78},
+  number={4},
+  pages={046110},
+  year={2008},
+  publisher={APS}, 
+  groups={community_detection, graph_datasets},
+  abstract={Community structure is one of the most important features of real networks and reveals the internal organization of the nodes. Many algorithms have been proposed but the crucial issue of testing, ie, the question of how good an algorithm is, with respect to others, is still open. Standard tests include the analysis of simple artificial graphs with a built-in community structure, that the algorithm has to recover. However, the special graphs adopted in actual tests have a structure that does not reflect the real properties of nodes and communities found in real networks. Here we introduce a class of benchmark graphs, that account for the heterogeneity in the distributions of node degrees and of community sizes. We use this benchmark to test two popular methods of community detection, modularity optimization, and Potts model clustering. The results show that the benchmark poses a much more severe test to algorithms than standard benchmarks, revealing limits that may not be apparent at a first analysis.},
+  comment={Lancichinetti et al. developed a graph generator in 2008 to address the problem they observed that most benchmarking efforts use small, homogeneous Erdős-Rényi (random) graphs, which are not reflective of real-world benchmarks. They assert that the ideal graph for evaluating community detection is a real-world graph with ground-truth community labels, but acknowledge that only trivially sized graphs exist meeting these criteria. They present an iterative algorithm for generating heterogeneous communities that accepts the following parameters: γ [degree exponent], β [community size exponent], n [number of nodes], <k> [average degree], and μ [the mixing parameter]. The algorithm works by generating N nodes with degrees sampled from a power law distribution (determined by γ). The nodes are randomly assigned to communities, sharing 1-μ links with their community, and μ links with nodes outside their community. In each iteration, nodes are randomly moved to other communities - if the community becomes too big (determined by β), it removes some nodes and re-assigns them. The algorithm continues until convergence. It is sometimes called the LFR algorithm for graph generation. They do not provide a formal complexity analysis of their algorithm, but note that it 'performs in reasonable time'. Their evaluation metric is the 'Normalized Mutual Information' score. They identify a few pain points in the shape of the data that make it difficult for community detection algorithms to find 'accurate' solutions. First, When the mixing parameter μ is <= 0.5, the communities become 'weakly' defined relative to the graph. Second, small communities are difficult to detect with modularity optimization approaches and third, they observe that graphs with a smaller average degree (i.e. sparser graphs) perform less well. Fourth, They find that the closer communities are in size (larger β) the better community detection algorithms perform.}
+
+}
+
+@inproceedings{Maekawa2019,
+  title={General generator for attributed graphs with community structure},
+  author={Maekawa, Seiji and Zhang, Jianpeng and Fletcher, George and Onizuka, Makoto},
+  booktitle={Proceeding of the ECML/PKDD graph embedding and mining workshop},
+  pages={1--5},
+  year={2019},
+  groups={graph_datasets,community_detection},
+  abstract={We propose acMark, a scalable and general generator for attributed graphs with cluster labels, which has the following advantages:(i) users can flexibly control the separability of the clusters from the viewpoints of both the topology and the attributes of graphs;(ii) users can precisely specify various distributions for node degrees, cluster sizes, and attribute values; and,(iii) graph generation scales linearly to the number of edges of generated graphs. Through extensive experiments, we demonstrate that acMark can generate large-scale graphs with controlled characteristics as needed by contemporary graph analytics researchers.},
+  comment={In 2019 Maekawa et al. develop the acMark graph generator to allow for fine-grain control of communities that emerge in synthetic attributed (labelled) graphs. They develop acMark because the most effective community graph generators do not generate labelled graphs, existing ML generation approaches don't scale well and existing statistical approaches don't offer fine-grained control. acMark works by accepting parameters from the user that describe the latent communities within the graph, and then uses these parameters to iteratively generate communities with a greedy algorithm. Based on their presented documentation, the generator looks to be an effective tool for generating community-based graphs with labels. It would also be applicable in generating knowlege graphs. One unclear factor is how this differs in intent from triple-generators, and whether a triple generation approach would be more effective for generating attributed graphs with community structures. The real challenge here is figuring out how to determine the characteristics of a real-world graph and then using those characteristics to replicate the graph.}
+}
+
+@article{Muff2005,
+  title={Local modularity measure for network clusterizations},
+  author={Muff, Stefanie and Rao, Francesco and Caflisch, Amedeo},
+  journal={Physical Review E},
+  volume={72},
+  number={5},
+  pages={056107},
+  year={2005},
+  publisher={APS},
+  groups={community_detection},
+  abstract={Many complex networks have an underlying modular structure, ie, structural subunits (communities or clusters) characterized by highly interconnected nodes. The modularity Q has been introduced as a measure to assess the quality of clusterizations. Q has a global view, while in many real-world networks clusters are linked mainly locally among each other (local cluster connectivity). Here we introduce a measure of localized modularity L Q, which reflects local cluster structure. Optimization of Q and L Q on the clusterization of two biological networks shows that the localized modularity identifies more cohesive clusters, yielding a complementary view of higher granularity.},
+  comment={In 2005, Muff et al. extended the idea of a global modularity score ($Q$) with the concept of local modularity ($LQ$). They claim that modularity optimization is the superior approach to community detection because it needs no a-priori information about the structure of the communities, but assert the need for a local modularity score is driven by communities being inherently local, and unsuited for a global view. To emphasize their point about false global views, they explain how $Q$ is calculated based on an Erdős-Rényi graph distribution, and so it treats the likelihood of a link between all nodes as equally likely, even if not all links are possible. As an example, they show how a graph of school students that has densely connected classes, loosely connected year groups of several classes, and very loose connections between classes +- 1 year from each other will fail in modularity optimization; aggregating on the global 'year' view rather than the smaller (and better) 'class' view. $LQ$ is most useful (discriminative compared to $Q$) when the outer link distribution for communities is very weak. That is, when dense communities are loosely connected, $LQ$ is a better scoring system. The authors assert that $LQ$ is not a replacement for $Q$, but should be used in concert with it. Overall it appears to add limited value to the calculation of $Q$ apart from some edge cases it appears you need a-priori knowledge of existence to search for.}
+}
+
+@article{Reichardt2004,
+  title={Detecting fuzzy community structures in complex networks with a Potts model},
+  author={Reichardt, J{\"o}rg and Bornholdt, Stefan},
+  journal={Physical review letters},
+  volume={93},
+  number={21},
+  pages={218701},
+  year={2004},
+  publisher={APS},
+  groups={community_detection},
+  abstract={A fast community detection algorithm based on a q-state Potts model is presented. Communities (groups of densely interconnected nodes that are only loosely connected to the rest of the network) are found to coincide with the domains of equal spin value in the minima of a modified Potts spin glass Hamiltonian. Comparing global and local minima of the Hamiltonian allows for the detection of overlapping (“fuzzy”) communities and quantifying the association of nodes with multiple communities as well as the robustness of a community. No prior knowledge of the number of communities has to be assumed.},
+  comment={In 2004, Reichardt and Bornholdt used a physical systems view of graphs to develop a community detection approach. They felt that the prior approaches were sub-optimal. Their approach involved characterizing the graph as the Potts Spin-Glass Hamiltonian of a system, characterizing the 'goodness' of the community as the 'energy' within the graph. They use Monte Carlo simulation to derive the 'base', or 'global' energy state of the graph. Then, they project the system as a spin glass - a physical system that derives its energy state from the arrangement of its components. They 'spin' the graphs (i.e. alter the connections in possible communities) and search for local minima in energy that are better than the global configuration. Where true, this indicates a 'better' community structure than the 'global' exists, suggesting it is more densely connected than the broader graph. They present their math, and claim that is it 'extremely fast' compared to earlier approaches, but do not do a formal complexity analysis. A major weakness of this approach is that the number of communities must be estimated in advance. If the estimate is too small, not all communities will be found. If too large, it will increase the amount of spins and degrade performance. They identify a pain point in their approach as being when communities become 'fuzzier' when they are not separated from the graph and have a similar number of outward links as they have internal links. The data they test on is all trivially small and has a homogenous community size.}
+}
+
+@article{Reichardt2006,
+  title={Statistical mechanics of community detection},
+  author={Reichardt, J{\"o}rg and Bornholdt, Stefan},
+  journal={Physical review E},
+  volume={74},
+  number={1},
+  pages={016110},
+  year={2006},
+  publisher={APS},
+  groups={community_detection},
+  abstract={Starting from a general ansatz, we show how community detection can be interpreted as finding the ground state of an infinite range spin glass. Our approach applies to weighted and directed networks alike. It contains the ad hoc introduced quality function from [J. Reichardt and S. Bornholdt, Phys. Rev. Lett. 93, 218701 (2004)] and the modularity Q as defined by Newman and Girvan [Phys. Rev. E 69, 026113 (2004)] as special cases. The community structure of the network is interpreted as the spin configuration that minimizes the energy of the spin glass with the spin states being the community indices. We elucidate the properties of the ground state configuration to give a concise definition of communities as cohesive subgroups in networks that is adaptive to the specific class of network under study. Further, we show how hierarchies and overlap in the community structure can be detected. Computationally efficient local update rules for optimization procedures to find the ground state are given. We show how the ansatz may be used to discover the community around a given node without detecting all communities in the full network and we give benchmarks for the performance of this extension. Finally, we give expectation values for the modularity of random graphs, which can be used in the assessment of statistical significance of community structure.},
+  comment={In 2006 Reichardt and Bornholdt sought to formalize the conduct of community detection. They had noticed that there was a lack of formal rigor in the literature and sought to rectify the gap. They contribute a taxonomic framework of 'clustering' versus 'partitioning' approaches to community detection. They show that while hierarchy frequently does exist in communities, it cannot be assumed and highlight how this assumption can break some algorithms (particularly partitioning ones). They emphasize that an Erdős-Rényi graph will typically present a modularity score indicating the presence of a community, and argue that to be a true 'community' a modularity score must exceed the modularity of an Erdős-Rényi graph of equivalent size. They also contribute a method to detect a single community from a given start node, aiming to remove the need to process an entire graph when not required for the user query. They identify a few pain points: first is that divisive approaches using simulated annealing tend to over-separate graphs, whereas agglomerative approaches tend to over-group. They also identify that Sparse Erdős-Rényi graphs tend to have lots of small communities, whereas dense Erdős-Rényi graphs have few large communities. Specific failure modes that they identify include: for Recursive Bisection approaches - when there are 3 equally sized communities, at least one of them will be mistakenly grouped with another, and will usually be split across both. Greedy Agglomerative approaches fail when two cliques are connected by nodes of low degree compared to the clique. Finally, they note that there can be lurking reasons for overlap in community membership that are not explicitly represented in the graph. That lurking factor problem emphasizes the importance of a labeled graph and highlights what a KG view of the graph contributes to the existing literature.}
+}
+
+@article{Reichardt2007,
+  title={Partitioning and modularity of graphs with arbitrary degree distribution},
+  author={Reichardt, J{\"o}rg and Bornholdt, Stefan},
+  journal={Physical Review E},
+  volume={76},
+  number={1},
+  pages={015102},
+  year={2007},
+  publisher={APS},
+  groups={community_detection},
+  abstract={We solve the graph bipartitioning problem in dense graphs with arbitrary degree distribution using the replica method. We find the cut size to scale universally with⟨ k⟩. In contrast, earlier results studying the problem in graphs with a Poissonian degree distribution had found a scaling with⟨ k⟩[Fu and Anderson, J. Phys. A 19, 1605 (1986)]. Our results also generalize to the problem of q partitioning. They can be used to find the expected modularity Q [Newman and Girvan, Phys. Rev. E 69, 026113 (2004)] of random graphs and allow for the assessment of the statistical significance of the output of community detection algorithms.},
+  comment={In 2007 Reichardt and Bornholdt extended their prior work on community detection, seeking to determine if graph partitioning approaches are usable with relaxed constraints towards community detection. They note that prior work in graph partitioning has shown it to be an NP-complete problem. To relax the constraints, they frame it as a replica method of a Hamlitonian Spin-Glass. The idea of a Hamiltonian spin-glass is explained in their 2004 work, and the 'replica' method essentially means that they duplicate the system under test multiple times and average the results. They test their approach on Erdős-Rényi graphs and Scale-Free graphs, focusing on Bi-Partitioning but arguing it would generalize to n-partitioning. Their work does not include an explicit complexity analysis. They generate their data with the Molloy-Reed Algorithm [Kent - I cannot find this]. Their analysis shows that the performance of their approach slows as the underlying graph gets sparser.}
 }

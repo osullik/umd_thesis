@@ -2,304 +2,336 @@
 
 \renewcommand{\thechapter}{1}
 
-\chapter{Introduction}
+\chapter{Literature Review}
 
-\section{BG TOPIC 1}
+\textbf{Plan for Lit Review}
+
+\textit{RQ: How do we benchmark knowledge graph operations across multiple hardware architectures?}
+
+\textit{
+  \begin{enumerate}
+    \item Why do we care about KG's in the first place? 
+    \item Why do we care about Benchmarks? 
+    \item What makes a good benchmark? 
+    \item How have previous efforts benchmarked knowledge graphs? 
+    \item What do we measure? 
+    \item What data is out there?
+    \item What metrics do we use? 
+  \end{enumerate}
+}
+
+\section{Graph Analysis In the real world}
 
 Graph Analysis Use Cases? Establish why we care
 
 
-\section{BG TOPIC 2}
+\section{Graph Processing - Computational Challenges and Benefits}
 
 Maybe about Graph Processing in general?
 
-\section{BG TOPIC 3}
+\section{High Performance Computing}
+\par{Dally, Keckler, and Kirk's 2021 historical review of Graphic Processing Unit (GPU) development highlights the duality of the relationship between enabling hardware and the applications that use it. 
+They explore the close relationship between Machine Learning applications and GPUs. Their discussion suggests that while the availability of GPUs enabled more machine learning applications to be built, the reciprocal demand for higher-performance machine learning models drives the development of improved GPUs. 
+The salient question is whether hardware optimized for graph processing will have the same impact in the data analytics domain that GPUs had on scientific computing \cite{Dally2021}.}
 
-Maybe about Existing Benchmarks for Graph Processing
-
-\section{BG TOPIC 4}
-
-Maybe about Benchmarking in general
-
-\section{BG TOPIC 5}
-
-
-\section{BG Topic 6}
-
-\section{BG Topic 7}
-
-\section{BG Topic 8}
-
-
-\section{BG Topic 9}
-
-\section{Outline of Thesis}
-
-Outline of thesis here
-
-\section{Theorems}
-
-\newtheorem{theorem}{Theorem}[chapter]
-\begin{theorem}
-This is my first theorem.
-\end{theorem}
+\par{The lengthy 2023 report by Mutlu and their peers from the SAFARI research group is a response to the perceived limitations of the dominant processor-centric computing paradigm. 
+The authors characterize the processing-centric paradigm as one where large and dispersed data are moved to a central processing unit (or GPU etc.) to be processed and returned to memory. 
+They argue that the processor-centric architecture is inefficient and that rather than being compute-bound, most modern applications are memory-bound as a result. 
+Their analysis finds that up to 62 percent of all power used by computers is just the action of moving data to and from memory. Their response is a processing in memory (PIM) paradigm. 
+PIM is an old idea, but they argue is becoming viable with the emergence of new hardware technology like 3D chips. 
+They define two methods of PIM: Processing Using Memory (PUM) and Processing Near Memory (PNM). 
+PUM acknowledges that many of the simplest functions like adding scalar values to entire rows of memory, or initializing large blocks a simple enough primitive options that they can be performed by the memory without having to be mapped to the CPU. 
+PNM recognizes that emerging 3D chips have small logic controllers that can be leveraged for simple decentralized processing actions. 
+Their paper makes extensive references to Graph Processing. 
+They identify that a driving cause of poor graph processing performance is the random memory accesses that result from sparse adjacency matrix representations. 
+A second reason for poor performance is that the actual processing of items pulled out from memory is trivial and completed quickly, exacerbating the effects of memory access latency. 
+They designed an architecture TESSERACT which as described appears to be a competitor to PiUMA. 
+Regarding GPUs, they assert that they hide long latencies of memory accesses by interleaving arithmetic and logic operations. 
+They present DAMOV, their framework for measuring memory-boundedness, identifying common culprits such as cache misses, cache coherence traffic, and long queueing latencies. 
+They use intel V-TUNE for the profiling aspect of DAMOV and then implement locality-based clustering to characterize the spatial and temporal clustering features of applications under test. 
+Overall this work motivates the need for specialized architectures to improve performance and proposed Processing-In-Memory as a paradigm to address the limitations of processor-centric models, including specifically for graph processing. 
+They describe TESSERACT as a possible competitor to PiUMA and DAMOV as a profiling and simulation suite \cite{Mutlu2023}.}
 
 
-\section{Axioms}
-\newtheorem{axiom}{Axiom}[chapter]
-\begin{axiom}
-This is my first axiom.
-\end{axiom}
 
-\begin{axiom}
-This is my second axiom in chapter 1.
-\end{axiom}
+\section{Benchmarking}
 
-\section{Tables}
+\par{A 2005 Study by Weinberg et al. examines the measurement of spatial and temporal locality in high-performance computing. 
+They define spatial locality as memory addresses that are located close to each other, and temporal locality as the same memory addresses being accessed repeatedly over time. 
+They conduct their measurements by instrumenting their code using the MEMSIM platform and using it to generate a spatial and temporal locality index with parameters L and K. 
+L is a measurement of the stride size, and K is a measure of the randomness of access. 
+They present these metrics despite earlier warnings in their work about the reductive effects of generating an index to represent locality. 
+Their analysis suggests that a lack of locality degrades the execution time of applications and so it is interesting that neither Graph500 nor the newer graph benchmark suites account for the loading or structuring of graphs in memory in their measurement. 
+Characterizing the shape of graphs in memory appears to be an under-explored dimension of the benchmarking space \cite{Weinberg2005}.}
 
-This is my table.
+\par{In 2009 Adhianto et. al. from Rice University released the initial build of the High Performance Computing Toolkit (HPCToolkit). 
+The toolkit aims to profile the performance of code on high-performance systems without needing to instrument the code, reducing the overheads imposed on the system under test. 
+Their approach and toolkit exemplify the measurement of performance without instrumentation, demonstrating the feasibility of profiling code without intrinsically degrading its performance \cite{Adhianto2010}.}
 
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
+\par{A 2010 description of how Google implements system profiling across its data warehouses by Ren et al. focuses on continuous monitoring rather than benchmarking.  
+Their experience argues that sampling binaries during execution rather than fully instrumenting at compile time is a superior approach that reduces memory usage and execution time. 
+They sample events, which can include clock cycles, L1 and L2 cache misses, and branch mispredictions. 
+Their work provides a precedent for using profiling to compare different hardware implementations of the same application, supporting our evaluation of Graph Algorithms across CPU, GPU, and PiUMA for the HIVE project. 
+There appears to be a gap in defining what a standard 'profile' is for a graph algorithm. 
+Determining what a standard 'profile' is, and further determining a method to effectively visualize memory accesses for graph applications by time and locality will be a prosperous avenue of further research \cite{Ren2010}.}
 
-\begin{table}[h]
-\caption[Short title]{Overview of test cases used in this study.}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-Test & Quality & Setpoint & Manipulated \\
-case & variable (QV) & for QV & variables (MVs)\\
-\hline \hline
-TE & G/H ratio & 1.226 & D-feed SP and Reactor Level SP\\
-AZ & xB($H_2O$) & & Reflux flow and $5^{th}$ Tray temperature SP\\
-\hline
-\end{tabular}
-\end{center}
-\label{test_over}
-\end{table}
-
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
-
-My table is shown above.   Normally it is double-spaced but I have inserted a command (marked in blue) to make it single-spaced and then inserted a command (again in blue) to change the text back to double-spacing.
-
-\
-
-\subsection{Adding Extra Space between Text and Horizontal Lines}
-
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
-
-\setlength{\tablinesep}{5ex}
-
-\begin{table}[h]
-\caption{Table with Extra Space between the Text and Horizontal Lines.}
-\begin{center}
-\begin{tabular}{|p{.5in}|p{1in}|c|p{2.25in}|}
-\hline
-Test case& Quality variable QV)& Setpoint for QV & Manipulated  variables (MVs)\\
-\hline \hline
-TE & G/H ratio & 1.226 & D-feed SP and Reactor Level SP\\ \hline
-AZ & xB($H_2O$) & & Reflux flow and $5^{th}$ Tray temperature SP \\
-\hline
-\end{tabular}
-\end{center}
-\label{test_over}
-\end{table}
-
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
-
-The line \begin{verbatim}\usepackage{tabls}\end{verbatim} must be inserted in the preamble of your document.
-The table is set up to be single-spaced by \begin{verbatim} \renewcommand{\baselinestretch}{1} \small\normalsize\end{verbatim} before \begin{verbatim}\begin{table}\end{verbatim}.  I set the first, second, and fourth columns as paragraphs, .5in, 1in, and 2.25in wide, respectively.  I then adjusted the separation between the words and the horizontal lines to 5ex by also adding \begin{verbatim}\setlength{\tablinesep}{5ex}\end{verbatim} before the \begin{verbatim}\begin{table}\end{verbatim} command.
-
-After typing the table I change the document to be double-spaced from this point on.
-
-\newpage
+\par{The 2015 paper "Profiling a Warehouse-scale Computer" from Kanev et al. provides insights into limitations and bottlenecks that computing at large scale experiences. 
+While their work is not directly relevant to benchmarking graph algorithms, elements of their methodology are useful. 
+For example, they conduct their profiling by randomly sampling from active machines, then levering the Linux Perf suite to collect data.
+They then tag the observations to link them to the code generating the observed behavior and load the results into the Dremel database for analysis. 
+They use the Top-Down profiling approach. 
+The Top-Down approach uses the micro-operation queue to classify operations into one of four categories. 
+The patterns of micro-operation occurrences drive the characterization of system behavior. 
+They assert the canonical approach to determining instruction set size is to simulate and then look for the elbow point in the simulation where cache misses drop to zero, and offer an alternative method that samples the real system instead. 
+They have two interesting findings relevant to the HIVE problem. 
+First, the main reason that they see back-end micro-operation slots being created is to serve data cache requirements. 
+Second, 95 percent of the systems that they analyze use 31 percent or less of their memory bandwidth. 
+Taken together, we can surmise that the size of the data being read from and written to memory is not the bottleneck, it is the latency in waiting for the accesses to occur. 
+In graph processing, because the memory access patterns are not localized, and the processing operations are very simple the latency effect will be exacerbated. 
+Finally, they identify that simultaneous multi-threading is a noted mechanism to improve overall performance assuming that there is a diverse cause of bottlenecks. 
+It is not clear whether the parallelizing of graph algorithms will improve or degrade memory latency in graph processing \cite{Kanev2015}.}
 
 
-\section{Figures}
 
-The figure on the following page is centered and the figure
-caption is indented and single-spaced.  Make sure you copy the
-last two lines \begin{verbatim}
-\renewcommand{\baselinestretch}{2}\\
-\small\normalsize\end{verbatim} to return to double-spacing of your text.
+\section{Graph Benchmarking}
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=5in]{}
-\end{center}
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
-\begin{quote}
-\caption[Figure with caption indented]{This figure caption is indented and single-spaced.  Comparison between the experimental measurements \cite{hart1} (black), the random initial condition NLSE model excluding phase noise (dashed curves) and the stochastic phase noise NLSE model (solid curves) showing the first- and second-order sideband evolution as a function of fiber length for P$_{0} = 5.5$\,W, $\Omega = 366$\,GHz, $\Delta\nu = 0.5$\,GHz, $\gamma = 0.019$\,W$^{-1}$m$^{-1}$, and $\beta^{(2)} = 55$\,ps$^2$/km: dynamical evolution of the: (a) power in the first-order blue-shifted sideband, (b) power in the first-order red-shifted sideband, (c) fluctuations in the first-order blue-shifted sideband, (d) fluctuations in the first-order red-shifted sideband, (e) power in the second-order blue-shifted sideband, (f) power in the second-order red-shifted sideband. \label{fig:fig27}}
-\end{quote}
-\end{figure}
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
+\par{In 2010 Richard Murphy and his team from Sandia National Labs introduced the Graph500 dataset as a corollary to the Top500 dataset that tests floating point operations per second (FLOPS) on high-performance computers. 
+Graph500's initial goal focuses on creating benchmarks for the search, optimization, and edge operations of graph kernels (i.e. types of tasks).
+They specify the parameters to be used in RMAT to generate synthetic graphs but are unclear on the actual metric they are benchmarking against. 
+In context, it appears to be temporal (i.e. time to complete an operation), which they note in their initial experiments is already limited at large scales. 
+Graph 500 is a useful standard but relies on synthetically generated data and focuses narrowly on a few problems, with simplistic metrics \cite{Murphy2010}.}
 
-The first figure is Fig.\ref{fig:fig27}.   Please note that the figure label should be placed inside the figure caption.
-\newpage
+\par{In 2013 Angles et al. propose their benchmark for social database systems. 
+Their approach creates micro-benchmarks-based query primitives for social networks they identify as (1) Selection, (2) Adjacency, (3) Reachability, and (4) Summarization. 
+They present a generator to create synthetic datasets, evolving the R-MAT algorithm to create a 'streaming' dataset by simulating the R-MAT recursion, storing the distribution of edges, and then constructing the graph after the fact. 
+Their benchmark compares SQL, Graph, and RDF (Knowledge Graph) implementations on similar queries. 
+Rather than implement the algorithms themselves, they use the query languages of DBMS like PostgreSQL, Neo4J, and RDF-3X.
+They measure both graph load time, (calculating objects per second by dividing total load time by total node+edge counts) and execution time. 
+They find that Reachability queries are the most computationally intensive, and unviable on non-native graph structures, like the relational data stores. 
+Though their benchmark seems to lack some formality, it does offer the ability to support streaming data, and knowledge graphs and gives us primitive operations to form the core of our exploration of knowledge graphs. They highlight that the cost of translating between URIs and internal representations in KGs can be expensive, particularly for simple queries. 
+Though not evaluated here, their graph generator offers a potential path to transform a static graph into a streaming graph \cite{Angles2013}.}
 
-The next figure is placed landscape.  It is Fig.~\ref{fig:mpc}.
+\par{The 2015 Graphalytics Benchmark from Capot{\u{a}} et al. aims to produce consistent reporting on graph workloads between all combinations of algorithms, datasets, and platforms. 
+It primarily targets distributed and parallel implementations. 
+Their paper claims (but provides no substantive evidence or discussion of) support for evaluating algorithms run on GPUs and knowledge graph analytics. 
+They assert that a good benchmark suite must balance using real-world datasets with designing specific problems to stress the known choke points. 
+After highlighting that the use of real datasets is essential for credibility, they explain how they create their synthetic datasets.
+Specifically for graph workloads, they identify (1) Excessive Network Utilization, (2) Large Memory Footprints, (3) Poor Access Locality, and (4) Skewed Execution Intensity. 
+They characterize their datasets by Vertex and Edge Count, Global and Average Cluster Coefficients, and Assortativity (The assortativity coefficient is the Pearson correlation coefficient of degree between pairs of linked nodes). 
+They also examine the degree distribution by the goodness of fit to several known distributions. 
+The Graphalytics suite supports five algorithms: (1) General Stats, (2) Breadth First Search, (3) Connected Components, (4) Community Detection, and (5) Graph Evolution. 
+They do not measure or report the time taken to extract, transform, and load the graph into memory, or any detail about how it is structured in memory. 
+The Benchmark Suite measures execution time and traversed edges per second (calculated by dividing the execution time by the total number of edges - it is not clear if this will handle algorithms that revisit edges multiple times, and a more robust approach is required). 
+They assert that software engineering best practices should be applied to any benchmarking effort, and use static code analysis and formal change management to provide quality assurance for their system, justifying our use of TDD in approaching our solution \cite{Capota2015}.}
+
+\par{ }
+
+\par{Beamer et al. from UC Berkeley introduce the GAP Graph Benchmark in their 2017 paper in response to their perceived shortcomings with the Graph500 benchmark. 
+The authors assert that a benchmark suite should use real and diverse data wherever possible, and when synthetic data is used it must be standardized. 
+They note among the many views of a benchmark suite, that GAP is suited to comparing the performance of hardware on common graph problems.
+They provide reference implementations that are tested across multiple compilers. 
+While the GAP Benchmark paper refers to spatial locality, they do not clearly explain how they measure the effect of execution time or traversed edges per second. 
+They address variation in execution time caused by differing start nodes by repeatedly running workloads with different start points. 
+The benchmark is designed to be wider-ranging than Graph500, and as a result, has reference workloads for Breadth First Search, Single Source Shortest Path, Page Rank, Connected Components, Betweenness Centrality, and Triangle Counting. 
+While Connected components and betweenness centrality have some relation to community detection, and triangle counting is related to subgraph matching none are exact matches for the problem domain that HIVE is specifically pursuing. 
+There is no mention at all of knowledge graph analytics. Given that overall system performance includes the loading and storage in memory of Graphs it appears to be a gap that these parts of the process are not measured. 
+An examination of how a graph is stored in memory affects its spatial locality during execution appears to be under-explored and so may be worth analyzing further \cite{Beamer2017}.}
+
+\par{The blog is written on behalf of Memgraph and is an explanation of their benchmarking architecture. 
+They describe the Python-based experiment framework that sits atop the experiment architecture's lower-level files. 
+Of note, they highlight that Docker imposes a significant performance overhead on the experiments. 
+For merging with QUICC, the impact of docker is a consideration to declare up-front. 
+Their benchmark process includes measurements of creation time, as well as restoration from snapshot - it is more focused on a production grad GDBMS than the graphs themselves. 
+They deliberately measure cold-start performance to get the 'worst-case' scenario for their graph benchmark. 
+Overall it provides a useful framework to consider for the design of a benchmark suite~\cite{Javor2022}.}
+
+\par{Written on behalf of Memgraph (a Neo4J competitor), Javor's blog post summarizes a benchmarking effort made between the leading commercial graph database, Neo4J, and Memgraph's graph database. While there is inherent bias, it is useful to note how they approached the benchmark. Their metrics covered temporal (latency in MS, Queries per Second) and Memory (Peak memory usage). They ran three types of 'business' workloads - single, mixed, and realistic. Single repeat the same query, mixed varies between several query types, and realistic varies according to usage patterns seen in the real world. One of the criticisms of the benchmark was providing the data and queries written in Cypher (the graph query language), however, that sets it up for a more realistic use case. Few people will just directly import masses of data into their database directly. Importantly for HIVE, this experimental design consideration will reflect the reality of a 'streaming' data effect. Additionally, it highlights the impact that caching can have on performance, and so to get a 'worst' case performance, they run the queries on a 'cold' start. The most load-intensive query they run in their workloads is a 'k-hop' or 'explosion' query, which is effectively a BFS of the graph to a specified depth. The benchmark does make the dataset available, but the post does not discuss it in any real detail. It is a useful post, and worth chasing down scientific publications to validate their design choices. The benchmark is here: \url{https://memgraph.com/benchgraph/} and the code is here: \url{https://github.com/memgraph/memgraph/tree/master/tests/mgbench}~\cite{Javor2023}}
+
+\par{Memgraph provides the methodology (and code) for their BenchGraph graph database benchmark on their GitHub. 
+It describes the methodology and several of their design choices. 
+First, they identify the primitive operations they test as: "write", "read", "update", "aggregate" and "analyze". 
+They use three datasets - a small medium and large. Each of them are social-media style scale-free graph. They acknowledge the need to support different hardware types in testing and to that end provide a framework to test two different hardware platforms. 
+While trivial (and in this case dependent on what is capable of running the GDBMS under test) it highlights the need for cross-hardware tests. 
+The benchmark itself overall is a good starting point for designing a graph dataset - it includes datasets of varying size (but not type), reference queries, reference code, and support for multiple hardware platforms. 
+It is limited in that it focuses on GDBMS, rather than graphs in the abstract sense. 
+A weakness of their benchmark is the use of the Neo4J bolt protocol for loading the data, which is known to impose significant latency on data.~\cite{Memgraph2023}}
+
+\par{Max De Marzi's 2023 blog post is a review of the graph benchmark released by Memgraph. 
+The blog is a biting criticism of how Memgraph conducted the tests and possible bias in their reporting. 
+In particular, Max criticizes Memgraph for developing a bespoke system for measuring performance rather than using the industry standard "Gatling" to control the tests. 
+Gatling is commercial load-testing software. Overall it is a vitriolic attack on Memgraph, and some of the criticisms of Max are addressed in the benchmark itself (e.g. why they only report the 99th percentile results).
+Based on these criticisms, it is evident that any new benchmark needs to be very clear about what it brings to the table that previously did not exist~\cite{DeMazri2023}.}
+
+\par{The consulting company McKnight produced a benchmark report on the performance of Stardog, at the request of Stardog. 
+While there is inherent bias in the study, it warrants some attention. 
+First, their approach to data storage replicated a 'real world' use case, with the trillion edges they note in the title being spread between native RDF in Stardog and other non-triple stores. 
+Their data is generated with the Berlin SPARQL Benchmark (BSBM). 
+Their measured metric is query latency, but given that their test server had 1TB of RAM, it indicates that they intended to hold most of the graph in memory on a single system, this will reduce the impact of network latency on their results. 
+Their reference queries are derived from the BSBM and consist of simple 'explore' queries, ignoring the more computationally challenging inference-based queries that distinguish knowledge graphs from 'normal' graphs. 
+Any meaningful knowledge graph benchmark needs to have inference benchmarks (though admittedly, many outsource their reasoner). 
+Their choice of the BSBM is concerning because it is around 20 years old at this point, and not likely to be reflective of the scale-free data we frequently see associated with graph processing now~\cite{McKnight2021}.}
+
 
 \begin{landscape}
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
-\begin{quote}
-\begin{figure}
-\begin{center}
-\includegraphics[width=8.2in]{}
-\end{center}
-\caption{Schematic illustrating receding horizon control.
-\label{fig:mpc} }
-\end{figure}
-\end{quote}
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
+  \scriptsize
+  \begin{table*}[t]
+    \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      {Benchmark Suite} & \multicolumn{10}{|c|}{Algorithm} & \multicolumn{4}{|c|}{Metrics} & \multicolumn{2}{|c|}{Imp} & \multicolumn{3}{|c|}{Arch} & \multicolumn{4}{|c|}{Datasets}\\
+      \hline
+                                                & STATS & BFS & SSSP & PR & CC & BC & TC & CD & SGM & KGA & ET & TEPS & LT & SLS & Seq & Par & CPU & GPU & DSA & Real & Synth & Stat & Stream \\
+      \hline
+      Graph500 [2010]\cite{Murphy2010}         &       & X   &      &    &    &    &    &    &     &     &  X &      &    &     & X   &     & X   &     &     &       &   X  &   X  &        \\
+      Social Benchmark [2013]\cite{Angles2013} &   X   &     &      &    &    &    &    &    &     &  X  &  X &      & X  &     & X   &     & X   &     &     &       &   X  &   X  &  X     \\
+      Graphalytics [2015]\cite{Capota2015}     &   X   & X   &      &    & X  &    &    &  X &     & ?   &  X &   X  &    &     & X   &  X  & X   &  ?  &     &       &   X  &   X  &        \\
+      GAP [2017]\cite{Beamer2017}              &       & X   & X    & X  & X  & X  & X  &    &     &     &  X &      &    &     & X   &     & X   &     &     &   X   &   X  &   X  &        \\
+      \hline
+    \end{tabular}
+    \caption{Summary of Graph Benchmark Datasets.\\ STAT = Statistics, BFS = Breadth First Search, SSSP = Single Source Shortest Path, PR = PageRank, CC = Connected Components, BC = Betweenness Centrality, TC = Triangle Counting, CD = Community Detection, SGM = Sub Graph Matching, KGA = Knowledge Graph Analytics, ET = Execution Time, TEPS = Traversed Edges Per Second, LT = Load Time, SLS = Spatial Locality Score, Seq = Sequential, Par = Parallel/Distributed, CPU = Central Processing Unit, GPU = Graphics Processing Unit, DSA = Domain Specific Architecture}
+    \label{table:graphBenchmarks}
+  \end{table*}
+  \normalsize
 \end{landscape}
 
-This is a my second figure which was placed landscape.  Although I have used the same figure, I have renamed the label to fig:mpc-1.  The second figure now becomes Figure~\ref{fig:mpc-1}.
+\section{Datasets and Generators for Graph Benchmarking}
+
+\par{Chakrabarti, Zhan, and Faloutsos' 2004 Recursive Matrix (R-MAT) remains a de facto standard in synthetic graph generation. 
+R-MAT works by a simple mechanism, accepting parameters a, b, c, and d, which are numbers between 0 and 1, that must add to 1. 
+Each parameter reflects the probability that a node will be placed in a given quadrant of an adjacency matrix. 
+The placement is done recursively, with each quadrant being subdivided into 4 regions until the base case is reached and the node is assigned. 
+They briefly explain how one could estimate the values of a, b, c, and d but it is not clear whether a tool that can analyze a graph and estimate the values of A, B C, and D is available, or proven to work. 
+If it does not, this would be a useful contribution. 
+If it does, it will be worth examining their method to enable the generation of realistic datasets for the PiUMA experimentation \cite{Chakrabarti2004}.}
+
+\par{Lancichinetti et al. developed the LFR algorithm for graph generation in 2008 to address the problem they observed that most benchmarking efforts use small, homogeneous Erdős-Rényi (random) graphs, which are not reflective of real-world benchmarks. 
+They assert that the ideal graph for evaluating community detection is a real-world graph with ground-truth community labels, but acknowledge that only trivially sized graphs exist meeting these criteria. 
+They present an iterative algorithm for generating heterogeneous communities that accepts the following parameters: $\gamma$ [degree exponent], $\beta$ [community size exponent], $n$ [number of nodes], $<k>$ [average degree], and $\mu$ [the mixing parameter]. 
+The algorithm works by generating $n$ nodes with degrees sampled from a power law distribution (determined by $\gamma)$. 
+The nodes are randomly assigned to communities, sharing $1-\mu$ links with their community, and $\mu$ links with nodes outside their community. 
+In each iteration, nodes are randomly moved to other communities - if the community becomes too big (determined by $\beta$), it removes some nodes and re-assigns them. 
+The algorithm continues until convergence. 
+They do not provide a formal complexity analysis of their algorithm, but claim that it 'performs in reasonable time'. 
+Their evaluation metric is the 'Normalized Mutual Information' score. 
+They identify a few pain points in the shape of the data that make it difficult for community detection algorithms to find 'accurate' solutions.
+ First, When the mixing parameter $\mu <= 0.5$, the communities become 'weakly' defined relative to the graph. 
+ Second, small communities are difficult to detect with modularity optimization approaches and third, they observe that graphs with a smaller average degree (i.e. sparser graphs) perform less well. 
+ Fourth, They find that the closer communities are in size (larger $\beta$) the better community detection algorithms perform~\cite{Lancichinetti2008}.}
+
+ \par{In 2019 Maekawa et al. developed the acMark graph generator to allow for fine-grain control of communities that emerge in synthetic attributed (labeled) graphs. 
+ They develop acMark because the most effective community graph generators do not generate labeled graphs, existing ML generation approaches don't scale well and existing statistical approaches don't offer fine-grained control. 
+ acMark works by accepting parameters from the user that describe the latent communities within the graph, and then uses these parameters to iteratively generate communities with a greedy algorithm. 
+ Based on their presented documentation, the generator looks to be an effective tool for generating community-based graphs with labels. 
+ It would also be applicable in generating knowledge graphs. 
+ One unclear factor is how this differs in intent from triple-generators, and whether a triple-generation approach would be more effective for generating attributed graphs with community structures. 
+ The real challenge here is figuring out how to determine the characteristics of a real-world graph and then using those characteristics to replicate the graph~\cite{Maekawa2019}.}
+
+
+\subsection{Problem Domains and Graph Algorithms}
+
+\subsubsection{Community Detection}
+
+\par{In 2004, Reichardt and Bornholdt used a physical systems view of graphs to develop a community detection approach. 
+ Their approach involved characterizing the graph as the Potts Spin-Glass Hamiltonian of a system, characterizing the 'goodness' of the community as the 'energy' within the graph. 
+ They use Monte Carlo simulation to derive the 'base', or 'global' energy state of the graph. 
+ Then, they project the system as a spin glass - a physical system that derives its energy state from the arrangement of its components. 
+ They 'spin' the graphs (i.e. alter the connections in possible communities) and search for local minima in energy that are better than the global configuration. 
+ Where true, this indicates a 'better' community structure than the 'global' exists, suggesting it is more densely connected than the broader graph.
+  They present their math, and claim that is it 'extremely fast' compared to earlier approaches, but do not do a formal complexity analysis. [KENT: I attempted to interpret it and got $\mathcal{O}(M+Q^2)$ where $M$ is the number of edges, and $Q$ is the number of communities expected, and assuming that the calculation time for each spin state is proportional to $Q$. - I am not confident]. 
+  A major weakness of this approach is that the number of communities must be estimated in advance. 
+  If the estimate is too small, not all communities will be found. If too large, it will increase the amount of spins and degrade performance. 
+  They identify a pain point in their approach as being when communities become 'fuzzier' when they are not separated from the graph and have a similar number of outward links as they have internal links. 
+  The data they test on is all trivially small and has a homogenous community size~\cite{Reichardt2004}.}
+
+\par{In 2005, Muff et al. extended the idea of a global modularity score ($Q$) with the concept of local modularity ($LQ$). 
+They claim that modularity optimization is the superior approach to community detection because it needs no a-priori information about the structure of the communities, but assert the need for a local modularity score is driven by communities being inherently local, and unsuited for a global view.
+To emphasize their point about false global views, they explain how $Q$ is calculated based on an Erdős-Rényi graph distribution, and so it treats the likelihood of a link between all nodes as equally likely, even if not all links are possible. 
+As an example, they show how a graph of school students that has densely connected classes, loosely connected year groups of several classes, very loose connections between classes +- 1 year, and no connections +-2 or more years from each other will fail in modularity optimization. 
+$Q$ will aggregate on the global 'year' view rather than the smaller (and better) 'class' view. 
+$LQ$ is most useful (discriminative compared to $Q$) when the outer link distribution for communities is very weak. 
+That is, when dense communities are loosely connected, $LQ$ is a better scoring system. 
+The authors assert that $LQ$ is not a replacement for $Q$, but should be used in concert with it. 
+Overall it appears to add limited value to the calculation of $Q$ apart from some edge cases it appears you need a-priori knowledge of existence to search for~\cite{Muff2005}.}
+
+\par{In 2006 Reichardt and Bornholdt sought to formalize the conduct of community detection. 
+They had noticed that there was a lack of formal rigor in the literature and sought to rectify the gap. 
+They contribute a taxonomic framework of 'clustering' versus 'partitioning' approaches to community detection. 
+They show that while hierarchy frequently does exist in communities, it cannot be assumed and highlight how this assumption can break some algorithms (particularly partitioning ones). 
+They emphasize that an Erdős-Rényi graph will typically present a modularity score indicating the presence of a community, and argue that to be a true 'community' a modularity score must exceed the modularity of an Erdős-Rényi graph of equivalent size. 
+They also contribute a method to detect a single community from a given start node, aiming to remove the need to process an entire graph when not required for the user query. 
+They identify a few pain points: first is that divisive approaches using simulated annealing tend to over-separate graphs, whereas agglomerative approaches tend to over-group. 
+They also identify that Sparse Erdős-Rényi graphs tend to have lots of small communities, whereas dense Erdős-Rényi graphs have few large communities. Specific failure modes that they identify include: for Recursive Bisection approaches - when there are 3 equally sized communities, at least one of them will be mistakenly grouped with another, and will usually be split across both. 
+Greedy Agglomerative approaches fail when two cliques are connected by nodes of low degree compared to the clique. 
+Finally, they note that there can be lurking reasons for overlap in community membership that are not explicitly represented in the graph. 
+That lurking factor problem emphasizes the importance of a labeled graph and highlights what a KG view of the graph contributes to the existing literature~\cite{Reichardt2006}.}
+
+\par{Fortunato and Barthélemy's 2007 work explored whether a resolution limit exists in modularity optimization. 
+Their study was driven by a perceived lack of formal rigor in the application of Modularity Optimization to Community Detection Problems and the lack of baseline understanding of performance. 
+Starting with their definition of community as 'a subgraph whose members are more tightly connected than the broader graph', the paper is a theoretical analysis of the problem that uses trivial and extreme data to derive the conclusion that modularity is not scale-independent. 
+That is, a scaling factor exists where a community with a density of internal links of the order of the square root of 2 times the number of links in the graph will not be resolved by modularity optimization. 
+These 'loosely connected' communities are instead combined. 
+They identify two particular pain points in the shape of the data that impact the accuracy of the modularity optimization. 
+First, is when small communities coexist with large ones (heterogeneous communities). 
+The second occurs when the community size distribution is broad. 
+Towards a data generator, they note that a graph with 'perfect' modularity is a closed ring with each node only connected to its two closest neighbors. 
+Or in a hierarchical view, communities that are only connected through single bridging nodes~\cite{Fortunato2007}.}
+
+\par{In 2007 Reichardt and Bornholdt extended their prior work on community detection, seeking to determine if graph partitioning approaches are usable with relaxed constraints towards community detection. 
+They note that prior work in graph partitioning has shown it to be an NP-complete problem. 
+To relax the constraints, they frame it as a replica method of a Hamlitonian Spin-Glass. 
+The idea of a Hamiltonian spin-glass is explained in their 2004 work, and the 'replica' method essentially means that they duplicate the system under test multiple times and average the results. 
+They test their approach on Erdős-Rényi graphs and Scale-Free graphs, focusing on Bi-Partitioning but arguing it would generalize to n-partitioning.
+Their work does not include an explicit complexity analysis. 
+They generate their data with the Molloy-Reed Algorithm [Kent - I cannot find this]. 
+Their analysis shows that the performance of their approach slows as the underlying graph gets sparser~\cite{Reichardt2007}.}
+
+\par{In 2008 Blondel et al characterized what in time becomes known as the Louvain Algorithm. 
+The Louvain Algorithm is a heuristic algorithm to approximate community detection in graphs. 
+It uses an interactive 2-step algorithm to maximize the modularity score of communities hierarchically. 
+The algorithm first assigns each node in the graph to a different community and calculates the improvement in modularity scores. 
+Then it creates a new instance of the graph where changes to the communities increase the modulatiry score. 
+The algorithm terminates when no changes to the modularity score result from an iteration. 
+They define community detection algorithms as belonging to one of three categories: (1) Divisive, (2) Agglomerative, and (3) Optimization. The Louvain Algorithm is agglomerative. 
+They assert that their algorithm is bound by storage, not computation. 
+Assuming that they mean memory when they write storage, it conforms to the expected behavior of graph platforms motivating the HIVE program.
+They observe that despite a minimal effect on the ending modularity scores, the starting node (and order of execution) has a varying effect on runtime. 
+They were not able to determine why runtime is affected by the start node. 
+They assert a linear complexity for their algorithm, but do not present a formal proof, but show empirically that they achieve superior modularity and runtime results compared to the other algorithms at the time. 
+Runtime and Modularity appear to be suitable metrics for a community detection benchmark. 
+Finally, they postulate further runtime improvements by introducing additional heuristics, like a 'good enough threshold for modularity \cite{Blondel2008}.}
+
 \begin{landscape}
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
-\begin{quote}
-\begin{figure}
-\begin{center}
-\includegraphics[width=8.2in]{}
-\end{center}
-\caption[Figure placed landscape on page]{Schematic illustrating receding horizon control. \label{fig:mpc-1}}
-\end{figure}
-\end{quote}
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
-\end{landscape}
+  \tiny{
+    \begin{table}[t]
+      \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Family & Algorithm & Complexity & Worst-Case Data & Notes \\
+        \hline
+        \multirow{5}{*}{Graph Partitioning}       & Kernighan-Lin                         & $\mathcal{O}(n^3)$        & & TBC \\
+                                                  & Spectral Partitioning                 & $\mathcal{O}(n^3)$        & & TBC - Worst case eigenvalue calc\\
+                                                  & Multi-Level Recursive Bisection       & $\mathcal{O}(n^3)$        & & TBC - Worst Case. Expected $\mathcal{O}(n \log{n})$\\
+                                                  & Metis                                 & $\mathcal{O}(n^3)$        & & TBC \\
+                                                  & Recursive Spectral Bisection          & $\mathcal{O}(n^3)$        & & TBC \\
+        \hline
+        \multirow{6}{*}{Graph Clustering}         & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & TBC \\
+                                                  & K-Means on Graph Embeddings           & $\mathcal{O}(n*k*i*d)$    & & TBC k= \#clusters, i= \#iters d= dim of embedding \\ 
+                                                  & Hierarchical Agglomerative Clustering & $\mathcal{O}(n^3)$        & & TBC \\
+                                                  & DBSCAN                                & $\mathcal{O}(n^2)$        & & TBC \\
+                                                  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & TBC \\
+                                                  & Leiden                                & TBC                       & & TBC \\
+        \hline
+        \multirow{8}{*}{Modularity Optimization}  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & TBC \\
+                                                  & Girvan-Newman                         & $\mathcal{O}(m^2*n)$      & & TBC \\
+                                                  & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & TBC \\
+                                                  & Greedy Optimization                   & $\mathcal{O}(n^2)$        & & TBC - For 'moderately' sized graphs \\
+                                                  & Label Propagation                     & $\mathcal{O}(n)$          & & TBC - Relies on labelled graph.\\
+                                                  & Hamiltoninan [Potts-Fuzzy]~\cite{Reichardt2004}    & $\mathcal{O}(m+q)$& $L_in\rightarrow L_out$ & NEED TO VERIFY BIG O - q = number of communities searching for \\
+                                                  & Single-Community Hamiltoninan~\cite{Reichardt2006}         &  Need to Calc    & Distinct Communities Joined by nodes with low degree & TBC \\
+                                                  & Hamiltoninan [Replica]~\cite{Reichardt2007}                 &  Need to Calc   & Sparse Graphs \\
+        \hline
+      
 
-The following is an example of three subfigures with their figure
-captions and one single caption defining the three subfigures.
-\begin{figure}[h]
-\centering
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=\textwidth]{}
-    \caption{First subfigure.}
-    \label{fig:first}
-\end{subfigure}
-\hfill
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=\textwidth]{}
-    \caption{Second subfigure.}
-    \label{fig:second}
-\end{subfigure}
-\hfill
-\begin{subfigure}{0.3\textwidth}
-    \includegraphics[width=\textwidth]{}
-    \caption{Third subfigure.}
-    \label{fig:third}
-\end{subfigure}
-\caption{Creating subfigures in \LaTeX.} \label{fig:figures}
-\end{figure}
-
-\subsection{Numbering Figures}
-
-If you wish your figures to be numbered 1-100 without any reference to the chapter (e.g., Figure 1.1, 2.1, etc.), change the first line of your mainthesis.tex file to read \begin{verbatim}"\documentclass[12pt]{thesis-2}".\end{verbatim}
-
-\subsubsection{This is a Subsubsection}
-
-This is my first subsubsection in Chapter 1.
-
-
-\section[Short Titles]{Short Titles in the Table of Contents, List of Figures, or List of Tables}
-
-The Table of Contents, List of Figures, or List of Tables usually show the entire title of a section, subsection, etc. or table, or the entire caption of a figure.  If you put a short title in square brackets after \begin{verbatim} \section, \table, or \figure, \end{verbatim} the short title will show in your Table of Contents or lists.
-
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
-
-\begin{verbatim}
-\section[Short Title]{Title of Section}
-\subsection[Short Title]{Title of Subsection}
-\end{verbatim}
-
-or when using a caption in a figure or table
-\begin{verbatim}
-\caption[Short Caption]{Full text of the caption.}
-\end{verbatim}
-
-\renewcommand{\baselinestretch}{2}
-\small\normalsize
-
-
-\section{Figures on Text Page}
-
-Normally figures in the thesis are placed on a page by themselves.  The following figure is placed on the page with text before and after the figure by adding [!!h] after \begin{verbatim} \begin{figure}[!!h] \end{verbatim}.  Please note that the figure label is placed within the caption.
-
-\renewcommand{\baselinestretch}{1}
-\large\normalsize
-
-\begin{verbatim}
-\begin{figure}[!!h]
- \begin{center}
-\includegraphics[width=5in]{}
-\end{center}
-\caption[Short title]{Schematic illustrating receding horizon control.
-\label{fig:mpc-2}}
-\end{figure}
-\end{verbatim}
-
-\begin{figure}[!!h]
- \begin{center}
-\includegraphics[width=5in]{}
-\end{center}
-\caption{Schematic illustrating receding horizon control. \label{fig:mpc-2}}
-\end{figure}
-
-\renewcommand{\baselinestretch}{2}
-\large\normalsize
-
-This does not necessarily mean that the text before and after the figure will be exactly what you want.  Remember Latex will place the figure where it will fit on the page the best.   The previous figure is Figs.~\ref{fig:mpc-2}.
-
-\section{Wrapping Text around Figure}
-
-
-\renewcommand{\baselinestretch}{1}
-\begin{wrapfigure}{r}{0.4\textwidth}
-\includegraphics[width=0.4\textwidth]{}
-\caption{Text wrap around figure. Text wrap around figure. Text
-wrap around figure. Text wrap around figure. Text wrap around
-figure. Text wrap around figure. Text wrap around figure.
-\label{fig:test}}
-\end{wrapfigure}
-
-\renewcommand{\baselinestretch}{2}
-\large\normalsize
-
-By way of summary, at the end of the activity, I reminded the class of what we'd done:  by considering relatively nearby galaxies whose distance we had measured by some other means, we were able to establish a relationship locally between redshift and distance.
-By way of summary, at the end of the activity, I reminded the class of what we'd done:  by considering relatively nearby galaxies whose distance we had measured by some other means, we were able to establish a relationship locally between redshift and distance.
-By way of summary, at the end of the activity, I reminded the class of what we'd done:  by considering relatively nearby galaxies whose distance we had measured by some other means, we were able to establish a relationship locally between redshift and distance.
-By way of summary, at the end of the activity, I reminded the class of what we'd done:  by considering relatively nearby galaxies whose distance we had measured by some other means, we were able to establish a relationship locally between redshift and distance.  See Fig.~\ref{fig:test}.
-
-
-\section{LaTeX -- A Typesetting Program}
-
-A 13-page explanation of some of the features of LaTeX can be downloaded from http://www.jgsee.kmutt.ac.th/exell/General/LaTeX.html.
-
-
-\section{Using Bibtex}
-
-Using Bibtex with Latex documents is not difficult.  The bulk of the work is organizing your bibtex file, which is a data base compiled by you of the articles, books, etc. which you use in the bibliographies or reference sections of your publications.
-
-I have linked several files to this webpage, which will be helpful
-when you are using Bibtex.  These files can be downloaded from
-\newline http://www.ireap.umd.edu/ireap/theses/bibtex.  Please
-read the file "BibtexInstructions.pdf".  The first two pages
-explain how to set up and run Bibtex; the remaining pages were
-taken from a published article and show how the references were
-cited in the .tex file.   The files \\ BibtexInstructions.tex,
-Galactic.bib, Dottie.bib are the original .tex files used for \\
-BibtexInstructions.pdf.  The file  BibtexSamples.tex contains
-examples of the information needed for the various publications
-you wish to reference (e.g., articles in refereed journals, books,
-unpublished articles, conference proceedings, etc.).
-
-If you have questions concerning Bibtex, please contact me at 301-405-4955 or dbrosius at umd.edu.
+      \end{tabular}
+    \end{table}
+  }
+  \normalsize
+  \end{landscape}
