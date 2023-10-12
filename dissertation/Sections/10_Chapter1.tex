@@ -299,39 +299,82 @@ They assert a linear complexity for their algorithm, but do not present a formal
 Runtime and Modularity appear to be suitable metrics for a community detection benchmark. 
 Finally, they postulate further runtime improvements by introducing additional heuristics, like a 'good enough threshold for modularity \cite{Blondel2008}.}
 
+\par{In their 2017 paper, Cavallari et al extend the idea of graph embeddings at the node level to the community level, presenting the COM-E algorithm. 
+They implement COM-E as a closed-loop, with an initial community detection partition feeding the creation of a community embedding which in turn improves the node embeddings and is fed back into improving community detection. 
+They use spectral clustering as their initialization, in approaches reminiscent of earlier attempts to improve community detection by using the Kernighan-Lin algorithm to fine-tune the initial partitions generated with spectral partitioning, or spectral clustering. 
+They assert that their method has a complexity of O(|V|$\gamma$l+|V|+T1$\times$(T2|V|K+K+|E|+|V|$\gamma$l+|V|K)) which they claim is linear to the graph and reduces to O(n+m). 
+They evaluate the Karate Club, BlogCatalog, Flickr, Wikipedia, and DBLP datasets. While they note improvement over other node-embedding methods, they use the metrics of Conductance (ratio between the number of edges leaving the community and the number in the community - smaller numbers are better) and Normalized Mutual Information (Closeness between predicted communities and ground-truth labels - higher is better.) which make comparisons to non-embedding methods that use Modularity difficult. 
+Their empirical results suggest that the 'accuracy' of community detection struggles on datasets with more communities, higher edge density, and multiple labels per node (i.e. overlapping communities). 
+We can infer based on the performance of the DBLP dataset that it performs best on clique-like graphs, and most poorly on 'fuzzy' communities. 
+They present no empirical timing information. 
+They note that node embedding approaches quickly become memory intensive because of the size of sparse graph matricies~\cite{Cavallari2017}.}
+
+\par{Tandon et. al. produced a survey paper on the use of Graph Embedding techniques for Community Detection. They taxonomize the existing approaches into those using matrix-based methods, and those using random-walk-based methods. They use the LFR benchmark datasets to compare the graph-embedding approaches to popular non-embedding methods (like Louvain). They note that in general embedding approaches are competitive on smaller graphs, but are outstripped by the conventional clustering methods on larger graphs. Moreover, they note that the requirement to derive optimal parameters to run these embedding algorithms is negative when compared to the existing non-embedding approaches. Overall, they find that the use of graph embeddings offers no real advantage over the existing modularity-based clustering approaches~\cite{Tandon2021}.}
+
+\par{White et al presented two spectral clustering algorithms in 2005 as extensions of earlier work in spectral clustering specifically to community detection. 
+They propose two Algorithms, Spectral1 and Spectral2. 
+Spectral 1 focuses on optimizing the modularity score of their communities under detection, sacrificing speed. It works by first projecting the graph into Euclidian space, then using k-means clustering to create partitions (beginning with k = 2 and ending at k = the user parameter K of maximum communities). 
+Spectral2 speeds up this process by using greedy bisection to speed up the search for the optimal k < K, at the cost of finding a sub-optimal modularity score. 
+The expected complexity of both algorithms is given as 'roughly linear' under optimal conditions in a sparse graph where $n \propto m$, and so we approximate it as $\mathcal{O}(n\log{n})$. 
+The worst case is $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$, where h is the number of iterations to convergence for generating eigenvectors, k is the number of communities and e is the number of iterations that k-means clustering is being run for. 
+The worst case is expected to occur when the shape of the data has completely imbalanced community sizes and the largest community must be split each time (i.e. forcing a brute-force search of the possible K communities). 
+An obvious drawback to this approach is the requirement for an a-priori estimate of the number of communities K, which has a direct impact on the runtime of the algorithms. 
+They empirically evaluate their algorithms on the Wordnet Dataset, NIPS co-authorship dataset, and the American College Football dataset~\cite{White2005}.}
+
+\par{Ng's foundational work on Spectral Clustering from 2001 provides an introduction to spectral clustering techniques, as an alternative to spectral graph partitioning. 
+In essence, their algorithm uses the k-largest eigenvectors to form approximately optimal clusters and then applies k-means clustering to tighten up the clusters. 
+The method is reminiscent of the approach to spectral partitioning which leverages the Kernighan-Lin algorithm to 'fine-tune' the approximately optimal partitions of a graph. 
+The 'ideal' data for this algorithm is distinct clique-like clusters all infinitely far apart. 
+We can deduce then that the worst-case for this approach includes fuzzy, overlapping, and dense communities. 
+They provide no formal complexity analysis and only generally speak about experimental results~cite{Ng2001}.}
+
+\par{The Leiden algorithm is broadly heralded as the anointed successor to the Louvain algorithm. 
+The 2019 work by Traag et al. focuses on addressing a problem observed in Louvain communities. 
+They show that the aggregation steps of the Louvain algorithm can result in disconnected and weakly-connected communities. 
+They do not give a formal complexity estimate for the Leiden Algorithm, so we derive it from their supplemental materials to be $\mathcal{O}(n^2)$ in the worst case and perform at least as well as Louvain in the average case - we assign the same asymptotic average case as $\mathcal{O}(n\log{n})$. 
+Empirically, they tend to execute more quickly than Louvain in the average case because they only traverse the nodes they need at each iteration rather than the entire adjacency matrix as Louvain does. 
+The difference in execution time becomes pronounced on larger, showing an order of magnitude improvement to execution time when the graph size is in the tens of millions of nodes.
+The worst shape of the data for Leiden mirrors Louvain, where the mixing parameter $\mu$ is high, which in real-graph terms is when the graph itself is dense, and the communities are 'fuzzy'~\cite{Traag2019}.}
+
 \begin{landscape}
-  \tiny{
+  \scriptsize
     \begin{table}[t]
-      \begin{tabular}{|c|c|c|c|c|}
+      \begin{tabular}{|c|c|c|c|c|c|}
         \hline
-        Family & Algorithm & Complexity & Worst-Case Data & Notes \\
+        Family & Algorithm & Average Complexity & Worst-Case Complexity & Worst-Case Data & Notes \\
         \hline
-        \multirow{5}{*}{Graph Partitioning}       & Kernighan-Lin                         & $\mathcal{O}(n^3)$        & & TBC \\
-                                                  & Spectral Partitioning                 & $\mathcal{O}(n^3)$        & & TBC - Worst case eigenvalue calc\\
-                                                  & Multi-Level Recursive Bisection       & $\mathcal{O}(n^3)$        & & TBC - Worst Case. Expected $\mathcal{O}(n \log{n})$\\
-                                                  & Metis                                 & $\mathcal{O}(n^3)$        & & TBC \\
-                                                  & Recursive Spectral Bisection          & $\mathcal{O}(n^3)$        & & TBC \\
+        \multirow{5}{*}{Graph Partitioning}       & Kernighan-Lin                         & $\mathcal{O}(n^3)$        & & & TBC \\
+                                                  
+                                                  & Multi-Level Recursive Bisection       & $\mathcal{O}(n^3)$        & & & TBC - Worst Case. Expected $\mathcal{O}(n \log{n})$\\
+                                                  & Metis                                 & $\mathcal{O}(n^3)$        & & & TBC \\
+                                                  & Recursive Spectral Bisection          & $\mathcal{O}(n^3)$        & & & TBC \\
         \hline
-        \multirow{6}{*}{Graph Clustering}         & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & TBC \\
-                                                  & K-Means on Graph Embeddings           & $\mathcal{O}(n*k*i*d)$    & & TBC k= \#clusters, i= \#iters d= dim of embedding \\ 
-                                                  & Hierarchical Agglomerative Clustering & $\mathcal{O}(n^3)$        & & TBC \\
-                                                  & DBSCAN                                & $\mathcal{O}(n^2)$        & & TBC \\
-                                                  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & TBC \\
-                                                  & Leiden                                & TBC                       & & TBC \\
+        \multirow{7}{*}{Graph Clustering}         & Ng's Algorithm~\cite{Ng2001}          & & $\mathcal{O}(n^3)$~\cite{White2005} & & \\
+                                                  & Spectral\_1~\cite{White2005}          & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ &  & Bottleneck: Projection to Euclidian Space \\
+                                                  & Spectral\_2~\cite{White2005}            & $\mathcal{O}(n\log{n})$        & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & Skewed Community Distro; Largest community divides every iteration. & Bottleneck: Projection to Euclidian Space\\
+                                                  & K-Means on Graph Embeddings           & $\mathcal{O}(n*k*i*d)$    & & & TBC k= \#clusters, i= \#iters d= dim of embedding \\ 
+                                                  & Hierarchical Agglomerative Clustering & $\mathcal{O}(n^3)$        & & & TBC \\
+                                                  & DBSCAN                                & $\mathcal{O}(n^2)$        & & & TBC \\
+                                                  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & & TBC \\
+                                                  & Leiden~\cite{Traag2019}               & $\mathcal{O}(n\log{n})$   & $\mathcal{O}(n^2)$ & When $\mu$ is high; fuzzy communities.  & Guarantees no disconnected or weakly connected communities.  \\
         \hline
-        \multirow{8}{*}{Modularity Optimization}  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & TBC \\
-                                                  & Girvan-Newman                         & $\mathcal{O}(m^2*n)$      & & TBC \\
-                                                  & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & TBC \\
-                                                  & Greedy Optimization                   & $\mathcal{O}(n^2)$        & & TBC - For 'moderately' sized graphs \\
-                                                  & Label Propagation                     & $\mathcal{O}(n)$          & & TBC - Relies on labelled graph.\\
-                                                  & Hamiltoninan [Potts-Fuzzy]~\cite{Reichardt2004}    & $\mathcal{O}(m+q)$& $L_in\rightarrow L_out$ & NEED TO VERIFY BIG O - q = number of communities searching for \\
-                                                  & Single-Community Hamiltoninan~\cite{Reichardt2006}         &  Need to Calc    & Distinct Communities Joined by nodes with low degree & TBC \\
-                                                  & Hamiltoninan [Replica]~\cite{Reichardt2007}                 &  Need to Calc   & Sparse Graphs \\
+        \multirow{8}{*}{Modularity Optimization}  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & & TBC \\
+                                                  & Girvan-Newman                         & $\mathcal{O}(m^2*n)$      & & & TBC \\
+                                                  & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & & TBC \\
+                                                  & Greedy Optimization                   & $\mathcal{O}(n^2)$        & & & TBC - For 'moderately' sized graphs \\
+                                                  & Label Propagation                     & $\mathcal{O}(n)$         &  & & TBC - Relies on labelled graph.\\
+                                                  & Hamiltoninan [Potts-Fuzzy]~\cite{Reichardt2004}    & & $\mathcal{O}(m+q)$& $L_in\rightarrow L_out$ & NEED TO VERIFY BIG O - q = number of communities searching for \\
+                                                  & Single-Community Hamiltoninan~\cite{Reichardt2006}         & &  Need to Calc    & Distinct Communities Joined by nodes with low degree & TBC \\
+                                                  & Hamiltoninan [Replica]~\cite{Reichardt2007}                 & &  Need to Calc   & Sparse Graphs \\
+        \hline
+        \multirow{4}{*}{Graph Embedding}  & Deep-Walk                   &   & $\mathcal{O}(n\log{n})$~\cite{Cavallari2017}  & TBC \\
+                                          & LINE                        &   & $\mathcal{O}(\alpha m)$~\cite{Cavallari2017}  & TBC \\
+                                          & Node2Vec                    &   & $\mathcal{O}(n\log{n}+\alpha n^2)$~\cite{Cavallari2017}  & TBC \\
+                                          & Com-E~\cite{Cavallari2017}  &   & $\mathcal{O}(n + m)$ & Dense, Fuzzy \\
         \hline
       
 
-      \end{tabular}
+      \end{tabular} 
     \end{table}
-  }
   \normalsize
   \end{landscape}
