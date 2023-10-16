@@ -225,6 +225,14 @@ They identify a few pain points in the shape of the data that make it difficult 
  One unclear factor is how this differs in intent from triple-generators, and whether a triple-generation approach would be more effective for generating attributed graphs with community structures. 
  The real challenge here is figuring out how to determine the characteristics of a real-world graph and then using those characteristics to replicate the graph~\cite{Maekawa2019}.}
 
+ \par{In 2021, Tacsdemir et al. seek to identify the features and classical machine learning approaches most useful in classifying a given real-world input graph into a category of 'known' random graph models. 
+ Their experiments yield the most useful features: Maximum Degree, Average Cluster Coefficient, Average Eigenvector centrality, and five vertex pattern motifs within the graphs. 
+ They train several classifiers to predict whether an input graph is a \textit{Preferential Attachment}, \textit{Erdos-Renyi}, \textit{Chung-Lu} or \textit{Configuration Model} graph. They find that Logistic Regression works the most effectively to produce the strongest 'model selection scores'. 
+ They are not clear on the time it takes to generate the features - for example, isomorphic subgraph search for a 5-vertex motif is non-trivial - and it is not clear whether the approach will generalize to a more dynamic kind of graph classification that might be useful for replicating graphs with 'like' data. 
+ If nothing else, the approach may be suited to identify which distribution parameters to use. Whether this is more effective than a rules-based approach remains to be seen~\cite{Tacsdemir2021}.}
+
+ \par{In 2022 {\c{C}}elik et al. set out to determine whether Truncated Singular Value Decomposition (TSVD) or Logistic Principal Component Analysis (LPCA) was a superior approach to generate graph embeddings that preserve the structural features of the graph. They generate minimal feature sets using each approach and then use a Support Vector Machine classifier to classify the input graph against a library of nine 'archetypal' graphs. Those graphs are Barabasi-Albert, Biological, Brain, Chung-Lu, Economic, Enzymes, Erdos-Renyi, Facebook and Twitter. Some are synthetic, others are real-world. LPCA produces a higher F1 score on classification, so they conclude it is a petter low-density graph representation. The applications of this work are unclear but may have utility in analyzing an input graph to determine the features required to reconstruct it~\cite{Celik2022}. }
+
 
 \subsection{Problem Domains and Graph Algorithms}
 
@@ -336,6 +344,47 @@ Empirically, they tend to execute more quickly than Louvain in the average case 
 The difference in execution time becomes pronounced on larger, showing an order of magnitude improvement to execution time when the graph size is in the tens of millions of nodes.
 The worst shape of the data for Leiden mirrors Louvain, where the mixing parameter $\mu$ is high, which in real-graph terms is when the graph itself is dense, and the communities are 'fuzzy'~\cite{Traag2019}.}
 
+\par{Wang et al. extended existing work on graph embeddings to specifically support community-level embeddings on undirected graphs 2017, noting that good graph embedding is key to advancing many problems in graph-based machine learning. 
+They design a Modularized Nonnegative Matrix Factorization algorithm to add 'mesoscopic' level community embeddings to complement 'microscopic' first and second-order node embeddings. 
+The algorithm runs with an average case complexity of $\mathcal{O}(n^2m+n^2k)$, assuming that $m$ and $k$ are less than $n$. 
+However, their experiments do not bear this assumption to be true, and given that a connected graph typically has at best $m\propto n$, the more realistic average case is $\mathcal{O}(m^2n+m^2k)$, where k is the number of communities. 
+In their worst case, in which $k$ is large(approaching $n/2$), and k is not known a-priori, the complexity is closer to $\mathcal{O}(n(m^2 n+m^2 k+k^2 n))$.
+Their algorithm is further complicated by the assumption that optimal $k$ is known as a-priori, with a requirement to brute-force all values of $k < n$ to determine the 'optimal' number of communities. 
+Based on the complexity, the worst shape of the data is a dense graph with many small communities. 
+The algorithm will likely struggle to find good communities where the communities are 'fuzzy' and overlapping.
+They test their algorithm on the \textit{WebKB, Polblogs} and \textit{Facebook} datasets~\cite{Wang2017}.}
+
+\par{The FEC algorithm is a graph partitioning approach introduced by Yang et al. in 2007 as a method to extend community detection approaches to handle positive and negative relations in graphs. 
+Many graphs may present a topological indication of a community in the real world but be a false relation.
+ Consider two ideologically opposed groups arguing on the internet. 
+ They may have frequent interactions, but all are negative. 
+ Aggregating them into a single 'community' may not be the optimal path to describe the world the graph represents. 
+ They taxonomize prior work into being \textit{physical}, \textit{hierarchical}, or \textit{information-flow} based, and note that none handle negative relations between nodes. 
+ Their algorithm takes an agent-based approach and leverages random walks to estimate the probability that a node belongs to a given community. 
+ Once the probability calculations are complete, the graph is bisected into the 'community' and 'other' components, with the process recursing on the 'other'. 
+ A clear benefit of this algorithm is no requirement for apriori information about the structure of the communities, in particular, no assumption that the number of communities is known. 
+ The average complexity of the FEC algorithm is given as $\mathcal{O}(n+m)$, with a worst-case complexity of $\mathcal{O}(kl(n+m))$ occurring where the number of communities is large, and the shape of the data necessitates long random walks (parameter $l$) to converge. 
+ The accuracy of their algorithm is negatively impacted by the presence of many negative intra-community relationships, with the worst-case error rate presenting when all intra-community links are negative, and all inter-community links are positive. 
+ Like many approaches, the performance of FEC degrades as community structure becomes less clear. 
+ They develop a data generator that with the parameters $n$ \textit{number of nodes} $c$ \textit{number of communities}, $k$ \textit{degree of nodes}, $p_{in}$ \textit{probability that a generated edge connects inside the community}, $p_+$ \textit{probability that an edge is a positive weight} and $p_-$ \textit{probability that an edge is a negative weight} generates graphs with positive and negative relations\cite{Yang2007}.}
+
+\par{In his 2013 work, Zhang aims to improve the success of detecting fuzzy communities. The motivating issue is that topological data alone may not ensure a good community detection result. As an effort to 'denoise' the adjacency matrix, His approach imposes pairwise constraints on the adjacency matrix using external 'prior information'. The Prior information is essentially some knowledge that allows us to impose that some nodes must be in the same communities and some must not be in the same communities. The constraints are not imposed on all nodes. The algorithm produces a new adjacency matrix and applies either a Spectral Clustering or Non-negative Matrix Factorization algorithm. The focus is on the imposition of constraints, so there is no formal algorithmic analysis. However, if added as part of an ensemble system, we should expect an $\mathcal{O}(n)$ overhead for node lookups. If the system has to derive the constraints statistically, it will add a larger overhead. The approach is assessed on the GR, LFR, Karate, and College Football datasets. The approach assumes that the number of communities $k$ is known a-priori. If it is not known, all values of $k$ need to be tested to find the one that maximizes modularity, increasing the complexity of the task. Interestingly, the approach assumes no self-loops in the graph. There exist real-world scenarios where self-loops will be present (sending emails to self, for example). Where this behavior is common across a group, it may suggest a shared TTP and a support community analysis. Either way, we should incorporate self-loops into our data set to ensure it is a case we test against. They leave an open question about deciding which nodes to impose the constraints on. It stands to reason that all known constraints should be imposed unless it is computationally infeasible. Knowledge graph labels could be useful to gain this 'external' prior information to denoise the adjacency matrix and improve fuzzy community detection~\cite{Zhang2013}.}
+
+\par{Yang et al.'s 2016 work seeks to apply the idea of non-linearity to representing and detecting communities.
+ They taxonomize current approaches into either \textit{stochastic} or \textit{modularity maximizing} and note that none of these approaches employ non-linearities to represent the graph in embedding space. 
+ They highlight the dual issues of resolution limit and extreme degeneracy issues of modularity optimization as particular issues they hope nonlinear representations can overcome. 
+ They apply the neural approach of Deep Nonlinear Reconstruction (DNR) to community detection. 
+ The DNR is a stack of Auto-Encoders that learn to approximate the original data. 
+ The first auto-encoder is trained on the input graph; the second is trained on the output of the first, etc. 
+ The autoencoder stack creates a non-linear representation of the graph in embedding space. 
+ That non-linear representation of space is then clustered using k-means clustering. 
+ The requirement for k-means assumes that $k$ is known a-priori. 
+ If not, all possible values of $k$ must be tried to find the one that maximizes modularity, imposing considerable computational cost. 
+ They give no formal complexity analysis but test empirically on ten small networks, \textit{Karate, Dolphins, Friendship6, Friendship7, Football, Polbooks, Polblogs, Cora} including the two synthetic \textit{GN} and \textit{LFR} networks. 
+ While the worst data shape for the stacked autoencoder approach remains one with fuzzy communities, their empirical analysis suggests that the non-linear approach allows community detection to be successfully applied without labels in situations where labeled approaches are usually required. 
+ These situations include GN networks when $Z_{out} > 6$ and in LFR networks when $\mu >= 0.7$. 
+ They use \textit{Normalized Mutual Information} as their evaluation metric but employ \textit{Modularity} in the K-means clustering~\cite{Yang2016}.}
+ 
 \begin{landscape}
   \scriptsize
     \begin{table}[t]
@@ -346,32 +395,35 @@ The worst shape of the data for Leiden mirrors Louvain, where the mixing paramet
         \multirow{5}{*}{Graph Partitioning}       & Kernighan-Lin                         & $\mathcal{O}(n^3)$        & & & TBC \\
                                                   
                                                   & Multi-Level Recursive Bisection       & $\mathcal{O}(n^3)$        & & & TBC - Worst Case. Expected $\mathcal{O}(n \log{n})$\\
-                                                  & Metis                                 & $\mathcal{O}(n^3)$        & & & TBC \\
+                                                  & FEC~\cite{Yang2007} (2007)            & $\mathcal{O}(n+m)$        &$\mathcal{O}(kl(n+m))$ & Fuzzy; Large $k$, intra-community $p_-$ large &  \\
                                                   & Recursive Spectral Bisection          & $\mathcal{O}(n^3)$        & & & TBC \\
         \hline
-        \multirow{7}{*}{Graph Clustering}         & Ng's Algorithm~\cite{Ng2001}          & & $\mathcal{O}(n^3)$~\cite{White2005} & & \\
-                                                  & Spectral\_1~\cite{White2005}          & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ &  & Bottleneck: Projection to Euclidian Space \\
-                                                  & Spectral\_2~\cite{White2005}            & $\mathcal{O}(n\log{n})$        & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & Skewed Community Distro; Largest community divides every iteration. & Bottleneck: Projection to Euclidian Space\\
+        \multirow{7}{*}{Graph Clustering}         & Ng's Algorithm~\cite{Ng2001} (2001)   & & $\mathcal{O}(n^3)$~\cite{White2005} & & \\
+                                                  & Spectral\_1~\cite{White2005} (2005)   & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ &  & Bottleneck: Projection to Euclidian Space \\
+                                                  & Spectral\_2~\cite{White2005} (2005)   & $\mathcal{O}(n\log{n})$        & $\mathcal{O}(mkh+nk^2+k^2h+nk^2e)$ & Skewed Community Distro; Largest community divides every iteration. & Bottleneck: Projection to Euclidian Space\\
                                                   & K-Means on Graph Embeddings           & $\mathcal{O}(n*k*i*d)$    & & & TBC k= \#clusters, i= \#iters d= dim of embedding \\ 
                                                   & Hierarchical Agglomerative Clustering & $\mathcal{O}(n^3)$        & & & TBC \\
                                                   & DBSCAN                                & $\mathcal{O}(n^2)$        & & & TBC \\
-                                                  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & & TBC \\
-                                                  & Leiden~\cite{Traag2019}               & $\mathcal{O}(n\log{n})$   & $\mathcal{O}(n^2)$ & When $\mu$ is high; fuzzy communities.  & Guarantees no disconnected or weakly connected communities.  \\
+                                                  & Louvain~\cite{Blondel2008} (2008)     & $\mathcal{O}(n\log{n})$   & & & TBC \\
+                                                  & Leiden~\cite{Traag2019} (2019)        & $\mathcal{O}(n\log{n})$   & $\mathcal{O}(n^2)$ & When $\mu$ is high; fuzzy communities.  & Guarantees no disconnected or weakly connected communities.  \\
         \hline
-        \multirow{8}{*}{Modularity Optimization}  & Louvain~\cite{Blondel2008}            & $\mathcal{O}(n\log{n})$   & & & TBC \\
+        \multirow{8}{*}{Modularity Optimization}  & Louvain~\cite{Blondel2008} (2008)     & $\mathcal{O}(n\log{n})$   & & & TBC \\
                                                   & Girvan-Newman                         & $\mathcal{O}(m^2*n)$      & & & TBC \\
                                                   & Spectral Clustering                   & $\mathcal{O}(n^3)$        & & & TBC \\
                                                   & Greedy Optimization                   & $\mathcal{O}(n^2)$        & & & TBC - For 'moderately' sized graphs \\
                                                   & Label Propagation                     & $\mathcal{O}(n)$         &  & & TBC - Relies on labelled graph.\\
-                                                  & Hamiltoninan [Potts-Fuzzy]~\cite{Reichardt2004}    & & $\mathcal{O}(m+q)$& $L_in\rightarrow L_out$ & NEED TO VERIFY BIG O - q = number of communities searching for \\
-                                                  & Single-Community Hamiltoninan~\cite{Reichardt2006}         & &  Need to Calc    & Distinct Communities Joined by nodes with low degree & TBC \\
-                                                  & Hamiltoninan [Replica]~\cite{Reichardt2007}                 & &  Need to Calc   & Sparse Graphs \\
+                                                  & Hamiltoninan [Potts-Fuzzy]~\cite{Reichardt2004} (2004) & & $\mathcal{O}(m+q)$& $L_in\rightarrow L_out$ & NEED TO VERIFY BIG O - q = number of communities searching for \\
+                                                  & Single-Community Hamiltoninan~\cite{Reichardt2006} (2006)   & &  Need to Calc    & Distinct Communities Joined by nodes with low degree & TBC \\
+                                                  & Hamiltoninan [Replica]~\cite{Reichardt2007} (2007)    & &  Need to Calc   & Sparse Graphs \\
         \hline
-        \multirow{4}{*}{Graph Embedding}  & Deep-Walk                   &   & $\mathcal{O}(n\log{n})$~\cite{Cavallari2017}  & TBC \\
-                                          & LINE                        &   & $\mathcal{O}(\alpha m)$~\cite{Cavallari2017}  & TBC \\
-                                          & Node2Vec                    &   & $\mathcal{O}(n\log{n}+\alpha n^2)$~\cite{Cavallari2017}  & TBC \\
-                                          & Com-E~\cite{Cavallari2017}  &   & $\mathcal{O}(n + m)$ & Dense, Fuzzy \\
+        \multirow{5}{*}{Graph Embedding}  & Deep-Walk                   &   & $\mathcal{O}(n\log{n})$~\cite{Cavallari2017}  & TBC \\
+                                          & DNR~\cite{Yang2016} (2016)  & UNK  & UNK  & Fuzzy \\
+                                          & LINE                        &   & $\mathcal{O}(\alpha m)$~\cite{Cavallari2017} (2017) & TBC \\
+                                          & Node2Vec                    &   & $\mathcal{O}(n\log{n}+\alpha n^2)$~\cite{Cavallari2017} & TBC \\
+                                          & Com-E~\cite{Cavallari2017} (2017)  &   & $\mathcal{O}(n + m)$ & Dense, Fuzzy \\
+                                          & M-NMF~\cite{Wang2017} (2017)  & $\mathcal{O}(m^2n + m^2k)$  & $\mathcal{O}(n(m^2n + m^2k + k^2n))$ & Dense, Fuzzy, large K \\
         \hline
+
       
 
       \end{tabular} 
