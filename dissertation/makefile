@@ -24,25 +24,25 @@ publish:
 
 .PRECIOUS: auto_fig/res.txt
 
-scripts/hunspell_dictionary.dic: scripts/dictionary.txt
+Scripts/hunspell_dictionary.dic: Scripts/dictionary.txt
 	wc -l $< > $@
 	sort $< | uniq >> $@
 
-%.spell: %.pdf scripts/hunspell_dictionary.dic
+%.spell: %.pdf Scripts/hunspell_dictionary.dic
 	python3 Scripts/spell.py --files *.tex sections/*.tex
 
 #ToDo: Add figure source 
 
 #auto_fig/res.txt: figures.py
-#	chmod +x scripts/*
+#	chmod +x Scripts/*
 #	mkdir -p auto_fig
-#	out=$$(scripts/rscript_if_ne.sh .) && echo "$$out" > auto_fig/res.txt
+#	out=$$(Scripts/rscript_if_ne.sh .) && echo "$$out" > auto_fig/res.txt
 
 #%.pdf: %.tex auto_fig/res.txt $(TEX) $(BIB)
  %.pdf: %.tex $(TEX) $(BIB)
 	latexmk --shell-escape -pdf -pv $*				#If fails to compile, try removing --shell-escape argument. Is required on MacOS. 
 	cp $@ ~/public_html/temp || true
-	./scripts/style-check.rb *.tex Sections/*.tex
+	./Scripts/style-check.rb *.tex Sections/*.tex
 
 
 # These targets should remain in sync (e.g., if you fix one, do the same for the other).  Except for the .tgz target should have all the bib files but the arxiv target should have the bbl file ($<)
