@@ -1,9 +1,21 @@
 \renewcommand{\thechapter}{1}
 \chapter{Introduction}
-\label{chapter:10_Introduction}
+\label{chapter:10-Introduction}
+Graph data structures and the algorithms that operate on them are foundational to computer science.
+Since the early days of the field, they have been a focal point for theoretical computer science. 
+As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, the world has become increasingly aware of the descriptive power of graphs to model the real world. 
+The Intelligence and Security (I\&S) community uses graphs to structure collected information, analyze it and generate insights to drive operations in the national interest. 
+However, the billions-to-trillions of edges scale, the dynamic nature of graphs, temporal constraints on data possession and the criticality of their work create an imperative to improve the \textit{efficency} and \textit{effectiveness} of large-scale graph analysis. 
+Improvements can typically come from three sources.
+First, the algorithms used to analyze the graphs can be improved, or modified to operate in a time-constrained setting, for example by implementing early-stopping or sampling. 
+Second, the underlying data structure or implementation paradigm can be modified to exploit new technologies, for example by moving to shared memory parallelism or switching from the canonical representation of graphs to a linear algebraic representation. 
+The third major avenue for improvement is to accelerate the underlying hardware to operate on graphs more \textit{efficently} and \textit{effectively}, for example by reducing network latency in distributed systems, or reducing memory access latency. 
+
+This dissertation focuses on exploring \textit{Hardare Acceleration} for graph processing.
+In particular, it explores if and when graph hardware accelerators should be used, and demonstrates how the process of comparing across hardware architectures can generate insights about the problems themselves that can inform future algorithmic and implementation work. 
 
 \include{11_Intelligence_Security_Context}
 \include{12_Graph_Data_Structures}
 \include{13_Graph_Hardware_Acceleration}
 \include{14_Benchmarking_Graphs}
-\include{15_Thesis_Outline}
+\include{15_Thesis_Outline} 

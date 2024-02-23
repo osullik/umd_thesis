@@ -18,7 +18,7 @@
 %%%%%%%%%%%%%%%%%%%%%%
 % Kent Custom Commands:
 %%%%%%%%%%%%%%%%%%%%%%
-\renewcommand{\include}[1]{\input{sections/#1}} %Tells the include command where to find the document sections.
+\renewcommand{\include}[1]{\input{Sections/#1}} %Tells the include command where to find the document sections.
 %
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,9 +28,10 @@
 % Package Imports:
 %%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{titlesec}
-   \titleformat{\chapter}
-      {\normalfont\large}{Chapter \thechapter:}{1em}{}
+% Titlesec causes an er
+% \usepackage{titlesec}
+%    \titleformat{\chapter}
+%       {\normalfont\large}{Chapter \thechapter:}{1em}{}
 \usepackage{tikz}
 \usepackage{times}
 \usepackage[english]{babel}
@@ -115,19 +116,24 @@
 \small\normalsize
 \tableofcontents %(required, lower-case Roman)
 \newpage
+
+% LIST OF TABLES
 \addcontentsline{toc}{chapter}{List of Tables}
     \renewcommand{\contentsname}{List of Tables}
 \listoftables %(if present, lower-case Roman)
 \newpage
+
+% LIST OF FIGURES
 \addcontentsline{toc}{chapter}{List of Figures}
     \renewcommand{\contentsname}{List of Figures}
 \listoffigures %(if present, lower-case Roman)
 \newpage
+
 % LIST OF ABBREVIATIONS
 \addcontentsline{toc}{chapter}{List of Abbreviations}
 \include{07_Abbreviations-supertabular}
-
 \newpage
+
 \setlength{\parskip}{0em}
 \renewcommand{\baselinestretch}{2}
 \small\normalsize

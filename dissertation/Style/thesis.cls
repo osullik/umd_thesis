@@ -39,6 +39,7 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{thesis}
               [2006/04/26 v0.1]
+
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
