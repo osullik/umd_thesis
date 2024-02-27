@@ -1,0 +1,6 @@
+\renewcommand{\include}[1]{\input{Sections/#1}} %Tells the include command where to find the document sections.
+
+%Comment Boxes
+\newcommand{\pinaforecomment}[4]{\colorbox{#1}{\textcolor{#4}{\parbox{.8\linewidth}{#2: #3}}}}
+\newcommand{\osullikomment}[1]{\pinaforecomment{green}{Kent}{#1}{black}}
+\newcommand{\billcomment}[1]{\pinaforecomment{Red}{Bill}{#1}{white}}
