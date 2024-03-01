@@ -1524,3 +1524,929 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   abstract={We consider the problem of partitioning the nodes of a graph with costs on its edges into subsets of given sizes so as to minimize the sum of the costs on all edges cut. This problem arises in several physical situations — for example, in assigning the components of electronic circuits to circuit boards to minimize the number of connections between boards. This paper presents a heuristic method for partitioning arbitrary graphs which is both effective in finding optimal partitions, and fast enough to be practical in solving large problems.},
   comment={One of the seminal papers in Graph Partitioning is Kernighan and Lin's 1970 work, which introduced their self-titled heuristic algorithm for graph partitioning. They show that a heuristic algorithm is required because determining the optimal partition is NP-Hard. The algorithm is quite simple. First, arbitrarily partition the graph into two parts. Next, calculate the cost values for each partition. Then, for each node, select which node from each partition would maximally improve the cost function if switched to the other partition. Repeat that until the partition is 'optimal'; recurse on a partition if more partitions are required. Their theoretical analysis eventually converges with their empirical analysis at an expected complexity of $\mathcal{O}(n^3)$. There are mechanisms to improve the complexity, with the most popular being starting with an almost-optimal partition so that KL converges faster. In these circumstances, we may see performance closer to their theoretical complexity of $\mathcal{O}(n^2\log{n})$. The worst shape of the data here is a large, dense graph with many small communities. Graphs where a good approximate 'best first partition' is difficult to detect (e.g., fuzzy networks) will also impact the performance of KL. Their analysis focuses on bipartite partitioning (which is limited in community detection as the communities are rarely of equal sizes). However, it extends to a k-way partition, assuming that $k$ is known a-priori. If not, $k$ must be brute-forced.}
 }
+
+% FROM AAAI PAPER DRAFT:
+@article{Iosup2023,
+  title={The LDBC Graphalytics Benchmark Version 1.0.5},
+  author={Iosup, Alexandru and Musaafir, Ahmed and Uta, Alexandru and P{\'e}rez, Arnau Prat and Sz{\'a}rnyas, G{\'a}bor and Chafi, Hassan and T{\u{a}}nase, Ilie Gabriel and Nai, Lifeng and Anderson, Michael and Capot{\u{a}}, Mihai and others},
+  journal={arXiv preprint arXiv:2011.15028},
+  year={2023  }
+}
+
+@inproceedings{Osullivan2023,
+  author          = {O'Sullivan, Kent and Schneider, Nicole R and Samet, Hanan},
+  booktitle       = {GeoSearch'23: Proceedings of the 2nd ACM SIGSPATIAL International Workshop on Searching and Mining Large Collections of Geospatial Data},
+  editor          = {Hao, Li and Cavallaro, Gabriele and Heras, Dora Blanco and Lunga, Dalton and Werner, Martin and Z\"{u}fle, Andreas},
+  title           = {COMPASS: Cardinal Orientation Maniulation and Pattern Aware Spatial Search},
+  year            = {2023},
+  groups          = {motivation, subgraph_matching},
+  comment         = {Shows Spatial Pattern Matching is usually an SGM problem}
+}
+
+@article{Monti2019,
+  title={Fake news detection on social media using geometric deep learning},
+  author={Monti, Federico and Frasca, Fabrizio and Eynard, Davide and Mannion, Damon and Bronstein, Michael M},
+  journal={arXiv preprint arXiv:1902.06673},
+  year={2019},
+  groups={motivation, graph_ml, graph_neural_network},
+  comment={Shows }
+}
+
+###### Taken from SDH Paper: ######
+
+
+@book{Nilsson2009,
+  title={The quest for artificial intelligence: A History of Ideas and Achievements},
+  author={Nilsson, Nils J},
+  year={2009},
+  publisher={Cambridge University Press},
+  groups={motivation, AI, adh},
+  comment={Gives definition of AI: Artificial intelligence is that activity devoted to making machines intelligent, and intelligence is that quality that enables an entity to function appropriately and with foresight in its environment}
+}
+
+@inproceedings{Deering1984,
+  title={Hardware and software architectures for efficient AI},
+  author={Deering, Michael F},
+  booktitle={Proceedings of the Fourth AAAI Conference on Artificial Intelligence},
+  pages={73--78},
+  year={1984},
+  groups={hardware, motivation, sdh},
+  comment={Tells us that we need to improve hardware, as well as software for AI to advance}
+}
+
+@article{Simon1962,
+  title={Computer simulation of human thinking and problem solving},
+  author={Simon, Herbert A and Newell, Allen},
+  journal={Monographs of the Society for Research in Child Development},
+  pages={137--150},
+  year={1962},
+  publisher={JSTOR},
+  groups={hardware, motivation, AI, sdh},
+  comment={Claims there is a push-pull relationship between AI problems and Algorithms we use to solve them}
+}
+
+@inproceedings{Owens2007,
+  title={A survey of general-purpose computation on graphics hardware},
+  author={Owens, John D and Luebke, David and Govindaraju, Naga and Harris, Mark and Kr{\"u}ger, Jens and Lefohn, Aaron E and Purcell, Timothy J},
+  booktitle={Computer graphics forum},
+  volume={26},
+  number={1},
+  pages={80--113},
+  year={2007},
+  organization={Wiley Online Library},
+  groups={AI, hardware, motivation, sdh},
+  comment={GPUs are good for parallel processing of a large number of arithmetic operations. The parallel computations enables the use of additional transistors and therefore achieve higher arithmetic intensity with the same number of transistors as a CPU. GPUs have produced very good results on different stream operations like, map, reduce, scatter and gather, stream filtering, sort, and search}
+}
+
+@article{Sze2017,
+  title={Efficient processing of deep neural networks: A tutorial and survey},
+  author={Sze, Vivienne and Chen, Yu-Hsin and Yang, Tien-Ju and Emer, Joel S},
+  journal={Proceedings of the IEEE},
+  volume={105},
+  number={12},
+  pages={2295--2329},
+  year={2017},
+  publisher={Ieee},
+  groups={hardware, AI, motivation, sdh},
+  comment={While GPUs provide a great support to these deep learning AI algorithms, the algorithmic superiority comes at high computational and memory costs that pose a significant challenge to the hardware platforms executing them}
+}
+
+@inproceedings{Nurvitadhi2017,
+  title={Can FPGAs beat GPUs in accelerating next-generation deep neural networks?},
+  author={Nurvitadhi, Eriko and Venkatesh, Ganesh and Sim, Jaewoong and Marr, Debbie and Huang, Randy and Ong Gee Hock, Jason and Liew, Yeong Tat and Srivatsan, Krishnan and Moss, Duncan and Subhaschandra, Suchit and others},
+  booktitle={Proceedings of the 2017 ACM/SIGDA international symposium on field-programmable gate arrays},
+  pages={5--14},
+  year={2017},
+  groups={hardware, motivation, ai, sdh},
+  comment={Although, it has been seen that GPUs have performed really well with deep neural networks due to their superior floating point computations, for some customizable data sets Field programmable gate arrays (FPGAs) are more suited}
+}
+
+@article{Mencer2020,
+  title={The History, Status, and Future of FPGAs: Hitting a nerve with field-programmable gate arrays},
+  author={Mencer, Oskar and Allison, Dennis and Blatt, Elad and Cummings, Mark and Flynn, Michael J and Harris, Jerry and Hewitt, Carl and Jacobson, Quinn and Lavasani, Maysam and Moazami, Mohsen and others},
+  journal={Queue},
+  volume={18},
+  number={3},
+  pages={71--82},
+  year={2020},
+  publisher={ACM New York, NY, USA},
+  groups={ai, hardware, motivation, sdh}
+}
+
+@inproceedings{Abadi2016,
+  title={$\{$TensorFlow$\}$: a system for $\{$Large-Scale$\}$ machine learning},
+  author={Abadi, Mart{\'\i}n and Barham, Paul and Chen, Jianmin and Chen, Zhifeng and Davis, Andy and Dean, Jeffrey and Devin, Matthieu and Ghemawat, Sanjay and Irving, Geoffrey and Isard, Michael and others},
+  booktitle={12th USENIX symposium on operating systems design and implementation (OSDI 16)},
+  pages={265--283},
+  year={2016},
+  groups={sdh, ai, hardware},
+  comment={At Google, our colleagues have built the Tensor Processing Unit (TPU) specifically for machine learning; TPUs yield an order of magnitude improvement in performance-per-watt compared to alternative state-of-the-art technology}
+}
+
+# Additions 07 Nov 23
+
+@inproceedings{Brock2021,
+  title={Introduction to graphblas 2.0},
+  author={Brock, Benjamin and Bulu{\c{c}}, Ayd{\i}n and Mattson, Timothy G and McMillan, Scott and Moreira, Jos{\'e} E},
+  booktitle={2021 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW)},
+  pages={253--262},
+  year={2021},
+  organization={IEEE}, 
+  groups={graph_primitives},
+  abstract={The GraphBLAS is a set of basic building blocks for constructing graph algorithms in terms of linear algebra. They are first and foremost defined mathematically with the goal that language bindings will be produced for a wide range of programming languages. We started with the C programming language and over the last four years have produced multiple versions of the GraphBLAS C API specification. In this paper, we describe our next version of the C GraphBLAS specification. It introduces a number of major changes including support for multithreading, import/export functionality, and functions that use the indices of matrix/vector elements. Since some of these changes introduce small backwards compatibility issues, this is a major release we call GraphBLAS 2.0.},
+  comment={The GraphBLAS2.0 describes the revisions made to the C API for GraphBLAS to enable shared-memory parallelism and set the conditions for a future move to support distributed computation. It continues the notable prior work of GraphBLAS. It highlights that the C API allows a programmer to learn the BLAS primitives and leave the high-performance optimization to the manufacturers, who will implement the hardware-to-API layer. Pragmatically, it allows the same algorithm to be run on different hardware and removes the variability of needing to modify the algorithm to exploit benefits coming from different data structures.}
+}
+
+@article{Dhulipala2021,
+  title={Theoretically efficient parallel graph algorithms can be fast and scalable},
+  author={Dhulipala, Laxman and Blelloch, Guy E and Shun, Julian},
+  journal={ACM Transactions on Parallel Computing (TOPC)},
+  volume={8},
+  number={1},
+  pages={1--70},
+  year={2021},
+  publisher={ACM New York, NY, USA},
+  groups={graph_benchmark},
+  abstract={There has been significant recent interest in parallel graph processing due to the need to quickly analyze the large graphs available today. Many graph codes have been designed for distributed memory or external memory. However, today even the largest publicly-available real-world graph (the Hyperlink Web graph with over 3.5 billion vertices and 128 billion edges) can fit in the memory of a single commodity multicore server. Nevertheless, most experimental work in the literature report results on much smaller graphs, and the ones for the Hyperlink graph use distributed or external memory. Therefore, it is natural to ask whether we can efficiently solve a broad class of graph problems on this graph in memory.This paper shows that theoretically-efficient parallel graph algorithms can scale to the largest publicly-available graphs using a single machine with a terabyte of RAM, processing them in minutes. We give implementations of theoretically-efficient parallel algorithms for 20 important graph problems. We also present the interfaces, optimizations, and graph processing techniques that we used in our implementations, which were crucial in enabling us to process these large graphs quickly. We show that the running times of our implementations outperform existing state-of-the-art implementations on the largest real-world graphs. For many of the problems that we consider, this is the first time they have been solved on graphs at this scale. We have made the implementations developed in this work publicly-available as the Graph Based Benchmark Suite (GBBS).},
+  comment={Dhulipala et al. set out to show that theoretically efficient (in terms of work and depth in the MT-RAM model) shared-memory parallel algorithms are fast and efficient in practice. They note that prior work in shared memory and distributed parallel algorithms are not theoretically work-efficient, and most are many times slower than the results they achieve with their implementations. They introduce the Graph-Based Benchmark Suite (GBBS), a collection of 13 algorithms and C++ implementations that can be used to benchmark performance. Of note, they highlight that the largest publicly available graph at the time can fit within 1TB of memory and, with efficient algorithms, can be fully processed in memory, too. This is an important contribution, as it may signal a diminishing requirement to approach large-scale graph processing as a distributed computing problem and save significant time by removing the network transmission aspect of parallel computing. They note that developing algorithms with good theoretical complexity is good because it makes them robust to adversarial input, it focuses on solving the fundamental problem rather than optimizing for a dataset, and because the average case of a work-efficient algorithm is typically better than the average case of a non-work efficient algorithm. They note that the most computationally demanding aspect of their algorithms is calculating the transitive closure of a graph. They store the graphs in a CSR/CSC format and a more compressed ligra-graph version. They highlight that the data storage format has a significant impact on the memory footprint of the system. They characterize the graphs they benchmark on regarding node count, edge count, diameter, number of peeling rounds, and maximal k-core decomposition. Their algorithm evaluations include execution time, the number of cycles stalled, the LLC Hit Rate, the LLC Misses, and memory bandwidth. For each system they evaluate against, they report the Dataset, Memory, number of hyperthreads, the number of compute nodes, and the execution time}
+}
+
+@inproceedings{Dhulipala2020,
+  title={The graph based benchmark suite (gbbs)},
+  author={Dhulipala, Laxman and Shi, Jessica and Tseng, Tom and Blelloch, Guy E and Shun, Julian},
+  booktitle={Proceedings of the 3rd Joint International Workshop on Graph Data Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
+  pages={1--8},
+  year={2020},
+  groups={graph_benchmark},
+  abstract={In this demonstration paper, we present the Graph Based Benchmark Suite (GBBS), a suite of scalable, provably-efficient implementations of over 20 fundamental graph problems for shared-memory multicore machines. Our results are obtained using a graph processing interface written in C++, extending the Ligra interface with additional functional primitives that have clearly defined cost bounds. Our approach enables writing high-level codes that are simultaneously simple and high-performance by virtue of using highly-optimized primitives. Another benefit is that optimizations, such as graph compression, are implemented transparently to high-level user code, and can thus be utilized without changing the implementation. Our approach enables our codes to scale to the largest publicly-available real-world graph containing over 200 billion edges on a single multicore machine. We show how to use GBBS to process and perform a variety of tasks on real-world graphs. We present the high-level C++ APIs that enable us to write concise, high-performance implementations. We also introduce a Python interface to GBBS, which lets users easily prototype algorithms and pipelines in Python that significantly outperform NetworkX, a mature Python-based graph processing solution.},
+  comment={Dhulipala et al.'s 2020 Graph Based Benchmark Suite (GBBS) implements a collection of graph algorithms and primitives for parallel graph processing in shared memory machines. They consider earlier graph benchmarks like the GAP, PBBS, and LDBC Graphalytics benchmark too narrowly focused and add more problems. The GBBS provides reference implementations for Breadth-First Search, Bellman-Ford, Single-Source widest path, Single-Source betweenness, $\mathcal{O}(K)$ Spanner, Low Diameter Decomposition, Connectivity, Spanning Forest, Biconnectivity, Strongly Connected Components, Minimum Spanning Forest, Maximal Independent Set, Maximal Matching, Graph Colouring, Approximate Set Cover, Triangle Counting, 4-Clique counting, k-core decomposition, approximate densest subgraph and PageRank. While \textit{maximal matching} is close to subgraph matching, and \textit{PageRank} is close to community detection, they do not explicitly cover these cases. GBBS also does not address knowledge graph inference.}
+}
+
+@article{Dongarra2003,
+  title={The LINPACK benchmark: past, present and future},
+  author={Dongarra, Jack J and Luszczek, Piotr and Petitet, Antoine},
+  journal={Concurrency and Computation: practice and experience},
+  volume={15},
+  number={9},
+  pages={803--820},
+  year={2003},
+  publisher={Wiley Online Library},
+  groups={graph_benchmark, benchmark, motivation}, 
+  abstract={This paper describes the LINPACK Benchmark and some of its variations commonly used to assess the performance of computer systems. Aside from the LINPACK Benchmark suite, the TOP500 and the HPL codes are presented. The latter is frequently used to obtained results for TOP500 submissions. Information is also given on how to interpret the results of the benchmark and how the results fit into the performance evaluation process.},
+  comment={The LINPACK Benchmark is widely regarded as a `good' example of benchmark design. In their 2003 paper, Dongarra, Luszczek, and Petitet reflect on developing a benchmark to compare High-Performance Computers. They reflect on how the benchmark became organically out of the LINPACK implementation of a popular Basic Linear Algebra Subroutine (BLAS) implementation. They explain that developing the High-Performance LINPACK (HPLINPACK) benchmark is also based on BLAS and Measures Floating Point Operations per Second (FLOPS) as a proxy for `performance.' They make several interesting observations. First, a good benchmark should be `large enough'; it does not have to be the largest. They explain how the LINPACK number (effectively a measure of performance derived from a microbenchmark) allows developers to estimate how their hardware will perform on much larger problem sizes. They note that `performance' is a bad metric as many factors impact performance - better metrics are specific. They also highlight that no single number can truly represent a system. They point to an earlier study of bottlenecks, which highlights that most of the execution time of a program is accounted for by 3\% of the code, and infer that by improving that 3\%, you improve the entire system. They develop a measure of proportion of maximal performance, taking the hardware specifications as an upper bound and measuring how close the system under test comes to that in practice, finding that the amount of available computing is declining relative to the theoretical maximum of the hardware. They note two specific optimizations that the community believes in and explain how their benchmark is set up to measure the effectiveness of those optimizations. They use a spectrum of benchmarks, with smaller ones focusing on verifying the `correctness' of an approach and the larger ones focused on stress-testing the system. Interestingly, they expect that for the smaller problems, the same code with the same data will be run on each candidate's hardware, effectively as a lower bound. Then, the larger problems can be attacked with all optimizations enabled. They report four key metrics $R_{max}$, $N_{max}$, $N_{\frac{1}{2}}$ and $R_{peak}$. Another interesting observation is that the LINPACK benchmark came about when they began verifying the veracity of Moore's Law. }
+}
+
+@article{Hooker1994,
+  title={Needed: An empirical science of algorithms},
+  author={Hooker, John N},
+  journal={Operations research},
+  volume={42},
+  number={2},
+  pages={201--212},
+  year={1994},
+  publisher={INFORMS},
+  groups={motivation, empirical_analysis, benchmark},
+  abstract={Deductive algorithmic science has reached a high level of sophistication, but its worst-case and average-case results seldom tell us how well an algorithm is actually going to work in practice. I argue that an empirical science of algorithms is a viable alternative. I respond to misgivings about an empirical approach, including the prevalent notion that only a deductive treatment can be “theoretical” or sophisticated. NP-completeness theory, for instance, is interesting partly because it has significant, if unacknowledged, empirical content. An empirical approach requires not only rigorous experimental design and analysis, but also the invention of empirically-based explanatory theories. I give some examples of recent work that partially achieves this aim.},
+  comment={In his 1994 Essay, John Hooker outlined the requirement for an empirical approach to computer science. He believes empirical methods are a useful extension to a field dominated by theoretical analysis and poorly implemented empirical studies. He laments the current state of benchmarks as not reflecting the `typical' data one will encounter in the real world. He proposes a formal methodology for empirical computer science in which a researcher (1) Identifies a problem, (2) conducts exploratory experiments to understand the problem, (3) Develops a hypothesis to explain phenomena that they discovered in exploratory analysis, (4) they design experiments to test that hypothesis (5) analyze the results with statistical rigor, (6) Develop a theory to explain the results that are observed and (7) iterate on that theory with steps 4-6 until an explanation is constructed. Beyond the key methodological contribution, there are several useful observations throughout the paper. He notes that the worst case and average case rarely reflect how a problem will perform in practice and proposes that the `typical' case reflects real data. He argues that a good empirical approach carefully controls the test data and parameterizes it. Those parameters should reflect the key underlying characteristics of the problem, and varying those parameters should impact the `hardness' of a problem. He decomposes computer science problems into The \textit{Phenomena} and the \textit{Apparatus}, which are the algorithm and the code implementation, respectively. He argues for developing a science of the apparatus to assist researchers in resolving divergent observations. He analyzes four attempts at empirical research in the years before his essay was published and identifies how each could have been improved. Work into Local Search conducted many experiments but lacked formal analysis and statistical rigor. Linear Programming Decomposition research developed theories based on their analysis of results but did not test them. Work in Satisfiability used statistical analysis to validate their results but did not explain their findings. He pointed to work in analyzing simulated annealing as a good example of conducting experiments, analyzing the results, developing a theory to explain the results, linking the theory to something observable, and conducting additional experiments to improve results further. Overall, this paper gives us a methodology for empirical computer science research and several cautionary tales about what to avoid in empirical research.}
+}
+
+@article{Hooker1995,
+  title={Testing heuristics: We have it all wrong},
+  author={Hooker, John N},
+  journal={Journal of heuristics},
+  volume={1},
+  pages={33--42},
+  year={1995},
+  publisher={Springer},
+  groups={motivation, empirical_analysis, benchmark},
+  abstract={The competitive nature of most algorithmic experimentation is a source of problems that are all too familiar to the research community. It is hard to make fair comparisons between algorithms and to assemble realistic test problems. Competitive testing tells us which algorithm is faster but not why. Because it requires polished code, it consumes time and energy that could be better spent doing more experiments. This article argues that a more scientific approach of controlled experimentation, similar to that used in other empirical sciences, avoids or alleviates these problems. We have confused research and development; competitive testing is suited only for the latter.},
+  comment={In his 1995 essay, John Hooker builds on his previous work on empirical computer science. Here, he argues that we need to focus on the scientific testing of algorithms, not on competitive (leaderboard-style) testing. He bemoans the focus on leaderboards comparing execution time, the willingness of researchers to use randomly generated data, or to favor static benchmarks of `real-world' data, which over time become the target of optimizations, not the measure of effectiveness. He is also critical of the leaderboard approach fuelling a `who can code better' research approach rather than revealing fundamental insights into the algorithms. He proposes an antidote: Scientific Empirical Testing. Specifically, he highlights the need to design test data based on the characteristics of the problem rather than allowing the data's shape to drive the algorithm's development. He also notes that we should be willing to simulate our algorithms at varying levels of abstraction rather than implementing them straight-up in production-grade code. He emphasizes that we must design metrics reflecting the phenomena under observation rather than relying on execution time. He strongly advocates for decomposing the problem and testing it incrementally with parameterized data that can be varied to different levels of `hardness.' He makes several other interesting observations in his essay. First is that leaderboards will tell us WHAT is faster, but not WHY it is faster. They are opaque and do not support scientific inquiry. He believes that controlled experimentation is the best alternative to competitive testing. He highlights two particular evils of competitive testing (1) it is more of a measure of who has the skill and time to optimize their implementation, and (2) the data used is not fit for purpose. It is either randomly generated data that does not reflect the problem, or it is a  `real world' dataset that is fine initially but will eventually drive the development of algorithms to optimize their performance on the benchmark rather than the problem class it represents. He argues it is not helpful to race two implementations, and rather we should form a theory about what drives performance and then develop methods and measures to evaluate that specific theory. He diverges from the wisdom that `real-world data is best' and argues that to support scientific understanding, we should aim to generate problems (data) in a controlled fashion. That data should be generated by analyzing the problem's fundamental characteristics, identifying the likely limits to performance, and generating controlled data sets to test each of those characteristics in isolation before combining them. He highlights the need for exploratory analysis in the first instance. For our work, we could run a problem on several `real world' graphs and observe relative performance. Analyzing those graphs should reveal different structural properties that would form the parameters of our data generator. We could then generate problems that vary each of these parameters. This essay provides a strong argument for re-framing how we look at benchmarks from being just a `race' to comparing meaningful metrics. }
+}
+
+@article{Hoos2000,
+  title={SATLIB: An online resource for research on SAT},
+  author={Hoos, Holger H and St{\"u}tzle, Thomas},
+  journal={Sat},
+  volume={2000},
+  pages={283--292},
+  year={2000},
+  groups={gaph_benchmarks, benchmarking, satisfiability},
+  abstract={SATLIB is an online resource for SAT-related research established in June 1998. Its core components, a benchmark suite of SAT instances and a collection of SAT solvers, aim to facilitate empirical research on SAT by providing a uniform test-bed for SAT solvers along with freely available implementations of high-performing SAT algorithms. In this article, we give an overview of SATLIB; in particular, we describe its current set of benchmark problems. Currently, the main SATLIB web site (http://www.informatik.tu-darmstadt.de/AI/SATLIB) and its North American mirror site (http://www.cs.ubc.ca/~hoos/SATLIB) are being accessed frequently by a growing number of researchers, resulting in access rates of about 250 hits per month. To further increase the usefulness of SATLIB as a resource, we encourage all members of the community to utilise it for their SAT-related research and to improve it by submitting new benchmark problems, SAT solvers,and bibliography entries.},
+  comment={In 2000, Hoos and St{\"u}tzle describe the development of another benchmark suite that has been highly successful and useful for empirical computer science research. The SATLIB benchmark was developed explicitly to facilitate empirical research on SAT. It improves over existing static benchmarks by being a dynamic, `living' benchmark that exploits the opportunity the standard CNF format offers to easily build large collections of problems and solvers. They built the benchmark largely following the principles outlined by Hooker in his work, identifying `hard' problems, determining what characteristics of those problems are hard, developing metrics for those characteristics, and then generating data that will explicitly stress those characteristics. In addition to introducing the library, they make some useful observations and comments. They assert that the most important function of a benchmark library is to facilitate the comparison of results. They argue that benchmarks are more useful when they can support a wide range of studies. They note that a benchmark should contain many problems (datasets) that reduce data affinity bias in the algorithms under test (i.e., it stops people engineering from doing well on the benchmark problems rather than solving the underlying problem). They address Hooker's concerns about benchmarks becoming the targets by frequently updating the collection with new problems. They argue that data should be pre-generated. For any problem that uses random data generation, where the solver is sensitive to small variances in the shape of the data, small random variances will have a large impact. The benchmark designers instead should sample from the distribution of randomly generated problems and provide those specific data as benchmark problems. In building the benchmark, they chose four types of problems to cover real and theoretic satisfiability problems. For each type of problem, they generate problems of varying size and vary the problem in ways that their literature review shows make the problem `hard' to solve, effectively following Hooker's advice on constructing data to support empirical research. For our applications, we need to consider what we are measuring, and design appropriate metrics.}
+}
+
+@book{Vukotic2015,
+  title={Neo4j in action},
+  author={Vukotic, Aleksa and Watt, Nicki and Abedrabbo, Tareq and Fox, Dominic and Partner, Jonas},
+  volume={22},
+  year={2015},
+  publisher={Manning Shelter Island}, 
+  comment={Index Free Adjacency Principle}
+}
+
+@book{Saad2003,
+  title={Iterative methods for sparse linear systems},
+  author={Saad, Yousef},
+  year={2003},
+  publisher={SIAM},
+  comment={Describes the CSC and CSR formats for graphs}
+}
+
+@misc{Wasserstein2016,
+  title={The ASA statement on p-values: context, process, and purpose},
+  author={Wasserstein, Ronald L and Lazar, Nicole A},
+  journal={The American Statistician},
+  volume={70},
+  number={2},
+  pages={129--133},
+  year={2016},
+  publisher={Taylor \& Francis},
+  groups={statistics},
+  comment={Guidance on Appropriate use of P Values}
+}
+
+@article{Greenland2016,
+  title={Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations},
+  author={Greenland, Sander and Senn, Stephen J and Rothman, Kenneth J and Carlin, John B and Poole, Charles and Goodman, Steven N and Altman, Douglas G},
+  journal={European journal of epidemiology},
+  volume={31},
+  pages={337--350},
+  year={2016},
+  publisher={Springer},
+  groups={statistics},
+  comment={Provides an introductions to 25 misinterpretations of p-values}
+}
+
+@book{Clayton2021,
+  title={Bernoulli's fallacy: Statistical illogic and the crisis of modern science},
+  author={Clayton, Aubrey},
+  year={2021},
+  publisher={Columbia University Press},
+  comment={indictment of freuentist statistics as a mechanism for scientific validity.}
+}
+
+@article{Mcgeoch1996,
+  title={Toward an experimental method for algorithm simulation},
+  author={McGeoch, Catherine C},
+  journal={INFORMS Journal on Computing},
+  volume={8},
+  number={1},
+  pages={1--15},
+  year={1996},
+  publisher={INFORMS},
+  groups={empirical_analysis, benchmark, statistics},
+  comment={}
+}
+
+@inproceedings{Beamer2015,
+  title={Locality exists in graph processing: Workload characterization on an ivy bridge server},
+  author={Beamer, Scott and Asanovic, Krste and Patterson, David},
+  booktitle={2015 IEEE International Symposium on Workload Characterization},
+  pages={56--65},
+  year={2015},
+  organization={IEEE},
+  groups={graph_profiling, graph_benchmarks},
+  comment={Because message-passing is far less efficient than accessing memory in contemporary systems, distributed clusters are a poor match to graph processing}
+}
+
+@article{Brandes2006,
+  title={Maximizing modularity is hard},
+  author={Brandes, Ulrik and Delling, Daniel and Gaertler, Marco and G{\"o}rke, Robert and Hoefer, Martin and Nikoloski, Zoran and Wagner, Dorothea},
+  journal={arXiv preprint physics/0608255},
+  year={2006},
+  gorups={community_detection, modularity}
+}
+
+@article{Good2010,
+  title={Performance of modularity maximization in practical contexts},
+  author={Good, Benjamin H and De Montjoye, Yves-Alexandre and Clauset, Aaron},
+  journal={Physical review E},
+  volume={81},
+  number={4},
+  pages={046106},
+  year={2010},
+  publisher={APS},
+  groups={community_detection},
+  comment={the modularity function Q exhibits extreme degeneracies: it typically admits an exponential number of distinct high-scoring solutions and typically lacks a clear global maximum}
+}
+
+@article{Traag2011,
+  title={Narrow scope for resolution-limit-free community detection},
+  author={Traag, Vincent A and Van Dooren, Paul and Nesterov, Yurii},
+  journal={Physical Review E},
+  volume={84},
+  number={1},
+  pages={016114},
+  year={2011},
+  publisher={APS},
+  groups={community_detection}, 
+  comment={Proposes alternative to Modularity as a resolution-limit free metric, the 'constant potts model' (CPM) }
+}
+
+@inproceedings{Leskovec2010a,
+  title={Empirical comparison of algorithms for network community detection},
+  author={Leskovec, Jure and Lang, Kevin J and Mahoney, Michael},
+  booktitle={Proceedings of the 19th international conference on World wide web},
+  pages={631--640},
+  year={2010},
+  groups={community_detection, empirical_analysis},
+  comment={Leskovec's Empirical Comparison of algorithms for community detection aims to predict which CD algorithm is best suited for the shape of the graph. Their experiments are on real graphs, and they also conduct experiments to compare objective functions. Broadly they find each algorithm uses heuristics and biases the structure of the community that is created; extreme optimization leads to degeneracy in the results. Specifically, (1) graph partitioning scales well, (2) network community profile is a function of the graph, not the algorithm used to extract communities and (3) poor objective function performance correlates to poor community structure in the underlying graphs. This is empirical in the sense that it is observational, but doesn't follow a rigorous process like we'd expect from a Hooker-Style study. The objective functions they review include: [multi-criterion] (1) Conductance, (2)Expansion, (3) Internal Density, (4) Cut Ratio, (5) Normalized Cut, (6) Max ODF, (7) Average ODF, (8) Flake ODF[single-criterion] (9) Modularity, (10) Modularity Ratio, (11) Volume, (12) Edges Cut.}
+}
+
+@article{Harenberg2014,
+  title={Community detection in large-scale networks: a survey and empirical evaluation},
+  author={Harenberg, Steve and Bello, Gonzalo and Gjeltema, La and Ranshous, Stephen and Harlalka, Jitendra and Seay, Ramona and Padmanabhan, Kanchana and Samatova, Nagiza},
+  journal={Wiley Interdisciplinary Reviews: Computational Statistics},
+  volume={6},
+  number={6},
+  pages={426--439},
+  year={2014},
+  publisher={Wiley Online Library},
+  groups={empirical_analysis, community_detection},
+  comments={Harenberg et al survey community detection approaches between 2010 and 2014 and conduct an empirical comparison. They aim to verify whether `good' objective function scores for communities match `good' alignment to ground truth labels (goodness vs performance). Their key results suggest that the ability of algorithms that use a heuristic objective function to create `good' communities that reflect the `ground truth' is strongly dependent on the topological typicality of the underlying graph. Atypical `fuzzy' community structures like the Youtube dataset can yield high `goodness' scores while `performing' terribly. The YouTube dataset communities are characterized by low conductance, low triangle participation ratio and a low clustering coefficient compared to the Amazon, DBLP, LiveJournal and Orkut datasets. To effectively work on atypical graphs, we must include multiple objective functions or include external information. Their survey explores both disjoint and overlapping community detection approaches. The only metric they report related to computation performance is `execution time'}
+}
+
+@article{Zachary1977,
+  title={An information flow model for conflict and fission in small groups},
+  author={Zachary, Wayne W},
+  journal={Journal of anthropological research},
+  volume={33},
+  number={4},
+  pages={452--473},
+  year={1977},
+  publisher={University of New Mexico}, 
+  groups={dataset, community_detection, graph_benchmark},
+  comment={Zachary's Karate Club Network}
+}
+
+@inproceedings{Yang2012,
+  title={Defining and evaluating network communities based on ground-truth},
+  author={Yang, Jaewon and Leskovec, Jure},
+  booktitle={Proceedings of the ACM SIGKDD Workshop on Mining Data Semantics},
+  pages={1--8},
+  year={2012},
+  groups={dataset, community_detection}, 
+  comment={NEED TO READ; DBLP dataset}
+}
+
+#Added 19 Nov 23
+
+@inproceedings{Shun2015,
+  title={Smaller and faster: Parallel processing of compressed graphs with Ligra+},
+  author={Shun, Julian and Dhulipala, Laxman and Blelloch, Guy E},
+  booktitle={2015 Data Compression Conference},
+  pages={403--412},
+  year={2015},
+  organization={IEEE}, 
+  groups={graph_data_format, paralell_graph_processing},
+  comment={Introduces a compressed Graph Storage Format.}
+}
+
+@article{deSola1978,
+  title={Contacts and influence},
+  author={de Sola Pool, Ithiel and Kochen, Manfred},
+  journal={Social networks},
+  volume={1},
+  number={1},
+  pages={5--51},
+  year={1978},
+  publisher={Elsevier},
+  groups={graph_theory},
+  comment={Describes the small world theory of graphs}
+}
+
+@article{Newman2001,
+  title={Random graphs with arbitrary degree distributions and their applications},
+  author={Newman, Mark EJ and Strogatz, Steven H and Watts, Duncan J},
+  journal={Physical review E},
+  volume={64},
+  number={2},
+  pages={026118},
+  year={2001},
+  publisher={APS},
+  groups={graph_theory},
+
+}
+
+@inproceedings{Kepner2016,
+  title={Mathematical foundations of the GraphBLAS},
+  author={Kepner, Jeremy and Aaltonen, Peter and Bader, David and Bulu{\c{c}}, Aydin and Franchetti, Franz and Gilbert, John and Hutchison, Dylan and Kumar, Manoj and Lumsdaine, Andrew and Meyerhenke, Henning and others},
+  booktitle={2016 IEEE High Performance Extreme Computing Conference (HPEC)},
+  pages={1--9},
+  year={2016},
+  organization={IEEE}
+}
+
+@article{Kepner2015,
+  title={Graphs, matrices, and the GraphBLAS: Seven good reasons},
+  author={Kepner, Jeremy and Bader, David and Bulu{\c{c}}, Ayd{\i}n and Gilbert, John and Mattson, Timothy and Meyerhenke, Henning},
+  journal={Procedia Computer Science},
+  volume={51},
+  pages={2453--2462},
+  year={2015},
+  publisher={Elsevier}
+}
+
+@inproceedings{Low2020,
+  title={Linear algebraic Louvain method in python},
+  author={Low, Tze Meng and Spampinato, Daniele G and McMillan, Scott and Pelletier, Michel},
+  booktitle={2020 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW)},
+  pages={223--226},
+  year={2020},
+  organization={IEEE}
+}
+
+@inproceedings{Mattson2019,
+  title={LAGraph: A community effort to collect graph algorithms built on top of the GraphBLAS},
+  author={Mattson, Tim and Davis, Timothy A and Kumar, Manoj and Buluc, Aydin and McMillan, Scott and Moreira, Jos{\'e} and Yang, Carl},
+  booktitle={2019 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW)},
+  pages={276--284},
+  year={2019},
+  organization={IEEE}
+}
+
+@inproceedings{Azad2020,
+  title={Evaluation of graph analytics frameworks using the gap benchmark suite},
+  author={Azad, Ariful and Aznaveh, Mohsen Mahmoudi and Beamer, Scott and Blanco, Mark and Chen, Jinhao and D'Alessandro, Luke and Dathathri, Roshan and Davis, Tim and Deweese, Kevin and Firoz, Jesun and others},
+  booktitle={2020 IEEE International Symposium on Workload Characterization (IISWC)},
+  pages={216--227},
+  year={2020},
+  organization={IEEE},
+  groups={graph_benchmarks, empirical_analysis},
+  comment={Compares GraphBLAS to other approaches on GAP Suite. Doesn't focus on hardware so much as the out-of-the-box implementation.}
+}
+
+%%% Added 20 Nov 23 %%%
+
+@inproceedings{Anderson2022,
+  title={The problem-based benchmark suite (PBBS), V2},
+  author={Anderson, Daniel and Blelloch, Guy E and Dhulipala, Laxman and Dobson, Magdalen and Sun, Yihan},
+  booktitle={Proceedings of the 27th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
+  pages={445--447},
+  year={2022},
+  groups={graph_benchmarks, graph_primitives}
+}
+
+@inproceedings{Beamer2015a,
+  title={GAIL: The graph algorithm iron law},
+  author={Beamer, Scott and Asanovi{\'c}, Krste and Patterson, David},
+  booktitle={Proceedings of the 5th Workshop on Irregular Applications: Architectures and Algorithms},
+  pages={1--4},
+  year={2015},
+  groups={graph_benchmarking, graph_analysis}
+}
+
+
+@article{Dwivedi2023,
+  title={Benchmarking Graph Neural Networks},
+  author={Dwivedi, Vijay Prakash and Joshi, Chaitanya K and Luu, Anh Tuan and Laurent, Thomas and Bengio, Yoshua and Bresson, Xavier},
+  journal={Journal of Machine Learning Research},
+  volume={24},
+  number={43},
+  pages={1--48},
+  year={2023},
+  groups={graph_ml, graph_benchmarks}
+}
+
+@inproceedings{Kestur2010,
+  title={Blas comparison on fpga, cpu and gpu},
+  author={Kestur, Srinidhi and Davis, John D and Williams, Oliver},
+  booktitle={2010 IEEE computer society annual symposium on VLSI},
+  pages={288--293},
+  year={2010},
+  organization={IEEE},
+  groups={graph_hardware},
+  comment={Compares BLAS2 on CPU, GPU and FPGA. Develop custom matrix vector multiplication implementation for their FPGA. FPGA has similar performance to CPU and GPU for significantly less energy consumption.}
+}
+
+@inproceedings{Xiong2020,
+  title={Performance comparison of BLAS on CPU, GPU and FPGA},
+  author={Xiong, Chong and Xu, Ning},
+  booktitle={2020 IEEE 9th Joint International Information Technology and Artificial Intelligence Conference (ITAIC)},
+  volume={9},
+  pages={193--197},
+  year={2020},
+  organization={IEEE},
+  groups={graph_hardware},
+  comment={Compared BLAS level 3 on CPU, GPU and FPGA. FPGA is 18.7x faster than best CPU and 3.8x faser than best GPU.}
+}
+
+@inproceedings{Nurvitadhi2016,
+  title={Accelerating binarized neural networks: Comparison of FPGA, CPU, GPU, and ASIC},
+  author={Nurvitadhi, Eriko and Sheffield, David and Sim, Jaewoong and Mishra, Asit and Venkatesh, Ganesh and Marr, Debbie},
+  booktitle={2016 International Conference on Field-Programmable Technology (FPT)},
+  pages={77--84},
+  year={2016},
+  organization={IEEE},
+  groups={graph_hardware},
+  comment={FPGA less efficent than AISC, but even FPGA gives orders of magniture improvement over optimized CPU and GPU. Their results on Binarized Neural Network accelerators are largely to do with reducing the latency of getting NN parameters to the chips. Their FPGAs have lower peak performance than the GPU but utilize more of what they have so is better overall. }
+}
+
+@inproceedings{Lichtenau2022,
+  title={AI accelerator on IBM Telum processor: Industrial product},
+  author={Lichtenau, Cedric and Buyuktosunoglu, Alper and Bertran, Ramon and Figuli, Peter and Jacobi, Christian and Papandreou, Nikolaos and Pozidis, Haris and Saporito, Anthony and Sica, Andrew and Tzortzatos, Elpida},
+  booktitle={Proceedings of the 49th Annual International Symposium on Computer Architecture},
+  pages={1012--1028},
+  year={2022},
+  groups={ai_hardware},
+  comment={Another category of hardware optimization - On-Chip AI Accelerator}
+}
+
+@inproceedings{Welser2018,
+  title={Future computing hardware for AI},
+  author={Welser, Jeffrey and Pitera, Jed W and Goldberg, Cindy},
+  booktitle={2018 IEEE International Electron Devices Meeting (IEDM)},
+  pages={1--3},
+  year={2018},
+  organization={IEEE},
+  groups={ai_hardware},
+  comments={}
+}
+
+@inproceedings{Gomes2022,
+  title={Meteor Lake and Arrow Lake Intel Next-Gen 3D Client Architecture Platform with Foveros},
+  author={Gomes, Wilfred and Morgan, Slade and Phelps, Boyd and Wilson, Tim and Hallnor, Erik},
+  booktitle={2022 IEEE Hot Chips 34 Symposium (HCS)},
+  pages={1--40},
+  year={2022},
+  organization={IEEE Computer Society},
+  groups={ai_hardware}
+}
+
+@inproceedings{Dysart2016,
+  title={Highly scalable near memory processing with migrating threads on the Emu system architecture},
+  author={Dysart, Timothy and Kogge, Peter and Deneroff, Martin and Bovell, Eric and Briggs, Preston and Brockman, Jay and Jacobsen, Kenneth and Juan, Yujen and Kuntz, Shannon and Lethin, Richard and others},
+  booktitle={2016 6th Workshop on Irregular Applications: Architecture and Algorithms (IA3)},
+  pages={2--9},
+  year={2016},
+  organization={IEEE},
+  groups={graph_hardware},
+  comment={Alternate to PIUMA}
+}
+
+@inproceedings{Song2016,
+  title={Novel graph processor architecture, prototype system, and results},
+  author={Song, William S and Gleyzer, Vitaliy and Lomakin, Alexei and Kepner, Jeremy},
+  booktitle={2016 IEEE High Performance Extreme Computing Conference (HPEC)},
+  pages={1--7},
+  year={2016},
+  organization={IEEE},
+  groups={graph_hardware},
+  comments={Alernate to PiUMA}
+}
+
+@inproceedings{Ham2016,
+  title={Graphicionado: A high-performance and energy-efficient accelerator for graph analytics},
+  author={Ham, Tae Jun and Wu, Lisa and Sundaram, Narayanan and Satish, Nadathur and Martonosi, Margaret},
+  booktitle={2016 49th Annual IEEE/ACM International Symposium on Microarchitecture (MICRO)},
+  pages={1--13},
+  year={2016},
+  organization={IEEE},
+  groups={graph_hardware},
+  comment={Alternate to Piuma}
+}
+
+@article{Peccerillo2022,
+  title={A survey on hardware accelerators: Taxonomy, trends, challenges, and perspectives},
+  author={Peccerillo, Biagio and Mannino, Mirco and Mondelli, Andrea and Bartolini, Sandro},
+  journal={Journal of Systems Architecture},
+  volume={129},
+  pages={102561},
+  year={2022},
+  publisher={Elsevier},
+  groups={graph_hardware, ai_hardware},
+  comment={Survey of hardware accelerators}
+}
+
+@article{Williams2009,
+  title={Roofline: An insightful visual performance model for floating-point programs and multicore},
+  author={Williams, Samuel},
+  journal={ACM Communications},
+  pages={16},
+  year={2009},
+  groups={profiling}
+}
+
+%%% 22 Nov Additions %%%
+
+@article{Russell2021,
+  title={Artificial Intelligence: a modern approach, 4th US ed},
+  author={Russell, Stuart and Norvig, Peter},
+  journal={University of California, Berkeley},
+  year={2021},
+  groups={graph_ai},
+  comment={Introduces: Search, Inference, Constraint Satisfaction, AI Planning, Scheduling}
+}
+
+@article{Chen2020,
+  title={A review: Knowledge reasoning over knowledge graph},
+  author={Chen, Xiaojun and Jia, Shengbin and Xiang, Yang},
+  journal={Expert Systems with Applications},
+  volume={141},
+  pages={112948},
+  year={2020},
+  publisher={Elsevier},
+  groups={knowledge_graphs, graph_ai},
+  comment={Introduces Taxonomy of KG Reasoning: Logic Based, Representation Based and Neural Reasoning.}
+}
+
+@article{Ji2021,
+  title={A survey on knowledge graphs: Representation, acquisition, and applications},
+  author={Ji, Shaoxiong and Pan, Shirui and Cambria, Erik and Marttinen, Pekka and Philip, S Yu},
+  journal={IEEE transactions on neural networks and learning systems},
+  volume={33},
+  number={2},
+  pages={494--514},
+  year={2021},
+  publisher={IEEE},
+  groups={knowledge_graphs, graph_ai},
+  comments={Introduces Knowledge Representaiton Learning and Knowledge Aquisition.}
+}
+
+@article{Wu2020,
+  title={A comprehensive survey on graph neural networks},
+  author={Wu, Zonghan and Pan, Shirui and Chen, Fengwen and Long, Guodong and Zhang, Chengqi and Philip, S Yu},
+  journal={IEEE transactions on neural networks and learning systems},
+  volume={32},
+  number={1},
+  pages={4--24},
+  year={2020},
+  publisher={IEEE},
+  groups={graph_ml, gnn},
+  comments={Introduces GNN Types of Recurrent GNN, Convolutional GNN, Graph AutoEncoders and Spatio-Temporal GNNs}
+}
+
+@article{Zhou2020,
+  title={Graph neural networks: A review of methods and applications},
+  author={Zhou, Jie and Cui, Ganqu and Hu, Shengding and Zhang, Zhengyan and Yang, Cheng and Liu, Zhiyuan and Wang, Lifeng and Li, Changcheng and Sun, Maosong},
+  journal={AI open},
+  volume={1},
+  pages={57--81},
+  year={2020},
+  publisher={Elsevier},
+  groups={graph_ai, graph_ml, gnn},
+  comment={Survey of GNNs, introduces a pipeline for configuring GNNs.}
+}
+
+@article{Zhang2019,
+  title={Graph convolutional networks: a comprehensive review},
+  author={Zhang, Si and Tong, Hanghang and Xu, Jiejun and Maciejewski, Ross},
+  journal={Computational Social Networks},
+  volume={6},
+  number={1},
+  pages={1--23},
+  year={2019},
+  publisher={SpringerOpen},
+  groups={graph_ai, graph_ml, gnn},
+  comment={introduced types of GCN as Spatial and Spectral}
+}
+
+@article{Page1998,
+  title={The pagerank citation ranking: Bringing order to the web. Technical report},
+  author={Page, Lawrence},
+  journal={Stanford Digital Library Technologies Project, 1998},
+  year={1998}
+}
+
+@article{Brandes2001,
+  title={A faster algorithm for betweenness centrality},
+  author={Brandes, Ulrik},
+  journal={Journal of mathematical sociology},
+  volume={25},
+  number={2},
+  pages={163--177},
+  year={2001},
+  publisher={Taylor \& Francis}
+}
+
+@inproceedings{Grover2016,
+  title={node2vec: Scalable feature learning for networks},
+  author={Grover, Aditya and Leskovec, Jure},
+  booktitle={Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={855--864},
+  year={2016}
+}
+
+@inproceedings{Perozzi2014,
+  title={Deepwalk: Online learning of social representations},
+  author={Perozzi, Bryan and Al-Rfou, Rami and Skiena, Steven},
+  booktitle={Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={701--710},
+  year={2014}
+}
+
+@incollection{Maedche2004,
+  title={Ontology learning},
+  author={Maedche, Alexander and Staab, Steffen},
+  booktitle={Handbook on ontologies},
+  pages={173--190},
+  year={2004},
+  publisher={Springer}
+}
+
+@inproceedings{Angeli2015,
+  title={Leveraging linguistic structure for open domain information extraction},
+  author={Angeli, Gabor and Premkumar, Melvin Jose Johnson and Manning, Christopher D},
+  booktitle={Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)},
+  pages={344--354},
+  year={2015}
+}
+
+@article{Chang2021,
+  title={A comprehensive survey of scene graphs: Generation and application},
+  author={Chang, Xiaojun and Ren, Pengzhen and Xu, Pengfei and Li, Zhihui and Chen, Xiaojiang and Hauptmann, Alex},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume={45},
+  number={1},
+  pages={1--26},
+  year={2021},
+  publisher={IEEE},
+}
+
+@inproceedings{Yuan2020,
+  title={Xgnn: Towards model-level explanations of graph neural networks},
+  author={Yuan, Hao and Tang, Jiliang and Hu, Xia and Ji, Shuiwang},
+  booktitle={Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages={430--438},
+  year={2020}
+}
+
+@article{Pfeifer2022,
+  title={GNN-SubNet: disease subnetwork detection with explainable graph neural networks},
+  author={Pfeifer, Bastian and Saranti, Anna and Holzinger, Andreas},
+  journal={Bioinformatics},
+  volume={38},
+  number={Supplement\_2},
+  pages={ii120--ii126},
+  year={2022},
+  publisher={Oxford University Press}
+}
+
+% Background Reading
+
+@book{Clausewitz2003,
+  title={On war},
+  author={Clausewitz, Carl},
+  year={2003},
+  publisher={Penguin UK}
+}
+
+@booklet{Defense2023,
+  author       = {Defense, Department of},
+  title        = {Data, Analysis and Artificial Intelligence Adoption Strategy: Accelerating Decision Advantage},
+  year         = {2023},
+  publisher    = {Department of Defense},    
+  url          = {https://media.defense.gov/2023/Nov/02/2003333300/-1/-1/1/DOD_DATA_ANALYTICS_AI_ADOPTION_STRATEGY.PDF},     
+}
+
+@booklet{Defense2020,
+  author       = {Defense, Department of},
+  title        = {Executive Summary: DoD Data Strategy},
+  year         = {2020},
+  publisher    = {Department of Defense},
+  url          = {https://www.hsdl.org/c/view?docid=883440}, 
+}
+
+@booklet{Defense2018,
+  author       = {Defense, Department of},
+  title        = {Summary of the 2018 Department of Defense Artificial Intelligence Strategy},
+  year         = {2018},
+  publisher    = {Department of Defense},
+  url          = {https://www.hsdl.org/c/view?docid=821784},
+  }
+
+@article{Hutchins2011,
+  title={Intelligence-driven computer network defense informed by analysis of adversary campaigns and intrusion kill chains},
+  author={Hutchins, Eric M and Cloppert, Michael J and Amin, Rohan M and others},
+  journal={Leading Issues in Information Warfare \& Security Research},
+  volume={1},
+  number={1},
+  pages={80},
+  year={2011},
+  comments={Lockheed Martin's Cyber Kill Chain}
+}
+
+@article{Tradoc2007,
+  title={A Military Guide to Terrorism in the Twenty-First Century},
+  author={TRADOC INTELLIGENCE SUPPORT ACTIVITY-THREATS FORT LEAVENWORTH KS},
+  year={2007},
+  comments={"US TRADOC Terrorist Planning Cycle (Kill-Chain) [1] Broad Target Selection, [2] Intelligence Collection and Reconnissance, [3] Specific Target Selection, [4] Targeted Surveillance and Reconnissance, [5] Actions on Objective, [6] Exploitation and Escape}
+}
+
+@article{Gomez2011,
+  title={The targeting process: D3A and F3EAD},
+  author={Gomez, Jimmy A},
+  journal={Small Wars Journal},
+  volume={1},
+  pages={1--17},
+  year={2011},
+  comments={Find, Fix, Finish, Exploit, Analyze, Disseminate}
+}
+
+@book{Army2023,
+  author         = {Army, Department of the},
+  publisher      = {Department of Defense},
+  title          = {ADP 3-13 Information},
+  year           = {2023},
+  url            = {https://armypubs.army.mil/ProductMaps/PubForm/Details_Printer.aspx?PUB_ID=1027996}
+}
+
+@book{Army2019,
+  author         = {Army, Department of the},
+  publisher      = {Department of Defense},
+  title          = {ADP 2-0 Intelligence},
+  year           = {2019},
+  url            = {https://armypubs.army.mil/ProductMaps/PubForm/Details.aspx?PUB_ID=1007351}
+}
+
+@mastersthesis{Osullivan2022,
+  author  = {O'Sullivan, Kent},
+  school  = {University of Southern Queensland},
+  title   = {Development of a Privacy Impact Assessment Ontology for the Internet of Things},
+  year    = {2022}
+}
+
+@article{Goldsmith2020,
+  title={Analyzing hack subnetworks in the bitcoin transaction graph},
+  author={Goldsmith, Daniel and Grauer, Kim and Shmalo, Yonah},
+  journal={Applied Network Science},
+  volume={5},
+  number={1},
+  pages={1--20},
+  year={2020},
+  publisher={SpringerOpen},
+  abstract={Hacks are one of the most damaging types of cryptocurrency related crime, accounting for billions of dollars in stolen funds since 2009. Professional investigators at Chainalysis have traced these stolen funds from the initial breach on an exchange to off-ramps, i.e. services where criminals are able to convert the stolen funds into fiat or other cryptocurrencies. We analyzed six hack subnetworks of bitcoin transactions known to belong to two prominent hacking groups. We analyze each hack according to eight network features, both static and temporal, and successfully classify each hack to its respective hacking group through our newly proposed method. We find that the static features, such as node balance, in degree, and out degree are not as useful in classifying the hacks into hacking groups as temporal features related to how quickly the criminals cash out. We validate our operating hypothesis that the key distinction between the two hacking groups is the acceleration with which the funds exit through terminal nodes in the subnetworks.},
+  comments={Transaction graphs are used to track stolen bitcoin, they extract features from the graph to form a similarity matrix, then use community detection to identify different hacking groups},
+  url={https://appliednetsci.springeropen.com/articles/10.1007/s41109-020-00261-7}
+}
+
+@inproceedings{Balaskas2018,
+  title={Analytical tools for blockchain: Review, taxonomy and open challenges},
+  author={Balaskas, Anastasios and Franqueira, Virginia NL},
+  booktitle={2018 International Conference on Cyber Security and Protection of Digital Services (Cyber Security)},
+  pages={1--8},
+  year={2018},
+  organization={IEEE},
+  absract={Bitcoin has introduced a new concept that could feasibly revolutionise the entire Internet as it exists, and positively impact on many types of industries including, but not limited to, banking, public sector and supply chain. This innovation is grounded on pseudo-anonymity and strives on its innovative decentralised architecture based on the blockchain technology. Blockchain is pushing forward a race of transaction-based applications with trust establishment without the need for a centralised authority, promoting accountability and transparency within the business process. However, a blockchain ledger (e.g., Bitcoin) tend to become very complex and specialised tools, collectively called “Blockchain Analytics”, are required to allow individuals, law enforcement agencies and service providers to search, explore and visualise it. Over the last years, several analytical tools have been developed with capabilities that allow, e.g., to map relationships, examine flow of transactions and filter crime instances as a way to enhance forensic investigations. This paper discusses the current state of blockchain analytical tools and presents a thematic taxonomy model based on their applications. It also examines open challenges for future development and research.},
+  comments={The bitcoin transactions can be understood as a graph. It is a complex and ambiguous graph because of the pseudoanonymous scheme. The transaction graph is used to analyze relationships between users, analyzing money flows, analyzing transaction fee schemes and analyzing Market/Wallet status.},
+  url={https://ieeexplore.ieee.org/abstract/document/8560672}
+}
+
+
+@article{Sobolevsky2014,
+  title={General optimization technique for high-quality community detection in complex networks},
+  author={Sobolevsky, Stanislav and Campari, Riccardo and Belyi, Alexander and Ratti, Carlo},
+  journal={Physical Review E},
+  volume={90},
+  number={1},
+  pages={012811},
+  year={2014},
+  publisher={APS},
+  comments={MIT study that shows how British Telecom data can be used to reconstruct the communities of the UK, just based on call metadata}
+}
+
+@article{Keene2014,
+  title={Operationalizing counter threat finance strategies},
+  author={Keene, Shima D and others},
+  year={2014}, 
+  journal={The Letort Papers},
+  publisher={United States Army War College Strategic Studies Institute},
+  comments={Threat finance is the means and methods used by the adversary to ensure their economic survival. Counter threat finance (CTF), on the other hand,refers to activities intended to undermine those threats. This is typically achieved through the use of financial intelligence and a number of other available measures such as asset seizures, economic sanctions, and anti-money laundering regimes. Commercial sector CTF mechanisms include Know Your Customer (KYC) and Suspicious Activity Report (SAR). Financial intelligence is the end product of analysis of information gathered about the financial affairs of individuals or entities of interest. It has the ability to complement existing intelligence by providing additional supporting evidence, as well as to provide new leads or to detect activities or networks which were previously unknown. Raw financial data can be obtained from a variety of sources in the private and public sectors as well as from individuals.}
+}
+
+@inproceedings{Michalak2011,
+  title={Graph mining approach to suspicious transaction detection},
+  author={Michalak, Krzysztof and Korczak, Jerzy},
+  booktitle={2011 Federated conference on computer science and information systems (FedCSIS)},
+  pages={69--75},
+  year={2011},
+  organization={IEEE},
+  comments={Uses Subgraph Matching to detect suspicious transaction patterns}
+}
+
+@article{Sun2012,
+  title={Efficient Subgraph Matching on Billion Node Graphs},
+  author={Sun, Zhao and Wang, Hongzhi and Wang, Haixun and Shao, Bin and Li, Jianzhong},
+  journal={Proceedings of the VLDB Endowment},
+  volume={5},
+  number={9},
+  year={2012},
+  comment={Need to read in full; Definition: The subgraph matching problem is defined as follows: For a data graph G and a query graph Q, retrieve all subgraphs of G that are isomorphic to Q}
+}
+
+@inproceedings{Sadlek2022,
+  title={Identification of attack paths using kill chain and attack graphs},
+  author={Sadlek, Luk{\'a}{\v{s}} and {\v{C}}eleda, Pavel and Tovar{\v{n}}{\'a}k, Daniel},
+  booktitle={NOMS 2022-2022 IEEE/IFIP Network Operations and Management Symposium},
+  pages={1--6},
+  year={2022},
+  organization={IEEE},
+  comment={This isn't a great paper but makes the point that kill chains and graphs can intersect. Attack Graphs are built on kill chains and used for what-if analysis. Here, given a network graph and a set of attacker capabilities, is it possible to traverse the graph to a given target. }
+}
+
+@article{Osullivan2015,
+  title={The cyber simulation terrain: Towards an open source cyber effects simulation ontology},
+  author={O'Sullivan, Kent and Turnbull, Benjamin},
+  year={2015},
+  publisher={Security Research Institute, Edith Cowan University}
+}

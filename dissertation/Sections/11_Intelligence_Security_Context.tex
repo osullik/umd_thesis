@@ -31,31 +31,71 @@ While no relevant use cases exist within this task, it has an overall push for m
 \subsubsection{Supporting Situational Understanding}
 \label{section:Supporting-Situational-Understanding}
 The focus of intelligence activities supporting situational understanding is on providing information about the relationships between friendly forces, adversarial forces and the operating environment. 
-Typical activities include \textit{Intelligence Preparation of the Battlespace}, \textit{Developing estimates of adversary courses of action}, and \textit{Supporting police and civil affairs}.
+Typical activities include \textit{Intelligence Preparation of the Battlespace} (IPB), \textit{Developing estimates of adversary courses of action}, and \textit{Supporting police and civil affairs}.
 
 \textbf{Population Segmentation Analysis.}
 %Definition
-A MISO (Military Information Support Operations) activity within the \textit{Intelligence Preparation of the Battlespace} aiming to divide a population into groups by geography, demography, attitude toward an issue or other thematic line.
+A MISO (Military Information Support Operations) activity within IPB to divide a population into groups by geography, demography, attitude toward an issue or other thematic line.
 These `segments' are a subset of the population with common attributes to which a military force can tailor its communication~\cite{Army2023}.
-%Problem
+%Intelligence Problem
 The problem intelligence analysts must solve is determining who belongs to which segment of the population.
 Traditionally, the use of formal studies, surveys and interaction with the local population gained through sustained diplomatic and military interaction provided the data to segment a population.
-%Hint at Graph & Civilian Examples
 The modern era, however, gives analysts access to large volumes of publicly available social media and communication data.
 These datasets describe the interactions between people. 
 A human social network. 
-Prior work from \osullikomment{Citation to MIT work here}
-shows how social networks can be understood through their communication patterns, and how the patterns of communication between individuals at the micro level can reveal details about the structure of subcommunities, the patterns of information flow and who the most influential entities in the network are. 
+Prior work has shown how email patterns can predict social subgroups~\cite{Zachary1977} at a small scale.
+A much larger project from the Massachusetts Institute of Technology's Sensable City Lab has shown that analyzing telephone calls in the United Kingdom yields strong structures in the communication graph that reflect population segments in the real world~\cite{Sobolevsky2014}.
+Social networks can be understood through their communication patterns, and the patterns of communication between individuals reveal insights about the structure of subcommunities, the patterns of information flow and who the most influential entities in the network are.
+%Computational Problem 
 The underlying computational problems here include \textit{Graph Partitioning}, \textit{Clique Detection} and more broadly \textit{Community Detection}.
-Formally, the \textit{Community Detection} problem is \osullikomment{Citation To Newman etc here.}
-%Data Challenges
-\osullikomment{Explain and cite challenges with this dataset}
+Formally, the \textit{Community Detection} problem involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}. 
 %So-What
 An \textit{efficient} and \textit{effective} community detection tool would yield immense benefit to intelligence operations, exploiting information that they already have to identify possible communities that they can use as start-points for their segmentation analysis, as part of their Intelligence Preperation of the Battlespace. 
 
 %Financial Analysis
-%Link Analysis
+\textbf{Counter Threat Finance.}
+%Definition
+Is a collection of activities that occur across the intelligence and security community that have strong roots in civilian law enforcement. 
+Counter Threat Finance (CTF) activities undermine threat finance--the means and methods used by an adversary to ensure their economic survival~\cite{Keene2014}. 
+%Intelligence Problem
+While CTF includes the disruption of threat finance networks by freezing, seizing or otherwise interrupting the flow of threat finance, our interest here is in the collection of financial intelligence to characterize and understand those networks.
+The primary source of financial intelligence is raw financial data. 
+Financial data generally consists of records of transactions, where money or assets are transferred from one entity to another. 
+Traditionally, those transaction records transit some government or government-related banking system and access to these records through legal mechanisms can be exploited to search for malicious activity. 
+Even financial systems that are not centrally controlled, like Bitcoin, can be analyzed to uncover nominally private information~\cite{Balaskas2018, Goldsmith2020}.
+Unfortunately, in either case, the malicious activity is hidden among the legitimate activity, and the job of the analyst is to determine which transactions and transaction patterns reflect malicious use.
+Prior work has shown that understanding the patterns of suspicious transactions that constitute threat finance enables analysts to search for similar patterns in new transaction data~\cite{Michalak2011, Soltani2016}.
+%Computational Problem
+The underlying computational problem here is \textit{Isomorphic Subgraph Matching}, defined formally as given graph $G$ and a query graph $Q$, retrieving all subgraphs of $G$ that are isomorphic to $Q$~\cite{Sun2012}. That is, return all instances where $Q$ is contained in $G$.
+%So What
+An efficient and effective isomorphic subgraph matching tool may enable financial intelligence analysts to pre-process enormous transaction datasets looking for transaction patterns that warrant detailed analysis, greatly increasing their capacity for counter-threat finance activities. 
+
 %Kill-Chain Analysis
+\textbf{Kill Chain Analysis}
+%Definition
+A kill chain analysis is a popular methodology for post hoc incident analysis that facilitates the learning required to improve readiness for future activities. 
+The general idea is that for an incident to occur, an ordered set of events must precede it to set the conditions for the incident--the \textit{Kill Chain}. 
+%Intelligence Problem
+The canonical example draws from the counter-terrorism literature of the early 2000s, which asserts that for a terrorist attack to occur an attacker must select the target, then reconnoiter it, select specific targets, surveil the target, rehearse the attack, conduct the attack and then exploit their successes and escape~\cite{Tradoc2007}.
+By understanding the chain of events, intelligence analysts seek to identify indicators and warnings from `left of bang' that may indicate an attack is imminent. 
+To prevent an attacker from exploiting their success, you would block their actions on the objective. 
+To prevent the attack, you catch them in rehearsals. 
+To stop them from rehearsing, you should catch them surveilling the target, and so on.
+Kill chains have also been popularised in the cyber domain by Lockheed Martin~\cite{Hutchins2011}.
+It follows the same idea that the goal of a cyber threat intelligence analyst should be to detect adversary activity long before they can act on their objective. 
+The challenge facing the analysts is how to identify when these events, or strings of events are occurring as part of that kill chain, rather than being indicative of random noise.
+Prior work has shown that characterizing a kill chain as an attack graph (attributed multigraph that describes a computer network) can allow analysts to run what-if scenarios over their network to detect likely intrusion vectors~\cite{Sadlek2022}.
+They have also been characterized as knowledge graphs to support inferential reasoning about the paths an attacker could have taken through a network~\cite{Osullivan2015}.
+%Computational Problem
+The underlying computational problems here are \textit{Graph Search} and \textit{Shortest Path} aiming to determine if two nodes in the graph are \textit{reachable}. 
+That is, what paths exist between the two nodes, here is the attacker's start point, and their goal. 
+Understanding the paths available to an adversary enables an analyst to identify critical nodes, enumerate critical paths, monitor for signs that those paths are being taken, and so empower the force to interdict the adversarial activity `left of bang' in the future. 
+Being able to build and search these large graphs of complex networks as part of incident analysis or simulation to answer what-if questions can help analysts decide where to target scarce assets for collection activities. 
+
+
+
+%Computational Problem
+%So what
 
 \subsubsection{Conducting Intelligence Collection}
 \label{section:Conducting-Intelligence-Collection}
@@ -66,6 +106,17 @@ Typical activities include \textit{identifying high value targets}, \textit{proc
 
 %All-Source Fusion
 %Imagery Analysis
+%Link Analysis
+\textbf{Link Analysis}
+A link analysis problem requires an intelligence analyst to determine if two entities, events or other phenomena are related. 
+Frequently a question of social contact, an analyst will build a list of known associates for each entity in question and expand those lists outwards until identifying a connection between the two. 
+The problem can be multidimensional, friends list on a social media platform may give one subset of connections, the call data logs for the entities may give another and the locations that emerge in their pattern of life may form a third. 
+Traditionally approached with pictures and red twine, more recently applications like the Analyst's Notebook\footnote{\url{https://i2group.com/i2-analysts-notebook}} are used to create digital equivalents.
+Asking \textit{``Does this target associate with that target''} is then a problem of following the twine to see where (if at all) the two are connected. 
+%Definition
+%Intelligence Problem
+%Computational Problem
+%So what
 
 \subsubsection{Supporting Targeting and Information Operations}
 \label{section:Supporting-Targeting-And-Information-Operations}
@@ -79,28 +130,7 @@ Typical activities include \textit{target acquisition}, \textit{target tracking}
 
 %Overview of use-cases here. 
 
-\subsubsection{Link Analysis}
-\label{section:Link-Analysis}
-% Reachability / Shortest Path
-A link analysis problem requires an intelligence analyst to determine if two entities, events or other phenomena are related. 
-Frequently a question of social contact, an analyst will build a list of known associates for each entity in question and expand those lists outwards until identifying a connection between the two. 
-The problem can be multidimensional, friends list on a social media platform may give one subset of connections, the call data logs for the entities may give another and the locations that emerge in their pattern of life may form a third. 
-Traditionally approached with pictures and red twine, more recently applications like the Analyst's Notebook\footnote{\url{https://i2group.com/i2-analysts-notebook}} are used to create digital equivalents.
-Asking \textit{``Does this target associate with that target''} is then a problem of following the twine to see where (if at all) the two are connected. 
 
-\subsubsection{Kill Chain Analysis}
-\label{section:Kill-Chain-Analysis}
-% Reachability / Shortest Path (Physical, Cyber)
-A kill chain analysis is a popular methodology for post hoc incident analysis. 
-The general idea is that for an incident to occur, an ordered set of events must precede it to the conditions for the incident. 
-The canonical example draws from the counter-terrorism literature of the early 2000s, which asserts that for a terrorist attack to occur an attacker must select the target, then reconnoiter it, select specific targets, surveil the target, rehearse the attack, conduct the attack and then exploit their successes and escape~\cite{Tradoc2007}.
-By understanding the chain of events, intelligence analysts seek to identify indicators and warnings from `left of bang' that may indicate an attack is imminent. 
-To prevent an attacker from exploiting their success, you would block their actions on the objective. 
-To prevent the attack, you catch them in rehearsals. 
-To stop them from rehearsing, you should catch them surveilling the target, and so on.
-Kill chains have also been popularised in the cyber domain by Lockheed Martin~\cite{Hutchins2011}.
-It follows the same idea that the goal of a cyber threat intelligence analyst should be to detect adversary activity long before they can act on their objective. 
-The challenge facing the analysts is how to identify when these events, or strings of events are occurring as part of that kill chain, rather than being indicative of random noise.
 
 \subsubsection{Intelligence Preparation of the Battlespace (Population Segmentation)}
 \label{section:IPB}
@@ -127,15 +157,6 @@ Direct intelligence applications include determining the associates of known adv
 The problem also appears in law enforcement, with counter-narcotics and counter-smuggling tasks featuring similar questions. 
 Most notably, it becomes a key problem in contact tracing, as evidenced by the COVID-19 pandemic, where governments around the world scrambled to develop methods to determine who a contagious individual came into contact with. 
 \osullikomment{Need citation for Contact Tracing, and Counter-Terrorism/Counter-Narcotics}
-
-\subsubsection{Financial Analysis}
-\label{section:Financial-Analysis}
-% Subgraph Matching
-Money is a key enabler of legitimate and illegitimate activity. 
-Whether it is paying soldiers, buying equipment, offering bribes, laundering income or even just accruing financial assets, adversary groups will need to interact with the financial system. 
-Since most financial systems fall under government control, access to these records can be exploited to search for malicious activity. 
-Even those that are not centrally controlled, like Bitcoin, can be analyzed to uncover nominally private information~\cite{Balaskas2018, Goldsmith2020}.
-Unfortunately, in either case, the malicious activity is hidden among the legitimate activity, and the job of the analyst is to determine which transactions and transaction patterns reflect malicious use.
 
 \subsubsection{Network completion}
 \label{section:Link-Prediction}
