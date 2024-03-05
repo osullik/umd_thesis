@@ -1543,6 +1543,16 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   comment         = {Shows Spatial Pattern Matching is usually an SGM problem}
 }
 
+@inproceedings{Osullivan2023a,
+  author          = {O'Sullivan, Kent and Schneider, Nicole R and Rasheed, Aleeza and Samet, Hanan},
+  booktitle       = {GeoSearch'23: Proceedings of the 2nd ACM SIGSPATIAL International Workshop on Searching and Mining Large Collections of Geospatial Data},
+  editor          = {Hao, Li and Cavallaro, Gabriele and Heras, Dora Blanco and Lunga, Dalton and Werner, Martin and Z\"{u}fle, Andreas},
+  title           = {GESTALT: Geospatially Enhanced Search with Terrain Augmented Location Targeting},
+  year            = {2023},
+  groups          = {motivation, subgraph_matching},
+  comment         = {Describes the GESTALT System}
+}
+
 @article{Monti2019,
   title={Fake news detection on social media using geometric deep learning},
   author={Monti, Federico and Frasca, Fabrizio and Eynard, Davide and Mannion, Damon and Bronstein, Michael M},
@@ -2328,7 +2338,7 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
 
 @article{Tradoc2007,
   title={A Military Guide to Terrorism in the Twenty-First Century},
-  author={TRADOC INTELLIGENCE SUPPORT ACTIVITY-THREATS FORT LEAVENWORTH KS},
+  author={TRADOC Intelligence Support Activity-Threats Fort Leavenworth KS},
   year={2007},
   comments={"US TRADOC Terrorist Planning Cycle (Kill-Chain) [1] Broad Target Selection, [2] Intelligence Collection and Reconnissance, [3] Specific Target Selection, [4] Targeted Surveillance and Reconnissance, [5] Actions on Objective, [6] Exploitation and Escape}
 }
@@ -2444,9 +2454,419 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   comment={This isn't a great paper but makes the point that kill chains and graphs can intersect. Attack Graphs are built on kill chains and used for what-if analysis. Here, given a network graph and a set of attacker capabilities, is it possible to traverse the graph to a given target. }
 }
 
-@article{Osullivan2015,
+@inproceedings{Osullivan2015,
   title={The cyber simulation terrain: Towards an open source cyber effects simulation ontology},
   author={O'Sullivan, Kent and Turnbull, Benjamin},
   year={2015},
-  publisher={Security Research Institute, Edith Cowan University}
+  publisher={Security Research Institute, Edith Cowan University},
+  venue= {11th Annual Australian Information Warfare Conference},
+  booktitle={Proceedings of the 11th Annual Australian Information Warfare Conference}
+}
+
+@article{Bhattacharya2006,
+  title={Entity resolution in graphs},
+  author={Bhattacharya, Indrajit and Getoor, Lise},
+  journal={Mining graph data},
+  volume={311},
+  year={2006},
+  publisher={Wiley Hoboken, NJ},
+  comments={The goal of entity resolution is to reconcile data references corresponding to the same real world entity... the nodes are the references in the data and the hyper edges are the relations observed to hold between the references... They formulate the graph entity resolution problem as an unsupervised clustering task where each cluster represents references that map to the same entity and the similarity measure between two clusters ... measures the similarities between the relations of two entities. In the entity resolution problem we have a set of references R, each of which has their set of attributess A. There is a set of entites E and each reference r has a hidden entity e. We are given a set of hyper edges H and each reference r is labelled a member of a hyper edge in H. The similarity of entites is calculated using either edge-detail similarity (checking the detail of the labels of each edge in which an entity participates) or neighbourhood similarity which collpses just the local neighbourhood for local entity cluster. Execution times are highly dependent on the structure of the input graph.}
+}
+
+@article{Zhang2020,
+  title={Unsupervised entity resolution with blocking and graph algorithms},
+  author={Zhang, Dongxiang and Li, Dongsheng and Guo, Long and Tan, Kian-Lee},
+  journal={IEEE Transactions on Knowledge and Data Engineering},
+  volume={34},
+  number={3},
+  pages={1501--1515},
+  year={2020},
+  publisher={IEEE},
+  comments={Entity resolution identifies all records in a database that refer to the same entity. Uses Iterative Term Entity Ranking which uses a bipartite graph to model the relationships between terms and record-record pairs. They use random walks to develop the CliqueRank (cubic complexity) algorithm for calculating the similarity of two records. ITER (term based similarity) and CliqueRank (topoligical confidence) are applied iteratively. Blocking is an approximate technique to improve the efficiency of large-scale entity resolution. It clusters similar records into blocks and only executes comparison for record pairs within the same block. Blocking mitigates the impact of the cubic complexity of CliqueRank. It's a graph-theoretic approach rather than being ML based.}
+}
+
+@article{Tauer2019,
+  title={An incremental graph-partitioning algorithm for entity resolution},
+  author={Tauer, Gregory and Date, Ketan and Nagi, Rakesh and Sudit, Moises},
+  journal={Information Fusion},
+  volume={46},
+  pages={171--183},
+  year={2019},
+  publisher={Elsevier}, 
+  comments={They incremental entity resolution algorithm for streaming graphs based on a graph partitioning formulation. Incremental algorithm is better for dynamic and time-constrained contexts. }
+}
+
+@article{Obraczka2021,
+  title={EAGER: embedding-assisted entity resolution for knowledge graphs},
+  author={Obraczka, Daniel and Schuchart, Jonathan and Rahm, Erhard},
+  journal={arXiv preprint arXiv:2101.06126},
+  year={2021},
+  comments={Uses Graph Embeddings and attribute values as features for a Multi-Layer Perceptron and Random Forest Classifiers. The classification problem (Are there two entites which are the same) has quadratic complexity so they need to employ blocking techniques to reduce the size of the graph}
+}
+
+@article{Ebraheem2018,
+  title={Distributed Representations of Tuples for Entity Resolution},
+  author={Ebraheem, Muhammad and Thirumuruganathan, Saravanan and Joty, Shafiq and Ouzzani, Mourad and Tang, Nan},
+  journal={Proceedings of the VLDB Endowment},
+  volume={11},
+  number={11},
+  year={2018},
+  comments={Uses RNNs with LSTM in conjucntion with Locality Sensitive Hashing (LSH) for Entity Resolution.}
+}
+
+@article{Barnum2012,
+  title={Standardizing cyber threat intelligence information with the structured threat information expression (stix)},
+  author={Barnum, Sean},
+  journal={Mitre Corporation},
+  volume={11},
+  pages={1--22},
+  year={2012}
+}
+
+@article{Kim2022,
+  title={Graph anomaly detection with graph neural networks: Current status and challenges},
+  author={Kim, Hwan and Lee, Byung Suk and Shin, Won-Yong and Lim, Sungsu},
+  journal={IEEE Access},
+  year={2022},
+  publisher={IEEE},
+  comment={No specific case study, but highlights the use of GNNs for Anomaly Detection. Anomalies can be Vertexes, Edges, Subgraphs or Graphs. They can be detected in dynamic or static graphs. Cite this to introduce GNN for Anomaly Detection in Graphs. }
+}
+
+@article{Ren2023,
+title = {Dynamic graph neural network-based fraud detectors against collaborative fraudsters},
+journal = {Knowledge-Based Systems},
+volume = {278},
+pages = {110888},
+year = {2023},
+issn = {0950-7051},
+doi = {https://doi.org/10.1016/j.knosys.2023.110888},
+url = {https://www.sciencedirect.com/science/article/pii/S095070512300638X},
+author = {Lingfei Ren and Ruimin Hu and Dengshi Li and Yang Liu and Junhang Wu and Yilong Zang and Wenyi Hu},
+keywords = {Telecom fraud detection, Collaborative fraud, Semi-supervised learning, Dynamic graph neural network},
+abstract = {Telecom fraud detection is a challenging task since the fact that fraudulent behaviors are hidden in the vast amount of telecom records. More concerning, the ongoing coronavirus pandemic (COVID-19) accelerated the use of mobile internet, providing more criminal opportunities for fraudsters. However, current telecom fraud detection mostly focuses on individual sequences representation, rarely noticing the collaboration of fraudsters, making it exhibit unsatisfactory performance in the face of gang crimes. To address this problem, we propose to extract collaborative networks from user call logs with an emphasis on unveiling collaborative fraud. We employ eight months of telecom datasets in China with 6,106 users and 5.0 million call logs between 1.25 million telephone recipients. Through our study, we find that the social structure of fraudsters evolute rapidly while the normal users remain stable relatively. In addition, we find that mining collaborative fraud strategies help to detect fraudsters with less distinct fraud characteristics. To this end, we propose a novel model named COllaborative-REsistant Dynamic Graph Neural Network (CORE-DGNN), to enhance the dynamic GNN aggregation process. Specifically, we first use co-recipients to obtain the collaborative network under each time slice. Then, we design a multi-frequency graph neural network to adaptively aggregate the features of node neighbors at different frequencies to address the problem of heterophily in collaborative networks. Finally, a self-attentive temporal convolutional network is designed to aggregate node embedding features across multiple time spans. Comprehensive experiments on two real-world telecom fraud datasets show that our approach outperforms several state-of-the-art algorithms.},
+comments={Case-study of using GNNs to detect anomalous behaviour in call data logs -- finding telephone fraudsters who do not fit the pattern of behaviour.}
+}
+
+@article{Wu2021,
+  title={Graph neural networks for anomaly detection in industrial internet of things},
+  author={Wu, Yulei and Dai, Hong-Ning and Tang, Haina},
+  journal={IEEE Internet of Things Journal},
+  volume={9},
+  number={12},
+  pages={9214--9231},
+  year={2021},
+  publisher={IEEE},
+  comments={GNNs used to detect Point, Contextual and Collective anomalies in Industrial IoT Networks. Points are random errors as a specific time and place, Contextual (Conditional) anomalies consider time periods and larger geographic regions and collective anomalies are where the point observations may seem normal, but viewed together there is an anomaly. They have three exemplar studies. (1) They demonstrate how a Spatio-Temoporal Graph Neural network trained on a baseline of 'normal' traffic behaviour can detect collective anomalies in behaviour. (2) They show how a Graph Convolution Network can be used to detect point anomlaies in power transformers based on the levels of gaseous emissions in air samples. (3) They use GCNs over Smart-Factory data to detect when collective system faults exist, derived from sitations like parts of the system being upgraded but not others. These are all broadly hypothetical use cases.}
+}
+
+@article{Bangerter2022,
+  title={Terrorist organization identification using link prediction over heterogeneous GNN},
+  author={Bangerter, Micaela Lucia and Fenza, Giuseppe and Gallo, Mariacristina and Loia, Vincenzo and Petrone, Alessandra and Volpe, Alberto},
+  journal={Human-centric Computing and Information Sciences. 12: 1-13 ( www. hcisjournal. com)},
+  year={2022},
+  comments={Shows that GNN link prediction can be applied to a Knowledge Graph of terrorist activities. They first train a GNN using a set of known attributed terrorist attacks to build a predictive model of which group carries out which attack. The Link prediction then works to predict which groups carried out attacks with unknown attribution. The paper itself is pretty light-on the detail, but an interesting case study nontheless }
+}
+
+@article{Ahmadi2023,
+  title={Inductive and transductive link prediction for criminal network analysis},
+  author={Ahmadi, Zahra and Nguyen, Hoang H and Zhang, Zijian and Bozhkov, Dmytro and Kudenko, Daniel and Jofre, Maria and Calderoni, Francesco and Cohen, Noa and Solewicz, Yosef},
+  journal={Journal of Computational Science},
+  pages={102063},
+  year={2023},
+  publisher={Elsevier},
+  comments={Case study of using Graph Machine Learning to predict links in criminal networks. They use two logical link prediction methods. Transductive analysis to identify emergent links between nodes (representing criminal offenders or casers) and inductive link prediction where new links are found between existing nodes and a new case. They build their dataset from an Israeli Crime databse, generating embeddings of textual descriptions of the times as well. They generate 3 graphs. Their Crime-Offender network allows vertices to represent crimes or offenders, and the links indicate which offenders participated in those crimes. Their offender network has vertices representing offenders, and edges between offenders are added when they both particiapte in the same crime event. Their 'crime network' assigns crimes to the vertices and created edges between crimes when they share an offender. Transductive links prediction is implemented with a top-k most similar edges based on some similarity metric (like Jaccard). Inductive prediction uses both topological and attribute information for edge prediction. This is the more interesting case of the two. They elect to generate embeddings and feed into a MLP rather than use a GNN because of the scalability issues of GNNs. They transform the original heterogenous graph into two homogenous graphs for their learning phase; future work for them is learning on heterogenous graphs.  }
+}
+
+@article{Ji2021a,
+  title={A survey on knowledge graphs: Representation, acquisition, and applications},
+  author={Ji, Shaoxiong and Pan, Shirui and Cambria, Erik and Marttinen, Pekka and Philip, S Yu},
+  journal={IEEE transactions on neural networks and learning systems},
+  volume={33},
+  number={2},
+  pages={494--514},
+  year={2021},
+  publisher={IEEE},
+  comments={Outlines Knowledge Graphs. A knowledge graph is a structured representation of facts, consisting of entities, relationships, and semantic descriptions. Entities can be real-world objects and abstract concepts, relationships represent the relation between entities, and semantic descriptions of entities, and their relationships contain types and properties with a well-defined meaning. Property graphs or attributed graphs are widely used. we define a knowledge graph as G = {E, R, F}, where E, R, and F are sets of entities, relations, and facts,  respectively. A fact is denoted as a triple (h,r,t) ∈ F.}
+}
+
+@article{Granovetter1973,
+  title={The strength of weak ties},
+  author={Granovetter, Mark S},
+  journal={American journal of sociology},
+  volume={78},
+  number={6},
+  pages={1360--1380},
+  year={1973},
+  publisher={University of Chicago Press},
+  comments={Weak ties are fundamental macroscopic strucutres that enable the spread of idead and opportunities in social networks. The general idea is that strong ties between small groups (cliques) are well understood and reflect the dynamics of small groups. Weak ties are the connections between two of these groups, and form the bridge through which information can flow, ideas can be exchanged and new connections made.}
+}
+
+@article{Carmody2022,
+  title={The effect of co-location on human communication networks},
+  author={Carmody, Daniel and Mazzarello, Martina and Santi, Paolo and Harris, Trevor and Lehmann, Sune and Abbiasov, Timur and Dunbar, Robin and Ratti, Carlo},
+  journal={Nature Computational Science},
+  volume={2},
+  number={8},
+  pages={494--503},
+  year={2022},
+  publisher={Nature Publishing Group US New York},
+  comments={Previous work has identified at least four factors relevant to tie formation: focal closure, triadic closure, link-centric preferential attachment and physical co-location. Figure 5 gives a diagrammatic depiction of these four factors. However, determining a simple functional form via which these factors combine to govern the evolution of a dynamic communication network is still an open problem. -- Case study showing how the pysical formation of groups and development of weak ties can be effectively modelled in a graph format monitoring email flows.}
+}
+
+@book{Army2019a,
+  author         = {Army, Department of the},
+  publisher      = {Department of Defense},
+  title          = {ADP 3-19 Targeting},
+  year           = {2023},
+  url            = {https://armypubs.army.mil/ProductMaps/PubForm/Details.aspx?PUB_ID=1007599},
+  comments       = {Targeting is the process of selecting and prioritizing targets and matching the appropriate response to them, considering operational requirements and capabilities. The decide, detect, deliver, and assess (D3A) methodology is a process which allows tactical level commanders to engage targets within their OE. D3A assists the commander and staff decide which targets must be acquired and engaged and to help develop options to engage those targets.}
+}
+
+@techreport{C4ADS2019,
+  author      = {Centre for Advanced Defense Studies (C4ADS)},
+  institution = {Centre for Advanced Defense Studies (C4ADS)},
+  title       = {Above Us Only Stars: Exposing GSP Spoofing in Russia and Syria},
+  year        = {2019},
+  comments    ={Co-Traveller analysis. Not exactly an article on co-traveller analysis, but it does show that AIS data can be used to detect anomalies that in this case led to understanding when GNSS spoofers are in use. Their section on correlating it with russian VIP movements kindof shows how knowing where one thing is allows us to determine other information about what an adversary is working on.}
+}
+
+@article{Xu2004,
+  title={Fighting organized crimes: using shortest-path algorithms to identify associations in criminal networks},
+  author={Xu, Jennifer J and Chen, Hsinchun},
+  journal={Decision Support Systems},
+  volume={38},
+  number={3},
+  pages={473--487},
+  year={2004},
+  publisher={Elsevier},
+  comments={Describes link analysis and its use in law enforcement. They break it down into two stages. (1) Collecting and extracting raw information. (2) Building the network structure. They use Shortest Path algorithms, Prioirty Search Algorithms and a baseline of Breadth-First search to compare how effective the tools are, showing utility in 70 percent of cases as judged by law enforcement officers. }
+}
+
+@inproceedings{Tritsarolis2023,
+author = {Tritsarolis, Andreas and Pelekis, Nikos and Theodoridis, Yannis},
+title = {VesselVision: Fleet Safety Awareness over Streaming Vessel Trajectories},
+year = {2023},
+isbn = {9798400701689},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3589132.3625565},
+doi = {10.1145/3589132.3625565},
+abstract = {The massive-scale data generation of positioning (tracking) messages, collected by various surveillance means, has posed new challenges in the field of mobility data analytics in terms of extracting valuable knowledge out of this data. One of these challenges is online maritime awareness, where the goal is to monitor and ensure the safety of a fleet, including, among others, collision risk assessment. To address this challenge, we present VesselVision, a system that estimates, tracks, and visualizes vessels' collision risk. In particular, our system offers a unified solution that tracks vessels that are detected to be in encountering process and assess their corresponding collision risk over streaming AIS position data in an online fashion. The functionality of our system is demonstrated over popular real-world AIS datasets.},
+booktitle = {Proceedings of the 31st ACM International Conference on Advances in Geographic Information Systems},
+articleno = {20},
+numpages = {4},
+keywords = {data analytics, maritime safety, collision risk assessment, machine learning, visual analytics},
+location = {<conf-loc>, <city>Hamburg</city>, <country>Germany</country>, </conf-loc>},
+series = {SIGSPATIAL '23},
+comments={Co-traveler analysis. They develop a system to monitor the risk of vessels moving towards collision trajectories using AIS data feeds. They essentially look for pairs of vessels where the distance bewteen their locations along their respective trajectories is monotonically decreasing. NOT a graph algorithm. }
+}
+
+@inproceedings{Chao2021,
+  title={Efficient trajectory contact query processing},
+  author={Chao, Pingfu and He, Dan and Li, Lei and Zhang, Mengxuan and Zhou, Xiaofang},
+  booktitle={Database Systems for Advanced Applications: 26th International Conference, DASFAA 2021, Taipei, Taiwan, April 11--14, 2021, Proceedings, Part I 26},
+  pages={658--666},
+  year={2021},
+  organization={Springer},
+  comments={Cotraveller Problem - Contact tracing using trajectories for COVID19. A trajectory is a series of chronologically ordered points T ro = hp1 → p2 → · · · → pni representing the historical trace of an object o. Each point pi = hx, y, ti indicates the location of o at time pi.t.. As for a contact event, two objects are defined as contacted if their trajectories (1) are close to each other at a certain point in time, and (2) such proximity is kept for a continuous period of time. They define two problems (1) Direct contact search (i.e. seeing if two paths cross in time) and (2) trajectory contact search (seeing how close together two trajectories come beneath some threshold. This is NOT graph based.)
+}
+}
+
+@article{Pechlivanoglou2022,
+  title={Epidemic spreading in trajectory networks},
+  author={Pechlivanoglou, Tilemachos and Li, Jing and Sun, Jialin and Heidari, Farzaneh and Papagelis, Manos},
+  journal={Big Data Research},
+  volume={27},
+  pages={100275},
+  year={2022},
+  publisher={Elsevier},
+  comments={Co-Traveller Case study - COVID19. Not exactly co-traveller but close. A network that is constructed by connecting pairs of individuals that are close to each other based on physical proximity is called a proximity network. However, a proximity network is static and does not capture well the idea of individuals moving in space. When individuals are moving, the temporal dimension of interactions must be considered, and the resulting network can be thought of as a temporal network, also referred to as a time-varying network. Most characterizations of temporal networks discretize time by grouping together temporal information into a sequence of T network “snapshots” Gt(Vt, Et),t ∈ {1, 2,..., T }. Each snapshot contains the vertices Vt and edges Et, representing the individuals and their contacts, respectively, within a basic time unit t (e.g., second, minute, hour, etc.). The resulting data structure can be thought of as either a single aggregation graph with varying vertices and edges, or a sequence of proximity graphs. We present a stochastic agent-based SEIR network model for epidemic spreading in a trajectory network, where nodes represent individuals and edges represent contacts of nodes. According to the epidemic model, each node can be at one of the following infection states, at any discrete time t: susceptible (s), Exposed (e), Infected (i) removed (r). Given a trajectory network G(V , E) and parameter values β, Y , If and Ir the model allows us to monitor the state of every individual over time. BASICALLY: Generate a graph from trajectory data where each node is an individual, and edges are created when they come in contact with each other. The "infection" is modelled stochastically by a random chance of infecting the neighbours on the graph.}
+}
+
+@article{Tang2014,
+  title={A framework of traveling companion discovery on trajectory data streams},
+  author={Tang, Lu-An and Zheng, Yu and Yuan, Jing and Han, Jiawei and Leung, Alice and Peng, Wen-Chih and Porta, Thomas La},
+  journal={ACM Transactions on Intelligent Systems and Technology (TIST)},
+  volume={5},
+  number={1},
+  pages={1--34},
+  year={2014},
+  publisher={ACM New York, NY, USA},
+  comments={Co-Traveller problem (Companion Discovery). we investigate the problem of discovering object groups that travel together (i.e., traveling companions) from trajectory data streams. Companions are objects that travel together. Here “travel together” means the objects are spatially close at the same time. In several applications like military surveillance, the system needs to monitor objects for a long time and discover companions as soon as possible. Hence the algorithm should report the companions in an incremental manner, that is, output the results simultaneously while receiving and processing the trajectory data stream. Other approaches include detecting FLOCK, CONVOY and SWARM behaviours. The Clustering-and-Intersection Method: The idea is to retrieve companion candidates by counting common objects in the clusters from different snapshots. The computational overhead of the clustering-and-intersection method is high in both time and space. In each snapshot, the intersection is carried out in every pair of candidate and cluster. The TRAVELLING BUDDIES can be initialized by incrementally merging the objects in two steps: (1) treating all objects as individual buddies; and (2) merging them with their nearest neighbors. The buddies are not only useful in the clustering step, they are also helpful for the intersection process to generate companions. Their ROAD COMPANION discovery anchors in a graph representation of the road network. The bottleneck in Road Connection Based Clustering is searching for the directly road connected objects. For a particular object, the system has to find the shortest paths between it and all unvisited objects. This computation process is the most costly step of the algorithm. LOOSE COMPANION DISCOVERY. The loose companion allows the member objects temporarily leaving the companion, as long as the leaving time is less than the threshold }
+}
+
+@article{Tritsarolis2021,
+  title={Online discovery of co-movement patterns in mobility data},
+  author={Tritsarolis, Andreas and Theodoropoulos, George-Stylianos and Theodoridis, Yannis},
+  journal={International Journal of Geographical Information Science},
+  volume={35},
+  number={4},
+  pages={819--845},
+  year={2021},
+  publisher={Taylor \& Francis},
+  comments={Co-Traveller Analysis. They explain what Flocks, Convoys, Gatherings, Groups and Swarms are. They decide to represent the problem as a graph problem, using Maximal Cliques (MC) to model flocks and Maximal Conected Subgraphs (MCS) to model Convoys as part of a property-graph approach to the group pattern discovery problem. They Categorise it as being part of the 'Group Pattern Mining" domain of problems. Their graph-based definition builds out the EvolvingClusters algorithm }
+}
+
+@article{Sawas2019,
+  title={A versatile computational framework for group pattern mining of pedestrian trajectories},
+  author={Sawas, Abdullah and Abuolaim, Abdullah and Afifi, Mahmoud and Papagelis, Manos},
+  journal={GeoInformatica},
+  volume={23},
+  pages={501--531},
+  year={2019},
+  publisher={Springer},
+  comments={we focus on trajectories of pedestrians coming from motion video analysis... the method efficiently discovers pairs of pedestrians that move together over time, under varying conditions of space and time. Subsequently, pairs of pedestrians are used as a building block for effectively discovering groups of pedestrians that can satisfy versatile group pattern semantics. we present a tensor-based method for efficiently discovering pairs and groups of moving objects that are intentionally traveling together in space and time. -> BIG POINT, they analyze video footage to get their path data. }
+}
+
+@inproceedings{Wang2016a,
+  title={Instant traveling companion discovery based on traffic-monitoring streaming data},
+  author={Wang, Xiongbin and Liu, Chen and Zhu, Meiling},
+  booktitle={2016 13th Web Information Systems and Applications Conference (WISA)},
+  pages={89--94},
+  year={2016},
+  organization={IEEE},
+  comments={Uses Automated Number Plate Recognition (ANPR) cameras to generate a dataset of car-at-time-at-place. They use a streaming framework to detect when vehicles are travelling togehter in near-real time. The Movement Companion Linkage Graph (MCLG) creates a node whenever two vehicles are seen together at a camera location that has the attributes of each licence plate added to it. Edges are generated when vehicles appear at a proximal camera location within a given time threshold.}
+}
+
+@inproceedings{Ester1996,
+  title={A density-based algorithm for discovering clusters in large spatial databases with noise},
+  author={Ester, Martin and Kriegel, Hans-Peter and Sander, J{\"o}rg and Xu, Xiaowei and others},
+  booktitle={kdd},
+  volume={96},
+  number={34},
+  pages={226--231},
+  year={1996}
+}
+
+@article{Schwering2014,
+  title={SketchMapia: Qualitative representations for the alignment of sketch and metric maps},
+  author={Schwering, Angela and Wang, Jia and Chipofya, Malumbo and Jan, Sahib and Li, Rui and Broelemann, Klaus},
+  journal={Spatial cognition \& computation},
+  volume={14},
+  number={3},
+  pages={220--254},
+  year={2014},
+  publisher={Taylor \& Francis}, 
+  abstract={},
+  comment={Converts sketch maps to maps using SGM and CSP. }
+}
+
+@Article{Ding2021,
+  author    = {Ding, Jian and Xue, Nan and Xia, Gui-Song and Bai, Xiang and Yang, Wen and Yang, Michael Ying and Belongie, Serge and Luo, Jiebo and Datcu, Mihai and Pelillo, Marcello and others},
+  journal   = {IEEE transactions on pattern analysis and machine intelligence},
+  title     = {Object detection in aerial images: A large-scale benchmark and challenges},
+  year      = {2021},
+  number    = {11},
+  pages     = {7778--7796},
+  volume    = {44},
+  comment   = {__H1:__ They seek to improve the SOTA in object detection of aerial images WRT arbitrary object rotation and the inaccurate horizontal bounding box (HBB) labelling scheme. 
+
+__H3:__ They propose the DOTA dataset which uses orientation bounding boxes (OBB) to label 18 categories of item. 
+
+Discipline: Object Detection in Aerial Images
+
+
+"Publicly Released datasets Contain a limited number of instances and end to use images taken under ideal conditions (e.g., clear backgrounds and centered objects" --> COMMENT: Using Satellite Imagery from Maps applications gives us close to ideal. 
+
+The object categories in DOTA-v2.0: plane, ship, storage tank, baseball diamond, tennis court, basketball court, ground track field, harbor, bridge, large vehicle, small vehicle, helicopter, roundabout, soccer ball field, swimming pool, container crane, airport and helipad. --> COMMENT: Limited Dataset. 
+
+https://captain-whu.github.io/DOTA/},
+  groups    = {CMSC828T},
+  publisher = {IEEE},
+}
+ % url       = {https://ieeexplore.ieee.org/iel7/34/4359286/09560031.pdf},
+}
+
+@Article{Lam2018,
+  author  = {Lam, Darius and Kuzma, Richard and McGee, Kevin and Dooley, Samuel and Laielli, Michael and Klaric, Matthew and Bulatov, Yaroslav and McCord, Brendan},
+  journal = {arXiv preprint arXiv:1802.07856},
+  title   = {xview: Objects in context in overhead imagery},
+  year    = {2018},
+  comment = {__H1__ There is too much unlabelled remote sensing imagery. 
+
+
+__H3__ Use of a 3 stage annotation and quality control process. 
+
+- 60 Object Classes
+
+- "public overhead datasets in existence typically suffer from low class ount, poor geographic diversity, few training instances, or too narrow class scope"
+
+- Uses Horzontal Bounding Boxes
+
+- Most of the objects are focused on port / industrial areas and disaster relief. May not be useful for what I have in mind.},
+  groups  = {CMSC828T},
+}
+  %url     = {https://arxiv.org/pdf/1802.07856},
+}
+
+@InProceedings{Xia2018,
+  author    = {Xia, Gui-Song and Bai, Xiang and Ding, Jian and Zhu, Zhen and Belongie, Serge and Luo, Jiebo and Datcu, Mihai and Pelillo, Marcello and Zhang, Liangpei},
+  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
+  title     = {DOTA: A large-scale dataset for object detection in aerial images},
+  year      = {2018},
+  pages     = {3974--3983},
+  comment   = {__H1__
+
+__H3__
+
+Definition: Object detection in Earth Vision refers to localizing obects of interest (e.g., vehicles, airplanes) on the earth’s surface and predicting their categories
+
+_Challenges of Earth Vision:_
+- Vast changes in scale of object. depending on resolution. 
+
+- Arbitrary object rotation (i.e. no "up" like there is in regular object detection). 
+
+- Object clustering crowds images. 
+
+- Object count are imbalances. E.g. a 200 x 200 m car yard could have 100 cars, but a 2000 x 2000 stretch of desert might only have one or two. 
+
+- Training data ususally in perfect condition, test is not. --> COMMENT, for pre-processing large swathes of maps, we can assume this away. 
+
+Properties of a good dataset: 
+1) a large number of images,
+2) many instances per categories, 
+3) properly oriented object annotation, and 
+4) many different classes of objects, which make it approach to real-world applications.
+
+
+Categories: plane, ship, storage tank, baseball dia-
+mond, tennis court, swimming pool, ground track field, harbor, bridge, large vehicle, small vehicle, helicopter, roundabout, soccer ball field and basketball court. --> COMMENT: Limited utility in these classes.},
+  groups    = {CMSC828T},
+}
+  %url       = {http://openaccess.thecvf.com/content_cvpr_2018/papers/Xia_DOTA_A_Large-Scale_CVPR_2018_paper.pdf},
+}
+
+@Article{Li2020,
+  author    = {Li, Ke and Wan, Gang and Cheng, Gong and Meng, Liqiu and Han, Junwei},
+  journal   = {ISPRS journal of photogrammetry and remote sensing},
+  title     = {Object detection in optical remote sensing images: A survey and a new benchmark},
+  year      = {2020},
+  pages     = {296--307},
+  volume    = {159},
+  comment   = {__H1__ How do we improve the ability of deep learning models to apply to the Remote Sensing Imagery Domain?  
+
+__H3__ We proposed a new dataset for training. 
+
+__Observations from paper__
+
+- 20 Object Classes: 
+_Windmill, Vehicle, Train Station, Tennis Court, Storage Tank, Stadium, Ship, Harbour, Ground Track Field, Golf Course, Expressway Toll Station, Expressway Service Area, Dam, Chimney, Bridge, Overpass, Basketball Court, Baseball Field, Airport, Airplane_
+
+- "it is difficult to straight-forward transfer deep learning based object detection methods to optical remote sensing images"},
+  groups    = {CMSC828T},
+  publisher = {Elsevier},
+}
+  %url       = {https://reader.elsevier.com/reader/sd/pii/S0924271619302825?token=92C775A3C0FC0E9B054597B8CECD1F9DCA518AA4E715A2B5AAFD68F889D4B63D91C5053CB6D0D2AF180B5597822C4DE8&originRegion=us-east-1&originCreation=20230312185336},
+}
+
+@inproceedings{Fang2018,
+  title={SpaceKey: exploring patterns in spatial databases},
+  author={Fang, Yixiang and Cheng, Reynold and Wang, Jikun and Budiman, Lukito and Cong, Gao and Mamoulis, Nikos},
+  booktitle={2018 IEEE 34th International Conference on Data Engineering (ICDE)},
+  pages={1577--1580},
+  year={2018},
+  organization={IEEE}, 
+  groups={compass, gestalt, spatial_pattern_matching, system}, 
+  abstract={},
+  comment={SpaceKey is a system designed for spatial pattern matching. It seeks to broaden spatial searching by offering features beyond what is commonly available with popular spatial keyword queries. SpaceKey allows users to search for patterns of objects based on metric (distance) relations and the inclusion or exclusion of certain objects within those distances. The detail of query completion is not discussed in the paper. the The system has a pictorial query interface, and while it appears to allow a user to query by the relative directions of objects, closer examination suggests that the directions of objects have no bearing on the search results. Overall, the system shows that spatial pattern matching is an area of active research in geospatial computing and that there is a gap in direction relation pattern matching.}
 }

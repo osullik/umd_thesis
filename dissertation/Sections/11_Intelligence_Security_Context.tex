@@ -7,6 +7,7 @@
 
 Many intelligence and security problems can be addressed computationally... 
 
+\osullikomment{Use some of the CDAO references here.}
 
 \subsection{Use Cases for Intelligence and Security Problems}
 \label{section:IS-Use-Cases}
@@ -35,7 +36,7 @@ Typical activities include \textit{Intelligence Preparation of the Battlespace} 
 
 \textbf{Population Segmentation Analysis.}
 %Definition
-A MISO (Military Information Support Operations) activity within IPB to divide a population into groups by geography, demography, attitude toward an issue or other thematic line.
+A Military Information Support Operations (MISO) activity within IPB to divide a population into groups by geography, demography, attitude toward an issue or other thematic line.
 These `segments' are a subset of the population with common attributes to which a military force can tailor its communication~\cite{Army2023}.
 %Intelligence Problem
 The problem intelligence analysts must solve is determining who belongs to which segment of the population.
@@ -47,6 +48,9 @@ Prior work has shown how email patterns can predict social subgroups~\cite{Zacha
 A much larger project from the Massachusetts Institute of Technology's Sensable City Lab has shown that analyzing telephone calls in the United Kingdom yields strong structures in the communication graph that reflect population segments in the real world~\cite{Sobolevsky2014}.
 Social networks can be understood through their communication patterns, and the patterns of communication between individuals reveal insights about the structure of subcommunities, the patterns of information flow and who the most influential entities in the network are.
 %Computational Problem 
+We can represent collected information about the population as a graph. 
+Each individual is a vertex, and each interaction is an edge. 
+Weights may reflect the volume or durations of interactions, and attributes for vertices and edges may be used to incorporate additional information.
 The underlying computational problems here include \textit{Graph Partitioning}, \textit{Clique Detection} and more broadly \textit{Community Detection}.
 Formally, the \textit{Community Detection} problem involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}. 
 %So-What
@@ -66,6 +70,8 @@ Even financial systems that are not centrally controlled, like Bitcoin, can be a
 Unfortunately, in either case, the malicious activity is hidden among the legitimate activity, and the job of the analyst is to determine which transactions and transaction patterns reflect malicious use.
 Prior work has shown that understanding the patterns of suspicious transactions that constitute threat finance enables analysts to search for similar patterns in new transaction data~\cite{Michalak2011, Soltani2016}.
 %Computational Problem
+Financial transactions can be modeled as a graph. 
+Each account, or entity (depending on desired level of granularity) is a Vertex, and each transaction between two vertices forms an edge. 
 The underlying computational problem here is \textit{Isomorphic Subgraph Matching}, defined formally as given graph $G$ and a query graph $Q$, retrieving all subgraphs of $G$ that are isomorphic to $Q$~\cite{Sun2012}. That is, return all instances where $Q$ is contained in $G$.
 %So What
 An efficient and effective isomorphic subgraph matching tool may enable financial intelligence analysts to pre-process enormous transaction datasets looking for transaction patterns that warrant detailed analysis, greatly increasing their capacity for counter-threat finance activities. 
@@ -87,15 +93,14 @@ The challenge facing the analysts is how to identify when these events, or strin
 Prior work has shown that characterizing a kill chain as an attack graph (attributed multigraph that describes a computer network) can allow analysts to run what-if scenarios over their network to detect likely intrusion vectors~\cite{Sadlek2022}.
 They have also been characterized as knowledge graphs to support inferential reasoning about the paths an attacker could have taken through a network~\cite{Osullivan2015}.
 %Computational Problem
+A kill chain can be represented as a graph. 
+In the trivial case, the chain itself can form a Directed Acyclic Graph (DAG) and we would just map indicators of compromise to the known nodes in the chain. 
+More complicated cases use a much richer representation and may encode the underlying structure of vulnerabilities, exploits, indicators of compromise and attacker goals~\cite{Barnum2012}.
 The underlying computational problems here are \textit{Graph Search} and \textit{Shortest Path} aiming to determine if two nodes in the graph are \textit{reachable}. 
 That is, what paths exist between the two nodes, here is the attacker's start point, and their goal. 
+%So what
 Understanding the paths available to an adversary enables an analyst to identify critical nodes, enumerate critical paths, monitor for signs that those paths are being taken, and so empower the force to interdict the adversarial activity `left of bang' in the future. 
 Being able to build and search these large graphs of complex networks as part of incident analysis or simulation to answer what-if questions can help analysts decide where to target scarce assets for collection activities. 
-
-
-
-%Computational Problem
-%So what
 
 \subsubsection{Conducting Intelligence Collection}
 \label{section:Conducting-Intelligence-Collection}
@@ -105,74 +110,145 @@ Activities may draw on earlier work in supporting situation understanding.
 Typical activities include \textit{identifying high value targets}, \textit{processing collected information} and \textit{generating forecasts of future adversary activity} 
 
 %All-Source Fusion
-%Imagery Analysis
+\textbf{All-Source Fusion}
+%Definition
+All-source intelligence is the integration of intelligence and information from all relevant sources to analyze situations or conditions that impact operations~\cite{Army2019}.
+All-source fusion is the task of integrating disparate sources, by consolidating, combining and correlating information sources~\cite{Army2019}.
+That is, \textit{processing collected information}, sometimes called the \textit{Processing, Exploitation} and \textit{Dissemination} process.
+%Intelligence Problem
+\textit{Identity Activities} are a critical task within all-source fusion that requires analysts to synchronize the outputs of many disjoint single-source intelligence capabilities to discover the true identity of a threat actor--linking those identities to events, locations and networks. 
+Determining which single-source observations are referring to the same entity is a grueling task, one that is made more difficult when access to the information is temporally bound~\cite{Regli2022a} because of technical limitations or policy constraints. 
+The problem applies more generally to event resolution.
+Prior work has shown the vital role of deduplicating events and resolving entities in knowledge graphs to combat human trafficking~\cite{Szekely2015}.
+%Computation Problem
+We can represent the all-source fusion problem as a graph in a few different ways. 
+One approach is to make each reference in the data into a vertex and generate edges based on the similarity of those vertices. 
+Other approaches reify the references to the entities in the graph as vertices.
+Given these representations \textit{graph clustering}~\cite{Bhattacharya2006}, \textit{graph embedding}~\cite{Obraczka2021}, \textit{neural}~\cite{Ebraheem2018}, and \textit{graph-theoretic approaches} that exploit topological and attribute information~\cite{Zhang2020} have all been used on static graphs.
+Work on dynamic graphs uses an \textit{incremental partitioning} algorithm to re-evaluate prior resolutions as new information is added to the graph~\cite{Tauer2019}.
+%So what
+Reducing redundancy in intelligence reporting and being able to effectively resolve all of the collected information back to the real-world entities that they relate to at a large scale gives analysts the ability to report more accurately and make assessments grounded in reality without having to manually verify and deduplicate every report. 
+
 %Link Analysis
 \textbf{Link Analysis}
-A link analysis problem requires an intelligence analyst to determine if two entities, events or other phenomena are related. 
-Frequently a question of social contact, an analyst will build a list of known associates for each entity in question and expand those lists outwards until identifying a connection between the two. 
-The problem can be multidimensional, friends list on a social media platform may give one subset of connections, the call data logs for the entities may give another and the locations that emerge in their pattern of life may form a third. 
-Traditionally approached with pictures and red twine, more recently applications like the Analyst's Notebook\footnote{\url{https://i2group.com/i2-analysts-notebook}} are used to create digital equivalents.
-Asking \textit{``Does this target associate with that target''} is then a problem of following the twine to see where (if at all) the two are connected. 
 %Definition
-%Intelligence Problem
+A link analysis problem is a method of \textit{processing collected information} requiring an intelligence analyst to determine if two entities, events or other phenomena are related by determining the strongest association paths between them~\cite{Xu2004}.
+%Problem 
+Frequently a question of social contact, an analyst will build a list of known associates for each entity in question and expand those lists outwards until identifying a connection between the two. 
+The problem can be multidimensional.
+A friends list on a social media platform may give one subset of connections, call data logs another, and the locations that emerge from physical surveillance of their pattern of life may form a third. 
+Archetypically solved with a cork-board, pictures and red twine, more recently applications like the Analyst's Notebook\footnote{\url{https://i2group.com/i2-analysts-notebook}} are used to create databases to represent each collected piece of information.
+Asking \textit{``Does this entity associate with that entity''} is then a problem of following the twine to see where (if at all) the two are connected. 
 %Computational Problem
+The photos and connecting twine are a physical representation of a graph. 
+Here, each entity or event is a vertex, and each confirmed interaction or association becomes an edge. 
+The underlying computational problems here are \textit{graph search}, \textit{reachability} and \textit{shortest path}. 
+Each of these approaches can answer the question \textit{``Does this entity associate with that entity''} slightly differently.
 %So what
+By representing collected intelligence as a graph, and exploring how they are related computationally, analysts can massively expand the scale of their analysis. 
+There is, however, a gap--much intelligence work is based on assumption, assessment and hypothesis.
+How does the graph representation help the analyst in their hypothesis testing? 
+
+\textbf{Intelligence Assessment.}
+% GNN Missing Link Prediction
+%Definition
+Making assessments is core to intelligence work. 
+\textit{Information} only becomes \textit{intelligence} with the addition of context and assessment. 
+Generating assessments is a core task within \textit{geneating forecasts of future adversary activity}.
+%Problem
+Perfect assessments require perfect information.
+However, intelligence analysts only get access to an incomplete and noisy view of the world. 
+Collection assets compete against adversary disinformation techniques which yield incomplete information and misinformation tactics that introduce noise.
+The assessment challenge is to identify where the true gaps in collected information are, filter out the noise and use the remaining information to develop forecasts about what the adversary is doing.
+
+Towards \textit{`reducing the noise'}, recent work theorizes that various Graph Neural Networks (GNN) trained on a baseline of `normal' behavior of industrial Internet of Things (IIOT) devices could detect point, contextual and collective anomalies in power grids, traffic flow and smart factory performance~\cite{Wu2021}.
+More concretely, GNNs have been used to detect anomalous behavior in telephone networks to detect scam telephone calls~\cite{Ren2023}, picking the scam calls from the regular calls that constitute the majority.
+
+Towards working with \textit{incomplete information}, understanding the descriptive power of \textit{Weak Ties} in a network is well known~\cite{Granovetter1973}. 
+Some predictive power can be gained by applying naive approaches like triadic closure, focal closure, and link-centric preferential attachment to social networks, exploiting the observed behaviors of \textit{weak ties}.
+Recent work from the Massachusetts Institute of Technology (MIT) Sensable Cities Lab shows how modeling information flows (email) of academics during the COVID-19 pandemic reflects the observed physical disruptions to co-location and the resultant impact on forming new contacts and developing `weak ties'~\cite{Carmody2022}. 
+More specific to I\&S problems, recent work has attempted to attribute terrorist attacks of unknown origin to their perpetrators using GNNs~\cite{Bangerter2022} and identify possible links between known criminals and new cases~\cite{Ahmadi2023}. 
+While these studies lack some scientific rigor, they highlight how the more general problem of link prediction for knowledge graph completion can be used in an intelligence context.
+
+%Computatonal Problem
+The underlying representation echoes the representation needed by the all-source-fusion and link-analysis problems. 
+We can more formally describe these formats as a \textit{Knowledge Graph}.
+A \textit{Knowledge Graph} is a structured representation of information, comprised of entities and semantic relations. 
+Entities can be real-world objects and abstract concepts. 
+Knowledge graphs are typically encoded as attributed graphs, consisting of `facts' that are composed of a \textit{\{Head, Relation, Tail\}} triple where the head and tail are entities and the relation is the semantic description of their connection~\cite{Ji2021a}.
+Knowledge graphs quickly become very large and have heterogeneous vertex and edge types, which complicates graph processing. 
+The anomaly detection work involves \textit{training} a GNN and \textit{inferencing} on unseen data to detect deviations from the norm. 
+The link prediction to identify gaps involves similar training and inference operations or the creation of embeddings from the topological and attribute features of the knowledge graph.    
+%So What
+Most of the surveyed problems see data represented in a knowledge graph, and in real terms, these are the input data structures to the intelligence programs described in this section.
+Being able to detect anomalies to `de-noise' the data analysts are reviewing or make support forecasting and assessments by `filling in the gaps' at a large scale can massively boost the reach and productivity of analysts and improve the yield of the other analytic techniques discussed in section~\ref{section:11-Intelligence-Security-Context}. 
+
+
+%Imagery Analysis
 
 \subsubsection{Supporting Targeting and Information Operations}
 \label{section:Supporting-Targeting-And-Information-Operations}
-The focus of intelligence activities supporting targeting and information operations is to find targets, fix them with surveillance to develop understanding and finish them with a kinetic or non-kinetic effect.
-Activities may draw on earlier work in supporting situation understanding. 
+Targeting is the process of selecting and prioritizing targets and matching the appropriate response to them, considering operational requirements and capabilities. 
+There are numerous targeting methodologies. 
+For example, the US Army uses the decide, detect, deliver, and assess (D3A) methodology to enable tactical commanders to engage targets within their operating environment (OE)~\cite{Army2019a}.
+Intelligence activities support every step in the targeting process. 
+The \textit{decision} is largely driven by the IPB, \textit{detection} and \textit{assessment} are enabled by intelligence collection and processing activities.  
 Typical activities include \textit{target acquisition}, \textit{target tracking} and \textit{target exploitation}
 
-%Kill-Chain Analysis
 %Co-Traveller Analysis
-%Network Completion
+\textbf{Spatio-Temporal Analysis.}
+%Definition
+Spatio-temporal analysis is an important tool used by analysts. 
+Typically, the adversary is operating in the physical world, with limited time and assets and so by tracking where they are, and when, an analyst can drastically reduce the uncertainty surrounding their actions. 
+Spatio-temporal data is widely available and heavily researched. 
+For example, the Centre for Advanced Defense Studies (C4ADS) used data from the maritime Automatic Identification System (AIS) to detect the use of the Global Navigation Satellite System (GNSS) spoofers and correlate it with Very Important Person (VIP) protection activities~\cite{C4ADS2019}. 
+Spatio-temporal analysis has also been used to detect when ships are on collision trajectories~\cite{Tritsarolis2023} and contact tracing in epidemiology~\cite{Chao2021, Pechlivanoglou2022}.
+%Problem
+Information about the movement of entities can be acquired through Closed Circuit Television (CCTV) cameras~\cite{Sawas2019}, physical or technical surveillance and by accessing the location data collected by smart devices.
+Given a small amount of data about locations, times, identities and a model of who is being collected against, it is trivial to determine when and where individuals associate~\cite{Osullivan2022}. 
+Discovering the behaviors of groups is much more complicated, and significant research effort into detecting and tracking \textit{flocks, convoys, swarms, groups} and \textit{gatherings} through group pattern mining is ongoing~\cite{Tritsarolis2021}.
+Direct intelligence applications include determining the associates of known adversaries, determining patterns of life, identifying key locations and enumerating a threat network.
+At the micro-level, this is known as the `co-movement' or `co-traveler' problem. 
+The co-traveler problem involves discovering when two or more entities have been spatially and temporally co-located~\cite{Regli2022a}. 
+While not explicitly a targeting problem, it is an effective method to \textit{find} new targets of interest, and supports the \textit{decide} and \textit{detection} phases of targeting.
+%Computational Problem
+Most of the computational approaches use a multi-stage approach to the co-traveler problem. 
+First, they extract the spatial-temporal data for each entity of interest, extracting the position of each entity at each timestep. 
+Second, they break the dataset up by timestep. 
+So, a dataset of $T$ timesteps becomes $T$ datasets of a single timestep. 
+Next, a density-based clustering algorithm like DBSCAN~\cite{Ester1996} associates entities into groups at each timestep. 
+Finally, looking through all timesteps, entities that are in the same group for some time-based threshold are said to be `co-travelers '~\cite {Tritsarolis2021}.
+Most of the reviewed approaches do not use graph-based approaches. 
+Those that do tend to use them as an alternative representation to the clusters. 
+They use proximity graphs at each timestep where the vertices are the entities, and the edges are formed between entities that have come within some proximity threshold during the timestep.
+Three exceptions include: 
+\begin{enumerate}
+    \item Grounding the co-traveler analysis in a graph representation of the road network~\cite{Tang2014}, 
+    \item Building a Movement Companion Linkage Graph (MCLG) using Automatic Number Plate Recognition (ANPR) cameras~\cite{Wang2016a} and, 
+    \item Using Maximal Clique detection and Maximal Connected Subgraph discovery in a connectivity graph to model flock and convoy behavior~\cite{Tritsarolis2021}.
+\end{enumerate}
+%So what
+The availability of spatiotemporal data and the power it offers to ground intelligence in the physical world, combined with the opportunities it offers for discovering connections for targeting highlight the utility to the I\&S community. 
+Of the reviewed co-traveler analysis approaches the use of graph data structures and algorithms was uncommon, and so co-traveller analysis may not be a suitable benchmarking problem.
 
-%Overview of use-cases here. 
-
-
-
-\subsubsection{Intelligence Preparation of the Battlespace (Population Segmentation)}
-\label{section:IPB}
-% Community Detection / Graph Segmentation
-
-
-\subsubsection{All-Source Fusion}
-\label{section:All-Source-Fusion}
-% Entity Resolution (Time Constrained)
-All-source intelligence is the integration of intelligence and information from all relevant sources to analyze situations or conditions that impact operations~\cite{Army2019}.
-All-source fusion is the task of integrating disparate sources, by consolidating, combining and correlating information sources~\cite{Army2019}.
-\textit{Identity Activities} are a critical task within All-source fusion that requires the analysts to synchronize the outputs of many disjoint single-source intelligence capabilities to discover the true identity of a threat actor--linking those identities to events, locations and networks. 
-Determining which single-source observations are referring to the same entity is a grueling task, one that is made more difficult when access to the information is temporally bound~\cite{Regli2022a} because of technical limitations or policy constraints. 
-The problem applies more generally to event resolution--commonly multiple disparate sources will report concurrently on events, and determining if those reports are describing the same events (and actors within those events) is key to avoiding the trap of \textit{circular reporting} in which five different reports observe a single tank, which becomes five tanks because of a lack of event resolution.
-
-\subsubsection{Co-Traveler Analysis}
-\label{section:Co-Traveler-Analysis}
-% Contact Tracing, Drug Interdiction etc
-% Algorithm??
-Made infamous by the Snowden leaks, the co-traveler problem involves discovering when two or more entities have been spatially and temporally co-located~\cite{Regli2022a}. 
-The data is generally sourced and collected from an individual's smart devices. 
-Given a small amount of data about locations, times, identities and a model of who is being collected against, it is trivial to determine when individuals associate~\cite{Osullivan2022}. 
-Direct intelligence applications include determining the associates of known adversaries, determining patterns of life, identifying key locations and enumerating a threat network. 
-The problem also appears in law enforcement, with counter-narcotics and counter-smuggling tasks featuring similar questions. 
-Most notably, it becomes a key problem in contact tracing, as evidenced by the COVID-19 pandemic, where governments around the world scrambled to develop methods to determine who a contagious individual came into contact with. 
-\osullikomment{Need citation for Contact Tracing, and Counter-Terrorism/Counter-Narcotics}
-
-\subsubsection{Network completion}
-\label{section:Link-Prediction}
-% GNN Missing Link Prediction
-Intelligence analysts rarely have access to all relevant information when making assessments. 
-Identifying conspicuous gaps in information can be just as vital as combining the available information. 
-In counter-violent extremism and counter-espionage, a core challenge is enumerating the network of individuals involved in the adversarial activity. 
-Intelligence, Surveillance and Reconnaissance (ISR) resources are limited, and deciding where to target collection activities is a crucial contribution of the intelligence function. 
-ISR assets are generally used intended to \textit{Find} or \textit{Fix} a target. 
-Finding here means to identify, locate or otherwise determine who or what should be collected against. 
-Fixing is the application of persistent collection assets to gather information or execute an intervention. 
-When enumerating the network is the goal, sifting through large amounts of social media, cellular or other socially-derived data is a common tool. 
-The same problem occurs at a more macro level--finding the missing links in our current understanding of the network. 
-\osullikomment{Need Citation}
-%
-% Civy world - Recommend a friend on a platform (i.e. identify who is most suited to be the bridge node -- MIT research?)
+%Spatial Pattern Matching
+\textbf{Localization}
+%Definition
+Localization is a technique within imagery analysis where an analyst must find the location on a map that a particular photo, description or other report is referring to. 
+%Problem
+Localization arises frequently in support of targeting--some information about a target of interest is received, and the analyst must determine where that is. 
+Often materializing as a manual comparison to collected Remote Sensing Imagery (RSI), analysts spend significant amounts of time trying to locate where exactly their target is. 
+Computer vision approaches struggle with object detection and pattern matching in RSI because of the directional invariance, loss of detail and lack of defining features when looking `down' on things~\cite{Ding2021, Lam2018, Li2020, Xia2018}.
+Alternate approaches that do not use RSI have looked at matching sketch maps to real maps~\cite{Schwering2014}, building geotagged databases from ground-level imagery and Open Street Maps (OSM) data~\cite{Osullivan2023a}, or casting the world as a collection of points of interest and the distances between them~\cite{Fang2018}.
+While none of these papers dealt explicitly with an I\&S use-case, they do show how the localization process can be augmented with computing.  
+%Computational Problem
+The underlying computational problem here is \textit{Spatial Pattern Matching} (SPM), which uses topological, metric or directional constraints between `objects' or `locations' to represent the real world and issue queries. 
+Because of the `object' and `constraint' structure, SPM databases are almost ubiquitously represented as attributed graphs, where the vertices are the objects and the edges represent the constraints between each vertex. 
+As a result, these are almost invariably approached as an Isomorphic Subgraph Matching (SGM) task or Constraint Satisfaction Problem (CSP). 
+As CSP and SGM are NP-complete problems, heuristic approaches are used to approximate solutions~\cite{Osullivan2023}. 
+\osullikomment{Double check if NP-complete or Hard}
+%So What
+SPM is a valuable technique that will greatly assist analysts in the task of localization, but at present is constrained by the slow processing of graphs with heuristic algorithms that rely heavily on graph operations. 
 
 \subsubsection{Imagery Analysis}
 \label{section:Imagery-Analysis}
@@ -185,6 +261,9 @@ The immense quantity of imagery being collected now far outstrips the capacity o
 As a consequence, the two \textit{Artificial Intelligence} (AI) technologies most commonly employed by the United States Department of Defense (DoD) are \textit{Object Detection} and \textit{Image Classification}.
 Object detection involves identifying the discrete \textit{Objects} in an image, and either returning a list of the found objects or flagging images that contain certain objects of interest. 
 Image classification is a broader problem concerned with assigning an image to a particular class--for example, if an image is indoors or outdoors. 
+
+
+% SPATIAL PATTERN MATCHING HERE
 
 \subsubsection{Summary of Intelligence and Security Context}
 
