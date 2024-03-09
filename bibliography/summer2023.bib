@@ -995,17 +995,6 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   abstract={It is our view that the state of the art in constructing a large collection of graph algorithms in terms of linear algebraic operations is mature enough to support the emergence of a standard set of primitive building blocks. This paper is a position paper defining the problem and announcing our intention to launch an open effort to define this standard.}
 }
 
-@misc{Leskovec2014,
-  author       = {Jure Leskovec and Andrej Krevl},
-  title        = {{SNAP Datasets}: {Stanford} Large Network Dataset Collection},
-  howpublished = {\url{http://snap.stanford.edu/data}},
-  month        = jun,
-  year         = 2014, 
-  groups={graph_datasets},
-  abstract={},
-  comment={}
-}
-
 @INPROCEEDINGS{Wickramaarachchi2014,
   author={Wickramaarachchi, Charith and Frincu, Marc and Small, Patrick and Prasanna, Viktor K.},
   booktitle={2014 IEEE High Performance Extreme Computing Conference (HPEC)}, 
@@ -1052,7 +1041,7 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   comment={}
 }
 
-@report{Regli2022, 
+@techreport{Regli2022, 
 title={Operationalizing Emerging Hardware for AI Applications: Recomendations For Establishing a Defense Applications Center}, 
 author={Regli, William and Coombs, David}, 
 year={2022}, 
@@ -1063,7 +1052,7 @@ The DAC would benefit from features that facilitate collaboration and work in a 
 comment={This is a short report which argues that a Defense Application Center should be established to shepherd the research, development, testing, evaluation and transition of AI specific hardware into US Government users. It does not have any strong immediate impacts on the development of a KG benchmark beyond demonstrating that that the area is relevant and of interest.}
 }
 
-@report{Regli2022a, 
+@techreport{Regli2022a, 
 title={Operationalizing Emerging Hardware for AI Applications: A Survey of Transition Opportunities and Datasets}, 
 author={Regli, William and Loats, Peter and Miller-Sims, Laurel and Johnson, Ben and Bunker, Jacob and Ott, Jared and Herlihy, Christine}, 
 year={2022}, 
@@ -1073,7 +1062,7 @@ abstract={This document captures the inputs and results of an ongoing survey of 
 comment={This report provides a comprehensive review of the intelligence and security use cases for AI accelerated hardware. Key take-aways specific to creating a benchmark for knowledge graphs are: (1) Graphs are very common data structures in intelligence and security problems. (2) Streaming data is a more salient problem than static data. (3) Time Constrained processing compounds the difficulties introduced by streaming data. (4) Real data is not available, definitely not at the scale required - however there are obvious proxies for some of the datasets and it may be possible to generate synthetic datasets for the others. Specific to benchmark datasets: (1) Knowledge Graphs in the real world scenarios studied were up to the petabyte scale. (2) The structure of the graph data has an inherent impact on processing time, so a diverse mix of graphs are required to actually test performance in realistic conditions. (3) Datasets should cover: (a) Transation Data, (b) person-to-person communications, (c) social media, (d) Dense relationships between people, and between people and associated properties, (e) Dense entity labelling. Take-aways specific to Knowledge Graph primitives include: (1) Streaming operations (and time constrained processing) imply that adding and removal of nodes and relationships is a core activity that occurs in KGs. This will extend to adding labels etc. (2) Search is a common requirement - moving through a graph to identify a node matching a query. (3) Path finding / connectedness is a common requriement. (4) Pattern Matching within graphs is a common requirement. (5) Co-Traveller problems occur commonly, but can be framed as a pattern-matching problem.}
 }
 
-@article{Regli2022b,
+@techreport{Regli2022b,
   title={Software-Defined Hardware:A Study of Emerging Hardware for AI Applications}, 
   author={Regli, William and Johnson, Ben and Miller-Sims, Laurel and Keshavarzi, Ali and Teli, Mohammad},
   year={2022}, 
@@ -2336,10 +2325,11 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   comments={Lockheed Martin's Cyber Kill Chain}
 }
 
-@article{Tradoc2007,
+@book{Tradoc2007,
   title={A Military Guide to Terrorism in the Twenty-First Century},
   author={TRADOC Intelligence Support Activity-Threats Fort Leavenworth KS},
   year={2007},
+  publisher={Department of Defense},
   comments={"US TRADOC Terrorist Planning Cycle (Kill-Chain) [1] Broad Target Selection, [2] Intelligence Collection and Reconnissance, [3] Specific Target Selection, [4] Targeted Surveillance and Reconnissance, [5] Actions on Objective, [6] Exploitation and Escape}
 }
 
@@ -2569,7 +2559,7 @@ comments={Case-study of using GNNs to detect anomalous behaviour in call data lo
 
 @article{Ahmadi2023,
   title={Inductive and transductive link prediction for criminal network analysis},
-  author={Ahmadi, Zahra and Nguyen, Hoang H and Zhang, Zijian and Bozhkov, Dmytro and Kudenko, Daniel and Jofre, Maria and Calderoni, Francesco and Cohen, Noa and Solewicz, Yosef},
+  author={Ahmadi,   a and Nguyen, Hoang H and Zhang, Zijian and Bozhkov, Dmytro and Kudenko, Daniel and Jofre, Maria and Calderoni, Francesco and Cohen, Noa and Solewicz, Yosef},
   journal={Journal of Computational Science},
   pages={102063},
   year={2023},
@@ -2733,7 +2723,6 @@ comments={Co-traveler analysis. They develop a system to monitor the risk of ves
   author={Ester, Martin and Kriegel, Hans-Peter and Sander, J{\"o}rg and Xu, Xiaowei and others},
   booktitle={kdd},
   volume={96},
-  number={34},
   pages={226--231},
   year={1996}
 }
@@ -2869,4 +2858,14 @@ _Windmill, Vehicle, Train Station, Tennis Court, Storage Tank, Stadium, Ship, Ha
   groups={compass, gestalt, spatial_pattern_matching, system}, 
   abstract={},
   comment={SpaceKey is a system designed for spatial pattern matching. It seeks to broaden spatial searching by offering features beyond what is commonly available with popular spatial keyword queries. SpaceKey allows users to search for patterns of objects based on metric (distance) relations and the inclusion or exclusion of certain objects within those distances. The detail of query completion is not discussed in the paper. the The system has a pictorial query interface, and while it appears to allow a user to query by the relative directions of objects, closer examination suggests that the directions of objects have no bearing on the search results. Overall, the system shows that spatial pattern matching is an area of active research in geospatial computing and that there is a gap in direction relation pattern matching.}
+}
+
+@article{Zahirnia2024,
+  title={Neural Graph Generation from Graph Statistics},
+  author={Zahirnia, Kiarash and Hu, Yaochen and Coates, Mark and Schulte, Oliver},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2024},
+  abstract={We describe a new setting for learning a deep graph generative model (GGM) from aggregate graph statistics, rather than from the graph adjacency matrix. Matching the statistics of observed training graphs is the main approach for learning traditional GGMs (e.g, BTER, Chung-Lu, and Erdos-Renyi models). Privacy researchers have proposed learning from graph statistics as a way to protect privacy. We develop an architecture for training a deep GGM to match statistics while preserving local differential privacy guarantees. Empirical evaluation on 8 datasets indicates that our deep GGM model generates more realistic graphs than the traditional GGMs when both are learned from graph statistics only. We also benchmark our deep GGM trained on statistics only, against state-of-the-art deep GGM models that are trained on the entire adjacency matrix. The results show that graph statistics are often sufficient to build a competitive deep GGM that generates realistic graphs while protecting local privacy.},
+  comments={Generate Graph from Statistical Properties: }
 }

@@ -285,8 +285,8 @@ Because of the `object' and `constraint' structure, SPM databases are almost ubi
 As a result, these are almost invariably approached as an Isomorphic Subgraph Matching (SGM) task or Constraint Satisfaction Problem (CSP). 
 As CSP and SGM are NP-complete problems, heuristic approaches are used to approximate solutions~\cite{Osullivan2023}. 
 
-%So What
-SPM is a valuable technique that will greatly assist analysts in the task of localization, but is constrained by the slow processing of graphs with heuristic algorithms that rely heavily on graph operations. 
+%So What.
+SPM is a valuable technique that will greatly assist analysts in the task of localization but is constrained by the slow processing of graphs with heuristic algorithms that rely heavily on graph operations. 
 
 % \subsubsection{Imagery Analysis}
 % \label{section:Imagery-Analysis}
@@ -301,13 +301,41 @@ SPM is a valuable technique that will greatly assist analysts in the task of loc
 % Image classification is a broader problem concerned with assigning an image to a particular class--for example, if an image is indoors or outdoors. 
 
 
-% SPATIAL PATTERN MATCHING HERE
+\subsubsection{Summary of Intelligence and Security Problems}
+These eight use cases are a representative sample of the problems faced by the I\&S community. 
+There are a few common threads that link them. 
+First, all of the use cases are difficult to scale in the physical world.
+There is only a finite amount of twine to `join the dots', and analysts can only retain so much information while they are working. 
+Second, the focus is on characterizing the relationships between entities, events and objects, and using these relationships as the basis for further analysis. 
+Third is the need to perform these tasks within time, resource and information environments. 
+Lastly is the realization that the key benefit is to replace the `procedural' aspects of intelligence work so that the analysts can focus on generating assessments rather than the tools to facilitate analysis. 
 
-%DATASETS???
+The underlying computational problems will be explored in greater detail in section~\ref{section:12-Graph-Data-Structures}, but as half of the drive for the benchmark, it is important to note key observations from the use cases here.
+First, the underlying representation of almost all the I\&S problems is an attributed graph or multigraph. 
+Typically, these are \textit{Knowledge Graphs} that contain heterogeneous vertex and edge types.
+Almost all of the computational problems rely on the structure of graphs to generate their results--whether that be traversing along edges to find links, enumerating the neighborhood of a vertex of interest or transforming the topology and attribute properties into an embedding for further analysis.
+The nature of the problems being solved is only half of the problem that a benchmark needs to consider. 
 
 \subsection{Intelligence and Security Datasets}
+Datasets that are from the same distribution as the problem domain ensure that a benchmark is measuring behavior that we expect to encounter in the real world.
+An obvious challenge is that the I\&S community's data is at best likely to comprise a significant amount of Personally Identifiable Information (PII) and at worst will be classified.
+In either event, raw domain data are unlikely to be available for a public benchmark because of privacy and security concerns. 
+The lack of `real' data is particularly impactful in graph processing, where the efficiency and effectiveness of the algorithm is highly dependent on the shape of the input graphs.~\osullikomment{Need to cite this, probably beamer's work}.
 
-\subsubsection{Summary of Intelligence and Security Context}
+Privacy preservation is an area of active research across many domains.
+In graph analysis for the I\&S domain, privacy preservation would extend to include protecting classified information. 
+To create a synthetic graph that reflects the heterogeneous attributes and topologies of graphs of interest to the I\&S community, the ideal solution would be to extract a statistical description of the original graph that would permit a generator to create a similar, but completely disjoint graph. 
+Approaches to realistic graph generation work using either an adjacency-based or statistically-based input, and then employ parametric or neural methods to generate new graphs.
+Some of the most recent work on generating realistic graphs, GenStat uses the input features of \textit{Triangle Histograms, K-Hop Neighbour Histograms [k=1..4], Random Walk Histograms [r=2,3]} and \textit{Number of Edges}.
+They show that they can produce topologically similar graphs using these four statistical features as input to a graph generator that uses a probabilistic model of graph statistics implemented using a variational auto-encoder~\cite{Zahirnia2024}.
+The first of two key limitations of this approach is the loss of attribute information during the encoding process, which is key to meaningful analysis of the graphs. 
+The second is the scalability--the complexity of generating the descriptive statistics is cubic in the number of edges.
+Their experiments were on graphs with just thousands of vertices, and this approach (along with many others) will not scale to the billions-to-trillions of edges expected in I\&S Problems.
+
+The next best method is to find datasets that are reasonably expected to resemble I\&S problem sets from repositories like the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2014}, the Berkeley Graph Algorithm Platform (GAP)~\cite{Beamer2017} or using generators that can create graphs with enough control to generate interesting problems. 
+
+
+
 
 
 

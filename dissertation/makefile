@@ -39,10 +39,12 @@ Scripts/hunspell_dictionary.dic: Scripts/dictionary.txt
 #	out=$$(Scripts/rscript_if_ne.sh .) && echo "$$out" > auto_fig/res.txt
 
 #%.pdf: %.tex auto_fig/res.txt $(TEX) $(BIB)
+#If fails to compile, try removing --shell-escape argument. Is required on MacOS. 
+#Commented out "cp $@ ~/public_html/temp || true" from the line below latexmk
  %.pdf: %.tex $(TEX) $(BIB)
-	latexmk --shell-escape -pdf -pv $*				#If fails to compile, try removing --shell-escape argument. Is required on MacOS. 
-	cp $@ ~/public_html/temp || true
-	./Scripts/style-check.rb *.tex Sections/*.tex
+	latexmk --shell-escape -pdf -pv $*				
+	
+	./Scripts/style-check.rb -v *.tex Sections/*.tex
 
 
 # These targets should remain in sync (e.g., if you fix one, do the same for the other).  Except for the .tgz target should have all the bib files but the arxiv target should have the bbl file ($<)
