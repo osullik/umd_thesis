@@ -1,0 +1,24 @@
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=3cm, thick, main node/.style={circle, draw, font=\sffamily\Large\bfseries}]
+
+  % Render the adjacency matrix
+  \matrix[matrix of math nodes,
+          left delimiter={[},
+          right delimiter={]},
+          %below = 1cm of A,
+          nodes={minimum width=3em, minimum height=3em, outer sep=0pt},
+          column sep=-\pgflinewidth,
+          row sep=-\pgflinewidth] (m) {   & A & B & C & D & E \\
+                                        A & 0 & 1 & 1 & 0 & 0 \\
+                                        B & 0 & 0 & 1 & 0 & 0 \\
+                                        C & 0 & 0 & 0 & 0 & 0 \\
+                                        D & 0 & 0 & 1 & 0 & 0 \\
+                                        E & 1 & 0 & 0 & 0 & 0 \\
+                                    };
+
+\end{tikzpicture}
+\caption{Adjacency Matrix for graph in figure~\ref{figure:graph-example} is a $|V| \times |V|$ matrix where a value of $1$ indicates an edge and $0$ is no edge.}
+\label{figure:adjacency_matrix}
+\end{figure}

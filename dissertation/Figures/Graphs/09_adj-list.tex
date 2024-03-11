@@ -1,0 +1,24 @@
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.5]
+        \tikzstyle{vertex}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+        \tikzstyle{edge} = [draw,thick,-]
+
+        \matrix[matrix of math nodes,
+          %left delimiter={[},
+          %right delimiter={]},
+          %below = 1cm of A,
+          nodes={minimum width=3em, minimum height=3em, outer sep=0pt},
+          column sep=-\pgflinewidth,
+          row sep=-\pgflinewidth] (m) { A, & B, & C \\
+                                        B, & C, &   \\
+                                        C, &    &   \\
+                                        D, & C, &   \\
+                                        E, & A, &   \\
+                                    };
+
+    \end{tikzpicture}
+    \caption{Adjacency List for graph in figure~\ref{figure:graph-example}. Each line represents a vertex with the first in the list being the source and each subsequent vertex a destination of an edge.}
+    \label{figure:graph-adj-list}
+\end{figure}

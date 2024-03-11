@@ -302,30 +302,29 @@ SPM is a valuable technique that will greatly assist analysts in the task of loc
 
 
 \subsubsection{Summary of Intelligence and Security Problems}
-These eight use cases are a representative sample of the problems faced by the I\&S community. 
-There are a few common threads that link them. 
+These eight use cases are a representative sample of the problems faced by the I\&S community and share common threads.
 First, all of the use cases are difficult to scale in the physical world.
 There is only a finite amount of twine to `join the dots', and analysts can only retain so much information while they are working. 
 Second, the focus is on characterizing the relationships between entities, events and objects, and using these relationships as the basis for further analysis. 
-Third is the need to perform these tasks within time, resource and information environments. 
-Lastly is the realization that the key benefit is to replace the `procedural' aspects of intelligence work so that the analysts can focus on generating assessments rather than the tools to facilitate analysis. 
+Third is the need to complete these tasks within time, resource and information constraints. 
+Lastly is the realization that the key benefit is to replace the `procedural' aspects of intelligence work so that the analysts can focus on generating assessments rather than the tools to clean and structure data. 
 
-The underlying computational problems will be explored in greater detail in section~\ref{section:12-Graph-Data-Structures}, but as half of the drive for the benchmark, it is important to note key observations from the use cases here.
+The underlying computational problems will be explored in greater detail in section~\ref{section:12-Graph-Data-Structures}, but as they form half of the drive for the benchmark key observations from the use cases are noted here.
 First, the underlying representation of almost all the I\&S problems is an attributed graph or multigraph. 
 Typically, these are \textit{Knowledge Graphs} that contain heterogeneous vertex and edge types.
-Almost all of the computational problems rely on the structure of graphs to generate their results--whether that be traversing along edges to find links, enumerating the neighborhood of a vertex of interest or transforming the topology and attribute properties into an embedding for further analysis.
+Almost all of the computational problems rely on the structure of graphs to generate their results--whether traversing along edges to find links, enumerating the neighborhood of a vertex of interest or transforming the topology and attribute properties into an embedding for further analysis.
 The nature of the problems being solved is only half of the problem that a benchmark needs to consider. 
 
 \subsection{Intelligence and Security Datasets}
-Datasets that are from the same distribution as the problem domain ensure that a benchmark is measuring behavior that we expect to encounter in the real world.
-An obvious challenge is that the I\&S community's data is at best likely to comprise a significant amount of Personally Identifiable Information (PII) and at worst will be classified.
+Datasets that are from the same distribution as the problem domain ensure that a benchmark is measuring behavior that we expect in the real world.
+An obvious challenge is that the I\&S community's data is at best likely to contain Personally Identifiable Information (PII) and at worst will be classified.
 In either event, raw domain data are unlikely to be available for a public benchmark because of privacy and security concerns. 
 The lack of `real' data is particularly impactful in graph processing, where the efficiency and effectiveness of the algorithm is highly dependent on the shape of the input graphs.~\osullikomment{Need to cite this, probably beamer's work}.
 
 Privacy preservation is an area of active research across many domains.
 In graph analysis for the I\&S domain, privacy preservation would extend to include protecting classified information. 
 To create a synthetic graph that reflects the heterogeneous attributes and topologies of graphs of interest to the I\&S community, the ideal solution would be to extract a statistical description of the original graph that would permit a generator to create a similar, but completely disjoint graph. 
-Approaches to realistic graph generation work using either an adjacency-based or statistically-based input, and then employ parametric or neural methods to generate new graphs.
+Approaches to realistic graph generation work using either an adjacency-based or statistically-based input, leveraging parametric or neural methods to generate new graphs from the input.
 Some of the most recent work on generating realistic graphs, GenStat uses the input features of \textit{Triangle Histograms, K-Hop Neighbour Histograms [k=1..4], Random Walk Histograms [r=2,3]} and \textit{Number of Edges}.
 They show that they can produce topologically similar graphs using these four statistical features as input to a graph generator that uses a probabilistic model of graph statistics implemented using a variational auto-encoder~\cite{Zahirnia2024}.
 The first of two key limitations of this approach is the loss of attribute information during the encoding process, which is key to meaningful analysis of the graphs. 

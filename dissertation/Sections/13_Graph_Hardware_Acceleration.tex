@@ -1,2 +1,4 @@
 \section{Graph Hardware Acceleration}
 \label{section:13-Graph-Hardware-Acceleration}
+
+Graph Algorithms have a high communication-to-computation ratio. Their parallelism is constricted to gains of $P^{\frac{1}{2}}$ where $P=$ the number of workers. Communication-avoiding algorithms are promising but can't eliminate the problem on their own. Hardware optimization must be the way forward, and GraphBLAS gives us composable primitives to identify where to optimize hardware.~\cite{Kepner2016}
