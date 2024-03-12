@@ -2869,3 +2869,66 @@ _Windmill, Vehicle, Train Station, Tennis Court, Storage Tank, Stadium, Ship, Ha
   abstract={We describe a new setting for learning a deep graph generative model (GGM) from aggregate graph statistics, rather than from the graph adjacency matrix. Matching the statistics of observed training graphs is the main approach for learning traditional GGMs (e.g, BTER, Chung-Lu, and Erdos-Renyi models). Privacy researchers have proposed learning from graph statistics as a way to protect privacy. We develop an architecture for training a deep GGM to match statistics while preserving local differential privacy guarantees. Empirical evaluation on 8 datasets indicates that our deep GGM model generates more realistic graphs than the traditional GGMs when both are learned from graph statistics only. We also benchmark our deep GGM trained on statistics only, against state-of-the-art deep GGM models that are trained on the entire adjacency matrix. The results show that graph statistics are often sufficient to build a competitive deep GGM that generates realistic graphs while protecting local privacy.},
   comments={Generate Graph from Statistical Properties: }
 }
+
+@book{Kleinberg2014,
+  author         = {Kleinberg, Jon and Tardos, Eva},
+  publisher      = {Pearson Education Limited},
+  title          = {Algorithm Design},
+  year           = {2014},
+  edition        = {First Edition},
+  comments       = {Graph Defintions}
+}
+
+@article{Erdhos1960,
+  title={On the evolution of random graphs},
+  author={Erd{\H{o}}s, Paul and R{\'e}nyi, Alfr{\'e}d and others},
+  journal={Publ. math. inst. hung. acad. sci},
+  volume={5},
+  number={1},
+  pages={17--60},
+  year={1960}
+}
+
+@inproceedings{Bulucc2009,
+  title={Parallel sparse matrix-vector and matrix-transpose-vector multiplication using compressed sparse blocks},
+  author={Bulu{\c{c}}, Aydin and Fineman, Jeremy T and Frigo, Matteo and Gilbert, John R and Leiserson, Charles E},
+  booktitle={Proceedings of the twenty-first annual symposium on Parallelism in algorithms and architectures},
+  pages={233--244},
+  year={2009},
+  abstract={This paper introduces a storage format for sparse matrices, called compressed sparse blocks (CSB), which allows both Ax and A,x to be computed efficiently in parallel, where A is an nxn sparse matrix with nnzen nonzeros and x is a dense n-vector. Our algorithms use Θ(nnz) work (serial running time) and Θ(√nlgn) span (critical-path length), yielding a parallelism of Θ(nnz/√nlgn), which is amply high for virtually any large matrix. The storage requirement for CSB is the same as that for the more-standard compressed-sparse-rows (CSR) format, for which computing Ax in parallel is easy but A,x is difficult. Benchmark results indicate that on one processor, the CSB algorithms for Ax and A,x run just as fast as the CSR algorithm for Ax, but the CSB algorithms also scale up linearly with processors until limited by off-chip memory bandwidth.},
+  comments={Describes the CSC and CSR formats.}
+}
+
+@inproceedings{Cook1971,
+  title={The complexity of theorem proving procedure},
+  author={COOK, SA},
+  booktitle={Proc. 3rd Symp. on Theory of Computing},
+  pages={151--158},
+  year={1971},
+  abstract={},
+  comments={The subgraph problem is the problem given two finite undirected graphs, determine whether the first is isomorphic to a subgraph of the second. A graph G can be represented by a string G on the alphabet {0,1,*} by listing the successive rows of its adjacency matrix, separated by *s. We let {subgraph pairs} denote the set of strings G1 * *G2 such that G1 is isomorphic to a subgraph of G2}
+}
+
+@article{Corneil1970,
+  title={An efficient algorithm for graph isomorphism},
+  author={Corneil, Derek G and Gotlieb, Calvin C},
+  journal={Journal of the ACM (JACM)},
+  volume={17},
+  number={1},
+  pages={51--64},
+  year={1970},
+  publisher={ACM New York, NY, USA},
+  abstract ={A procedure for determining whether two graphs are isomorphic is described. During the procedure, from any given graph two graphs, the representative graph and the reordered graph, are derived. The representative graph is a homomorphic image of the original graph; the reordered graph is constructed from the representative graph to be isomorphic to the given graph. Unique labels are assigned to the vertices of both derived graphs. It follows that two representative graphs or two reordered graphs are isomorphic if and only if they are identical. A conjecture states that the representative graphs exhibit the automorphism partitioning of the given graph. The representative graphs form a necessity condition for isomorphism; namely, if the representative graphs are not identical, then the given graphs are not isomorphic. The converse is true for trees and follows from the conjecture for other types of graphs. It is also shown that the reordered graphs form a sufficiency condition for isomorphism; namely, if the reordered graphs are identical, then the given graphs are isomorphic. The converse follows from the conjecture.},
+  comments={ It follows that two representative graphs or two reordered graphs are isomorphic if and only if they are identical.A closely related but inherently more difficult problem is the subgraph isomorphism problem; namely, given two finite graphs, G1 and G2, determine whether G2 is isomorphic to G1 or to a subgraph of G1 • The graph isomorphism problem and/or the subgraph isomorphism problem arise in such fields as chemistry, information retrieval, linguistics, logistics, switching theory, and network theory. F}
+}
+
+@inproceedings{Bachl1999,
+  title={Isomorphic subgraphs},
+  author={Bachl, Sabine},
+  booktitle={Graph Drawing: 7th International Symposium, GD’99 {\v{S}}ti{\v{r}}{\'\i}n Castle, Czech Republic September 15--19, 1999 Proceedings 7},
+  pages={286--296},
+  year={1999},
+  organization={Springer},
+  abstract={We are interested in finding symmetries in graphs and then use these symmetries for graph drawing algorithms. There are two general approaches to this problem, the first one is known as Geometric Symmetries on the basis of drawings, the other rests upon the graph-theoretical notion of graphs. For a given graph G the Isomorphic Subgraphs problem makes use of the second approach and tries to find the two largest disjoint isomorphic subgraphs in G. Hence, G consists of two identical copies and a remainder. There are many NP-complete or open problems related to our problem, like Graph Isomorphism, Graph Automorphism or Largest Common Subgraph. We show that the Isomorphic Subgraphs problem is NP-hard for connected outerplanar graphs, and 2-connected planar graphs and is solvable in linear time when restricted to trees.Additionally we will shortly discuss the applicability of Isomorphic Subgraphs in graph drawing algorithms.},
+  comments={The Isomorphic Subgraphs problem can be described as searching for the two largest isomorphic disjoint subgraphs in a given graph. }
+}
