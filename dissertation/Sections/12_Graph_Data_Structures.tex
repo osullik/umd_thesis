@@ -68,6 +68,12 @@ The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|
 \input{Figures/Graphs/11_incidence}
 \input{Figures/Graphs/12_csr}
 
+Graphs can be \textit{Static} or \textit{Dynamic}.
+Static graphs are those that are pre-built and unchanging. 
+Algorithms can assume unlimited time to find a solution and that the representation itself will remain unchanged. 
+A \textit{Dynamic} graph (also called a \textit{streaming} graph is constructed on the fly, with vertices and edges being created, read, updated and deleted (CRUD) while graph analysis is occurring.
+The I\&S community is constantly collecting and removing data, and so must be able to operate on graphs in time-constrained settings between when information is added and when it is removed~\cite{Regli2022a}.
+
 \osullikomment{Summary of Representation here}
 
 
@@ -190,7 +196,7 @@ Unfortunately, modularity optimization has been proven strongly $NP$-Complete~\c
 The community detection problem can be simplified with the addition of external information like known community membership constraints on a subset of the vertices in the graph.
 
 \textbf{Isomorphic Subgraph Matching}
-Both the \textit{Counter Threat Finance} and \textit{Spatial Pattern Matching} intelligence problems can be characterized as isomorphic subgraph matching (SGM) problems. 
+Both the \textit{Counter Threat Finance}, \textit{Spatial Pattern Matching} and some implementations of \textit{Co-Traveler Discovery} intelligence problems can be characterized as isomorphic subgraph matching (SGM) problems. 
 The graph isomorphism problem asks whether a query graph $Q$ and a reference graph $G$ are topologically identical~\cite{Corneil1970}.
 The subgraph isomorphism problem is a special, more difficult case of graph isomorphism. 
 Subgraph isomorphism asks whether a query graph $Q$ exists as a subgraph anywhere within the reference graph $G$~\cite{Cook1971} and is also $NP$-Complete~\cite{Bachl1999}.
@@ -209,7 +215,7 @@ Most BFS implementations pick a start vertex and \textit{expand} it by adding al
 It then takes a vertex from the front of the queue, checks if it is the target of the search and if not \textit{expands} that vertex to the end of the queue.
 BFS can be constrained with a depth limit and terminate after a given number of traversals.
 The result of a depth-constrained search is the collection of vertices that form the neighborhood of interest in the \textit{`what is happening with this entity'} query.
-The simple BFS search requires $\mathcal{O}(b^{d})$ time and $\mathcal{O}(b^{d})$ space to execute where $b$ is the branching factor (approximated with $\bar{K}$) and $d$ is the depth of the solution (how many steps to take)~\cite{Russell2021}. 
+The simple BFS search requires $\mathcal{O}(b^{d})$ time and $\mathcal{O}(b^{d})$ space to execute where $b$ is the branching factor (approximated with $\bar{K}_{out}$) and $d$ is the depth of the solution (how many steps to take)~\cite{Russell2021}. 
 
 The reachability search can also be implemented with BFS, but is commonly implemented with a \textit{Depth First Search} (DFS) to reduce memory consumption~\cite{Vukotic2015}.
 DFS also begins with a start vertex, but instead of adding the expanded nodes to a queue, they are added to a stack. 
@@ -217,11 +223,33 @@ At each step, the vertex on top of the stack is checked to see if it is the targ
 The simple DFS search requires $\mathcal{O}(b^{b})$ time and $\mathcal{O}(bm)$ space to execute where $b$ is the branching factor and $m$ is the maximum depth of the search~\cite{Russell2021}. 
 
 \textbf{Entity Resolution.}
+The \textit{All Source Fusion} intelligence problem is largely concerned with generating transforming collected data into usable information that can be analyzed to create intelligence. 
+To that end, it is largely focused on deduplication, and so can be viewed as an instance of the \textit{entity resolution} problem.
+The goal of entity resolution is to reconcile data references corresponding to the same real-world entity. 
+It can be framed as a graph problem by using the references to an entity to ground entities by their relation to other entities. The logic is that possible co-referent entities will share many of the same links to other entities, so topological similarity can be leveraged in addition to attribute similarity.
+In addition to this approach which uses \textit{graph clustering}~\cite{Bhattacharya2006}, other approaches have used\textit{graph embedding}~\cite{Obraczka2021} distance, \textit{neural}~\cite{Ebraheem2018} methods, and \textit{graph-theoretic approaches} to exploit topological and attribute information~\cite{Zhang2020} of static graphs to resolve entities.
+Work on \textit{dynamic graphs} uses an \textit{incremental partitioning} algorithm to re-evaluate prior resolutions as new information is added to the graph~\cite{Tauer2019}.
 
+\textit{Graph clustering} problems are $NP$-Hard, and heuristic approaches remain expensive~\cite{Schaeffer2007}. 
+Popular graph embedding approaches like \textit{DeepWalk}~\cite{Perozzi2014} and \textit{Node2Vec}~\cite{Grover2016} run in $\mathcal{O}(|V|)$ and $\mathcal{O}(b^{2})$ (where $B$ is the \textit{branching factor}) respectively~\cite{Pimentel2019}, but then must be processed by a MLP or Random Forest classifier.
+The graph-theoretic approach runs in $\mathcal{O}(|E|^{3})$, with the impact reduced by running graph clustering as a pre-processing step to `block' the graph into smaller subgraphs to reduce processing time.
+All that is to say that entity resolution is heavily impacted by the size and density of the graph, and hardware acceleration may offer the best path to improving entity resolution in a time-constrained setting. 
 
-Anomaly Detection
-Missing Link Prediction 
-Co-Movement Analysis
+\textbf{Co-movement discovery.}
+The geospatial analysis required to identify persons and places of interest based on reported movement patterns can be characterized as a \textit{co-movement problem}. 
+The co-movement problem aims to discover entities that move together in time and space. 
+The graph-based approach to this problem builds a separate proximity graph at each time step and then uses \textit{graph clustering} to assign proximal entities to groups.
+When entities share clusters across multiple timesteps they are said to be co-movers~\cite {Tritsarolis2021}.
+As has been discussed above, graph clustering is typically $NP$-Hard and heuristic approaches are sensitive to the size and density of input graphs. 
+
+\textbf{Graph Neural Networks.}
+The \textit{Intelligence Analysis} tasks of \textit{missing link prediction} and \textit{anomaly detection} can be solved using \textit{Graph Neural Networks}. 
+GNNs are a class of neural network that operates directly on the underlying structure of the graph. 
+Once a GNN is \textit{trained} for a particular task, it can be used to make \textit{Inferences}.
+There are typically two key operations that happen within a GNN at inference time. 
+First, it \textit{Samples and Aggregates} the edges to develop an embedding representation of the node neighborhoods in the graph (the topological and attribute information). 
+Second, it \textit{Combines} those with the learned network weights to generate the outputs that are used to make predictions about which nodes are anomalous or where a link is likely to be missing~\cite{Hamilton2017}
+Early work in GCNs showed that they could operate linearly to the number of edges in the graph~\cite{Kipf2016}, but in general graphs above trivial size require the use of sampling and blocking techniques to reduce the computational complexity to an acceptable level~\cite{Hamilton2017}.
 
 General properties
 - Large
