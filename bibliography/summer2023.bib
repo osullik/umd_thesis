@@ -17,6 +17,7 @@
   year    = {2020},
   groups  = {HIVE},
   url     = {https://arxiv.org/pdf/2010.06277},
+  comments={}
 }
 
 @inproceedings{Chakrabarti2004,
@@ -408,8 +409,8 @@ abstract={Both static and streaming graph processing are central in data analyti
   organization={IEEE},
   groups={telemetry},
   url = {https://github.com/osullik/summer2023/blob/main/Papers/bibliography/reference_papers/Basak2019.pdf},
-	abstract={Graph processing is an important analysis technique for a wide range of big data applications. The ability to explicitly represent relationships between entities gives graph analytics a significant performance advantage over traditional relational databases. However, at the microarchitecture level, performance is bounded by the inefficiencies in the memory subsystem for single-machine in-memory graph analytics. This paper consists of two contributions in which we analyze and optimize the memory hierarchy for graph processing workloads. First, we perform an in-depth data-type-aware characterization of graph processing workloads on a simulated multi-core architecture. We analyze 1) the memory-level parallelism in an out-of-order core and 2) the request reuse distance in the cache hierarchy. We find that the load-load dependency chains involving different application data types form the primary bottleneck in achieving a high memory-level parallelism. We also observe that different graph data types exhibit heterogeneous reuse distances. As a result, the private L2 cache has negligible contribution to performance, whereas the shared L3 cache shows higher performance sensitivity.}
-
+	abstract={Graph processing is an important analysis technique for a wide range of big data applications. The ability to explicitly represent relationships between entities gives graph analytics a significant performance advantage over traditional relational databases. However, at the microarchitecture level, performance is bounded by the inefficiencies in the memory subsystem for single-machine in-memory graph analytics. This paper consists of two contributions in which we analyze and optimize the memory hierarchy for graph processing workloads. First, we perform an in-depth data-type-aware characterization of graph processing workloads on a simulated multi-core architecture. We analyze 1) the memory-level parallelism in an out-of-order core and 2) the request reuse distance in the cache hierarchy. We find that the load-load dependency chains involving different application data types form the primary bottleneck in achieving a high memory-level parallelism. We also observe that different graph data types exhibit heterogeneous reuse distances. As a result, the private L2 cache has negligible contribution to performance, whereas the shared L3 cache shows higher performance sensitivity.},
+  comments={GOAL: The goal of this paper is to solve the memory ineffi- ciency issue for single-machine in-memory graph analyt- ics. FINDINGS:(0) (1) Different graph data types exhibit heterogeneous reuse distances. (2) load-load dependency chains, with consumer graph property data, form the bottleneck in achieving a high Memory Level Parallelism (MLP), the L2 cache has little impact on the system performance, whereas the LLC exhibits a higher perfor- mance sensitivity. (3) The best place to put prefetched data is the L2 Cache because it reduces risk of cache pollution and makes the L2 cache useful (4) Structurea and Property Data should be prefetched (5) Prefetching should be be done in a streaming fashion and the prefetcher should be decoupled, (5) Property prefetches should be guided by structure prefetches.  METHOD: DROPLET is data-aware and prefetches graph structure and property data in a physically decoupled but functionally cooperative manner. DROPLET achieves 19%-102% performance improvement over a no- prefetch baseline, 9%-74% performance improvement over a conventional stream prefetcher, 14%-74% performance improvement over VLDP, and 19%-115% performance im- provement over a G/DC GHB. RANDOM NOTES: Property data is indirectly indexed using information from the structure data in CSC/CSR. They profile on the SNIPER simulator, using the GAP benchmark suite. Memory Level Paralellism (MLP) is difficuly because they are constrained by true data dependencies that have to be executed in program order. **LOADING THE PROPERTIES IS A DELAY-INDUCING OPERATION**}
 }
 
 @inproceedings{Zhuo2019,
@@ -612,16 +613,6 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   pages={22118--22133},
   year={2020},
   abstract={We present the Open Graph Benchmark (OGB), a diverse set of challenging and realistic benchmark datasets to facilitate scalable, robust, and reproducible graph machine learning (ML) research. OGB datasets are large-scale, encompass multiple important graph ML tasks, and cover a diverse range of domains, ranging from social and information networks to biological networks, molecular graphs, source code ASTs, and knowledge graphs. For each dataset, we provide a unified evaluation protocol using meaningful application-specific data splits and evaluation metrics. In addition to building the datasets, we also perform extensive benchmark experiments for each dataset. Our experiments suggest that OGB datasets present significant challenges of scalability to large-scale graphs and out-of-distribution generalization under realistic data splits, indicating fruitful opportunities for future research. Finally, OGB provides an automated end-to-end graph ML pipeline that simplifies and standardizes the process of graph data loading, experimental setup, and model evaluation. OGB will be regularly updated and welcomes inputs from the community. OGB datasets as well as data loaders, evaluation scripts, baseline code, and leaderboards are publicly available at https://ogb.stanford.edu.},
-  comment={}
-}
-
-@inproceedings{Dhulipala2020,
-  title={The graph based benchmark suite (gbbs)},
-  author={Dhulipala, Laxman and Shi, Jessica and Tseng, Tom and Blelloch, Guy E and Shun, Julian},
-  booktitle={Proceedings of the 3rd Joint International Workshop on Graph Data Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
-  pages={1--8},
-  year={2020},
-  abstract={In this demonstration paper, we present the Graph Based Benchmark Suite (GBBS), a suite of scalable, provably-efficient implementations of over 20 fundamental graph problems for shared-memory multicore machines. Our results are obtained using a graph processing interface written in C++, extending the Ligra interface with additional functional primitives that have clearly defined cost bounds. Our approach enables writing high-level codes that are simultaneously simple and high-performance by virtue of using highly-optimized primitives. Another benefit is that optimizations, such as graph compression, are implemented transparently to high-level user code, and can thus be utilized without changing the implementation. Our approach enables our codes to scale to the largest publicly-available real-world graph containing over 200 billion edges on a single multicore machine. We show how to use GBBS to process and perform a variety of tasks on real-world graphs. We present the high-level C++ APIs that enable us to write concise, high-performance implementations. We also introduce a Python interface to GBBS, which lets users easily prototype algorithms and pipelines in Python that significantly outperform NetworkX, a mature Python-based graph processing solution.},
   comment={}
 }
 
@@ -1681,6 +1672,15 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   comment={Dhulipala et al.'s 2020 Graph Based Benchmark Suite (GBBS) implements a collection of graph algorithms and primitives for parallel graph processing in shared memory machines. They consider earlier graph benchmarks like the GAP, PBBS, and LDBC Graphalytics benchmark too narrowly focused and add more problems. The GBBS provides reference implementations for Breadth-First Search, Bellman-Ford, Single-Source widest path, Single-Source betweenness, $\mathcal{O}(K)$ Spanner, Low Diameter Decomposition, Connectivity, Spanning Forest, Biconnectivity, Strongly Connected Components, Minimum Spanning Forest, Maximal Independent Set, Maximal Matching, Graph Colouring, Approximate Set Cover, Triangle Counting, 4-Clique counting, k-core decomposition, approximate densest subgraph and PageRank. While \textit{maximal matching} is close to subgraph matching, and \textit{PageRank} is close to community detection, they do not explicitly cover these cases. GBBS also does not address knowledge graph inference.}
 }
 
+@inproceedings{Dhulipala2018,
+  title={Theoretically Efficient Parallel Graph Algorithms Can Be Fast and Scalable},
+  author={Dhulipala, Laxman and Blelloch, Guy E and Shun, Julian},
+  booktitle={Proceedings of the 30th on Symposium on Parallelism in Algorithms and Architectures},
+  pages={393--404},
+  year={2018},
+  comment={Shorter Conference Version of the Paper}
+}
+
 @article{Dongarra2003,
   title={The LINPACK benchmark: past, present and future},
   author={Dongarra, Jack J and Luszczek, Piotr and Petitet, Antoine},
@@ -2080,7 +2080,8 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   year={2016},
   organization={IEEE},
   groups={graph_hardware},
-  comment={Alternate to PIUMA}
+  comment={Alternate to PIUMA; PROBLEMS: “data-intensive” applications do not exhibit the same locality traits as compute-intensive applications thus the latency of individual memory accesses overwhelms the advantages of deeply pipelined, fast cores.These “data-intensive” applications do not exhibit the same locality traits as compute-intensive applications thus the latency of individual memory accesses overwhelms the ad- vantages of deeply pipelined, fast cores.
+  SOLUTION: They exploit `weak locality' i.e. locality over 10's of MB to GB -- locality larger than cache size.}
 }
 
 @inproceedings{Song2016,
@@ -2091,7 +2092,7 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   year={2016},
   organization={IEEE},
   groups={graph_hardware},
-  comments={Alernate to PiUMA}
+  comments={Alernate to PiUMA. PROBLEMS: Lack of locality means poor cache usage; large graph processing tasks often run inefficiently on conventional parallel processors. The speedup often levels off after only a small number of processors are utilized because the computing patterns for graph algorithms require much more communication between processor nodes than conventional, highly localized processing requires. The limited communication bandwidth of conventional parallel processors generally cannot keep pace with the demands of graph algorithms. graph algorithms incur significant computational overhead for index manipulation tasks required by graph traversing queries.}
 }
 
 @inproceedings{Ham2016,
@@ -2125,6 +2126,8 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   year={2009},
   groups={profiling}
 }
+
+
 
 %%% 22 Nov Additions %%%
 
@@ -2932,3 +2935,183 @@ _Windmill, Vehicle, Train Station, Tennis Court, Storage Tank, Stadium, Ship, Ha
   abstract={We are interested in finding symmetries in graphs and then use these symmetries for graph drawing algorithms. There are two general approaches to this problem, the first one is known as Geometric Symmetries on the basis of drawings, the other rests upon the graph-theoretical notion of graphs. For a given graph G the Isomorphic Subgraphs problem makes use of the second approach and tries to find the two largest disjoint isomorphic subgraphs in G. Hence, G consists of two identical copies and a remainder. There are many NP-complete or open problems related to our problem, like Graph Isomorphism, Graph Automorphism or Largest Common Subgraph. We show that the Isomorphic Subgraphs problem is NP-hard for connected outerplanar graphs, and 2-connected planar graphs and is solvable in linear time when restricted to trees.Additionally we will shortly discuss the applicability of Isomorphic Subgraphs in graph drawing algorithms.},
   comments={The Isomorphic Subgraphs problem can be described as searching for the two largest isomorphic disjoint subgraphs in a given graph. }
 }
+
+@article{Schaeffer2007,
+  title={Graph clustering},
+  author={Schaeffer, Satu Elisa},
+  journal={Computer science review},
+  volume={1},
+  number={1},
+  pages={27--64},
+  year={2007},
+  publisher={Elsevier},
+  abstract={In this survey we overview the definitions and methods for graph clustering, that is, finding sets of “related” vertices in graphs. We review the many definitions for what is a cluster in a graph and measures of cluster quality. Then we present global algorithms for producing a clustering for the entire vertex set of an input graph, after which we discuss the task of identifying a cluster for a specific seed vertex by local computation. Some ideas on the application areas of graph clustering algorithms are given. We also address the problematics of evaluating clusterings and benchmarking cluster algorithms.},
+  comment={Typically interesting graph clustering problems are NP hard.}
+}
+
+@inproceedings{Pimentel2019,
+  title={Efficient estimation of node representations in large graphs using linear contexts},
+  author={Pimentel, Tiago and Castro, Rafael and Veloso, Adriano and Ziviani, Nivio},
+  booktitle={2019 International joint conference on neural networks (IJCNN)},
+  pages={1--8},
+  year={2019},
+  organization={IEEE},
+  abstract={},
+  comments={DeepWalk has a time complexity bounded by O(|V|). Node2Vec is not efficient for densely connected graphs, since its time and memory dependencies on the graph`s branching factor b are O(b^{2}).}
+}
+
+@article{Hamilton2017,
+  title={Inductive representation learning on large graphs},
+  author={Hamilton, Will and Ying, Zhitao and Leskovec, Jure},
+  journal={Advances in neural information processing systems},
+  volume={30},
+  year={2017},
+  abstract={Low-dimensional embeddings of nodes in large graphs have proved extremely useful in a variety of prediction tasks, from content recommendation to identifying protein functions. However, most existing approaches require that all nodes in the graph are present during training of the embeddings; these previous approaches are inherently transductive and do not naturally generalize to unseen nodes. Here we present GraphSAGE, a general, inductive framework that leverages node feature information (e.g., text attributes) to efficiently generate node embeddings. Instead of training individual embeddings for each node, we learn a function that generates embeddings by sampling and aggregating features from a node's local neighborhood. Our algorithm outperforms strong baselines on three inductive node-classification benchmarks: we classify the category of unseen nodes in evolving information graphs based on citation and Reddit post data, and we show that our algorithm generalizes to completely unseen graphs using a multi-graph dataset of protein-protein interactions.},
+comments={This paper introduces the Graph Sample and Aggregate (GraphSAGE) Graph Convolution Network (GCN) architecture. It is a foundational paper in GNNs and remains a dominant approach and baseline for evaluation. The Authors develop an architecture for \textit{Inductive} reasoning using topological and attribute features of the nodes. The key idea is to develop an embedding scheme that captures the \textit{Context} of the nodes, rather than just representing the node itself which only premitted \textit{Transductive} reasoning. Their approach works be iterative sampling a graph, building a deature vector based on the node and its neighborhood of nodes connected to it and then aggregating those in each iteration. 
+Each iteration takes another `step' further away in the graph from the start node, capturing more of the neighborhood. They demonstrate that by sampling up to a total of 25 nodes no greater than two hops away they can gain significant improvement on execution time (2 orders of magnitude) while achieving SoTA results. Increasing the sample size beyond this aggressively degrades performance and does not meaningfully improve the performance of the model.}
+}
+
+@inproceedings{Kipf2016,
+  title={Semi-Supervised Classification with Graph Convolutional Networks},
+  author={Kipf, Thomas N and Welling, Max},
+  booktitle={International Conference on Learning Representations},
+  year={2017},
+  abstract={We present a scalable approach for semi-supervised learning on graph-structured data that is based on an efficient variant of convolutional neural networks which operate directly on graphs. We motivate the choice of our convolutional architecture via a localized first-order approximation of spectral graph convolutions. Our model scales linearly in the number of graph edges and learns hidden layer representations that encode both local graph structure and features of nodes. In a number of experiments on citation networks and on a knowledge graph dataset we demonstrate that our approach outperforms related methods by a significant margin.},
+  comments={This paper introduced the idea of Graph Convolutional Networks. 
+It is a foundational paper and still widely cited today. The authors seek to classify documents represented in a citation graph based on a combination of the topological characteristics of the citations, and the information contained in the labels. Their work makes an implicit assumption that nodes located proximally to each other in the graph will share labels. They build on prior work in graph classification which is divided into statistical and neural approaches. Statistical approaches typically either focused on deriving the graph laplacian and using that to classify graphs (graph-theoretic approach), or on creating embeddings and using those embeddings to classify graphs using a conventional ML approach. Neural approaches were rare, and at best had performance quadratic to the number of edges. The author's approach builds on the idea of spectral convolutions in graphs. That is, they are able to make some simplifying assumptions and approximations to reduce the complexity of processing the graph, bringing it to be linear in both time and memory to the number of edges in the graph. Their approach is \textit{transductive}, that is, it must be trained on the graph that it is making predictions on, rather than the more general inductive approach. Their experiments show the theorised linear relationship, and highlight that the speed of a training epoch on a GPU is faster than on a CPU. However, they also show that because of the linear relationship between memory usage and number of edges that large, dense graphs do not fit in GPU memory.While they do not provide a detailed efficiency breakdown, we can reason that the bottlenecks will be consistent with other approaches. For example, memory latency in accessing the neighborhoods of nodes in each pass, and the computational bottleneck in calculating the cross-entropy loss of the input to hidden to outputs weight matrices.Overall this is an important paper in the development of GNNs, and sets the conditions for more the work in GraphSAGE}
+}
+
+@article{Mccreesh2018,
+  title={When subgraph isomorphism is really hard, and why this matters for graph databases},
+  author={McCreesh, Ciaran and Prosser, Patrick and Solnon, Christine and Trimble, James},
+  journal={Journal of Artificial Intelligence Research},
+  volume={61},
+  pages={723--759},
+  year={2018},
+  comments={Subgraph Isomorphism Gets easier with labels as we can employ a filter/verify approach. However some algorithms struggle to adapt (eg vf2)}
+}
+
+@book{Hennessy2019,
+author={John L. and Patterson, David A.},
+title={Computer Architecture: A Quantitative Approach},
+year={2019},
+edition={6},
+publisher={Morgan Kaufmann},
+comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position is that the only consistent and reliable measure of performance is the execution time of real programs.' To evaluate a system, a user would run `workloads' the mixture of programs and operating system commands that users run on a computer. One alternative approach is Benchmark Programs. `The best choice of benchmarks to measure performance is real applications.' Examples include `kernels' (small key pieces of real applications), `toy programs' (100 line programs from beginning programming assignments like quicksort) and `synthetic benchmarks' (fake programs invented to try and match the behaviour and profile of real programs.) All three are widely discredited because compiler writers and system architects can easily manipulate the results. Another risk is the use of benchmark-specific compiler flags, so good benchmarks limit the compiler flags that can be used. benchmark designers must decide if source code modifications are allowed (typically `no', `yes but too hard', and `yes but must produce same result'. Benchmark Suites are a popular measure of performance across a variety of applications, but are only as good as the constituent individual benchmarks. The goal of a benchmark suite should be `to characterize the real relative performance of two computers, particularly for programs not in the suite that customers are likely to run'. The EMBCC benchmark is limited because it only runs small kernels and so is not a good reflection of the actual performance of a system. There are many types of benchmark that are used to evaluate the specific kinds of tasks. The Guiding principle of reporting performance measurements should be `reproducability'. It should include a detailed description of the computer and compiler flags, baselines and optimized results. It could also include cost information. In the best case, the suite resembles a statistically valid sample of the application space, but this is not really used in practice. We should have a single numerical summary result. A simple approach is to use the arithmetic means of the execution times of the applications in the suite. They show how they use the SPECRatio to calculate the relative performance to a baseline run. And becuase of that, they must calculate the geometric mean (because ratios have no units and comparing unitless measures arithmetically is pointless))
+  
+  Ch 7.9 "CPU vs GPU vs DNN Accelerator. They choose six benchmarks that represent 95 percent of googles TPU load. CPU Server is represented by an 18 core dual socket Haswell Processor from intel which also hosted the GPU and TPU. GPU is the NVIDIA K80. They use the roofline performance model. The TPU roofline has a long slant, reflecting that is it limited by memory bandwidth rather than peak compute. All but 1 of their six benchmark tasks were memory-bound. They make reference to the `tail at scale' article that highlights the need to focus on the 99th percentile performance to get something user acceptable. Architects use the geometric mean to measure performance when they're not sure what applications will be actually run on the system. When buying computers by the thousands, cost performance trumps general performance. For designing the TPU they leveraged three important architectual features (1) Systolic Arrays, (2) Decoupled Access-Execute and (3) CISC instructions [even though they weren't found to be optimal for general purpose architectures]. TPU succeeded for DNN because of the large matrix unit, the substantial software controlled on-chip memory; the ability to run whole inference models to reduce dependence on the host CPU, a single-threaded deterministic execution model that proved to be a good match for the 99th percentile response time limits, enough flexibility to match DNNs of the time, the ommission of general purpose features; the use of 8 bit integers by quantized apps and the fact that the applications were written in tensorflow, which was spoken natively by the TPU and didn't incur conversion costs. They also note that the end of moore's law and dennard scaling means that improving cost-energy performacne will require architectural innovation,}
+}
+
+@book{Goldratt1990,
+  title={Theory of constraints},
+  author={Goldratt, Eliyahu M},
+  year={1990},
+  publisher={North River Croton-on-Hudson}
+}
+
+@book{Goldratt2004,
+  title={The goal: a process of ongoing improvement},
+  author={Goldratt, Eliyahu M and Cox, Jeff},
+  year={2004},
+  edition        = {Third Revised Edition},
+  publisher={Routledge}
+}
+
+@inproceedings{Wu2015,
+  title={Performance characterization of high-level programming models for GPU graph analytics},
+  author={Wu, Yuduo and Wang, Yangzihao and Pan, Yuechao and Yang, Carl and Owens, John D},
+  booktitle={2015 IEEE International Symposium on Workload Characterization},
+  pages={66--75},
+  year={2015},
+  organization={IEEE},
+  comment={Extremely useful description of GPU primitives and how we optimize for GPU work.}
+}
+
+@inproceedings{Liu2019,
+  title={$\{$SIMD-X$\}$: Programming and processing of graph algorithms on $\{$GPUs$\}$},
+  author={Liu, Hang and Huang, H Howie},
+  booktitle={2019 USENIX Annual Technical Conference (USENIX ATC 19)},
+  pages={411--428},
+  year={2019}
+}
+
+%SCAN ALL BELOW HERE %%%
+
+@inproceedings{Hong2012,
+  title={Green-Marl: a DSL for easy and efficient graph analysis},
+  author={Hong, Sungpack and Chafi, Hassan and Sedlar, Edic and Olukotun, Kunle},
+  booktitle={Proceedings of the seventeenth international conference on Architectural Support for Programming Languages and Operating Systems},
+  pages={349--362},
+  year={2012}
+}
+
+@inproceedings{Nguyen2013,
+  title={A lightweight infrastructure for graph analytics},
+  author={Nguyen, Donald and Lenharth, Andrew and Pingali, Keshav},
+  booktitle={Proceedings of the twenty-fourth ACM symposium on operating systems principles},
+  pages={456--471},
+  year={2013}
+}
+
+@article{Sundaram2015,
+  title={GraphMat: High performance graph analytics made productive},
+  author={Sundaram, Narayanan and Satish, Nadathur and Patwary, Md Mostofa Ali and Dulloor, Subramanya R and Anderson, Michael J and Vadlamudi, Satya Gautam and Das, Dipankar and Dubey, Pradeep},
+  journal={Proceedings of the VLDB Endowment},
+  volume={8},
+  number={11},
+  year={2015}
+}
+
+@inproceedings{Satish2014,
+  title={Navigating the maze of graph analytics frameworks using massive graph datasets},
+  author={Satish, Nadathur and Sundaram, Narayanan and Patwary, Md Mostofa Ali and Seo, Jiwon and Park, Jongsoo and Hassaan, M Amber and Sengupta, Shubho and Yin, Zhaoming and Dubey, Pradeep},
+  booktitle={Proceedings of the 2014 ACM SIGMOD international conference on Management of data},
+  pages={979--990},
+  year={2014}
+}
+
+@inproceedings{Ediger2013,
+  title={Investigating graph algorithms in the bsp model on the cray xmt},
+  author={Ediger, David and Bader, David A},
+  booktitle={2013 IEEE International Symposium on Parallel \& Distributed Processing, Workshops and Phd Forum},
+  pages={1638--1645},
+  year={2013},
+  organization={IEEE},
+  comments={PROBLEMS: 
+    SOLUTIONS:The architecture tolerates high memory latencies using massive hardware multithreading. The Cray XMT does not require locality to obtain good performance. Instead, latency to memory is tolerated entirely by hardware multithreading, making this machine a good candidate for memory-intensive codes like those found in graph analysis.}
+}
+
+@article{Ediger2012,
+  title={Graphct: Multithreaded algorithms for massive graph analysis},
+  author={Ediger, David and Jiang, Karl and Riedy, E Jason and Bader, David A},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  volume={24},
+  number={11},
+  pages={2220--2229},
+  year={2012},
+  publisher={IEEE},
+  comments={Programming Model for Cray for Graphs}
+}
+
+@inproceedings{Malewicz2010,
+  title={Pregel: a system for large-scale graph processing},
+  author={Malewicz, Grzegorz and Austern, Matthew H and Bik, Aart JC and Dehnert, James C and Horn, Ilan and Leiser, Naty and Czajkowski, Grzegorz},
+  booktitle={Proceedings of the 2010 ACM SIGMOD International Conference on Management of data},
+  pages={135--146},
+  year={2010},
+  comments={Google Graph Processing
+  SOLUTION: Pregel uses a bulk synchronous parallel programming style. A graph computation is broken up into a sequence of iterations. In each iteration, a vertex is able to 1) receive messages from the previous iteration, 2) do local computation or modify the graph, and 3) send messages to vertices that will be received in the next iteration.}
+}
+
+@book{Sakr2016,
+  title={Large-scale graph processing using Apache Giraph},
+  author={Sakr, Sherif and Orakzai, Faisal Moeen and Abdelaziz, Ibrahim and Khayyat, Zuhair},
+  year={2016},
+  publisher={Springer},
+  comment={BSP is a vertex-centric programming model where the computation on vertices are represented as a sequence of supersteps (iterations) with synchronization between the nodes participating at superstep barriers. In particular, in each iteration, every vertex that is involved in computation, 1) receives its neighbors updated values from previous iteration, 2) the vertex then will be updated by received values, 3) sends its updated value to its adjacent vertices that will be available to them in the next superstep. At each iteration (superstep), each vertex can vote to be active or inactive in the next iteration.  In order to avoid communication overheads, Pregel preserves data locality by ensuring computation is performed on locally stored data. In particular, Pregel distributes the graph vertices to the different machines of the cluster where each vertex and its associated set of neighbors are assigned to the same node  In Pregel, the input graph is loaded once at the beginning of the program
+and all computations are executed in-memory. Pregel uses a master/workers model
+where the master node is responsible for coordinating synchronization at the superstep barriers while each worker independently invokes and executes the compute()
+function on the vertices of its assigned portion of the graph and maintains the message queue to receive messages from the vertices of other workers}
+}
+
+%%% BUT ABOVE HERE %%%

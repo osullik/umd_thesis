@@ -1,4 +1,19 @@
 \section{Graph Hardware Acceleration}
 \label{section:13-Graph-Hardware-Acceleration}
 
+GPUs perform well with large and uniformly sized vertex frontiers and when graph diameter is low. 
+Dense scale-free graphs perform better on GPU.
+GPU struggles with small frontier sizes, small vertex degrees and load imbalances within the frontier and with more synchronizations caused by large diameters. 
+Mesh networks are not well suited for GPU because they do not expose enough work to saturate the GPU.
+Traversal-based primitives are more impacted by graph topology than computation-based primitives because they operate on smaller subsets of the graph and have less parallel work to do per operation~\cite{Wu2015}
+
 Graph Algorithms have a high communication-to-computation ratio. Their parallelism is constricted to gains of $P^{\frac{1}{2}}$ where $P=$ the number of workers. Communication-avoiding algorithms are promising but can't eliminate the problem on their own. Hardware optimization must be the way forward, and GraphBLAS gives us composable primitives to identify where to optimize hardware.~\cite{Kepner2016}
+
+ND-Miner~\cite{Talati2022}
+
+EXPLOIT Methods
+SIMD-X~\cite{Liu2019} exploits latent potential in GPUs with a new programming model.
+
+
+ELEVATE Methods
+
