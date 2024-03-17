@@ -75,6 +75,11 @@ The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|
 \input{Figures/Graphs/11_incidence}
 \input{Figures/Graphs/12_csr}
 
+More complicated representations exist which are capable of compressing the graph representations even further. 
+\textit{Ligra+} uses an encoding scheme that splits the graph into two arrays \textit{Compressed Edges-in} and \textit{Compressed Edges-out}.
+The arrays use k-bit block encoding to approximately halve the memory requirements to represent each graph. 
+The compression has an encode/decode overhead that makes it impractical in serial systems but has been shown to improve overall performance in parallel implementations~\cite{Shun2015}.
+
 Graphs can be \textit{Static} or \textit{Dynamic}.
 Static graphs are those that are pre-built and unchanging. 
 Algorithms can assume unlimited time to find a solution and that the representation itself will remain unchanged. 
@@ -86,6 +91,8 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 
 \subsection{Graph Primitives}
 \label{section:123-graph-primitives}
+
+There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
 The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
 The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
 These chunks may also include details of the labels, weights and other non-topological information stored in the graph, or just house pointers to that information.

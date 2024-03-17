@@ -941,16 +941,7 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   comment={}
 }
 
-@inproceedings{Wang2016,
-  title={Gunrock: A high-performance graph processing library on the GPU},
-  author={Wang, Yangzihao and Davidson, Andrew and Pan, Yuechao and Wu, Yuduo and Riffel, Andy and Owens, John D},
-  booktitle={Proceedings of the 21st ACM SIGPLAN symposium on principles and practice of parallel programming},
-  pages={1--12},
-  year={2016}, 
-  groups={graph_datasets},
-  abstract={For large-scale graph analytics on the GPU, the irregularity of data access/control flow and the complexity of programming GPUs have been two significant challenges for developing a programmable high-performance graph library. "Gunrock," our high-level bulk-synchronous graph-processing system targeting the GPU, takes a new approach to abstracting GPU graph analytics: rather than designing an abstraction around computation, Gunrock instead implements a novel data-centric abstraction centered on operations on a vertex or edge frontier. Gunrock achieves a balance between performance and expressiveness by coupling high-performance GPU computing primitives and optimization strategies with a high-level programming model that allows programmers to quickly develop new graph primitives with small code size and minimal GPU programming knowledge. We evaluate Gunrock on five graph primitives (BFS, BC, SSSP, CC, and PageRank) and show that Gunrock has on average at least an order of magnitude speedup over Boost and PowerGraph, comparable performance to the fastest GPU hardwired primitives, and better performance than any other GPU high-level graph library.},
-  comment={}
-}
+
 
 @article{Bader2009,
   title={Hpc scalable graph analysis benchmark},
@@ -3059,7 +3050,8 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   journal={Proceedings of the VLDB Endowment},
   volume={8},
   number={11},
-  year={2015}
+  year={2015},
+  comment={PiUMA competitior}
 }
 
 @inproceedings{Satish2014,
@@ -3067,7 +3059,14 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   author={Satish, Nadathur and Sundaram, Narayanan and Patwary, Md Mostofa Ali and Seo, Jiwon and Park, Jongsoo and Hassaan, M Amber and Sengupta, Shubho and Yin, Zhaoming and Dubey, Pradeep},
   booktitle={Proceedings of the 2014 ACM SIGMOD international conference on Management of data},
   pages={979--990},
-  year={2014}
+  year={2014},
+  comments={
+    OBSERVATIONS: Currently, there is no consensus on what the “building blocks” of graph processing should be. Different programming frameworks use different bases such as sparse matrix operations, vertex programs from the point of view of a single vertex [Girafe, GraphLab], declarative programming or generic task based parallelization.  It is often possible for the "Ninja performance gap" between naively written graph code and well-tuned hand-optimized code to be multiple orders of magnitude. (i.e. a general framework can't compete with custom-engineered implementations. COMMENT: This extends to hardware and use of ASIC too...)
+    PROBLEMS: Memory Bandwidth was the bottleneck for all algos on a single node. On 4 node, NW comms were bottleneck for PR and TC, with memory bw being the bottleneck for BFS and CF
+    SOLUTIONS: creating a roadmap to improve the performance of various graph frame- works in order to bridge the performance gap with respect to native code. The following optimizations will help generally (1) Choosing better data structures depending on the algorithm (2) Using compression to reduce the size of node ids being communicated (3) Overlap communications and computation (4) Use efficient message passing (like MPI) (5) Partition the graphs. 
+    They Analyze 4 algorithms: BFS, PageRank, Triangle Counting, Collaborative Filtering
+    METHODOLOGY: They use the sar/sysstat monitoring tools
+  }
 }
 
 @inproceedings{Ediger2013,
@@ -3112,6 +3111,186 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
 and all computations are executed in-memory. Pregel uses a master/workers model
 where the master node is responsible for coordinating synchronization at the superstep barriers while each worker independently invokes and executes the compute()
 function on the vertices of its assigned portion of the graph and maintains the message queue to receive messages from the vertices of other workers}
+}
+
+@inproceedings{Nurvitadhi2014,
+  title={GraphGen: An FPGA framework for vertex-centric graph computation},
+  author={Nurvitadhi, Eriko and Weisz, Gabriel and Wang, Yu and Hurkat, Skand and Nguyen, Marie and Hoe, James C and Mart{\'\i}nez, Jos{\'e} F and Guestrin, Carlos},
+  booktitle={2014 IEEE 22nd Annual International Symposium on Field-Programmable Custom Computing Machines},
+  pages={25--28},
+  year={2014},
+  organization={IEEE},
+  comment={No details on the problems or bottlenecks. }
+}
+
+@inproceedings{Oguntebi2016,
+  title={Graphops: A dataflow library for graph analytics acceleration},
+  author={Oguntebi, Tayo and Olukotun, Kunle},
+  booktitle={Proceedings of the 2016 ACM/SIGDA International Symposium on Field-Programmable Gate Arrays},
+  pages={111--117},
+  year={2016},
+  comments={GraphOps provide a hardware designer with a set of composable graph-specific building blocks necessary to implement a wide array of graph analytics algorithms.  GraphOps-based accelerators are defined as sets of blocks in which graph data are streamed to/from memory and computation metadata are streamed through the GraphOps blocks as inputs and outputs.
+  IT HAS A GRAPH TO MEMORY DIAGRAM
+  PROBLEMS: Most graph data structures are inherently sparse indeed, they are usually represented on disk as sparse matrices. This sparseness manifests itself as a dearth of spatial locality when attempting to traverse a vertex's edges to visit its neighbors It has long been known that computational performance of graph analytics codes is usually bound by memory bandwidth .}
+}
+
+@article{Ozdal2017,
+  title={Graph analytics accelerators for cognitive systems},
+  author={Ozdal, Muhammet Mustafa and Yesil, Serif and Kim, Taemin and Ayupov, Andrey and Greth, John and Burns, Steven and Ozturk, Ozcan},
+  journal={IEEE Micro},
+  volume={37},
+  number={1},
+  pages={42--51},
+  year={2017},
+  publisher={IEEE},
+  comments={PROBLEMS
+  *Graph applications are hard to parallelize due to irregular execution patterns and synchronization requirements. efficiently implementing these applications on existing systems is not trivial. There are several reasons for this, including memory access bottlenecks, synchronization problems, and irregular computation and communication patterns. 
+  * Many graph algorithms are iterative in nature, wherein execution continues until a convergence criteria is met. However, the number of iterations required to converge individual vertices can vary significantly.
+  EXPLOIT TECHNIQUE: Our analysis shows that enabling asymmetric convergence decreases the total number of edges processed by 47 percent on average.}
+}
+
+@inproceedings{Chung2012,
+  title={Application data prefetching on the IBM Blue Gene/Q supercomputer},
+  author={Chung, I-Hsin and Kim, Changhoan and Wen, Hui-Fang and Cong, Guojing},
+  booktitle={SC'12: Proceedings of the International Conference on High Performance Computing, Networking, Storage and Analysis},
+  pages={1--8},
+  year={2012},
+  organization={IEEE},
+  comments={prefetching loses its advantage when the input size becomes large. At 1M vertices, the size of list itself of addresses is bigger than 32MB, the size of L2. Since the list cannot be contained in L2, it has to be brought from the main memory.  For even larger input size, 10M vertices, this effects becomes more significant and the performance gets even worse. Since the list perfetching improves the performance only for small graphs, one may break the big graph into small pieces and handle one by one and then combine them later. This requires clever algorithms of dividing the big graph properly,}
+}
+
+@inproceedings{Ahn2015,
+  title={A scalable processing-in-memory accelerator for parallel graph processing},
+  author={Ahn, Junwhan and Hong, Sungpack and Yoo, Sungjoo and Mutlu, Onur and Choi, Kiyoung},
+  booktitle={Proceedings of the 42nd Annual International Symposium on Computer Architecture},
+  pages={105--117},
+  year={2015},
+  comment={Scalable hardware design that can efficently process large graphs in memory is an open problem. 
+  PROBLEMS: Two key problems. (1) How fast can each item be processed and request the next item from memory. (2) How fast can the massive amount of data be delivered from memory to computation units. // On-chip accelerators benefit computation efficency but system performance does not scale with the increase in the amount of data per sever (main memory capacity per server) because more accelerators require more memory bandwidth to feed them all. [SCALABILITY is limited by a memory bandwidth bottleneck.]. Graph analysis workloads put pressure on memory bandwidth because of (1) Large number sof random memory accesses across large memory regions, limiting cache efficiency; (2) Very small amounts of computation per item (leading to the inability to hide long memory latencies. //  Many existing frameworks abstract synchronization from the programmers to make parallelism easier. Synchronization is requried to guarantee atomic updates of shared data and no overlap between vertex processign loops. Parallelism is made challenging by (1) Large Number of Random Memory Accesses During Neighbor traversal, (2) Poor locality of memory access in algorithms since many access the entire set of vertices on each iteration of the algorithm. (3) Memory access latency cannot be easily hidden because of small amount of computation per vertex. )
+  SOLUTION: Procissing-In-Memory (Tesseract)}
+}
+
+@inproceedings{Wang2016,
+  title={Gunrock: A high-performance graph processing library on the GPU},
+  author={Wang, Yangzihao and Davidson, Andrew and Pan, Yuechao and Wu, Yuduo and Riffel, Andy and Owens, John D},
+  booktitle={Proceedings of the 21st ACM SIGPLAN symposium on principles and practice of parallel programming},
+  pages={1--12},
+  year={2016}, 
+  groups={graph_datasets},
+  abstract={For large-scale graph analytics on the GPU, the irregularity of data access/control flow and the complexity of programming GPUs have been two significant challenges for developing a programmable high-performance graph library. "Gunrock," our high-level bulk-synchronous graph-processing system targeting the GPU, takes a new approach to abstracting GPU graph analytics: rather than designing an abstraction around computation, Gunrock instead implements a novel data-centric abstraction centered on operations on a vertex or edge frontier. Gunrock achieves a balance between performance and expressiveness by coupling high-performance GPU computing primitives and optimization strategies with a high-level programming model that allows programmers to quickly develop new graph primitives with small code size and minimal GPU programming knowledge. We evaluate Gunrock on five graph primitives (BFS, BC, SSSP, CC, and PageRank) and show that Gunrock has on average at least an order of magnitude speedup over Boost and PowerGraph, comparable performance to the fastest GPU hardwired primitives, and better performance than any other GPU high-level graph library.},
+  comment={GOOD SOURCE FOR RELATED WORK ON GRAPH OPTIMIZATION.
+    PROBLEMS: (1) Irregularity of data access/control flow in graph data structures make implemeing on GPU optimized for regular structured parallelism difficult. (2) The Chief challenge in a massively parallel Graph Processing system is managing irregularity in workload distribution.
+  SOLUTIONS:
+  METHOD: "Our Key abstraction is the frontier, a sobset of the edges or vertices within the graph that are currently of interest. All Gunrock operations are bulk-synchronous and manipulate this frontier, either by computing on values within it or computing a new frontier from it".
+  PRIMITIVES:BFS, SSSP, BC, PageRank, CC (Comment: I don't hold these as primitives. Do all of these compose into more complicated algorithms?)}
+}
+
+
+@inproceedings{Mukkara2018,
+  title={Exploiting locality in graph analytics through hardware-accelerated traversal scheduling},
+  author={Mukkara, Anurag and Beckmann, Nathan and Abeydeera, Maleen and Ma, Xiaosong and Sanchez, Daniel},
+  booktitle={2018 51st Annual IEEE/ACM International Symposium on Microarchitecture (MICRO)},
+  pages={1--14},
+  year={2018},
+  organization={IEEE},
+  comments={PROBLEMS: (1) Caches are of little help because of the irregular structure of graph causes seemingly random memory references. Three factors conspire to make graph applications memory-boung (a) low compute-to-communication ratio. (b) Poor Temporal locality because of graph structure. (c) Poor spatial locality as they perform spare accesses to small (4-8 Byte objects). // Software frameworks (like Ligra and Graph-MAT) process vertices in the order they are found in memory (vertex-ordered scheduling) because typically online traversal scheduling incurs too much cost and it makes sense for most applications on general-purpose systems. Offline traversal scheduling occurs (Graphicionado, PathGraph, GridGraph) but is very expensieve and so only really works for static graphs. 
+  ASSERTION: Most real-world graphs offer significant potential locality, it is just hard to predict ahead of time. Locality can be exploited by controlling the traversal schedule (order in which vertices and edges of the graph are processed)
+  SOLUTION: Online traversal scheduling stretegies that exploit the community structure of real-world graphs to improve locality (temporal). They use hardware acceleration to speed up the traversal scheduling aspect. }
+}
+
+@article{Chen2019,
+  title={Powerlyra: Differentiated graph computation and partitioning on skewed graphs},
+  author={Chen, Rong and Shi, Jiaxin and Chen, Yanzhe and Zang, Binyu and Guan, Haibing and Chen, Haibo},
+  journal={ACM Transactions on Parallel Computing (TOPC)},
+  volume={5},
+  number={3},
+  pages={1--39},
+  year={2019},
+  publisher={ACM New York, NY, USA},
+  comments={PROBLEMS: Graph Parallel processing systems have sub-optimal partitioning schemes. suffering from (1) Load Imbalance and high contention for high degree vertices (Pregel, GraphLab) (2) High communication cost and memoryu consumption even for low-degree vertices (PowerGraph, GraphX)
+  SOLUTION: Hybrid model - Low Degree vertices are processed centrally to reduce communication overheads, distributes computation for high degree workloads to load balance. Uses the HybridCUT graph partitioning algorithm; Uses locality-concious data layout to improve cache usage. PowerLYRA uses the Gather-Apply-Scatter (GAS) programming model.}
+}
+
+@inproceedings{Shun2013,
+  title={Ligra: a lightweight graph processing framework for shared memory},
+  author={Shun, Julian and Blelloch, Guy E},
+  booktitle={Proceedings of the 18th ACM SIGPLAN symposium on Principles and practice of parallel programming},
+  pages={135--146},
+  year={2013},
+  comments={
+  OBSERVATIONS: (1) For rgaph algorithms, shared memory multicore machines are generally significantly more energy efficient on a per core, per dollar and per joule basis than distributed memory systems and shared memory algorithms tend to be simpler than their distributed memory counterparts. (2) Distributed Memory Graph Processing systems include: PBGL, Pregel, Pegasus, PowerGraph, KDTK, GPS, Giraph. (3) Shared Memory Systems include (Original GraphLab, Grace. )
+  PROBELMS: Communication Costs are much cheaper in Shared Memory systems than Distributed Memory systems. 
+  SOLUTIONS: Ligra is optimized for Traversal Problems (visit small chunks of nodes each step). Their system allows edges to be processed in any order (innovation over Pregel, GraphLab and Giraph)
+  PRIMITIVES: Two data types (Graph and VertexSubset); Two Functions (VertexMap and EdgeMap). Atomic Operations: Compare-and-swap}
+}
+
+@inproceedings{Shun2015,
+  title={Smaller and faster: Parallel processing of compressed graphs with Ligra+},
+  author={Shun, Julian and Dhulipala, Laxman and Blelloch, Guy E},
+  booktitle={2015 Data Compression Conference},
+  pages={403--412},
+  year={2015},
+  organization={IEEE},
+  comments={Adds Compression to Ligra, halving the space required to represent graphs from Ligra COMMENT-> Reducing the storage requirement would greatly improve GPU ability to process graphs. 
+  OBSERVATIONS: Reducing the sizes of graphs is crucial to reducing the cost of large-scale graph analytics. COMMENT: Memory accesses are also the most power intensive part of computation, this should help reduce memory consumption.
+  PROBLEMS: Compressing graphs causes serial algorithms to run slower, but on parallel systems they can run comparably or faster than uncompressed graphs in serial. // Graphs are memory-bound and memory is a larger bottleneck in parallel due to multiple cores competing for bandwidth. 
+  SOLUTIONS: In parallel, reducing the memory footprint offsets the cost of decoding a compressed graph because decompression scales better relative to size than other parts of computation.
+  COMPRESSION Method: Difference Encoding takes a vertexes adjacency list in increasing order and encodes differences, using k-bit code blocks. It stores the graph in two arrays - compressed in edges and compressed out edges; they can encode weights too. Not clear if it encodes labels. }
+}
+
+@inproceedings{Nguyen2013,
+  title={A lightweight infrastructure for graph analytics},
+  author={Nguyen, Donald and Lenharth, Andrew and Pingali, Keshav},
+  booktitle={Proceedings of the twenty-fourth ACM symposium on operating systems principles},
+  pages={456--471},
+  year={2013},
+  comments={
+  OBSERVATIONS: The GALOIS System (improvement on). Domain-Specific Langauges have been developed (Power-Graph, Green-Marl, GraphChi, GraphLab, Pregel, Ligra). They say these DSL focus on vertex-operators and use bulk-synchronous model. They use coordinated-scheduling to synchronize. Describe Amorphous Data Parallism (ADP) as a paradigm for expressing parallelism in regular and irregular algorithms. ADP has `active nodes' (same idea as a frontier). Computation at a node is an `activity' and an operator is used to initiate an activity at a node. The set of nodes read and written by an activity is its neighboruhood. 
+  PROBLEMS: Writing efficient parallel algorithms for shared-memory machines is difficult. // The Coordinated Scheduling approach favoured by DSL is insufficient. 
+  SOLUTIONS: Need To introduce Autonomous Scheduling using a topology-aware work-stealing scheduler and a priority scheduler. }
+}
+
+@inproceedings{Balaji2018,
+  title={When is graph reordering an optimization? studying the effect of lightweight graph reordering across applications and input graphs},
+  author={Balaji, Vignesh and Lucia, Brandon},
+  booktitle={2018 IEEE International Symposium on Workload Characterization (IISWC)},
+  pages={203--214},
+  year={2018},
+  organization={IEEE},
+  comments={
+    OBSERVATIONS: Has a diagram of graph - to - memory. ID five bottleneck exploitation techniques 
+      (1) Graph Reordering {rewrite graph in memory so that when read in order it works better} [Gorder, Recall, LLP, Nested Dissection, Slashburn, RCM, Rabbit], 
+      (2) Cache Blocking {break graph into subgraphs that reduce irregularity of data accesses} [Graphicionado, Graphmat, Beamer2017, ] 
+      (3) Vertex Scheduling {Optimize the order vertices are visited} [Naiad] 
+      (4) Graph Partitioning {Reduce inter-node communications by creating graph partitions with minimal links between partitions - mostly for distributed computing} [Giraph, Powergraph, Gps, Pregel]
+      (5) In-memory Graph Processing {compress the graphs so that they fit in memory of a single machine} [Ligra, GraphMAT, Ligra+, GraphPad, GraphLab,]
+    PROBLEMS: The primary source of inefficiency in single-node graph processing is the poor locality in the processor cache hierarchy. Graph processing applications exhibit an irregular memory access pattern which leads to poor spatial and temporal locality in the memory access stream. Consequently, graph applications make sub-optimal use of the cache hierarchy and incur many long-latency main memory accesses - with upto 80 percent of execution time stalled on main memory accesses.
+    SOLUTIONS: The locality of graph applications can be improved with better graph data layout. Graph reordering techniques relabel vertices with different IDs by exploiting the structural properties of graphs to improve locality. We ran Gorder , a state of the art reordering algorithm, and observed that it took around 15 hours to reorder a graph which reduced the run time of the Page Rank graph application from 12 seconds to 5 seconds. lightweight graph reordering techniques are required that can provide a net performance improvement even after including the overhead of reordering.
+  }
+}
+
+@inproceedings{Zhang2017,
+  title={Making caches work for graph analytics},
+  author={Zhang, Yunming and Kiriansky, Vladimir and Mendis, Charith and Amarasinghe, Saman and Zaharia, Matei},
+  booktitle={2017 IEEE International Conference on Big Data (Big Data)},
+  pages={293--302},
+  year={2017},
+  organization={IEEE},
+  comments={
+  OBSERVATIONS: Caches are underutilized in graph analytic frameworks.
+  PROBLEMS:  (1) The core problem is that graph applications have poor cache utilization -- They do very little computation per byte accessed and a large fraction of their memory requests are `random'. (2) Random accesses to a working set that does not fit in cache makes the entire cache hardware subsystem ineffective. (3) The latest frameworks spend 60-80 percent of their cycles stalled on memory accesses. 
+  SOLUTIONS: `CARGA' framework that uses CSR fragmenting and limits all `random' accesses to the cache.
+  METHODOLOGY: Uses CSR Fragmenting partion the graph into subgraphs that fit graph segments (subgraphs) into LLC}
+}
+
+@inproceedings{Dhulipala2017,
+  title={Julienne: A framework for parallel graph algorithms using work-efficient bucketing},
+  author={Dhulipala, Laxman and Blelloch, Guy and Shun, Julian},
+  booktitle={Proceedings of the 29th ACM Symposium on Parallelism in Algorithms and Architectures},
+  pages={293--304},
+  year={2017},
+  abstract={Existing graph-processing frameworks let users develop efficient implementations for many graph problems, but none of them support efficiently bucketing vertices, which is needed for bucketing-based graph algorithms such as \Delta-stepping and approximate set-cover. Motivated by the lack of simple, scalable, and efficient implementations of bucketing-based algorithms, we develop the Julienne framework, which extends a recent shared-memory graph processing framework called Ligra with an interface for maintaining a collection of buckets under vertex insertions and bucket deletions.We provide a theoretically efficient parallel implementation of our bucketing interface and study several bucketing-based algorithms that make use of it (either bucketing by remaining degree or by distance) to improve performance: the peeling algorithm for k-core (coreness), \Delta-stepping, weighted breadth-first search, and approximate set cover. The implementations are all simple and concise (under 100 lines of code). Using our interface, we develop the first work-efficient parallel algorithm for k-core in the literature with nontrivial parallelism.We experimentally show that our bucketing implementation scales well and achieves high throughput on both synthetic and real-world workloads. Furthermore, the bucketing-based algorithms written in Julienne achieve up to 43x speedup on 72 cores with hyper-threading over well-tuned sequential baselines, significantly outperform existing work-inefficient implementations in Ligra, and either outperform or are competitive with existing special-purpose parallel codes for the same problem. We experimentally study our implementations on the largest publicly available graphs and show that they scale well in practice, processing real-world graphs with billions of edges in seconds, and hundreds of billions of edges in a few minutes. As far as we know, this is the first time that graphs at this scale have been analyzed in the main memory of a single multicore machine.},
+  comments={}
 }
 
 %%% BUT ABOVE HERE %%%
