@@ -344,46 +344,108 @@ Other approaches use incremental algorithms to update the results of the analysi
 A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is equal to or less than the demand placed on it~\cite{Goldratt2004}. 
 To improve the overall performance of a system, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, improve the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
 This section reviews the prior work in identifying the bottlenecks known to occur during graph processing, setting the scene for the discussion of using hardware accelerators to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:13-Graph-Hardware-Acceleration}.
-The inefficiency of graph algorithms is because of the large volume and irregular pattern of communication between computations at each vertex or edge.
-The irregular patterns manifest as large numbers of \textit{main memory accesses} in shared memory systems and an increased volume of \textit{inter-processor messages} in distributed processing systems~\cite{Beamer2015}.
 
-As datasets become larger, approaching the exa-scale, the computers are going to be based on accelerators and multi-socket systems~\cite{Azad2021}.
+Graph processing began, as most computer science problems do, as a math problem--the K{\"o}nigsberg bridge problem--asking if the seven bridges of K{\"o}nigsberg could be traversed in a single trip without doubling back, ending back at the start point. 
+Euler's answer to this problem is generally heralded as the birth of graph theory~\cite{Barnett2005}.
+The early computational approaches to graph problems focused on sequential algorithms on single machines. 
+The rise of the `big-data' era has seen graphs increase in size from the four vertexes and seven edges of the K{\"o}nigsberg bridge problem to billions or trillions of nodes and edges. 
 
-1. Memory Latency
-    - The Heterogeneous data types (i.e. Graph Structure and Graph Property information) is a major source of delay and DRAM accesses~\cite{Basak2019}.
-    - Scale-free graphs tend to have better temporal locality than mesh graphs~\cite{Beamer2015}
-    - The memory bottleneck is due to latency more often than it is due to memory bandwidth because bandwidth is typically underutilized~\cite{Beamer2015a}
-    - Data-intensive applications like graph processing do not have the same locality traits as compute-intensive operations and so the latency of memory accesses overwhelms the advantages of deeply pipelined fast cores~\cite{Dysart2016}. 
-    - In semantic graphs, edges and vertices carry attributes of various types. Queries depend on the values of these attributes, which are usually not stored as part of the graph topology~\cite{Buluc2013}
+The increased graph size has flow-on effects. 
+Large graphs quickly became unable to fit in the memory of a single machine, and even where they could because of a powerful machine or a compressed graph representation, sequential algorithms were too slow to process the graph in a reasonable time. 
+Distributed computing offered a promising path to \textit{elevate} the single machine capacity bottleneck, but problems of how to efficiently partition graphs and synchronize operations on those partitions for distributed processing imposed new constraints, with network bandwidth, network latency and stalled cycles waiting for synchronization degrading performance. 
 
-2. Memory Bandwidth -- 95 percent of systems use less than one-third of their memory bandwidth~\cite{Kanev2015}
-    - Memory bandwidth is the bottleneck for \textit{traversal} and \textit{computationally intensive} graph algorithms in a single node, but only for the \textit{traversal} algorithms in a distributed system. The increased communication overheads that the \textit{computationally intensive} algorithms which process the whole graph each cycle made means that network bandwidth was a bigger constraint for them~\cite{Satish2014}
-    - Parallel Graph Algorithms have severe scalability problems on CPU architectures because of the limited memory bandwidth~\cite{Fu2014}
-    - Graph Processing algorithms are memory bound, and so do not fully utilize their memory bandwidth because they are waiting on memory accesses to load the data needed for computation~\cite{Beamer2015}.
-    - On single-core loads the biggest bandwidth limiter is fitting loads into the instruction window, preventing off chip memory bandwidth from becoming a bottleneck. 
-    - In GPU Processing, higher achieved memory bandwidth leads to increased throughput~\cite{Wu2015}
-    - Graph workloads put pressure on memory bandwidth because of the large numbers of irregular memory accesses that limits cache efficiency~\cite{Ahn2015}
-    - Graph workloads only perform small amounts of computation per vertex, meaning it becomes difficult to `hide' memory latency issues~\cite{Ahn2015}
-    - Insufficient memory access granularity in general-purpose architectures sees off-chip memory bandwidth is wasted when retrieving 64 byte cache line data and only using a small portion of it~\cite{Ham2016}
-    - The sparsity of graph data structures causes a dearth of spatial locality when attempting to traverse a vertexes edges to visit its neighbours~\cite{Oguntebi2016}.
-   
-3. Branch Misprediction and Load balancing
-    - Branch misprediction only hurts performance when the processor is compute-bound. As most graph processing is memory bound, the impact is lessened~\cite{Beamer2015}. 
-    - Graph applications heavily use branches. 
-    The brach operations are data dependent and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
+As computing capacity increased, \textit{elevating} the memory bottleneck, shared memory parallelism for graph processing gained traction.
+With viable shared-memory parallel solutions emerging, the focus of the research switched to improving the efficiency of programming frameworks and the processing itself to \textit{exploit} these gains. 
+The large number of graph-processing frameworks that exist `to abstract the complexity of implementing complicated parallel graph applications' evidences the growing demand for graph processing. 
+Realizing that the performance of most graph processing algorithms is dependent on the shape of the input data drove a wave of efforts to \textit{exploit} the interaction of the algorithm with the representation by re-ordering the graph as a pre-processing step, scheduling the order that vertices are ordered, and partitioning the graph so subgraphs can fit into cache. 
 
-4. Cache misses
-    - Prefetching loses its advantage when the size of the input becomes large. When the vertex list for the graph is larger than the cache, it forces a lot of main memory accesses~\cite{Chung2012}.
-    - Smaller graphs have a better Instructions per Miss (IPM) rate~\cite{Beamer2015}.
-    - IPM rate gets worse (decreases) as the distribution of edges approaches mesh rather than scale free~\cite{Beamer2015}, with few large degree vertices exploiting good temporal locality. 
-    - Graphs with higher average degrees benefit from spatial locality because the reads are more contiguous~\cite{Beamer2015}.
-    - A modest cache hit rate can cause cache misses to be so rare that an insufficient number of them fit into the instruction window to fill all of the outstanding memory request slots. With an insufficient number of outstanding memory requests, the processor is unable to fully utilize the memory bandwidth~\cite{Beamer2015a}.
-    - Experiments using a 64byte cache prefetcher, they found that most cache lines used $0$ or $8$ of the $64$ bytes because of the lack of spatial locality in a sparse graph data structure~\cite{Aananthakrishnan2020}.
-    - The cache on the chip is used inefficiently, with general architectures failing to effectively store the high-locality graph data. ~\cite{Ham2016}
-    - General purpose architectures use caching to exploit locality, but the irregular memory access patterns of graphs result in high cache miss rates~\cite{Song2016}
-    - Graph applications have poor cache utilization because they do minimal computation per edge and have irregular memory access patterns~\cite{Zhang2017}.
-    - Random accesses to a working set that does not fit into the cache renders the whole cache hierarchy ineffective, and as a result, many frameworks spend 60-80\% of their cycle time stalled on memory accesses. 
-    - The source of inefficiency in single-node graph processing is the lack of spatial and temporal locality in the memory access stream as they make poor use of the memory access hierarchy~\cite{Balaji2018}. 
+Deeper analysis shows that graph algorithms are almost universally memory-bound, except for some distributed implementations which are network-bound. 
+The constraints are commonly attributed to memory bandwidth and memory latency emerging from poor exploitation of the cache hierarchy and pre-fetching optimizations by graphs on CPU-based single machines, and a high communication-computation ratio for parallel (distributed and shared-memory) implementations. 
+Hardware acceleration is a natural step to \textit{elevate} both local and distributed approaches. 
+Representing graphs as matrices can allow us to \textit{exploit} the significant memory bandwidth available on GPUs, though sparsity quickly becomes a problem for the efficiency of both representation and computation, as well as incurring overhead for copying the graph data from main memory to the much more limited on-chip GPU memory. 
+Other approaches use FPGAs and ASICs to \textit{elevate} the computation bottlenecks in graph processing. 
+However, to maximize efficiency, they need to be hand-tuned to both the distribution of the input graph and the algorithm being deployed on the system.
+
+There is a particular emphasis on accelerating GNN hardware as a special case of graph processing made more difficult by the \textit{hybrid} execution patterns that include both the sparse, irregular memory accesses of graph processing and the dense, regular computation of neural networks.
+Taken together we can see that the efficient \textit{general purpose} processing of graph data structures is an open problem despite decades of work to \textit{exploit} graph processing with algorithmic and data structure innovations and \textit{elevate} performance through parallelization and hardware acceleration. 
+Estimates of commercially interesting graph sizes range up to $20$ Terabytes (TB)~\cite{Aananthakrishnan2020} and as datasets become larger, approaching the exa-scale, we are likely to see an increase in the demand for accelerated, distributed graph processing~\cite{Azad2021}.
+
+The following sections summarize each of these advances in turn and highlight common themes in the limitations that are used to inform the benchmark framework presented in chapter~\ref{chapter:30-Graph-Hardware-Benchmarking}.
+
+
+\subsubsection{Memory Constraints}
+Graph algorithms are widely understood to be \textit{memory bound}~\cite{Beamer2015}. 
+They are \textit{Data Intensive} algorithms, rather than the \textit{Compute Intensive} algorithms that modern general-purpose and GPU-accelerated systems are optimized for~\cite{Dysart2016}.
+A program is \textit{memory bound} when the processor is not fully utilized, typically because it is stalled waiting for data to be retrieved from memory.
+The \textit{memory bandwidth} of a system is commonly identified as the source of memory-boundedness for both \textit{traversal} and \textit{computationally intensive} graph algorithms~\cite{Satish2014}.
+Memory bandwidth is a pressure point because the large number of irregular memory accesses prevent the effective use of the cache hierarchy and because very little computation is performed on each vertex when loaded from memory~\cite{Ahn2015}.
+
+\textbf{The Memory Hierarchy.} General-purpose architectures alleviate memory bandwidth constraints with the caching system in the memory hierarchy~\cite{Hennessy2019}.
+Caches are under-utilized in graph processing systems because of irregular memory accesses, resulting in a high cache miss rate~\cite{Song2016} that has been measured as causing $60-80\%$ of cycles to stall waiting for memory accesses~\cite{Zhang2017}.
+The ineffectiveness of pre-fetching data in graph processing puts additional pressure on the cache hierarchy.
+Only small portions of each cache line contain the data needed for the next computation step, wasting much of the memory bandwidth that is used to load data into the cache~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}. 
+The `wasted space' in the cache lines is because of a lack of \textit{spatial locality} in graph data structures, which is generally true for many graph types, but particularly \textit{mesh} graphs with large diameters and a low mean degree~\cite{Oguntebi2016, Ham2016}.
+
+
+\input{Figures/Locality/01_simple_locality.tex}
+
+\textbf{Spatial Locality.} 
+\textit{Spatial locality} is the idea that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon, and so proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
+In figure~\ref{figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
+Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the impact that poor \textit{spatial locality} is evident.
+In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found. 
+So, for the graph in figure~\ref{figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
+The first `expansion' of \textbf{A} enqueues the pointers to \textbf{B} and \textbf{F}.
+\textbf{B} is already in the cache and the `cache hit' when it is dequeued for expansion means that the vertex is quickly retrieved, exploiting the spatial locality of \textbf{A} and \textbf{B} in this instance. 
+The processer expands \textbf{B} to add the pointer to its neighbor \textbf{C} to the queue.
+When it comes time to expand \textbf{F}, however, there is a `cache miss'.
+\textbf{F} is not in the cache, so the processor must now wait for it to be loaded from main memory, incurring a penalty proportional to the latency of retrieving the vertex from main memory plus the time it takes to load the whole block given memory bandwidth constraints. 
+For simplicity, let us now assume that we have loaded another $3$ vertices starting from \textbf{F} (\textbf{F, G, H}) to replace the content of the cache and expand \textbf{F}, adding its neighbor \textbf{D} to the queue. 
+\textbf{C} is now at the front of the queue but has been bumped out of the cache by the load of (\textbf{F, G, H}) so the processor must wait again for \textbf{C} to be loaded from main memory before it can be expanded. 
+The problem continues throughout the algorithm, effectively `chasing pointers' all over the main memory, the `irregular memory accesses' that cause so much difficulty in graph processing~\cite{Beamer2015}.
+The `pointer chasing' behavior here happens because of the poor \textit{spatial locality} in this graph.
+Put simply, the vertices that are close to each other in the graph topologically are not close to each other in memory. 
+It also shows how only a small percentage of each cache line is used in each step, putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
+The irregular memory access problem is exacerbated in larger graphs, where it is more likely that the vertex list does not fit in the cache and will have to access the main memory to retrieve the data~\cite{Chung2012}, reflected empirically in a decreasing \textit{instructions per miss} rate on larger graphs~\cite{Beamer2015}.
+
+\textbf{Temporal Locality.} 
+There is, however, some natural locality in \textit{scale-free} graphs that can be readily exploited. 
+Consider figure~\ref{figure:locality-simple} again. 
+While it isn't a scale-free graph in any real sense, vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
+To \textit{exploit} the \textit{temporal locality} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm.
+So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality~\cite{Beamer2015}.
+
+\input{Figures/Locality/02_attributed_locality}
+
+\textbf{Memory Bandwidth Utilization.} 
+Na\"{\i}ve `flat' parallel processing implementations exacerbate memory bandwidth issues and impose a scaling limit on the number of processors as they for limited memory bandwidth~\cite{Fu2014}.
+The observation is more concretely characterized by a decay factor of $P^{\frac{1}{2}}$ where $P$ is the number of processors~\cite{Buluc2012} because of the unfavorable communication-computation ratio.
+However, studies of memory bandwidth utilization in general show that around $95\%$ of production systems utilize less than one-third of their memory bandwidth~\cite{Kanev2015}.
+Graph-specific studies indicate that the existing bandwidth is poorly utilized when the instruction window size cannot hold enough instructions to account for cache-missing instructions~\cite{Beamer2015}.
+While experiments on GPUs have shown that \textit{elevating} the memory bandwidth can increase throughput~\cite{Wu2015} through brute-force alone, it is insufficient to just increase the bandwidth, and more sophisticated methods are needed. 
+
+\textbf{Memory Latency \& Attributed Graphs.} 
+Contributing to the memory bandwidth issue, memory latency has a significant negative impact on system throughput~\cite{Beamer2015}.
+The lack of locality combined with the data intensity of graph operations results in the latency of memory accesses overwhelming even highly optimized pipelined architectures~\cite{Dysart2016}.
+The latency problem is exacerbated by attributed graphs. 
+It is common for the topological and attribute data of a graph to be stored separately in memory~\cite{Buluc2013}. 
+Figure~\ref{figure:locality-attributed} expands on the example from figure~\ref{figure:locality-simple} by adding in vertex attributes. 
+The attributes are stored at separate memory locations, with pointers from the topological vertex (memory positions $1-9$) to their respective attributes (memory positions $10-29$). 
+Attributes consume more memory so more memory bandwidth is required to load them.
+The heterogeneous data types being loaded in attributed graphs (like knowledge graphs) have been shown to inflict significant Dynamic Random Access Memory (DRAM) accesses and hence, increase latency and memory bandwidth pressure~\cite{Basak2019}.
+To illustrate why, again consider a BFS that is searching for the `\textbf{Grape}' vertex. 
+Each time a vertex is dequeued, its attribute must be retrieved from memory to see if it is the target vertex. 
+In the worst case, this is a memory access each time a vertex is checked, or, if reducing the latency of the comparison by pre-fetching the attribute along with the vertex, the cache block of $3$ quickly becomes filled with the vertex plus its attribute, exacerbating the spatial locality problem.
+
+Overall, the processing of a graph is highly dependent on the shape of its input data. 
+\textit{Scale-free} graphs have better temporal locality than \textit{mesh} graphs, but both struggle with optimizing for spatial locality. 
+Combined, the lack of spatial and temporal locality results in poor utilization of the memory hierarchy in the average case~\cite{Balaji2018}.
+The ineffective use of the memory hierarchy is exacerbated by the increasing sizes of graphs, with the largest not fitting in the memory of a single machine, and a known negative correlation between graph size and cache utilization. 
+Graph processing is memory-bound and finding ways to \textit{Exploit} and \textit{Elevate} it remain important research priorities. 
+
+
+
+
     
     
 
@@ -394,6 +456,7 @@ As datasets become larger, approaching the exa-scale, the computers are going to
     - Some multi-threading methods work well in single-core environments but incur significant overhead when crossing a processing node boundary using explicit function calls~\cite{Dysart2016}.
     - Graph processing tasks run poorly on general-purpose parallel processors. The speed-up levels off after a small number of processors are added because the computing patterns require much more communication than conventional highly localized workloads~\cite{Song2016}.
     - Message Passing is less efficient than memory access so we should avoid distributing graphs unless the data is too large for a single node. However, a 1.5TB graph could fit in memory in 2015~\cite{Beamer2015}, and the largest publicly available graph could fit in memory in 2021~\cite{Dhulipala2021}, so distributed shouldn't really be used.
+    - The inefficiency of graph algorithms is because of the large volume and irregular pattern of communication between computations at each vertex or edge. The irregular patterns manifest as large numbers of \textit{main memory accesses} in shared memory systems and an increased volume of \textit{inter-processor messages} in distributed processing systems~\cite{Beamer2015}.
     - Graph applications require coarse and fine grain synchronization.~\cite{Aananthakrishnan2020}
     - Fine-grain synchronization stresses cache hierarchies and incurs long round-trip latencies on multi-socket systems.~\cite{Aananthakrishnan2020}
     - Coarse-grain synchronization can dominate large-scale systems because of network latency and imbalanced computation.~\cite{Aananthakrishnan2020}
@@ -415,6 +478,9 @@ As datasets become larger, approaching the exa-scale, the computers are going to
     - Offline vertex-scheduling is computationally intensive and only really works for static graphs~\cite{Mukkara2018}.
     - Compute times for vertices are irregular, experiments using PageRank show that the compute time is proportional to the out-degree of the vertex. In a skewed distribution of degrees that causes load imbalance~\cite{Aananthakrishnan2020}
     - Graph processing workloads are challenging for traditional architectures (CPUs/GPUs) due to data-dependent memory access, reuse, and parallelism.\cite{Dadu2021}
+    - Branch misprediction only hurts performance when the processor is compute-bound. As most graph processing is memory bound, the impact is lessened~\cite{Beamer2015}. 
+    - Graph applications heavily use branches. 
+    The brach operations are data dependent and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
     
 5. Partitioning is Hard
     - Partitioning Graphs is difficult in general but is harder on scale-free graphs with low diameter. Mesh graphs with a larger diameter can be more easily partitioned~\cite{Beamer2015}.
@@ -494,3 +560,39 @@ As datasets become larger, approaching the exa-scale, the computers are going to
 \subsection{Summary}
 \label{section:127-graph-data-structures-summary}
 
+
+
+% 2. Memory Bandwidth -- 
+    % - 95 percent of systems use less than one-third of their memory bandwidth~\cite{Kanev2015}
+    % - Memory bandwidth is the bottleneck for \textit{traversal} and \textit{computationally intensive} graph algorithms in a single node, but only for the \textit{traversal} algorithms in a distributed system. The increased communication overheads that the \textit{computationally intensive} algorithms which process the whole graph each cycle made means that network bandwidth was a bigger constraint for them~\cite{Satish2014}
+    % - Parallel Graph Algorithms have severe scalability problems on CPU architectures because of the limited memory bandwidth~\cite{Fu2014}
+    % - Graph Processing algorithms are memory bound, and so do not fully utilize their memory bandwidth because they are waiting on memory accesses to load the data needed for computation~\cite{Beamer2015}.
+    % - On single-core loads the biggest bandwidth limiter is fitting loads into the instruction window, preventing off chip memory bandwidth from becoming a bottleneck~\cite{Beamer2015}. 
+    % - In GPU Processing, higher achieved memory bandwidth leads to increased throughput~\cite{Wu2015}
+    % - Graph workloads put pressure on memory bandwidth because of the large numbers of irregular memory accesses that limits cache efficiency~\cite{Ahn2015}
+    % - Graph workloads only perform small amounts of computation per vertex, meaning it becomes difficult to `hide' memory latency issues~\cite{Ahn2015}
+    % - Insufficient memory access granularity in general-purpose architectures sees off-chip memory bandwidth is wasted when retrieving 64 byte cache line data and only using a small portion of it~\cite{Ham2016}
+    % - The sparsity of graph data structures causes a dearth of spatial locality when attempting to traverse a vertexes edges to visit its neighbours~\cite{Oguntebi2016}.
+
+
+% 1. Memory Latency
+    %- In semantic graphs, edges and vertices carry attributes of various types. Queries depend on the values of these attributes, which are usually not stored as part of the graph topology~\cite{Buluc2013}
+    % - Scale-free graphs tend to have better temporal locality than mesh graphs~\cite{Beamer2015}
+    % - The inefficiency of graph algorithms is because of the large volume and irregular pattern of communication between computations at each vertex or edge. The irregular patterns manifest as large numbers of \textit{main memory accesses} in shared memory systems and an increased volume of \textit{inter-processor messages} in distributed processing systems~\cite{Beamer2015}.
+    % - The memory bottleneck is due to latency more often than it is due to memory bandwidth because bandwidth is typically underutilized~\cite{Beamer2015a}
+    %- Data-intensive applications like graph processing do not have the same locality traits as compute-intensive operations and so the latency of memory accesses overwhelms the advantages of deeply pipelined fast cores~\cite{Dysart2016}. 
+    
+    %- The Heterogeneous data types (i.e. Graph Structure and Graph Property information) is a major source of delay and DRAM accesses~\cite{Basak2019}.
+
+    % 4. Cache misses
+    % - Prefetching loses its advantage when the size of the input becomes large. When the vertex list for the graph is larger than the cache, it forces a lot of main memory accesses~\cite{Chung2012}.
+    % - Smaller graphs have a better Instructions per Miss (IPM) rate~\cite{Beamer2015}.
+    % - IPM rate gets worse (decreases) as the distribution of edges approaches mesh rather than scale free~\cite{Beamer2015}, with few large degree vertices exploiting good temporal locality. 
+    % - Graphs with higher average degrees benefit from spatial locality because the reads are more contiguous~\cite{Beamer2015}.
+    % - A modest cache hit rate can cause cache misses to be so rare that an insufficient number of them fit into the instruction window to fill all of the outstanding memory request slots. With an insufficient number of outstanding memory requests, the processor is unable to fully utilize the memory bandwidth~\cite{Beamer2015a}.
+    % - Experiments using a 64byte cache prefetcher, they found that most cache lines used $0$ or $8$ of the $64$ bytes because of the lack of spatial locality in a sparse graph data structure~\cite{Aananthakrishnan2020}.
+    % - The cache on the chip is used inefficiently, with general architectures failing to effectively store the high-locality graph data. ~\cite{Ham2016}
+    % - General purpose architectures use caching to exploit locality, but the irregular memory access patterns of graphs result in high cache miss rates~\cite{Song2016}
+    % - Graph applications have poor cache utilization because they do minimal computation per edge and have irregular memory access patterns~\cite{Zhang2017}.
+    % - Random accesses to a working set that does not fit into the cache renders the whole cache hierarchy ineffective, and as a result, many frameworks spend 60-80\% of their cycle time stalled on memory accesses. 
+    % - The source of inefficiency in single-node graph processing is the lack of spatial and temporal locality in the memory access stream as they make poor use of the memory access hierarchy~\cite{Balaji2018}. 

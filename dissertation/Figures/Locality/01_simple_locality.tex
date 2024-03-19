@@ -1,0 +1,47 @@
+%Rendering of the simplest possible Graph
+\begin{figure}
+    \begin{center}
+        \begin{tikzpicture}
+
+            % Graph vertices
+            \node[circle,draw,minimum size=1cm] (A) at (0,0) {A};
+            \node[circle,draw,minimum size=1cm] (B) at (2,0) {B};
+            \node[circle,draw,minimum size=1cm] (C) at (4,0) {C};
+            \node[circle,draw,minimum size=1cm] (D) at (4,-2) {D};
+            \node[circle,draw,minimum size=1cm] (E) at (2,-2) {E};
+            \node[circle,draw,minimum size=1cm] (F) at (2,-4) {F};
+            \node[circle,draw,minimum size=1cm] (G) at (4,-4) {G};
+            \node[circle,draw,minimum size=1cm] (H) at (6,-2) {H};
+            \node[circle,draw,minimum size=1cm] (I) at (8,-2) {I};
+            \node[circle,draw,minimum size=1cm] (J) at (10,-2) {J};
+            
+            % Graph Edges
+             \draw[->] (A) -- (B);
+             \draw[->] (A) -- (F);
+             \draw[->] (B) -- (C);
+             \draw[->] (C) -- (D);
+             \draw[->] (D) -- (E);
+             \draw[->] (F) -- (D);
+             \draw[->] (D) -- (G);
+             \draw[->] (D) -- (H);
+             \draw[->] (D) to [out=45,in=135] (J);
+             \draw[->] (H) -- (I);
+             \draw[->] (I) -- (J);
+
+            %Memory Array
+             \foreach \x/\letter in {0/A, 1/B, 2/C, 3/D, 4/E, 5/F, 6/G, 7/H, 8/I, 9/J} {
+                \draw (\x,-6) rectangle ++(1,1);
+                \node at (\x+0.5, -5.5) {\letter};
+                \node at (\x+0.5, -6.5) {\x};
+            
+            %Labels
+            \node at (-2,-2) {Graph:};
+            \node at (-2,-5.5) {Vertex Data:};
+            \node at (-2,-6.5) {Memory Position:};
+    }
+
+            \end{tikzpicture}
+        \caption{A simplified representation of a direct graph in vertex-order where each vertex is added to memory in the order it was created (here, alphabetically). Edges are not represented here.}
+        \label{figure:locality-simple}          
+    \end{center}
+\end{figure}
