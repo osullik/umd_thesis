@@ -21,7 +21,7 @@ HATS exploits temoporal locality in graphs with online traversal scheduling stra
 
 PreProcessing of vertices to improve the traversal schedule (Graphicionado, PathGraph, GridGraph)~\cite{Mukkara2018}; which is in improvement over frameworks like Ligra and GraphMAT that use default vertex order scheduling (i.e. find it in memory). Pre processing is expensive and so only really works for static graphs. 
 
-Ligra ~\cite{Shun2013}
+Ligra ~\cite{Shun2013}. The implementation are work-inefficent~\cite{Dhulipala2017}
 
 Ligra+ ~\cite{Shun2015} uses compression to halve the amount of required memory to store graphs and execute graph algorithns. Given a lot of power consumption comes from memory usage, this could be a good way to reduce power consumption and so cost \osullikomment{Need cite for memory as dominant consumer of memory.}
 
@@ -36,7 +36,7 @@ Polymer - A NUMA-Optimized framework that minimizes remote random access and cro
 
 Cagra~\cite{Zhang2017} Uses CSR segmenting to divide the graph into subgraph no larger than LLC and limits `random accesses' to LLC.
 
-GraphChi - Uses shards with parallel sliding windows to keep random accesses low. But needs to read edges twice & has random writes to slow storage. 
+GraphChi - Uses shards with parallel sliding windows to keep random accesses low. But needs to read edges twice \& has random writes to slow storage. 
 
 GraphMAT - Sparse Matrix Operations
 

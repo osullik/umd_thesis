@@ -127,6 +127,12 @@ The \textit{Advance} operation generates a new frontier by expanding the neighbo
 the \textit{Filter} operation chooses a subset of the frontier based on some specified criteria.
 the \textit{Compute} operation executes some specified action on all vertices in the frontier~\cite{Wu2015}. 
 
+Several fundamental graph algorithms cannot be expressed as frontier-based algorithms.~\cite{Dhulipala2017}
+
+The Pegasus graph analysis system also takes a linear-algebraic view. 
+It introduces the \textit{Generalized Integrated Matrix-Vector Multiplication} (GIM-V), a generalization of standard matrix-vector multiplication.
+They decompose it into three atomic operations \textit{combine2, combineAll} and \textit{Apply}.
+They use these three operations to implement \textit{PageRank, Random Walk, Diamater Estimation} and \textit{Connected Components}.
 
 There are two families of Programming Models for Graphs. 
 \textit{Vertex-Centric} and \textit{Edge-Centric}.
@@ -341,84 +347,149 @@ This section reviews the prior work in identifying the bottlenecks known to occu
 The inefficiency of graph algorithms is because of the large volume and irregular pattern of communication between computations at each vertex or edge.
 The irregular patterns manifest as large numbers of \textit{main memory accesses} in shared memory systems and an increased volume of \textit{inter-processor messages} in distributed processing systems~\cite{Beamer2015}.
 
+As datasets become larger, approaching the exa-scale, the computers are going to be based on accelerators and multi-socket systems~\cite{Azad2021}.
+
 1. Memory Latency
     - The Heterogeneous data types (i.e. Graph Structure and Graph Property information) is a major source of delay and DRAM accesses~\cite{Basak2019}.
     - Scale-free graphs tend to have better temporal locality than mesh graphs~\cite{Beamer2015}
     - The memory bottleneck is due to latency more often than it is due to memory bandwidth because bandwidth is typically underutilized~\cite{Beamer2015a}
     - Data-intensive applications like graph processing do not have the same locality traits as compute-intensive operations and so the latency of memory accesses overwhelms the advantages of deeply pipelined fast cores~\cite{Dysart2016}. 
+    - In semantic graphs, edges and vertices carry attributes of various types. Queries depend on the values of these attributes, which are usually not stored as part of the graph topology~\cite{Buluc2013}
 
-2. Memory Bandwidth -- 95 percent of systems use less than one third of their memory bandwidth~\cite{Kanev2015}
+2. Memory Bandwidth -- 95 percent of systems use less than one-third of their memory bandwidth~\cite{Kanev2015}
+    - Memory bandwidth is the bottleneck for \textit{traversal} and \textit{computationally intensive} graph algorithms in a single node, but only for the \textit{traversal} algorithms in a distributed system. The increased communication overheads that the \textit{computationally intensive} algorithms which process the whole graph each cycle made means that network bandwidth was a bigger constraint for them~\cite{Satish2014}
+    - Parallel Graph Algorithms have severe scalability problems on CPU architectures because of the limited memory bandwidth~\cite{Fu2014}
     - Graph Processing algorithms are memory bound, and so do not fully utilize their memory bandwidth because they are waiting on memory accesses to load the data needed for computation~\cite{Beamer2015}.
-    - On single-core loads the biggest bandwith limiter is fitting loads into the instruction window, preventing off chip memory bandwidth from becoming a bottleneck. 
+    - On single-core loads the biggest bandwidth limiter is fitting loads into the instruction window, preventing off chip memory bandwidth from becoming a bottleneck. 
     - In GPU Processing, higher achieved memory bandwidth leads to increased throughput~\cite{Wu2015}
+    - Graph workloads put pressure on memory bandwidth because of the large numbers of irregular memory accesses that limits cache efficiency~\cite{Ahn2015}
+    - Graph workloads only perform small amounts of computation per vertex, meaning it becomes difficult to `hide' memory latency issues~\cite{Ahn2015}
     - Insufficient memory access granularity in general-purpose architectures sees off-chip memory bandwidth is wasted when retrieving 64 byte cache line data and only using a small portion of it~\cite{Ham2016}
-
-
+    - The sparsity of graph data structures causes a dearth of spatial locality when attempting to traverse a vertexes edges to visit its neighbours~\cite{Oguntebi2016}.
+   
 3. Branch Misprediction and Load balancing
     - Branch misprediction only hurts performance when the processor is compute-bound. As most graph processing is memory bound, the impact is lessened~\cite{Beamer2015}. 
     - Graph applications heavily use branches. 
-    The brach operations are data dependant and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
+    The brach operations are data dependent and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
 
 4. Cache misses
+    - Prefetching loses its advantage when the size of the input becomes large. When the vertex list for the graph is larger than the cache, it forces a lot of main memory accesses~\cite{Chung2012}.
     - Smaller graphs have a better Instructions per Miss (IPM) rate~\cite{Beamer2015}.
     - IPM rate gets worse (decreases) as the distribution of edges approaches mesh rather than scale free~\cite{Beamer2015}, with few large degree vertices exploiting good temporal locality. 
     - Graphs with higher average degrees benefit from spatial locality because the reads are more contiguous~\cite{Beamer2015}.
     - A modest cache hit rate can cause cache misses to be so rare that an insufficient number of them fit into the instruction window to fill all of the outstanding memory request slots. With an insufficient number of outstanding memory requests, the processor is unable to fully utilize the memory bandwidth~\cite{Beamer2015a}.
-    - Experiments using a 64byte cache prefetcher, they found that most cache lines used $0$ or $8$ of the 64 bytes because of the lack of spatial locality in a sparse graph data structure~\cite{Aananthakrishnan2020}.
-    - The cache on the chip is used inefficently, with general architectures failing to effectively store the high-locality graph data. ~\cite{Ham2016}
+    - Experiments using a 64byte cache prefetcher, they found that most cache lines used $0$ or $8$ of the $64$ bytes because of the lack of spatial locality in a sparse graph data structure~\cite{Aananthakrishnan2020}.
+    - The cache on the chip is used inefficiently, with general architectures failing to effectively store the high-locality graph data. ~\cite{Ham2016}
     - General purpose architectures use caching to exploit locality, but the irregular memory access patterns of graphs result in high cache miss rates~\cite{Song2016}
+    - Graph applications have poor cache utilization because they do minimal computation per edge and have irregular memory access patterns~\cite{Zhang2017}.
+    - Random accesses to a working set that does not fit into the cache renders the whole cache hierarchy ineffective, and as a result, many frameworks spend 60-80\% of their cycle time stalled on memory accesses. 
+    - The source of inefficiency in single-node graph processing is the lack of spatial and temporal locality in the memory access stream as they make poor use of the memory access hierarchy~\cite{Balaji2018}. 
+    
+    
 
 
 3. Network Comms 
-    - Message Passing is less efficient than memory access and so we should avoid distributing graphs unless the data is too large for a single node. However, a 1.5TB graph could fit in memory in 2015~\cite{Beamer2015}, and the largest publicly available graph could fit in memory in 2021~\cite{Dhulipala2021}, so distributed shouldn't really be used.
-    - Graph applications require coarse and fine grain synchronization.
-    Fine-grain synchronization stresses cache hierarchies and incur long round-trip latencies on multi-socket systems. 
-    Coarse-grain synchronization can dominate on large-scale systems because of network latency and imbalanced computation.
-    - General Purpose architectures have a mismatch in execution granualrity. the x86 instruction set is too bloated for specific graph instructions~\cite{Ham2016}.
+    - In a distributed system the \textit{computationally intensive} algorithms that process the whole graph each cycle became network bound rather than memory bound, this is because of the communication overheads required to synchronize access across a distributed graph~\cite{Satish2014}.
+    - General Purpose architectures have a mismatch in execution granularity. the x86 instruction set is too bloated for specific graph instructions~\cite{Ham2016}.
     - Some multi-threading methods work well in single-core environments but incur significant overhead when crossing a processing node boundary using explicit function calls~\cite{Dysart2016}.
-    - Graph processing tasks run poorly on general purpose parallel processors. The speed-up levels off after a small number of processors are added because the computing patterns require much more communication than conventional highly localized workloads~\cite{Song2016}.
+    - Graph processing tasks run poorly on general-purpose parallel processors. The speed-up levels off after a small number of processors are added because the computing patterns require much more communication than conventional highly localized workloads~\cite{Song2016}.
+    - Message Passing is less efficient than memory access so we should avoid distributing graphs unless the data is too large for a single node. However, a 1.5TB graph could fit in memory in 2015~\cite{Beamer2015}, and the largest publicly available graph could fit in memory in 2021~\cite{Dhulipala2021}, so distributed shouldn't really be used.
+    - Graph applications require coarse and fine grain synchronization.~\cite{Aananthakrishnan2020}
+    - Fine-grain synchronization stresses cache hierarchies and incurs long round-trip latencies on multi-socket systems.~\cite{Aananthakrishnan2020}
+    - Coarse-grain synchronization can dominate large-scale systems because of network latency and imbalanced computation.~\cite{Aananthakrishnan2020}
+    - Communication is the primary bottleneck in scaling data-intensive applications to exascale~\cite{Azad2021}
 
 
-4. Intense Computation
+
+4. Computation
+    - Some graph algorithms scale poorly when applied to large graph instances~\cite{Hong2012}
+    -Sequential graph algorithms, require random access to all graph data, suffer from poor locality and the indivisibility of the graph structure resulting in time and resource intensive pointer chasing.~\cite{Mccune2015}
+    - Large graph sizes. In todays era of big data, parallel graph analytics systems must deal with graphs with billions of nodes and trillions of edges. Parallel computing is essential for analyzing properties of graphs of such size in reasonable time.~\cite{Lenharth2016}
+    - Many graph algorithms iterate until convergance, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other computation~\cite{Ozdal2017}
     - There is a trade-off between communication and computation, as no executions sustain a high Instructions Per Cycle (IPC) and high memory bandwidth~\cite{Beamer2015}.
-    - Compute times for vertices are irregular, experiments using PageRank show that the compute time is proportional to the out degree of the vertex.
-    In a skewed distribution of degrees that causes load imbalance~\cite{Aananthakrishnan2020}
-
+    - Graph applications have a low compute-to-communication ratio, contributing to memory-boundedness ~\cite{Mukkara2018}.
+    - Poor temporal locality exists because of the graph structure~\cite{Mukkara2018}.
+    - Poor spatial locality because they perform sparse accesses to small objects~\cite{Mukkara2018} \osullikomment{Link to PiUMA}
+    - Default vertex-ordered scheduling is sub-optimal and increases irregular memory accesses~\cite{Mukkara2018}.
+    - Online vertex-scheduling is a computationally challenging problem~\cite{Mukkara2018}
+    - Offline vertex-scheduling is computationally intensive and only really works for static graphs~\cite{Mukkara2018}.
+    - Compute times for vertices are irregular, experiments using PageRank show that the compute time is proportional to the out-degree of the vertex. In a skewed distribution of degrees that causes load imbalance~\cite{Aananthakrishnan2020}
+    - Graph processing workloads are challenging for traditional architectures (CPUs/GPUs) due to data-dependent memory access, reuse, and parallelism.\cite{Dadu2021}
+    
 5. Partitioning is Hard
     - Partitioning Graphs is difficult in general but is harder on scale-free graphs with low diameter. Mesh graphs with a larger diameter can be more easily partitioned~\cite{Beamer2015}.
+    -The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs~\cite{Mccune2015}
+    - The performance of the subgraph-centric processing is also closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques~\cite{Mccune2015}
 
 6. Parallelism is hard
-    - Parallelism of graph algorithms is hampered by load imbalance, synchronization overheads, non-uniform memory accesses (NUMA)~\cite{Beamer2015}
-    - The ability to parallelise a graph algorithm depends on the distribution of degrees in the graph -- imbalanced distributions negatively impact parallelism~\cite{Wu2015}.
+    -Graph computations are difficult to parallelize using traditional approaches due to their irregular structure and low operational intensity~\cite{Buluc2011}
+    - it is difficult to develop correct and efficient parallel graph algorithms~\cite{Hong2012}
     - A highly skewed degree distribution is challenging to parallelize, consider how a BFS from a single vertex may very quickly touch the whole graph.~\cite{Ediger2013}
+    - Writing efficient parallel algorithms for graph processing in shared memory is difficult without Domain-Specific Languages and frameworks to abstract from the developer~\cite{Nguyen2013}.
+    - Distributed parallel systems have a higher communication cost than shared memory systems~\cite{Shun2013}. 
+    - Coordinated scheduling in shared-memory parallelism is inefficent~\cite{Nguyen2013}
+    - Parallelism is made challenging because of the large number of random memory accesses during neighbor traversal~\cite{Ahn2015}.
+    - Parallelism is made challenging because of the poor locality of memory access in algorithms that need to process the entire vertex set each iteration~\cite{Ahn2015}.
+    - Parallelism is made challenging because memory latency cannot be hidden with such little computation per vertex~\cite{Ahn2015}.
+    - Parallelism of graph algorithms is hampered by load imbalance, synchronization overheads, non-uniform memory accesses (NUMA)~\cite{Beamer2015}
+    - The ability to parallelize a graph algorithm depends on the distribution of degrees in the graph -- imbalanced distributions negatively impact parallelism~\cite{Wu2015}.
+    - Parallelism exacerbated the memory-boundedness of graph processing as more cores compete for memory bandwidth~\cite{Shun2015}.
+    - System performance does not scale with the addition of compute nodes because of memory bandwidth constraints~\cite{Ahn2015}.
+    -  Most existing abstractions and implementations for parallel computing were developed for data parallelism. Some graph analytics algorithms have data parallelism, but others exhibit a more complex parallelism pattern called “amorphous” data-parallelism.\cite{Lenharth2016}
+    - Sub-optimal graph partitioning schemes lead to load imbalances and high contention for high-degree vertices~\cite{Chen2019}.
 
 7. Data Dependence. 
+    - Large datasets may not fit into a single memory space~\cite{Hong2012}
+    - Different graph algorithms and datasets can impose very different workloads~\cite{Fu2014}.
     - In GPU Processing, the \textit{throughput} in \textit{Traversed Edges Per Second (TEPS)} improves linearly as the mean degree of the graph increases~\cite{Wu2015}.
-    - In GPU Processing of \textit{Traversal} primitives skewed degree distribution improves execution time, but for \textit{dense-compute} primitives skewed degree distribution degrades execution time because of the increased load-balancing overheads. 
-    - all the BSP models on GPU use CSR/CSC data formats. 
-    Using a programming model that requires both CSC and CSR representations like the \textit{DCM} doubles the memory usage requirement, but improves execution throughput, highlighting a tradeoff between memory and performance. 
+    - In GPU Processing of \textit{Traversal} primitives skewed degree distribution improves execution time, but for \textit{dense-compute} primitives skewed degree distribution degrades execution time because of the increased load-balancing overheads~\cite{Wu2015}. 
+    - all the BSP models on GPU use CSR/CSC data formats~\cite{Wu2015}. 
+    Using a programming model that requires both CSC and CSR representations like the \textit{DCM} doubles the memory usage requirement, but improves execution throughput, highlighting a tradeoff between memory and performance.~\cite{Wu2015} 
     - Low Degree long tail graphs perform poorly on GPUs~\cite{Wu2015}
+    - Diversity in graph structure means that for many analytics problems, different algorithms must be used for uniform-degree, random, and power-law graphs to obtain good parallel performance:\cite{Lenharth2016}
     - Allegedly commercial datasets can be up to 20TB in memory~\cite{Aananthakrishnan2020}. This is a different figure to what other work says and probably reflects the underlying design for a distributed system by the developers. 
-    - GPUs perform better on graph algorithms for small graphs than CPU does because they have more threads which hides memory latency and higher memory bandwidth which brute-forces the memory bandwidth utilization.~\cite{Aananthakrishnan2020}
+    - GPUs perform better on graph algorithms for small graphs than CPUs does because they have more threads which hides memory latency and higher memory bandwidth which brute-forces the memory bandwidth utilization.~\cite{Aananthakrishnan2020}
+    - I/O is increasingly becoming a problem in exascale computers and the graph community does not have an agreed binary exchange format~\cite{Azad2021}
+    - Most algortihms are iterative and convergant. For many algorithms like a BFS, or a GCN this means that they are order-insensitive. However, for some graph algorithms like the Shortest Path, their work efficiency is order-sensitive. \cite{Dadu2021}
+
 
 8. Atomic Operation Count  
     - In GPU processing using BSP paradigms performance improvements correlate with a reduction in the number of \textit{Atomic Operation Counts}, that is - the fewer times each `primitive' operation is invoked, the better!\cite{Wu2015}. The programming model is the primary driver of the atomic operation count other than graph size. 
 
 9. Data Movement across GPU Kernels:
     - The more memory transactions that occur the worse performance gets~\cite{Wu2015}
-    - Sparse accesses prevent memory coalescing~\cite{Aananthakrishnan2020}
-    - GPU have limited memory capacity and limited scale-out capabilities which means that they are unable to process large multi-terabyte graphs~\cite{Aananthakrishnan2020}
-    - Graphs are extremely sparse for the GPU Trick to densify the connectivity maric for more efficient GPU execution leads to a few orders of magnitude increase in memory usage restricting it to small graphs only~\cite{Aananthakrishnan2020} COMMENT: This seems to ignore the programming models like GAS or DCM that operate directly on CSR... 
     - The use of CSR is important as it uses 50\% of the memory as an adjacency list which has a better chance of fitting inside GPU memory given its limited size~\cite{Liu2019}.
+    - Sparse accesses prevent memory coalescing~\cite{Aananthakrishnan2020}
+    - GPUs have limited memory capacity and limited scale-out capabilities which means that they are unable to process large multi-terabyte graphs~\cite{Aananthakrishnan2020}
+    - Graphs are extremely sparse for the GPU Trick to densify the connectivity maric for more efficient GPU execution leads to a few orders of magnitude increase in memory usage restricting it to small graphs only~\cite{Aananthakrishnan2020} COMMENT: This seems to ignore the programming models like GAS or DCM that operate directly on CSR... 
+    - The use of accelerators incurs an overhead to copy from main memory to the accelerator, any benefit from an accelerator must outweigh the cost of data movement~\cite{Azad2021}
 
-10. Branching in GPU
-    - Branches cause thread divergence and synchronization limits thread progress. 
+10. GPU
+    - Data-dependent parallelism on GPUs requires deferring thread assignment until runtime on a specific graph, which can degrade the effectiveness of pre-processing techniques~\cite{Fu2014}
+    - The variance in degree distributions means that computation has an irregular structure and hence memory access patterns which cause un-coalesced memory patterns, create unbalanced workloads and lead to thread divergance~\cite{Fu2014}.
+    - Constrained memory availability on GPUs can prevent algorithms with large intermediate steps to consume all memory and fail~\cite{Sundaram2015}
+    - The irregularity of data/access control flow makes implementing Graph analytics on the GPU challenging~\cite{Wang2016}
+    - The chief challenge in parallel graph processing on GPU is managing irregularity in workload distribution~\cite{Wang2016}
+    - Branches cause thread divergence and synchronization limits thread progress~\cite{Aananthakrishnan2020}. 
+    - GPUs usually perform better on graph algorithms than CPUs for small graphs, because they have more threads, which hides memory latency, and much higher memory bandwidth, brute-forcing the inefficient bandwidth utilization.~\cite{Aananthakrishnan2020}
 
 10 Programming Model Tradeoffs: 
-    - GAS eliminates expensive vertex operations for primitives dominated by vertex updates, but ha sslow information propogation and high memory usage~\cite{Wu2015}
-    - Data-Centric Abstractions enable more complex and powerful operators with a lower memory usage~\cite{Wu2015}
-    
+    - A certain class of graph algorithms that make heavy use of priority queues (Shortest Path, Minimum Spanning Tree) cannot be represented using existing algebraic primitives~\cite{Buluc2011}
+    - GAS eliminates expensive vertex operations for primitives dominated by vertex updates, but has slow information propagation and high memory usage~\cite{Wu2015}
+    - Data-centric abstractions enable more complex and powerful operators with a lower memory usage~\cite{Wu2015}
+    - Frontier-based models can't efficiently implement bucketing algorithms~\cite{Dhulipala2017}
+    - Implementing algorithms using frameworks allows a user to easily access the general purpose pre-optimized libraries~\cite{Dhulipala2017}, however, they are currently unable to perform as well as an implementation hand-tuned for the application~\cite{Satish2014}
 
+
+11    General Frameworks vs specialized implemetatations:
+        Implementing algorithms using frameworks takes advantage of optimizations already implemented by the framework, but has been shown to perform suboptimally compared to hand-tuned code~\cite{Satish2014}
+    
+12. Memory consumption
+    - Graphs can be so large that they do not fit into the memory of a single machine, leaving developers with a choice between distributing computing and compressing their graphs~\cite{Shun2015}
+    - Compressing graphs causes serial algorithms to run slower because of the computation overhead to encode/decode the vertices and edges at each step.~\cite{Shun2015}
+    - Popular sparse data structures like CSC become wasteful as matrices become hypersparse due to decomposition of graphs into large numbers of partitions.~\cite{Azad2021}
+    - Big Data drives graph sizes beyond the memory capacity of a single machine, data must be partitioned to out-of-memory storage or distributed memory.~\cite{Mccune2015}
+    - efficient analysis is increasingly difficult given increases in graph scale and workload diversity~\cite{Osama2022}
 
 \subsection{Summary}
 \label{section:127-graph-data-structures-summary}

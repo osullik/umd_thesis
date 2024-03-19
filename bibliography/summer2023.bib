@@ -446,7 +446,8 @@ abstract={Both static and streaming graph processing are central in data analyti
   publisher={VLDB Endowment},
   groups={HIVE},
   url = {https://github.com/osullik/summer2023/blob/main/Papers/bibliography/reference_papers/Chen2020.pdf},
-	abstract={There is growing interest in graph pattern mining (GPM) problems such as motif counting. GPM systems have been developed to provide unified interfaces for programming algorithms for these problems and for running them on parallel systems. However, existing systems may take hours to mine even simple patterns in moderate-sized graphs, which significantly limits their real-world usability. We present Pangolin, an efficient and flexible in-memory GPM framework targeting shared-memory CPUs and GPUs. Pangolin is the first GPM system that provides high-level abstractions for GPU processing. It provides a simple programming interface based on the extend-reduce-filter model, which allows users to specify application specific knowledge for search space pruning and isomorphism test elimination. We describe novel optimizations that exploit locality, reduce memory consumption, and mitigate the overheads of dynamic memory allocation and synchronization. Evaluation on a 28-core CPU demonstrates that Pangolin outperforms existing GPM frameworks Arabesque, RStream, and Fractal by 49×, 88×, and 80× on average, respectively. Acceleration on a V100 GPU further improves performance of Pangolin by 15× on average. Compared to state-of-the-art hand-optimized GPM applications, Pangolin provides competitive performance with less programming effort.}
+	abstract={There is growing interest in graph pattern mining (GPM) problems such as motif counting. GPM systems have been developed to provide unified interfaces for programming algorithms for these problems and for running them on parallel systems. However, existing systems may take hours to mine even simple patterns in moderate-sized graphs, which significantly limits their real-world usability. We present Pangolin, an efficient and flexible in-memory GPM framework targeting shared-memory CPUs and GPUs. Pangolin is the first GPM system that provides high-level abstractions for GPU processing. It provides a simple programming interface based on the extend-reduce-filter model, which allows users to specify application specific knowledge for search space pruning and isomorphism test elimination. We describe novel optimizations that exploit locality, reduce memory consumption, and mitigate the overheads of dynamic memory allocation and synchronization. Evaluation on a 28-core CPU demonstrates that Pangolin outperforms existing GPM frameworks Arabesque, RStream, and Fractal by 49x, 88x, and 80x on average, respectively. Acceleration on a V100 GPU further improves performance of Pangolin by 15x on average. Compared to state-of-the-art hand-optimized GPM applications, Pangolin provides competitive performance with less programming effort.},
+  comments={PiUMA Competitor}
 }
 
 
@@ -1881,17 +1882,6 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
 
 #Added 19 Nov 23
 
-@inproceedings{Shun2015,
-  title={Smaller and faster: Parallel processing of compressed graphs with Ligra+},
-  author={Shun, Julian and Dhulipala, Laxman and Blelloch, Guy E},
-  booktitle={2015 Data Compression Conference},
-  pages={403--412},
-  year={2015},
-  organization={IEEE}, 
-  groups={graph_data_format, paralell_graph_processing},
-  comment={Introduces a compressed Graph Storage Format.}
-}
-
 @article{deSola1978,
   title={Contacts and influence},
   author={de Sola Pool, Ithiel and Kochen, Manfred},
@@ -3026,22 +3016,20 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   year={2019}
 }
 
-%SCAN ALL BELOW HERE %%%
 
 @inproceedings{Hong2012,
   title={Green-Marl: a DSL for easy and efficient graph analysis},
   author={Hong, Sungpack and Chafi, Hassan and Sedlar, Edic and Olukotun, Kunle},
   booktitle={Proceedings of the seventeenth international conference on Architectural Support for Programming Languages and Operating Systems},
   pages={349--362},
-  year={2012}
-}
-
-@inproceedings{Nguyen2013,
-  title={A lightweight infrastructure for graph analytics},
-  author={Nguyen, Donald and Lenharth, Andrew and Pingali, Keshav},
-  booktitle={Proceedings of the twenty-fourth ACM symposium on operating systems principles},
-  pages={456--471},
-  year={2013}
+  year={2012},
+  comments={
+  OBSERVTIONS: Adopts a fork-join style of paralellism, the same used in OpenMP, CUDA and Pregel. DSL can be external (completely independant) or internal (borrow functionality from a host language). GreenMARL is an External DSL.
+  PROBLEMS: (1) Capacity: for very large datasets, the graph will not fit into a single physical memory address space. (2) Performance: Some graph algorithms often perform poorly when applied to large graph instances. (3 )Implementation: it is not easy to develop a correct and efficient implementation for many graph algorithms. (4) Poor performance is due to the random memory access behavior of most graph analysis algorithms--as soon as the working-set size exceeds the size of the various levels of caches in the system, performance becomes dominated by memory latency.
+  SOLUTIONS: One common approach to address the performance challenge is to exploit the data parallelism which is typically abundant in analysis algorithms on large graphs. This approach leverages both the increasing number of parallel implementations proposed for common graph-theory algorithms, and the recent advances and proliferation of parallel computing systems By properly utilizing this hardware, we hide this memory latency problem by using parallelism and are only limited by the available memory bandwidth in the system. COMMENT: later analysis has found you can't really hide it. 
+  METHODS:
+  PRIMITIVES: (1) Compute a scalar value. (2) Compute a new property (3) Select a subgraph
+  }
 }
 
 @article{Sundaram2015,
@@ -3051,7 +3039,11 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   volume={8},
   number={11},
   year={2015},
-  comment={PiUMA competitior}
+  comment={PiUMA competitior. 
+  OBSERVATIONS: Uses sparse matrix representations. The main idea of GraphMat is to take vertex programs and map them to generalized sparse matrix vector multiplication operations. We get the productivity benefits of vertex programming while enjoying the high performance of a matrix backend. Graph analytics frameworks come with a variety of different pro- gramming models. Some common ones are vertex programming (“think like a vertex”), matrix operations (“graphs are sparse matri- ces”), task models (“vertex/edge updates can be modeled as tasks”), declarative programming (“graph operations can be written as data- log programs”), and domain-specific languages (“graph processing needs its own language”)
+  PROBLEMS: CombBLAS runs out of memory on GPU when running, as does MapGraph -> GPU Memory is a problem. 
+  SOLUTINS:
+  METHODS:}
 }
 
 @inproceedings{Satish2014,
@@ -3099,7 +3091,7 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   pages={135--146},
   year={2010},
   comments={Google Graph Processing
-  SOLUTION: Pregel uses a bulk synchronous parallel programming style. A graph computation is broken up into a sequence of iterations. In each iteration, a vertex is able to 1) receive messages from the previous iteration, 2) do local computation or modify the graph, and 3) send messages to vertices that will be received in the next iteration.}
+  SOLUTION: Pregel uses a bulk synchronous parallel programming style. A graph computation is broken up into a sequence of iterations. In each iteration, a vertex is able to (1) receive messages from the previous iteration, (2) do local computation or modify the graph, and (3) send messages to vertices that will be received in the next iteration.}
 }
 
 @book{Sakr2016,
@@ -3107,10 +3099,7 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   author={Sakr, Sherif and Orakzai, Faisal Moeen and Abdelaziz, Ibrahim and Khayyat, Zuhair},
   year={2016},
   publisher={Springer},
-  comment={BSP is a vertex-centric programming model where the computation on vertices are represented as a sequence of supersteps (iterations) with synchronization between the nodes participating at superstep barriers. In particular, in each iteration, every vertex that is involved in computation, 1) receives its neighbors updated values from previous iteration, 2) the vertex then will be updated by received values, 3) sends its updated value to its adjacent vertices that will be available to them in the next superstep. At each iteration (superstep), each vertex can vote to be active or inactive in the next iteration.  In order to avoid communication overheads, Pregel preserves data locality by ensuring computation is performed on locally stored data. In particular, Pregel distributes the graph vertices to the different machines of the cluster where each vertex and its associated set of neighbors are assigned to the same node  In Pregel, the input graph is loaded once at the beginning of the program
-and all computations are executed in-memory. Pregel uses a master/workers model
-where the master node is responsible for coordinating synchronization at the superstep barriers while each worker independently invokes and executes the compute()
-function on the vertices of its assigned portion of the graph and maintains the message queue to receive messages from the vertices of other workers}
+  comment={BSP is a vertex-centric programming model where the computation on vertices are represented as a sequence of supersteps (iterations) with synchronization between the nodes participating at superstep barriers. In particular, in each iteration, every vertex that is involved in computation, (1) receives its neighbors updated values from previous iteration, (2) the vertex then will be updated by received values, (3) sends its updated value to its adjacent vertices that will be available to them in the next superstep. At each iteration (superstep), each vertex can vote to be active or inactive in the next iteration.  In order to avoid communication overheads, Pregel preserves data locality by ensuring computation is performed on locally stored data. In particular, Pregel distributes the graph vertices to the different machines of the cluster where each vertex and its associated set of neighbors are assigned to the same node  In Pregel, the input graph is loaded once at the beginning of the program and all computations are executed in-memory. Pregel uses a master/workers model where the master node is responsible for coordinating synchronization at the superstep barriers while each worker  ndependently invokes and executes the compute() function on the vertices of its assigned portion of the graph and maintains the message queue to receive messages from the vertices of other workers}
 }
 
 @inproceedings{Nurvitadhi2014,
@@ -3290,7 +3279,282 @@ function on the vertices of its assigned portion of the graph and maintains the 
   pages={293--304},
   year={2017},
   abstract={Existing graph-processing frameworks let users develop efficient implementations for many graph problems, but none of them support efficiently bucketing vertices, which is needed for bucketing-based graph algorithms such as \Delta-stepping and approximate set-cover. Motivated by the lack of simple, scalable, and efficient implementations of bucketing-based algorithms, we develop the Julienne framework, which extends a recent shared-memory graph processing framework called Ligra with an interface for maintaining a collection of buckets under vertex insertions and bucket deletions.We provide a theoretically efficient parallel implementation of our bucketing interface and study several bucketing-based algorithms that make use of it (either bucketing by remaining degree or by distance) to improve performance: the peeling algorithm for k-core (coreness), \Delta-stepping, weighted breadth-first search, and approximate set cover. The implementations are all simple and concise (under 100 lines of code). Using our interface, we develop the first work-efficient parallel algorithm for k-core in the literature with nontrivial parallelism.We experimentally show that our bucketing implementation scales well and achieves high throughput on both synthetic and real-world workloads. Furthermore, the bucketing-based algorithms written in Julienne achieve up to 43x speedup on 72 cores with hyper-threading over well-tuned sequential baselines, significantly outperform existing work-inefficient implementations in Ligra, and either outperform or are competitive with existing special-purpose parallel codes for the same problem. We experimentally study our implementations on the largest publicly available graphs and show that they scale well in practice, processing real-world graphs with billions of edges in seconds, and hundreds of billions of edges in a few minutes. As far as we know, this is the first time that graphs at this scale have been analyzed in the main memory of a single multicore machine.},
-  comments={}
+  comments={
+  Focuses on providing a framework to implement bucketing based graph algorithms. 
+  OBSERVTIONS: (1) OG Ligra is work-inefficent (2) Implementing algorithms using frameworks instead of as one-off programs enables users to easily take advantage of optimizations already implemented by the framework, such as  direction-optimization, compression and parallelization over both the vertices and edges of a set of vertices 
+  PROBLEMS: Frontier-based algorithms can't efficently represent bucketing algorithms. 
+  SOLUTIONS:
+  METHODS:}
 }
+
+
+
+@inproceedings{Kang2009,
+  title={Pegasus: A peta-scale graph mining system implementation and observations},
+  author={Kang, U and Tsourakakis, Charalampos E and Faloutsos, Christos},
+  booktitle={2009 Ninth IEEE international conference on data mining},
+  pages={229--238},
+  year={2009},
+  organization={IEEE},
+  comments={PRIMITIVES: The Generalized Integrated Matrix-Vector Multiplication (GIM-V) is a generalization of normal matrix-vector multiplication. There are three operations that can be combined to give graph algorithims. (1) combine2: multiplies a matrix scalar by a vector (2) CombineAll: Sums n multiplication results for a node (3) assign: Overwrite the previous value of a vector to make a new vector. They show that these can be combined to yield PageRank, RandomWalk, DiameterEstimation, ConnectedComponents}
+}
+
+@inproceedings{Fu2014,
+  title={MapGraph: A high level API for fast development of high performance graph analytics on GPUs},
+  author={Fu, Zhisong and Personick, Michael and Thompson, Bryan},
+  booktitle={Proceedings of workshop on GRAph data management experiences and systems},
+  pages={1--6},
+  year={2014},
+  comments={We present MapGraph, a high performance parallel graph programming framework that delivers up to 3 billion Tra- versed Edges Per Second (TEPS) on a GPU.
+  OBSERVATIONS: Uses the GAS primitives; Uses CSR format for graps. 
+  PROBLEMS: The Single-Instruction, Multiple Thread (SIMT) architecture used in GPUs imposes design and implementation constraints for graph algorithms. 
+    (1) Parallel graph algorithms have severe scalability problems on CPU architectures due to the limited memory bandwidth. (a) Graph algorithms are data intensive, and hence memory efficiency is very important; (b) graphs are typically stored in irregular data structures; (c) graph operations have irregular data access patterns that are particularly inefficient on GPUs. and (d) different graph algorithms and data sets can impose very different workloads. 
+    (2) Modern DSLs generate thread assignment decisions through a static analysis of the users program. However, data-dependent parallelism on GPUs (assigning threads to vertices based on the number of edges) requires deferring the thread assignment until runtime against a specific graph. 
+    (3) Graphs have an irregular structure and access patterns and the degree of vertices (the number of in-edges or out-edges) in real world graphs can vary over several orders of magnitude. On a GPU, these characteristics cause uncoalesced memory access patterns, create unbalanced workloads for threads, and lead to thread divergence.
+  SOLUTIONS:To deliver high performance, MapGraph dynamically chooses among different scheduling strategies depending on the size of the frontier and the size of the adjacency lists for the vertices in the frontier. a Structure Of Arrays (SOA) pattern is used to ensure coalesced memory access. They improve LOAD BALANCING and MEMORY PERFORMANCE by integrating CTA-Based, Scan-Based and Warp-Based scattering. 
+  METHODOLOGY:
+  PRIMITIVES: They use the GAS model, but list their `primitives' as BFS, SSSP, CC, PageRank}
+}
+
+@inproceedings{Bulucc2013,
+  title={High-productivity and high-performance analysis of filtered semantic graphs},
+  author={Bulu{\c{c}}, Aydin and Duriakova, Erika and Fox, Armando and Gilbert, John R and Kamil, Shoaib and Lugowski, Adam and Oliker, Leonid and Williams, Samuel},
+  booktitle={2013 IEEE 27th International Symposium on Parallel and Distributed Processing},
+  pages={237--248},
+  year={2013},
+  organization={IEEE},
+  comments={ In a semantic graph, vertices and edges carry attributes of various types. Analytic queries on semantic graphs typically depend on the values of these attributes; thus, the computation must view the graph through a filter that passes only those individual vertices and edges of interest.
+    OBSERVATIONS: 
+    PROBLEMS:
+    SOLUTIONS: A filter is a unary predicate that returns true if the edge is to be considered, or false if it should be ignored. Filters can be MATERIALIZED (i.e. make a copy of nodes that meet the criteria in advance) or ON-THE-FLY (i.e. check each edge/vertex as it is processed)
+    METHODOLOGY:
+    PRIMITIVES: They use Filters and Semirings. CombBLAS uses: Sparse Matrix-Vector Multiplication; Sparse Matrix-Matrix multiplication both explore the graph by expanding the frontier by a single hop. SemiRing Multiply, SemiRing Add
+  }
+}
+
+@article{Buluc2011,
+  title={The Combinatorial BLAS: Design, implementation, and applications},
+  author={Bulu{\c{c}}, Ayd{\i}n and Gilbert, John R},
+  journal={The International Journal of High Performance Computing Applications},
+  volume={25},
+  number={4},
+  pages={496--509},
+  year={2011},
+  publisher={Sage Publications Sage UK: London, England},
+  comments={We describe the parallel Combinatorial BLAS, which consists of a small but powerful set of linear algebra primitives specifically targeting graph and data mining applications.
+    OBSERVATIONS: Many graph computa- tions, however, contain sufficient coarse-grained parallelism for thousands of processors, which can be uncovered by using the right primitives.
+      (1) Scan primitives (Blelloch, 1990) are used for solving the maximum flow, minimum spanning tree, maximal inde- pendent set, and (bi)connected components problems effi- ciently.
+      (2) it is possible to implement some clustering and connected components algorithms using the MapReduce model (Dean and Ghemawat, 2008)
+      (3) The Combinatorial BLAS aggregates elementary opera- tions to a level that allows optimization and load-balancing within its algebraic primitives. 
+    PROBLEMS: 
+    (1) Graph computations are difficult to parallelize using traditional approaches due to their irregular nature and low operational intensity.
+    (2) a certain class of algorithms that make heavy use of priority queues could not be represented with the same asymptotic complexity using algebraic primitives only. Examples of such algorithms include Prims minimum spanning tree algorithm and Dijkstras shortest paths algo- rithm. 
+    SOLUTIONS: 
+    (1) the Combinatorial BLAS is edge-based; each element of the sparse matrix represents an edge, and the underlying semiring defines the computation on that edge.
+    METHODS:
+    PRIMITIVES: The API has methods for: 
+      (1) SpGEMM - Sparse Matrix Matrix multiplication
+      (2) SpMV - Sparse Matrix Vector multiplication
+      (3) SpEWiseX
+      (4) Reduce
+      (5) SpRef
+      (6) SpAsgn 
+      (7) Scale 
+      (8) Applu
+  }
+}
+
+@article{Azad2021,
+  title={Combinatorial BLAS 2.0: Scaling combinatorial algorithms on distributed-memory systems},
+  author={Azad, Ariful and Selvitopi, Oguz and Hussain, Md Taufique and Gilbert, John R and Bulu{\c{c}}, Ayd{\i}n},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  volume={33},
+  number={4},
+  pages={989--1001},
+  year={2021},
+  publisher={IEEE},
+  comments={The Combinatorial BLAS library implements key computational primitives for rapid development of combinatorial algorithms in distributed-memory systems. 
+  OBSERVATIONS:
+  (1) Exascale computers are going to be based on either accelerators or multi-core CPUs.
+  (2) CombBLAS introduces accelerator sup- port for several key operations to address the shift in super- computer architectures towards exascale.
+  PROBLEMS:
+  (1) Communication is the primary bottleneck in scaling data-intensive applications to exascale.
+  (2) a flat MPI model is now known to be unscalable due to increased communication bottlenecks in Network Interface Card (NIC)
+  (3) popular sparse data structures such as Compressed Sparse Columns (CSC) become wasteful as local matrices become hypersparse due to 2D or 3D decomposition on large numbers of partitions.
+  (4) Use of accelerators introduces an overhead for copying from the hose to the accelerator; so the gain from the accelerator must outweigh the cost of copying it across
+  (5) I/O has increasingly become a bottleneck on exascale systems. The graph community does not have a commonly accepted binary exchange format.
+  SOLUTIONS:
+  (1) CombBLAS 2.0 follows the most popular paradigm of using OpenMP parallelism within a node, and MPI for com- munication across nodes. 
+  (2) Comb- BLAS avoids most load balance issues by randomly permut- ing sparse matrices during their assembly, the load imbalance can still hurt the performance if the library runs on 100,000 processes.
+  METHODS: By offloading these computationally expensive SpGEMM oper- ations to GPUs, CombBLAS is able to obtain 2-3 speedup on all three tested instances.
+  PRIMITIVES:
+    Data Structures: Vectors, Matrices
+    Classes}
+}
+
+
+
+
+@inproceedings{Dadu2021,
+  title={Polygraph: Exposing the value of flexibility for graph processing accelerators},
+  author={Dadu, Vidushi and Liu, Sihao and Nowatzki, Tony},
+  booktitle={2021 ACM/IEEE 48th Annual International Symposium on Computer Architecture (ISCA)},
+  pages={595--608},
+  year={2021},
+  organization={IEEE},
+  abstract={Because of the importance of graph workloads and the limitations of CPUs/GPUs, many graph processing accelerators have been proposed. The basic approach of prior accelerators is to focus on a single graph algorithm variant (eg. bulk-synchronous + slicing). While helpful for specialization, this leaves performance potential from flexibility on the table and also complicates understanding the relationship between graph types, workloads, algorithms, and specialization.In this work, we explore the value of flexibility in graph processing accelerators. First, we identify a taxonomy of key algorithm variants. Then we develop a template architecture (PolyGraph) that is flexible across these variants while being able to modularly integrate specialization features for each.Overall we find that flexibility in graph acceleration is critical. If only one variant can be supported, asynchronous-updates/priority-vertex-scheduling/graph-slicing is the best design, achieving 1.93x speedup over the best-performing accelerator, GraphPulse. However, static flexibility per-workload can further improve performance by 2.71x. With dynamic flexibility per-phase, performance further improves by up to 50%.},
+  comment={
+    OBSERVATIONS: 
+    PiUMA Competitor
+    (1) Graph worloads offer specialization opportunities: commutative updates, a resilience to performing work in an arbitrary order, and repetitive structure in memory access and computation. This implies large advantages for specialization, either with CPU offload engines or accelerators .
+    (2) There are four graph algorithm variants (See Figure 1 in paper for spectrum): 
+      (a) Update Visibility: defines when writes become visible to other computations, and hence this affects the granularity at which new tasks are created. Writes may become visible after one pass through the graph (graph-synchronous), after each slice (slice-synchronous), or immediately (asynchronous). Graph and Slice and both bulk-synchronus. 
+      (b) Vertex Scheduling: defines the processing order for active vertices, relevant for asynchronous variants. Include: 
+        (i) Locality order: To improve the vertex access locality, schedule by vertex-id. 
+        (ii) Creation order: Schedule vertices in the order they are activated. 
+        (iii) Work-efficiency order: Schedule vertices in an order which reduces redundant work.
+      (c) Slice Scheduling: defines whether the working set may be limited to a predefined slice of all graph vertices. Slices are determined during offline partitioning and are generally sized to fit on-chip memory. Updates to data outside the current slice are deferred, and an explicit phase is required to switch slices. Slices can be scheduled in different orders, forming new variants.Types:
+        (i) Round-robin: iterate through all slices. 
+        (ii) Locality: similar, but repeatedly process each slice. 
+        (iii) Work-efficiency: prioritize slices whose properties change most
+      (d) Update Direction: efines whether a task updates its own property (pull/remote read), or whether a task updates its neighbor's properties (push/remote atomic update).
+
+    (3) Performance is a product of work-efficiency and throughput
+
+    PROBLEMS: 
+    (1) Graph processing workloads are challenging for traditional architectures (CPUs/GPUs) due to data-dependent memory access, reuse, and parallelism.
+    (2) Hardware accelerators typically have to make assumptions about the input graph type, workload property and fundamental graph algorithm variants, all of which compine to affect the tradeoff between throughput and work efficency. 
+    (3) The fundamental limitation of existing decoupled-spatial accelerators is the lack of support for fine-grain data-dependent parallelism (ie. task parallelism)
+    (4) Most algortihms are iterative and convergant. For many algorithms like a BFS, or a GCN this means that they are order-insensitive. However, for some graph algorithms list Shortest Path, their work-efficiency is order-sensitive. 
+    (5) Dense-frontier workloads like PageRank and Collaborative Filtering usually have more than 50\% active vertices, while sparse frontier workloads like SSSP and BFS (traversal-based) have fewer. Sparser frontier workloads require fewer passes through the graph until convergance. 
+
+    SOLUTIONS:
+    (1) Our insight is that we can optimize performance by having the flexibility to use the right algorithm variant for the right graph and workload (or even workload phase)
+    (2) Our design augments prior efficient decoupled-spatial accelerators which can support general data-structures and suit both memory-intensive (eg. Breadth-first Search (BFS)) and compute-intensive workloads (eg. Graph Convolutional Networks (GCN)).
+    METHODS:
+    (1) Barriers in synchronus algorithms can be an overhead when the work between them is low. 
+    (2) Storage-order access increases spatial locality at the cost of work-efficency. Creation order is simple FIFO logic and work-efficency order requires dynamic sorting. 
+    (3) non-Slicing avoids barriers and slice-switching data movement. Slicing can hard optimal ordering by limiting the scheduling scope. Slicing does make more effective use of on-chip memory.
+    (4) Push reduces communication bandwidth and better hides communication latency. Pull-based methods with tuned pre-fetching that are based on vertex convergance can be more effective.
+    PRIMITIVES:
+  }
+}
+
+@article{Lenharth2016,
+  title={Parallel graph analytics},
+  author={Lenharth, Andrew and Nguyen, Donald and Pingali, Keshav},
+  journal={Communications of the ACM},
+  volume={59},
+  number={5},
+  pages={78--87},
+  year={2016},
+  publisher={ACM New York, NY, USA},
+  comments={ . There are three main challenges in performing computations on these graphs—large graph sizes, diversity in graph structure, and the complex patterns of parallelism in graph analytics applications
+    OBSERVATIONS:
+     (1) Many graph analytics problems can be solved by both topology-driven and data-driven algorithms, but each type of algorithm makes different trade-offs.
+     (2) Topology-driven algorithms are easier to implement because graph representations usually store the nodes of the graph in an array or a list, so iteration over active nodes can be implemented simply as iteration over this data structure
+     (3) data-driven algorithms must use a workset (or multiset) to hold the active nodes. Sequential implementations usually use lists and priority queues to imple- ment worksets for unordered and ordered algorithms, respectively. 
+     (4) Data-driven algorithms can be more work efficient. Data-driven algorithms can focus on regions of the graph where useful work needs to be done, making them asymptotically faster than their topology-driven coun- terparts for many problems
+
+
+    GRAPH ALGORITHM TAXONOMY:
+    The `operator formulation of algorithms' is a data centric abstraction of algortihms:
+      (1) Local View: Described by an operator.
+        (a) Operators: A graph update rule applied to an active node in the graph. Each operator application is called an activity and reads and writes the neighborhood of the graph around the active node. 
+          (i) Morph: Modify the structure of the neighborhood by adding and removing nodes and edges. 
+          (ii) Local Computation:  update only lavels on nodes and edges without changing the structure. 
+            (01) Pull style: reads neighboring nodes and writes to active node. 
+            (02)Push style: Reads active node and writes to neighboring nodes. 
+          (iii) Reader: Reads data that is read-only
+      (2) Global View: Describes the locations of active nodes in the graph and the order which they must appear
+        (a) Types of Algorithms: 
+          (i) Topology-Driven: the locations of active nodes are determined by the graph structure. These algorithms make a number of sweeps over the graph; in each such sweep, all nodes are initially active, and the sweeps terminate when some global quiescence condition is reached. (e.g. Bellman-Ford)
+          (ii) Data-Driven: There is an initial set of active nodes, and the execution of activities may cause other nodes to become active on the fly. These algorithms do not have any algorithmic notion of sweeps, terminating when there are no more active nodes in the graph (e.g. Djirkstra's)
+        (b) Ordering:
+          (i) Unordered: any order of processing active nodes is semantically correct. Some orders may be more efficient than others, so unordered algorithms sometimes assign soft priorities to activities
+          (ii) Ordered: requiring active nodes appear to have been processed in a specific order, specified by assigning priorities to active nodes, and the implementation is required to process active nodes so they appear to have been scheduled for execution in strict priority order
+
+
+    PROBLEMS:
+    (1) Large graph sizes. In todays era of big data, parallel graph analytics systems must deal with graphs with billions of nodes and trillions of edges. Parallel computing is essential for analyzing properties of graphs of such size in reasonable time. 
+    (2) Diversity in graph structure means that for many analytics problems, different algorithms must be used for uniform-degree, random, and power-law graphs to obtain good parallel performance:
+      (a) Planar graphs and graphs (such as road networks) have a uniform degree distribution that does not depend on the size of the graph the “average diameter of the graph, increases rapidly with graph size.
+      (b) Social network graphs have a diameter that grows as the logarithm of the number of nodes. The degree distributions follow a power-law structure.
+      (c) Random Graphs start with some number of nodes and then add edges incrementally between ran- domly selected pairs of nodes.
+    (3) Need for new parallel abstractions. Most existing abstractions and implementations for parallel computing were developed for data parallelism. Some graph analytics algorithms have data parallelism, but others exhibit a more complex parallelism pattern called “amorphous” data-parallelism. Tasks in amorphous data-parallel programs may or may not be able to run in parallel, depending on the graph structure and values known only at runtime.To exploit this parallelism pattern, systems need to find opportunities for parallel execution while executing the program in parallel. As a consequence, abstractions and implementations for data-parallelism are not adequate for many parallel graph analytics algorithms.
+    (4) Amorphous Data-Parallelism: Since neighborhoods can overlap, the memory model, which defines the semantics of reads and writes in overlapped regions, may prevent some activities with overlapping neighborhoods from executing in parallel. In addition, ordering constraints between activities must be enforced.
+    SOLUTIONS:
+    METHODS:
+    PRIMITIVES:
+  }
+}
+
+@inproceedings{Osama2022,
+  title={Essentials of parallel graph analytics},
+  author={Osama, Muhammad and Porumbescu, Serban D and Owens, John D},
+  booktitle={2022 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW)},
+  pages={314--317},
+  year={2022},
+  organization={IEEE},
+  comments={
+    Proposes a new parallel programming abstraction called `native graph' graph analytics. 
+    OBSERVATIONS:
+    (1) Focuses on the `canoncial' representation of graphs, rather than the linear-algebraic approach.
+    (2) asynchronous execution models are defined to be more “complex” than bulk-synchronous execution models but allow for better workload balance.
+    (3) In a shared-memory model, all data is directly available to all processes, whereas in a message-passing model, data is made available through messages passed between processes
+    PROBLEMS:
+    (2) Gunrock, Pregel and PowerGraph use elements of the think like a vertex design, but not all of it. 
+    (1) efficient analysis is increasingly difficult given increases in graph scale and workload diversity
+    SOLUTIONS:
+    Builds on the four `think like a vertex' pillars:
+      (1) Timing: Synchronous and asynchronous.
+      (2) Communication: Shared-memory and message-passing.
+      (3) Execution Model: Vertex programs and push vs. pull.
+      (4) Partitioning: Heuristics
+    METHODS:
+    PRIMITIVES:
+      (1) A graph data structure
+        -> They use CSC/CSR
+      (2) Frontiers
+        -> They use an asynchronous queue as an underlying structure to represent the frontier to allow for asynchrony and message-passing
+      (3) Operators
+        -> A high-performance graph analytics implementation relies on efficient parallel operators that transform, expand, or contract the frontiers or graphs
+      (4) Loop structure / convergence conditions. 
+  }
+}
+
+@article{Mccune2015,
+  title={Thinking like a vertex: A survey of vertex-centric frameworks for large-scale distributed graph processing},
+  author={McCune, Robert Ryan and Weninger, Tim and Madey, Greg},
+  journal={ACM Computing Surveys (CSUR)},
+  volume={48},
+  number={2},
+  pages={1--39},
+  year={2015},
+  publisher={ACM New York, NY, USA},
+  comments={
+    OBSERVATIONS:
+    (1) TLAV paradigm improves locality, demonstrates linear scalability, and provides a natural way to express and compute many iterative graph algorithms. 
+    PROBLEMS:
+    (1) Graph computation is notoriously difficult to scale and parallelize, often due to inherent interdependencies within graph data
+    (2) Big Data drives graph sizes beyond the memory capacity of a single machine, data must be partitioned to out-of-memory storage or distributed memory.
+    (3) Sequential graph algorithms, require random access to all graph data, suffer from poor locality and the indivisibility of the graph structure resulting in time and resource intensive pointer chasing.
+    (4) A significant contribution of TLAV frameworks is exposing how, for graphs, reducing the scope of a program increases scalability.
+    (5) The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs
+    (6) The performance of the subgraph-centric processing is also closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques.
+
+    SOLUTIONS:
+    METHODS: 
+    PRIMITIVES:
+    The four pillars of the TLAV framework are: 
+      (1) Timing - How user-defined vertex programs are scheduled for execution
+      (2) Communication - How vertex program data is made accessible to other vertex
+      programs
+      (3) Execution Model - Implementation of vertex program execution and flow of data
+      (4) Partitioning - How vertices of the graph, originally in storage, are divided up to be
+      stored across memory of the system's multiple1 worker machines
+  }
+}
+%%% SCAN ALL BELOW HERE %%%
 
 %%% BUT ABOVE HERE %%%
