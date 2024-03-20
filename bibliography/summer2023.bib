@@ -3589,6 +3589,129 @@ comments={
   publisher={SIAM},
   comments={As the number of cores per node increases due to multicore scaling, so does the contention on the network interface card. Without hierarchical parallelism that exploits the faster on-chip network, the flat MPI parallelism will be unscalable becausemore processes will be competing for the same network link. Therefore, designing hierarchically parallel SpGEMM and SpRef algorithms is an important future direction of our work.}
 }
-%%% SCAN ALL BELOW HERE %%%
 
-%%% BUT ABOVE HERE %%%
+%%%% BUILDING A BENCHMARK %%%%
+
+@inproceedings{Kistowski2015,
+  title={How to build a benchmark},
+  author={Kistowski, J{\'o}akim V and Arnold, Jeremy A and Huppler, Karl and Lange, Klaus-Dieter and Henning, John L and Cao, Paul},
+  booktitle={Proceedings of the 6th ACM/SPEC international conference on performance engineering},
+  pages={333--336},
+  year={2015}, 
+  comments={
+    DEFINITION: a benchmark as a “Standard tool for the competitive evaluation and comparison of competing systems or components according to specific characteristics, such as performance, dependability, or security”. 
+      COMMENT: This diverges from what Hooker says we should use them for. 
+    We define tools for the non-competitive system evaluation and comparison as rating tools. Rating tools are primarily intended for a standardized method of evaluation ... and should generally follow the same design and quality criteria as benchmarks.
+    In order to be accepted for standardization, benchmarks must meet a host of quality criteria.  Benchmarks candidates must undergo a process of several steps, including the definition of measurement methodologies, workload selection, and a number of rigorous benchmark acceptance tests.
+    TYPES of Benchmarks: 
+      SPECIFICATION-based: describe functions that must be achieved, required input parameters and expected outcomes. The implementation to achieve the specification is left to the individual running the benchmark. They begin with a definition of a business problem and have the advantage of allowing innovative software to address the business problem. They require substantial development prior to running the benchmark, and may have challenges proving that all the requirements of the benchmark are met
+      KIT-based: provide the implementation as a required part of official benchmark execution. Any functional differences between products that are allowed to be used for the benchmark must be resolved ahead of time and the individual running the benchmark is typically not allowed to alter the execution path of the benchmark. They restrict some innovative approaches to a business problem, but have the significant advantages of providing near “load and go” implementations that greatly reduce the cost and time required.
+      HYBRID: A hybrid of these may be necessary if the majority of the benchmark can be provided in a kit, but there is a desire to allow some functions to be implemented at the discretion of the individual running the benchmark
+    WORKLOAD Properties: 
+      - no single workload can be strong in all areas, there will always be a need for multiple workloads and benchmarks. 
+      - When developing a new workload, the goals should be defined so that choices between competing design criteria can be made in accordance with those goals to achieve the desired balance.
+      Criteria: (1) Relevance, (2) Reprodicibility (3) Fairness (4) Verificability (5) Usability. 
+      }
+}
+
+@inproceedings{Huppler2009,
+  title={The art of building a good benchmark},
+  author={Huppler, Karl},
+  booktitle={Technology conference on performance evaluation and benchmarking},
+  pages={18--30},
+  year={2009},
+  organization={Springer},
+  comments={
+    - Just because something is new does not mean it is good. 
+    - Criteria: (1) Relevant, (2) Fair, (3) Economical (4) Repeatable (5) Verifiable 
+      Relevance is often balanced against fairness, economy, reproucability and verifiability. 
+    - Metrics: Vary depending on what is being benchmarked. 
+    - Good benchmarks follow software execution paths relevant to the consumers. 
+    - Relevant hardware should be used. 
+    - Design principles: (1) Fit a specific scope in the business model, benchmarks that are too general are not useful (2) Clearly state that they cannot be generalized outside the explicit scope (3) Relevance should be long-lived and broadly applicable. COMMENT: The 'too general' problem is why we are taking a suite-based approach. 
+  }
+}
+
+@article{Carpinetti2002,
+  title={What to benchmark? A systematic approach and cases},
+  author={Carpinetti, Luiz CR and De Melo, Alexandre M},
+  journal={Benchmarking: An International Journal},
+  volume={9},
+  number={3},
+  pages={244--255},
+  year={2002},
+  publisher={MCB UP Ltd},
+  comments={
+    This is a business-focused paper that emphasises the process of identifying what to benchmark, and sees benchmarking as a tool to drive innovation and progress, using the current best practice as a baseline to improve on. 
+    DEFINITION(S):
+      - The search for industry best practices that will lead to superior performance. 
+      - A systematic and continuing measurement process; a process of continuously measuring and comparing an organization's business process against business leaders anywhere in the world to gain information that will help an organization take action to improve its performance. 
+    STEPS: 
+      1. Identify the object of study. 
+        (a) Conduct product and market analysis
+        (b) identify critical dimensions
+        (c) identify critical processes
+        (d) assess the performance of candidates 
+        (e) identify priorities for improvement. 
+      2. Select the superior performers
+      3. collect and analyze data
+      4. set performance goals for improvement 
+      5. implement plans and monitor results. 
+    TYPES: 
+      (1) Process benchmarking
+      (2) Product benchmarking 
+      (3) Strategic benchmarking 
+  }
+}
+
+@article{Saavedra1996,
+  title={Analysis of benchmark characteristics and benchmark performance prediction},
+  author={Saavedra, Rafael H and Smith, Alan J},
+  journal={ACM Transactions on Computer Systems (TOCS)},
+  volume={14},
+  number={4},
+  pages={344--384},
+  year={1996},
+  publisher={ACM New York, NY, USA},
+  comments={
+    Standard benchmarking provides the run-times for given programs on given machines, but fails to provide insight as to why those results were obtained 
+      COMMENT: Links to hooker's argument. 
+    DEFINITION: 
+      Benchmarking is the process of running a specific program or workload on a specific machine or system and measuring the resulting performance.
+      Benchmarks can either be complete applications the most executed parts of a program (kernels) or synthetic programs 
+        COMMENT: Matches Hennessey's charactirization.
+    PROBLEMS: 
+      Benchmarking fails to provide insight as to why those results were obtained (either in terms of machine or program characteristics)
+        COMMENT: Aligns with Hooker's characterization of the problem. 
+      Benchmarking fails to characterize either the program or machine.
+    CONTRIBUTION:
+      We have developed a machine-independent model of program execution to characterize both machine performance and program execution. Our technique allows us to identify those operations, either on the machine or in the programs, which dominate the benchmark results.
+      - They abstract a program away to its primitives, and then measure the interactions of those primitives with hardware to characterize the program and the machine. 
+        COMMENT: This may be the source of all the focus on kernel level measurements. 
+    BENEFITS OF THEIR MODEL (the decompose and measure approach):
+      (1) our methodology allows us to analyze the behavior of individual machines and identify their strong and weak points, 
+      (2) we can analyze individual benchmark programs, determine what operations they execute most frequently, and accurately predict their running time on those machines which we have characterized, 
+      (3) we can determine “where the time goes,” which aids greatly in tuning programs to run faster on specific machines,
+      (4) we can evaluate the suitability of individual benchmarks, and of sets of benchmarks, as tools for evaluation, and we can identify redundant benchmarks in a set, and 
+      (5) we can estimate the performance of anticipated workloads on real machines, of real workloads on proposed machines, and of anticipated workloads on proposed machines.
+      COMMENT: This approach flies a little in the face of what I'm proposing, but most of the extant benchmarks already do this decompose part. The interesting part will be comparing the primitive preditions to the observed behaviour. 
+    OBSERVATIONS: 
+      Although it may be misleading, it is frequently necessary or desirable to describe the performance of a given machine by a single number.
+      There are several reasons why it is important to know in what way a given benchmark “uses” a machine
+      A good benchmark suite is representative of the “real” workload, but there is little point to filling a benchmark suite with several programs which provide similar loads on the machine.
+      The purpose of a suite of benchmarks is to represent the target workload. Within that constraint, we would like to minimize the number of actual benchmarks...  an acceptable variety of benchmark measurements could be obtained with only a subset of the programs.
+  }
+}
+
+@article{Francis2007,
+  title={What have we learned? Themes from the literature on best-practice benchmarking},
+  author={Francis, Graham and Holloway, Jacky},
+  journal={International Journal of Management Reviews},
+  volume={9},
+  number={3},
+  pages={171--189},
+  year={2007},
+  publisher={Wiley Online Library},
+  comments={ Not useful, focuses on the business-theory and business-impact of benchmarking. 
+    Four themes from the literature are highlighted: (1)studies of the nature of benchmarking practice; (2) criticisms of benchmarking; (3) evaluating the effectiveness of benchmarking; and (4) the notion of best-practice}
+}
