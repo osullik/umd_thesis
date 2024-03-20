@@ -1,5 +1,7 @@
 \section{Graph Data Structures}
 \label{section:12-Graph-Data-Structures}
+\osullikomment{@REVIEWERS - START HERE FOR NOW}
+
 \osullikomment{Add section overview}
 
 % Graph-Based AI -- Include a discussion on the Overlap between Sybmolic (graph) and sub-symbolic (Generative) AI.
@@ -18,7 +20,7 @@ The \textit{topology} is the distinctive feature of a graph data structure.
 Analyzing and exploiting the \textit{topology} is core to many algorithms that seek to solve graph problems. 
 The \textit{diameter} of the graph is the length of the shortest path between the two most `distant' nodes.
 The \textit{eccentricity} of a graph is the greatest geodesic distance between two vertices in the graph~\cite{Wu2015}.
-the \textit{radius} of the graph is the minimum graph eccentricity.~\cite{Wu2015}
+The \textit{radius} of the graph is the minimum graph eccentricity.~\cite{Wu2015}
 The \textit{algabreic connectivity} of a graph describes how well-connected it is~\cite{Wu2015}
 the \textit{traversal depth} of a graph algorithm is how many traverse iterations need to occur to complete an algorithm and is directly proportional to the eccentricity and connectivity of a graph~\cite{Wu2015}. 
 
@@ -77,7 +79,7 @@ The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|
 
 More complicated representations exist which are capable of compressing the graph representations even further. 
 \textit{Ligra+} uses an encoding scheme that splits the graph into two arrays \textit{Compressed Edges-in} and \textit{Compressed Edges-out}.
-The arrays use k-bit block encoding to approximately halve the memory requirements to represent each graph. 
+The arrays use k-bit block encoding to approximately halve the memory requirements to represent each graph compared to CSC/CSR. 
 The compression has an encode/decode overhead that makes it impractical in serial systems but has been shown to improve overall performance in parallel implementations~\cite{Shun2015}.
 
 Graphs can be \textit{Static} or \textit{Dynamic}.
@@ -91,6 +93,7 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 
 \subsection{Graph Primitives}
 \label{section:123-graph-primitives}
+\osullikomment{The back half of the primitives section is just points I collected in my travels and need to synthesize}
 
 There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
 The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
@@ -98,8 +101,8 @@ The \textit{canonical} representation of a graph views the vertices as a chunk o
 These chunks may also include details of the labels, weights and other non-topological information stored in the graph, or just house pointers to that information.
 Using this representation for large and dense graphs causes the `chunks' of memory for neighboring nodes to not be spatially co-located. 
 Without spatial locality, modern processor optimizations like caching and prefetching are ineffective, and the processor will need to wait for the relevant node vertex to be retrieved from the main memory before continuing. 
-\osullikomment{add a cite here, to beamer, the BLAS folks or to intel.}
 
+\osullikomment{Add in Combinatorial BLAS here. }
 Drawing inspiration from the relationship between the Basic Linear Algebra Subprogram (BLAS) library and the development of accelerators for Floating Point Operations (FLOPs), an alternative linear algebraic representation of graphs and implementation of graph algorithms is emerging. 
 The GraphBLAS project is an effort to formalize graph operations using linear algebra~\cite{Mattson2013}.
 Using the incidence matrices for graphs in a CSC/CSR format, the GrahBLAS is building a mathematical abstraction layer for graph operations based on the realization that graph operations are matrix operations~\cite{Kepner2015, Kepner2016}.
@@ -107,6 +110,8 @@ Using the incidence matrices for graphs in a CSC/CSR format, the GrahBLAS is bui
 The GraphBLAS team identified five primitive operations and five additional compound operations that can be composed of primitive operations. 
 The five primitive operations are \textit{Construct Matrix from Triples (\textbf{Sparse}}), \textit{Extract Triples from a Matrix (\textbf{Find}}), \textit{Element-Wise addition (\textbf{SpEWiseA}}), \textit{Element-Wise Multiplication (\textbf{SpEWiseX}}), and \textit{Matrix Products (\textbf{SpGEMM}})~\cite{Kepner2015}.
 These primitive operations are composed to represent graph operations, like a single step in a Breadth First Search (BFS) which is a matrix-vector multiplication of the adjacency matrix and the vector representing the node(s) to start from~\cite{Kepner2016}.
+
+\osullikomment{Here down is 'collection of things I should probably include but haven't integrated yet' Lots of it is redundant and covered later. }
 
 Wu et al identify two families of graph primitive operation, \textit{traversal}-based and \textit{dense-computation}-based.
 Traversal-based primitives systematically explore neighbors until some condition is met and only deal with small subsets of vertices. 
@@ -235,6 +240,9 @@ More sophisticated graph database systems use the \textit{index-free adjacency p
 \label{section:125-intelligence-security-graph-problems}
 
 \subsubsection{Problem Characteristics}
+\osullikomment{Need to reduce this down to more foundational problems. These are important as they will form the basis of the problems in the benchmark. NOTE that I need to update this to reflect the graph-based AI language after I update chapter 1.}
+
+\osullikomment{@Nicole - Skip this section for now, I need to do some heavy restructuring.}
 
 Section~\ref{section:11-Intelligence-Security-Context} identified eight use cases that apply to the I\&S community that represent intelligence problems as a network (graph). 
 Those eight use cases are addressed with seven distinct graph computing tasks. 
@@ -340,6 +348,8 @@ Other approaches use incremental algorithms to update the results of the analysi
 
 \subsection{Processing Bottlenecks}
 \label{section:126-processing-bottlenecks}
+
+\osullikomment{Intent is to use the exploit and elevate framwework i introduce here to taxonomize the acceleration methods, probably generate a table or taxonomic graph of them for a pretty visual.}
 
 A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is equal to or less than the demand placed on it~\cite{Goldratt2004}. 
 To improve the overall performance of a system, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, improve the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
@@ -496,7 +506,7 @@ The shape of the graph has a significant impact on the `hardness' of partitionin
 Indeed, there is a reasonable assertion that the key to improving the effectiveness of graph processing algorithms may depend on finding algorithms that can efficiently partition graphs and process them as independent subgraphs including streaming and distributed partitioning techniques~\cite{Mccune2015}.
 
 
-\subsection{Paralellism as a solution}
+\subsubsection{Paralellism as a solution}
 Beginning with distributed approaches, and growing to include shared-memory parallelism when single machines gained the memory capacity to support processing, parallel approaches to graph processing are essential to \textit{efficient} and \textit{effective} graph processing. 
 It is particularly hampered by load imbalance, synchronization overheads and non-uniform memory accesses (NUMA)~\cite{Beamer2015}
 
@@ -560,6 +570,9 @@ In a distributed setting, branches cause thread divergence and synchronization o
 \subsection{Summary}
 \label{section:127-graph-data-structures-summary}
 
+\osullikomment{The idea here is that I integrate the primitives, characteristics, problems and bottlenecks together to yield the key design considerations for the benchmark suite.}
+
+\osullikomment{@REVIEWERS -- STOP HERE FOR NOW}
 
 
 % 2. Memory Bandwidth -- 
