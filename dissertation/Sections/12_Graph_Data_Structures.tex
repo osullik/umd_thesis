@@ -467,102 +467,95 @@ One of the common thrusts in the discussion of parallel graph processing archite
 
 
 \subsubsection{Computation Bottlenecks}
+While graph processing is typically memory-bound, there are computational bottlenecks that can occur 
+Load-balancing is a key challenge, particularly when parallelizing graph processing and working with graphs with heavilily skewed degree distributions~\cite{Aananthakrishnan2020}.
+The irregular structure of graphs makes it hard to predict what work needs to be completed before execution time.
+For example, many graph algorithms iterate until convergence, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other workers while they wait for the over-loaded worker to finish~\cite{Ozdal2017}.
 
+\textbf{Branching.}
+Graph processing is challenging for traditional architectures~\cite{Dadu2021}.
+In addition to the pre-fetching and cache issues already discussed, graphs can make \textit{branch-prediction} and \textit{out-of-order} processing optimizations ineffective. 
+Graph applications heavily use branches because future processing depends heavily on the structure and order of the input data that cannot be known until input time.
+The branching operations are data dependent, irregular and so are hard to predict which contributes to the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
+Luckily, the impact of memory bandwidth under-utilization and memory latency is so significant that the vast majority of the time the branch misprediction rate has no meaningful impact on computation time, because it is masked by stalled memory accesses~\cite{Beamer2015}.
+
+
+\textbf{Adjacent Problems.}
+Many of the computational problems are not from the graph processing itself, but from generating heuristics and optimizing approximate solutions. 
+One option to mitigate the impact of poor spatial locality is to pre-process the graph and re-order the vertices in memory which can be computationally expensive and time-consuming~\cite{Balaji2018}
+Another is to use vertex scheduling to determine the optimal order to visit vertices to maximize spatial locality. 
+vertex scheduling can be offline or online, though online approaches are generally infeasible because of their computational cost~\cite{Mukkara2018}.
+Another optimization that aims to reduce memory bandwidth consumption and latency is `cache-blocking' where the graph is decomposed to subgraphs that can fit into the available cache. 
+Closely related is the idea of \textit{graph-partitioning} which seeks to optimize the division of the graph between worker nodes in a parallel setting so that there are minimal cross-worker dependencies~\cite{Balaji2018}.
+As is discussed in section~\ref{section:124-general-characteristics}, optimal graph partitioning is $NP$-Complete.
+But sub-optimal partitioning leads to load imbalance and contention between workers for high-degree vertices~\cite{Chen2019}.
+So, heuristic approaches approximate the partitions.
+These approaches can involve computationally expensive eigendecompositions~\cite{Ng2001}, or complex test-and-adjust approaches like the \textit{Kernighan-Lin} algorithm~\cite{Kernighan1970} among others.
+The shape of the graph has a significant impact on the `hardness' of partitioning.
+\textit{Scale-free} graphs with small diameters are very difficult to partition, whereas \textit{mesh} graphs with large diameters are more easily separable because of the reduced interdependence of nodes~\cite{Beamer2015}. 
+Indeed, there is a reasonable assertion that the key to improving the effectiveness of graph processing algorithms may depend on finding algorithms that can efficiently partition graphs and process them as independent subgraphs including streaming and distributed partitioning techniques~\cite{Mccune2015}.
+
+
+\subsection{Paralellism as a solution}
+Beginning with distributed approaches, and growing to include shared-memory parallelism when single machines gained the memory capacity to support processing, parallel approaches to graph processing are essential to \textit{efficient} and \textit{effective} graph processing. 
+It is particularly hampered by load imbalance, synchronization overheads and non-uniform memory accesses (NUMA)~\cite{Beamer2015}
+
+\textbf{Data and Algorithm Dependence.}
+Parallel algorithms are particularly sensitive to the shape of the input data. 
+Highly skewed degree distributions with small diameters are difficult to partition effectively~\cite{Beamer2015, Wu2015}.
+Algorithms that are \textit{compute intensive} like PageRank which need to process all of the vertices in each iteration suffer from poor locality, and the memory latency cannot be hidden because of the poor communication-computation ratio~\cite{Ahn2015}.  
+
+\textbf{Parallel abstractions.}
+In general, graph computations are difficult to parallelize using traditional approaches because of their irregular structure and poor communication-computation ratio~\cite{Buluc2011}.
+Factors like skewed degree distributions of graphs, heterogeneity of input graph types (scale-free, random, mesh) and maintaining synchronization make developing correct and efficient algorithms very difficult~\cite{Hong2012, Ediger2013}.
+The proliferation of parallel graph processing frameworks and \textit{Domain Specific Languages} (DSL) that aim to abstract away all the hard-to-implement parallel processing operations and builds in expert optimizations so that the end-user-developer doesn't have to~\cite{Nguyen2013, Dhulipala2017}.
+A common approach is to decompose graph operations into a collection of \textit{primitive} or \textit{atomic} operations, and then combine those to compose the required algorithms for processing. 
+Vertex-centric models~\cite{Mccune2015}, edge-centric models, linear-algebraic models~\cite{Mattson2013, Kepner2016, Buluc2011, Azad2021}, models that apply the \textit{Gather Apply Scatter} (GAS), or the \textit{Frontier} model~\cite{Wang2016} all provide an abstraction to facilitate more efficient parallel graph processing. 
+However, the frameworks are limited, with certain classes of algorithms unable to be represented in their abstractions (e.g. SSSP or MST implementations that use priority queues in early linear-algebraic approaches~\cite{Buluc2011}, bucketing algorithms in \textit{frontier} based models~\cite{Dhulipala2017}), impacts on message passing speed and memory consumption~\cite{Wu2015}, and a general finding that an abstracted library does not perform as \textit{efficently} as a hand-tuned natively implemented algorithm optimized for the system and data it is being run on~\cite{Satish2014}.
+
+\textbf{Distributed vs. Shared-Memory}
+The tradeoffs between distributed and shared memory parallelism have been discussed extensively above, but the core of the tradeoff is that distributed systems incur a network bottleneck that does not impact shared-memory systems in return for accessing potentially greater memory and compute resources~\cite{Shun2013, Beamer2015}.
+Shared memory systems can exacerbate the already limited memory bandwidth issues as more compute resources compete for the limited memory bandwidth~\cite{Shun2015}, and so does not scale with the number of additional compute nodes~\cite{Ahn2015,Kepner2016}.
+
+\textbf{Data parallelism vs Amorphous Data Paralellism}.
+Most general-purpose parallel computing frameworks were developed for data parallelism. 
+Data parallelism allows the same operation to be performed on multiple data at the same time to increase efficiency. 
+While some graph processing algorithms have data parallelism, many exhibit a more complex parallelism pattern called “amorphous” data-parallelism~\cite{Lenharth2016}.
+\textit{Amorphous} data parallelism is a more flexible approach that can better handle irregularity in the shape of data, at the cost of being processed less efficiently by general-purpose hardware. 
+
+\subsubsection{GPU Acceleration}
+The use of GPUs to accelerate computation has seen enormous success in the deep learning community in recent years~\cite{Dally2021}.
+GPUs have significantly more memory bandwidth than a standard CPU architecture and are optimized for dense, regular computations. 
+The increased memory bandwidth allows them to \textit{brute-force} their way through some of the memory-boundedness of CPU-based implementations of algorithms~\cite{Aananthakrishnan2020}, but they have several notable drawbacks. 
+
+\textbf{GPU Memory.}
+GPUs use high-speed on-chip memory to accelerate their operations. 
+As a result, the data that they are processing needs to fit in the on-chip memory, which is typically much smaller than the main memory of the host system. 
+The limited memory capacity makes it infeasible for them to process large graphs as a single node~\cite{Aananthakrishnan2020}, meaning that they need to be used as part of a parallel processing framework and manage the associated baggage for parallel processing systems discussed above.
+The limited memory availability makes it particularly difficult to implement algorithms with large intermediate representations, as they consume the available memory and fail~\cite{Sundaram2015}.
+The memory issue is exacerbated by the `GPU Trick' of densifying the connectivity matrix for more efficient computation which can increase memory consumption by orders of magnitude. 
+The sparsity of graphs can also interfere with the memory coalescing process that is critical to efficient GPU computation~\cite{Aananthakrishnan2020}.
+As a result, GPU graph programming frameworks focus on how to manage the number of `active' vertices during a computation to reduce the demands on the memory~\cite{Wang2016}.
+It also highlights the importance of efficient sparse representations, with the CSR representation effectively doubling the size of the graph that can be processed by the GPU compared to a sparse adjacency matrix representation~\cite{Liu2014}, which is why it is the favored data format for all BSP implemenations~\cite{Wu2015}.
+
+It is also important to note that the host system must copy the data across to the GPU before it can be processed, so for the use of an accelerator to be beneficial the efficiency gain in execution time must outweigh the cost of the partitioning and data movement~\cite{Azad2021}.
+
+\textbf{GPU Compute.}
+GPU computing is optimized for dense-regular computations that heavily exploit data parallelism. 
+Graph processing involves sparse-irregular computations that feature amorphous data parallelism.
+The impact of input data shape is evident, with more regular degree distributions (like a mesh network) seeing throughput increase linearly as the mean degree increases, but falling sharply as dense, skewed distributions inflict load-balancing overheads~\cite{Wu2015}.
+As a result, GPUs are not optimized for graph processing, struggling with irregular data accesses/control flow~\cite{Wang2016}.
+The Bulk Synchronous Parallel (BSP) paradigm employed by most GPU programming frameworks correlates the number of atomic (primitive) operation invocations with the overall performance of the algorithm--approaches that minimize the work they do tend to perform better overall~\cite{Wu2015}.
+The primary challenge when using GPUs to execute graph algorithms is workload distribution~\cite{Wang2016}.
+The irregular processing patterns mean that the thread assignments for the GPU can't be known until execution time because of their dependence on the data. 
+Thread assignment is a common step in GPU pre-processing and deferring to execution time degrades GPU performance relative to a typical dense, regular workload~\cite{Fu2014}.
+Imbalance in the graph because of a skewed degree distribution exacerbates the unpredictability of load-balancing that comes from not being able to pre-assign the threads and can result in uncoalesced memory patterns, and thread divergence, severely hampering GPU performance relative to dense regular tasks~\cite{Fu2014}. 
+In a distributed setting, branches cause thread divergence and synchronization overheads limit thread progress~\cite{Aananthakrishnan2020}.
 
 
     
 
 
-
-4. Computation
-    - Some graph algorithms scale poorly when applied to large graph instances~\cite{Hong2012}
-    -Sequential graph algorithms, require random access to all graph data, suffer from poor locality and the indivisibility of the graph structure resulting in time and resource intensive pointer chasing.~\cite{Mccune2015}
-    - Large graph sizes. In todays era of big data, parallel graph analytics systems must deal with graphs with billions of nodes and trillions of edges. Parallel computing is essential for analyzing properties of graphs of such size in reasonable time.~\cite{Lenharth2016}
-    - Many graph algorithms iterate until convergance, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other computation~\cite{Ozdal2017}
-    - There is a trade-off between communication and computation, as no executions sustain a high Instructions Per Cycle (IPC) and high memory bandwidth~\cite{Beamer2015}.
-    - Graph applications have a low compute-to-communication ratio, contributing to memory-boundedness ~\cite{Mukkara2018}.
-    - Poor temporal locality exists because of the graph structure~\cite{Mukkara2018}.
-    - Poor spatial locality because they perform sparse accesses to small objects~\cite{Mukkara2018} \osullikomment{Link to PiUMA}
-    - Default vertex-ordered scheduling is sub-optimal and increases irregular memory accesses~\cite{Mukkara2018}.
-    - Online vertex-scheduling is a computationally challenging problem~\cite{Mukkara2018}
-    - Offline vertex-scheduling is computationally intensive and only really works for static graphs~\cite{Mukkara2018}.
-    - Compute times for vertices are irregular, experiments using PageRank show that the compute time is proportional to the out-degree of the vertex. In a skewed distribution of degrees that causes load imbalance~\cite{Aananthakrishnan2020}
-    - Graph processing workloads are challenging for traditional architectures (CPUs/GPUs) due to data-dependent memory access, reuse, and parallelism.\cite{Dadu2021}
-    - Branch misprediction only hurts performance when the processor is compute-bound. As most graph processing is memory bound, the impact is lessened~\cite{Beamer2015}. 
-    - Graph applications heavily use branches. 
-    The brach operations are data dependent and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
-    
-5. Partitioning is Hard
-    - Partitioning Graphs is difficult in general but is harder on scale-free graphs with low diameter. Mesh graphs with a larger diameter can be more easily partitioned~\cite{Beamer2015}.
-    -The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs~\cite{Mccune2015}
-    - The performance of the subgraph-centric processing is also closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques~\cite{Mccune2015}
-
-6. Parallelism is hard
-    -Graph computations are difficult to parallelize using traditional approaches due to their irregular structure and low operational intensity~\cite{Buluc2011}
-    - it is difficult to develop correct and efficient parallel graph algorithms~\cite{Hong2012}
-    - A highly skewed degree distribution is challenging to parallelize, consider how a BFS from a single vertex may very quickly touch the whole graph.~\cite{Ediger2013}
-    - Writing efficient parallel algorithms for graph processing in shared memory is difficult without Domain-Specific Languages and frameworks to abstract from the developer~\cite{Nguyen2013}.
-    - Distributed parallel systems have a higher communication cost than shared memory systems~\cite{Shun2013}. 
-    - Coordinated scheduling in shared-memory parallelism is inefficent~\cite{Nguyen2013}
-    - Parallelism is made challenging because of the large number of random memory accesses during neighbor traversal~\cite{Ahn2015}.
-    - Parallelism is made challenging because of the poor locality of memory access in algorithms that need to process the entire vertex set each iteration~\cite{Ahn2015}.
-    - Parallelism is made challenging because memory latency cannot be hidden with such little computation per vertex~\cite{Ahn2015}.
-    - Parallelism of graph algorithms is hampered by load imbalance, synchronization overheads, non-uniform memory accesses (NUMA)~\cite{Beamer2015}
-    - The ability to parallelize a graph algorithm depends on the distribution of degrees in the graph -- imbalanced distributions negatively impact parallelism~\cite{Wu2015}.
-    - Parallelism exacerbated the memory-boundedness of graph processing as more cores compete for memory bandwidth~\cite{Shun2015}.
-    - System performance does not scale with the addition of compute nodes because of memory bandwidth constraints~\cite{Ahn2015}.
-    -  Most existing abstractions and implementations for parallel computing were developed for data parallelism. Some graph analytics algorithms have data parallelism, but others exhibit a more complex parallelism pattern called “amorphous” data-parallelism.\cite{Lenharth2016}
-    - Sub-optimal graph partitioning schemes lead to load imbalances and high contention for high-degree vertices~\cite{Chen2019}.
-
-
-
-
-8. Atomic Operation Count  
-    - In GPU processing using BSP paradigms performance improvements correlate with a reduction in the number of \textit{Atomic Operation Counts}, that is - the fewer times each `primitive' operation is invoked, the better!\cite{Wu2015}. The programming model is the primary driver of the atomic operation count other than graph size. 
-
-9. Data Movement across GPU Kernels:
-    - The more memory transactions that occur the worse performance gets~\cite{Wu2015}
-    - The use of CSR is important as it uses 50\% of the memory as an adjacency list which has a better chance of fitting inside GPU memory given its limited size~\cite{Liu2019}.
-    - Sparse accesses prevent memory coalescing~\cite{Aananthakrishnan2020}
-    - GPUs have limited memory capacity and limited scale-out capabilities which means that they are unable to process large multi-terabyte graphs~\cite{Aananthakrishnan2020}
-    - Graphs are extremely sparse for the GPU Trick to densify the connectivity maric for more efficient GPU execution leads to a few orders of magnitude increase in memory usage restricting it to small graphs only~\cite{Aananthakrishnan2020} COMMENT: This seems to ignore the programming models like GAS or DCM that operate directly on CSR... 
-    - The use of accelerators incurs an overhead to copy from main memory to the accelerator, any benefit from an accelerator must outweigh the cost of data movement~\cite{Azad2021}
-
-10. GPU
-    - Data-dependent parallelism on GPUs requires deferring thread assignment until runtime on a specific graph, which can degrade the effectiveness of pre-processing techniques~\cite{Fu2014}
-    - The variance in degree distributions means that computation has an irregular structure and hence memory access patterns which cause un-coalesced memory patterns, create unbalanced workloads and lead to thread divergance~\cite{Fu2014}.
-    - Constrained memory availability on GPUs can prevent algorithms with large intermediate steps to consume all memory and fail~\cite{Sundaram2015}
-    - The irregularity of data/access control flow makes implementing Graph analytics on the GPU challenging~\cite{Wang2016}
-    - The chief challenge in parallel graph processing on GPU is managing irregularity in workload distribution~\cite{Wang2016}
-    - Branches cause thread divergence and synchronization limits thread progress~\cite{Aananthakrishnan2020}. 
-    - GPUs usually perform better on graph algorithms than CPUs for small graphs, because they have more threads, which hides memory latency, and much higher memory bandwidth, brute-forcing the inefficient bandwidth utilization.~\cite{Aananthakrishnan2020}
-
-10 Programming Model Tradeoffs: 
-    - A certain class of graph algorithms that make heavy use of priority queues (Shortest Path, Minimum Spanning Tree) cannot be represented using existing algebraic primitives~\cite{Buluc2011}
-    - GAS eliminates expensive vertex operations for primitives dominated by vertex updates, but has slow information propagation and high memory usage~\cite{Wu2015}
-    - Data-centric abstractions enable more complex and powerful operators with a lower memory usage~\cite{Wu2015}
-    - Frontier-based models can't efficiently implement bucketing algorithms~\cite{Dhulipala2017}
-    - Implementing algorithms using frameworks allows a user to easily access the general purpose pre-optimized libraries~\cite{Dhulipala2017}, however, they are currently unable to perform as well as an implementation hand-tuned for the application~\cite{Satish2014}
-
-
-11    General Frameworks vs specialized implemetatations:
-        Implementing algorithms using frameworks takes advantage of optimizations already implemented by the framework, but has been shown to perform suboptimally compared to hand-tuned code~\cite{Satish2014}
-    
-
-
-    7. Data Dependence. 
-    % - Large datasets may not fit into a single memory space~\cite{Hong2012}
-    % - Different graph algorithms and datasets can impose very different workloads~\cite{Fu2014}.
-    - In GPU Processing, the \textit{throughput} in \textit{Traversed Edges Per Second (TEPS)} improves linearly as the mean degree of the graph increases~\cite{Wu2015}.
-    - In GPU Processing of \textit{Traversal} primitives skewed degree distribution improves execution time, but for \textit{dense-compute} primitives skewed degree distribution degrades execution time because of the increased load-balancing overheads~\cite{Wu2015}. 
-    - all the BSP models on GPU use CSR/CSC data formats~\cite{Wu2015}. 
-    Using a programming model that requires both CSC and CSR representations like the \textit{DCM} doubles the memory usage requirement, but improves execution throughput, highlighting a tradeoff between memory and performance.~\cite{Wu2015} 
-    - Low Degree long tail graphs perform poorly on GPUs~\cite{Wu2015}
-    % - Diversity in graph structure means that for many analytics problems, different algorithms must be used for uniform-degree, random, and power-law graphs to obtain good parallel performance:\cite{Lenharth2016}
-    % - Allegedly commercial datasets can be up to 20TB in memory~\cite{Aananthakrishnan2020}. This is a different figure to what other work says and probably reflects the underlying design for a distributed system by the developers. 
-    - GPUs perform better on graph algorithms for small graphs than CPUs does because they have more threads which hides memory latency and higher memory bandwidth which brute-forces the memory bandwidth utilization.~\cite{Aananthakrishnan2020}
-    % - I/O is increasingly becoming a problem in exascale computers and the graph community does not have an agreed binary exchange format~\cite{Azad2021}
-    - Most algortihms are iterative and convergant. For many algorithms like a BFS, or a GCN this means that they are order-insensitive. However, for some graph algorithms like the Shortest Path, their work efficiency is order-sensitive. \cite{Dadu2021}
 
 \subsection{Summary}
 \label{section:127-graph-data-structures-summary}
@@ -623,3 +616,90 @@ One of the common thrusts in the discussion of parallel graph processing archite
     % - Coarse-grain synchronization can dominate large-scale systems because of network latency and imbalanced computation.~\cite{Aananthakrishnan2020}
     % - Communication is the primary bottleneck in scaling data-intensive applications to exascale~\cite{Azad2021}
 
+    % 4. Computation
+    % - Some graph algorithms scale poorly when applied to large graph instances~\cite{Hong2012}
+    % - Sequential graph algorithms, require random access to all graph data, suffer from poor locality and the indivisibility of the graph structure resulting in time and resource intensive pointer chasing.~\cite{Mccune2015}
+    % - Large graph sizes. In todays era of big data, parallel graph analytics systems must deal with graphs with billions of nodes and trillions of edges. Parallel computing is essential for analyzing properties of graphs of such size in reasonable time.~\cite{Lenharth2016}
+    % - Many graph algorithms iterate until convergance, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other computation~\cite{Ozdal2017}
+    % - There is a trade-off between communication and computation, as no executions sustain a high Instructions Per Cycle (IPC) and high memory bandwidth~\cite{Beamer2015}.
+    % - Graph applications have a low compute-to-communication ratio, contributing to memory-boundedness ~\cite{Mukkara2018}.
+    % - Poor temporal locality exists because of the graph structure~\cite{Mukkara2018}.
+    % - Poor spatial locality because they perform sparse accesses to small objects~\cite{Mukkara2018} \osullikomment{Link to PiUMA}
+    % - Default vertex-ordered scheduling is sub-optimal and increases irregular memory accesses~\cite{Mukkara2018}.
+    % - Online vertex-scheduling is a computationally challenging problem~\cite{Mukkara2018}
+    % - Offline vertex-scheduling is computationally intensive and only really works for static graphs~\cite{Mukkara2018}.
+    % - Compute times for vertices are irregular, experiments using PageRank show that the compute time is proportional to the out-degree of the vertex. In a skewed distribution of degrees that causes load imbalance~\cite{Aananthakrishnan2020}
+    % - Graph processing workloads are challenging for traditional architectures (CPUs/GPUs) due to data-dependent memory access, reuse, and parallelism.\cite{Dadu2021}
+    % - Branch misprediction only hurts performance when the processor is compute-bound. As most graph processing is memory bound, the impact is lessened~\cite{Beamer2015}. 
+    % - Graph applications heavily use branches. 
+    % The brach operations are data dependent and therefore are irregular and hard to predict contributing the the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
+    
+% 5. Partitioning is Hard
+    % - Partitioning Graphs is difficult in general but is harder on scale-free graphs with low diameter. Mesh graphs with a larger diameter can be more easily partitioned~\cite{Beamer2015}.
+    % -The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs~\cite{Mccune2015}
+    % - The performance of the subgraph-centric processing is also closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques~\cite{Mccune2015}
+
+    % 6. Parallelism is hard
+    % -Graph computations are difficult to parallelize using traditional approaches due to their irregular structure and low operational intensity~\cite{Buluc2011}
+    % - it is difficult to develop correct and efficient parallel graph algorithms~\cite{Hong2012}
+    % - A highly skewed degree distribution is challenging to parallelize, consider how a BFS from a single vertex may very quickly touch the whole graph.~\cite{Ediger2013}
+    % - Writing efficient parallel algorithms for graph processing in shared memory is difficult without Domain-Specific Languages and frameworks to abstract from the developer~\cite{Nguyen2013}.
+    % - Distributed parallel systems have a higher communication cost than shared memory systems~\cite{Shun2013}. 
+    % - Coordinated scheduling in shared-memory parallelism is inefficent~\cite{Nguyen2013}
+    % - Parallelism is made challenging because of the large number of random memory accesses during neighbor traversal~\cite{Ahn2015}.
+    % - Parallelism is made challenging because of the poor locality of memory access in algorithms that need to process the entire vertex set each iteration~\cite{Ahn2015}.
+    % - Parallelism is made challenging because memory latency cannot be hidden with such little computation per vertex~\cite{Ahn2015}.
+    % - Parallelism of graph algorithms is hampered by load imbalance, synchronization overheads, non-uniform memory accesses (NUMA)~\cite{Beamer2015}
+    % - The ability to parallelize a graph algorithm depends on the distribution of degrees in the graph -- imbalanced distributions negatively impact parallelism~\cite{Wu2015}.
+    % - Parallelism exacerbated the memory-boundedness of graph processing as more cores compete for memory bandwidth~\cite{Shun2015}.
+    % - System performance does not scale with the addition of compute nodes because of memory bandwidth constraints~\cite{Ahn2015}.
+    % -  Most existing abstractions and implementations for parallel computing were developed for data parallelism. Some graph analytics algorithms have data parallelism, but others exhibit a more complex parallelism pattern called “amorphous” data-parallelism.\cite{Lenharth2016}
+    % - Sub-optimal graph partitioning schemes lead to load imbalances and high contention for high-degree vertices~\cite{Chen2019}.
+
+    % 10 Programming Model Tradeoffs: 
+    % - A certain class of graph algorithms that make heavy use of priority queues (Shortest Path, Minimum Spanning Tree) cannot be represented using existing algebraic primitives~\cite{Buluc2011}
+    % - GAS eliminates expensive vertex operations for primitives dominated by vertex updates, but has slow information propagation and high memory usage~\cite{Wu2015}
+    % - Data-centric abstractions enable more complex and powerful operators with a lower memory usage~\cite{Wu2015}
+    % - Frontier-based models can't efficiently implement bucketing algorithms~\cite{Dhulipala2017}
+    % - Implementing algorithms using frameworks allows a user to easily access the general purpose pre-optimized libraries~\cite{Dhulipala2017}, however, they are currently unable to perform as well as an implementation hand-tuned for the application~\cite{Satish2014}
+
+    % 8. Atomic Operation Count  
+    % - In GPU processing using BSP paradigms performance improvements correlate with a reduction in the number of \textit{Atomic Operation Counts}, that is - the fewer times each `primitive' operation is invoked, the better!\cite{Wu2015}. The programming model is the primary driver of the atomic operation count other than graph size. 
+
+% 9. Data Movement across GPU Kernels:
+    % - The more memory transactions that occur the worse performance gets~\cite{Wu2015}
+    % - The use of CSR is important as it uses 50\% of the memory as an adjacency list which has a better chance of fitting inside GPU memory given its limited size~\cite{Liu2019}.
+    % - Sparse accesses prevent memory coalescing~\cite{Aananthakrishnan2020}
+    % - GPUs have limited memory capacity and limited scale-out capabilities which means that they are unable to process large multi-terabyte graphs~\cite{Aananthakrishnan2020}
+    % - Graphs are extremely sparse for the GPU Trick to densify the connectivity maric for more efficient GPU execution leads to a few orders of magnitude increase in memory usage restricting it to small graphs only~\cite{Aananthakrishnan2020} COMMENT: This seems to ignore the programming models like GAS or DCM that operate directly on CSR... 
+    % - The use of accelerators incurs an overhead to copy from main memory to the accelerator, any benefit from an accelerator must outweigh the cost of data movement~\cite{Azad2021}
+
+% 10. GPU
+    % - Data-dependent parallelism on GPUs requires deferring thread assignment until runtime on a specific graph, which can degrade the effectiveness of pre-processing techniques~\cite{Fu2014}
+    % - The variance in degree distributions means that computation has an irregular structure and hence memory access patterns which cause un-coalesced memory patterns, create unbalanced workloads and lead to thread divergance~\cite{Fu2014}.
+    % - Constrained memory availability on GPUs can prevent algorithms with large intermediate steps to consume all memory and fail~\cite{Sundaram2015}
+    % - The irregularity of data/access control flow makes implementing Graph analytics on the GPU challenging~\cite{Wang2016}
+    % - The chief challenge in parallel graph processing on GPU is managing irregularity in workload distribution~\cite{Wang2016}
+    % - Branches cause thread divergence and synchronization limits thread progress~\cite{Aananthakrishnan2020}. 
+    % - GPUs usually perform better on graph algorithms than CPUs for small graphs, because they have more threads, which hides memory latency, and much higher memory bandwidth, brute-forcing the inefficient bandwidth utilization.~\cite{Aananthakrishnan2020}
+
+
+
+
+    % 7. Data Dependence. 
+    % - Large datasets may not fit into a single memory space~\cite{Hong2012}
+    % - Different graph algorithms and datasets can impose very different workloads~\cite{Fu2014}.
+    % - In GPU Processing, the \textit{throughput} in \textit{Traversed Edges Per Second (TEPS)} improves linearly as the mean degree of the graph increases~\cite{Wu2015}.
+    % - In GPU Processing of \textit{Traversal} primitives skewed degree distribution improves execution time, but for \textit{dense-compute} primitives skewed degree distribution degrades execution time because of the increased load-balancing overheads~\cite{Wu2015}. 
+    % - all the BSP models on GPU use CSR/CSC data formats~\cite{Wu2015}. 
+    % Using a programming model that requires both CSC and CSR representations like the \textit{DCM} doubles the memory usage requirement, but improves execution throughput, highlighting a tradeoff between memory and performance.~\cite{Wu2015} 
+    % - Low Degree long tail graphs perform poorly on GPUs~\cite{Wu2015}
+    % - Diversity in graph structure means that for many analytics problems, different algorithms must be used for uniform-degree, random, and power-law graphs to obtain good parallel performance:\cite{Lenharth2016}
+    % - Allegedly commercial datasets can be up to 20TB in memory~\cite{Aananthakrishnan2020}. This is a different figure to what other work says and probably reflects the underlying design for a distributed system by the developers. 
+    % - GPUs perform better on graph algorithms for small graphs than CPUs does because they have more threads which hides memory latency and higher memory bandwidth which brute-forces the memory bandwidth utilization.~\cite{Aananthakrishnan2020}
+    % - I/O is increasingly becoming a problem in exascale computers and the graph community does not have an agreed binary exchange format~\cite{Azad2021}
+    % - Most algortihms are iterative and convergant. For many algorithms like a BFS, or a GCN this means that they are order-insensitive. However, for some graph algorithms like the Shortest Path, their work efficiency is order-sensitive. \cite{Dadu2021}
+
+
+% 11    General Frameworks vs specialized implemetatations:
+%         Implementing algorithms using frameworks takes advantage of optimizations already implemented by the framework, but has been shown to perform suboptimally compared to hand-tuned code~\cite{Satish2014}
