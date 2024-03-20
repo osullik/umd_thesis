@@ -1,5 +1,5 @@
 \section{Problem Statement}
-\label{section:31-GHA-Problem-Statement}
+\label{section:31-GAI-Problem-Statement}
 
 There are two driving reasons to develop a benchmark for Graph-Based AI systems. 
 First, a user looking to implement a particular algorithm, install a particular accelerator, or adopt a particular programming paradigm must be able to determine which combination of components will best meet their needs~\cite{Carpinetti2002}. 
@@ -7,7 +7,7 @@ Second, a developer looking to \textit{exploit} latent capacity in an algorithm,
 
 Towards informing end-user decision-making, a \textit{competitive} benchmark should validate both the \textit{effectiveness} and \textit{efficency} of a system. 
 That is, a `high-performing' system should produce provably correct results and describe the amount of resources consumed to produce that result. 
-Without balancing these two factors, trivial optimizations to the systems under test can produce incorrect results very quickly, or perfect results extremely inefficently. 
+Without balancing these two factors, trivial optimizations to the systems under test can produce incorrect results very quickly, or perfect results extremely inefficiently. 
 
 To inform system developers, the results of an \textit{empirical} benchmark must be sufficiently descriptive to illuminate processing bottlenecks. 
 Early approaches focused on the \textit{competitive} aspect to the detriment of using the benchmark measurements to guide future development. 
@@ -26,4 +26,9 @@ They may be composed of several kernels and are representative of a `real' probl
 For example, a program to update labels on a graph that needs to load the graph to memory uses the BFS kernel to traverse the graph and update each label in turn before writing it back to storage.
 
 \textit{Synthetic Program} benchmarks are `fake' programs built to simulate the behavior of real programs. 
-The general idea is that they are less time and resource intensive to construct as a mock-up, and so can be used to evaluate a system  `realistically' without needing to completely build the application under test. 
+The general idea is that they are less time and resource-intensive to construct as a mock-up, and so can be used to evaluate a system  `realistically' without needing to completely build the application under test. 
+
+Despite the existence of these methods, the best choice of a benchmark to measure performance is a real application.
+The \textit{Atomic, Kernel, Toy} and \textit{Synthetic} approaches are all easily manipulated, whether by an unscrupulous developer looking to boost their results~\cite{Hennessy2019} or by teams that can afford the time and energy to implement highly optimized hardware-specific solutions~\cite{Hooker1995}.
+
+So the problem that this benchmark suite seeks to solve is \\ \textit{"What is a suitable benchmarking methodology for graph-based artificial intelligence applications that reduces uncertainty in the user community and facilitates ongoing research?}
