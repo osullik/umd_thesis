@@ -2978,9 +2978,20 @@ title={Computer Architecture: A Quantitative Approach},
 year={2019},
 edition={6},
 publisher={Morgan Kaufmann},
-comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position is that the only consistent and reliable measure of performance is the execution time of real programs.' To evaluate a system, a user would run `workloads' the mixture of programs and operating system commands that users run on a computer. One alternative approach is Benchmark Programs. `The best choice of benchmarks to measure performance is real applications.' Examples include `kernels' (small key pieces of real applications), `toy programs' (100 line programs from beginning programming assignments like quicksort) and `synthetic benchmarks' (fake programs invented to try and match the behaviour and profile of real programs.) All three are widely discredited because compiler writers and system architects can easily manipulate the results. Another risk is the use of benchmark-specific compiler flags, so good benchmarks limit the compiler flags that can be used. benchmark designers must decide if source code modifications are allowed (typically `no', `yes but too hard', and `yes but must produce same result'. Benchmark Suites are a popular measure of performance across a variety of applications, but are only as good as the constituent individual benchmarks. The goal of a benchmark suite should be `to characterize the real relative performance of two computers, particularly for programs not in the suite that customers are likely to run'. The EMBCC benchmark is limited because it only runs small kernels and so is not a good reflection of the actual performance of a system. There are many types of benchmark that are used to evaluate the specific kinds of tasks. The Guiding principle of reporting performance measurements should be `reproducability'. It should include a detailed description of the computer and compiler flags, baselines and optimized results. It could also include cost information. In the best case, the suite resembles a statistically valid sample of the application space, but this is not really used in practice. We should have a single numerical summary result. A simple approach is to use the arithmetic means of the execution times of the applications in the suite. They show how they use the SPECRatio to calculate the relative performance to a baseline run. And becuase of that, they must calculate the geometric mean (because ratios have no units and comparing unitless measures arithmetically is pointless))
+comments={
+  CH 1.8 Measuring Reporting and Sumamrizing Performance. 
+  `our position is that the only consistent and reliable measure of performance is the execution time of real programs.' To evaluate a system, a user would run `workloads' the mixture of programs and operating system commands that users run on a computer. One alternative approach is Benchmark Programs. `The best choice of benchmarks to measure performance is real applications.' Examples include `kernels' (small key pieces of real applications), `toy programs' (100 line programs from beginning programming assignments like quicksort) and `synthetic benchmarks' (fake programs invented to try and match the behaviour and profile of real programs.) All three are widely discredited because compiler writers and system architects can easily manipulate the results. Another risk is the use of benchmark-specific compiler flags, so good benchmarks limit the compiler flags that can be used. benchmark designers must decide if source code modifications are allowed (typically `no', `yes but too hard', and `yes but must produce same result'. Benchmark Suites are a popular measure of performance across a variety of applications, but are only as good as the constituent individual benchmarks. The goal of a benchmark suite should be `to characterize the real relative performance of two computers, particularly for programs not in the suite that customers are likely to run'. The EMBCC benchmark is limited because it only runs small kernels and so is not a good reflection of the actual performance of a system. There are many types of benchmark that are used to evaluate the specific kinds of tasks. The Guiding principle of reporting performance measurements should be `reproducability'. It should include a detailed description of the computer and compiler flags, baselines and optimized results. It could also include cost information. In the best case, the suite resembles a statistically valid sample of the application space, but this is not really used in practice. We should have a single numerical summary result. A simple approach is to use the arithmetic means of the execution times of the applications in the suite. They show how they use the SPECRatio to calculate the relative performance to a baseline run. And becuase of that, they must calculate the geometric mean (because ratios have no units and comparing unitless measures arithmetically is pointless))
   
-  Ch 7.9 "CPU vs GPU vs DNN Accelerator. They choose six benchmarks that represent 95 percent of googles TPU load. CPU Server is represented by an 18 core dual socket Haswell Processor from intel which also hosted the GPU and TPU. GPU is the NVIDIA K80. They use the roofline performance model. The TPU roofline has a long slant, reflecting that is it limited by memory bandwidth rather than peak compute. All but 1 of their six benchmark tasks were memory-bound. They make reference to the `tail at scale' article that highlights the need to focus on the 99th percentile performance to get something user acceptable. Architects use the geometric mean to measure performance when they're not sure what applications will be actually run on the system. When buying computers by the thousands, cost performance trumps general performance. For designing the TPU they leveraged three important architectual features (1) Systolic Arrays, (2) Decoupled Access-Execute and (3) CISC instructions [even though they weren't found to be optimal for general purpose architectures]. TPU succeeded for DNN because of the large matrix unit, the substantial software controlled on-chip memory; the ability to run whole inference models to reduce dependence on the host CPU, a single-threaded deterministic execution model that proved to be a good match for the 99th percentile response time limits, enough flexibility to match DNNs of the time, the ommission of general purpose features; the use of 8 bit integers by quantized apps and the fact that the applications were written in tensorflow, which was spoken natively by the TPU and didn't incur conversion costs. They also note that the end of moore's law and dennard scaling means that improving cost-energy performacne will require architectural innovation,}
+  Ch 7.9 "CPU vs GPU vs DNN Accelerator. They choose six benchmarks that represent 95 percent of googles TPU load. CPU Server is represented by an 18 core dual socket Haswell Processor from intel which also hosted the GPU and TPU. GPU is the NVIDIA K80. They use the roofline performance model. The TPU roofline has a long slant, reflecting that is it limited by memory bandwidth rather than peak compute. All but 1 of their six benchmark tasks were memory-bound. They make reference to the `tail at scale' article that highlights the need to focus on the 99th percentile performance to get something user acceptable. Architects use the geometric mean to measure performance when they're not sure what applications will be actually run on the system. When buying computers by the thousands, cost performance trumps general performance. For designing the TPU they leveraged three important architectual features (1) Systolic Arrays, (2) Decoupled Access-Execute and (3) CISC instructions [even though they weren't found to be optimal for general purpose architectures]. TPU succeeded for DNN because of the large matrix unit, the substantial software controlled on-chip memory; the ability to run whole inference models to reduce dependence on the host CPU, a single-threaded deterministic execution model that proved to be a good match for the 99th percentile response time limits, enough flexibility to match DNNs of the time, the ommission of general purpose features; the use of 8 bit integers by quantized apps and the fact that the applications were written in tensorflow, which was spoken natively by the TPU and didn't incur conversion costs. They also note that the end of moore's law and dennard scaling means that improving cost-energy performacne will require architectural innovation
+  
+  Appendix B2:
+   Cache Hit: When the processor finds the required data in the cache. 
+   Cache Miss: When the processor does not find the required data in the cache.
+   Temporal Locality: A piece of data in use now is likely to be needed in the future, so it is added to the cache for quick access. 
+   Spatial Locality: pieces of data near each other in memory are likely to be needed together so are loaded to the cache for quick access. 
+   Memory Latency: The time requried to retrieve the first word of a memory block. 
+   Bandwidth determines the time required to retrieve the rest of the block.
+   In-Order Execution: }
 }
 
 @book{Goldratt1990,
@@ -3316,7 +3327,7 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
   PRIMITIVES: They use the GAS model, but list their `primitives' as BFS, SSSP, CC, PageRank}
 }
 
-@inproceedings{Bulucc2013,
+@inproceedings{Buluc2013,
   title={High-productivity and high-performance analysis of filtered semantic graphs},
   author={Bulu{\c{c}}, Aydin and Duriakova, Erika and Fox, Armando and Gilbert, John R and Kamil, Shoaib and Lugowski, Adam and Oliker, Leonid and Williams, Samuel},
   booktitle={2013 IEEE 27th International Symposium on Parallel and Distributed Processing},
@@ -3554,6 +3565,29 @@ comments={CH 1.8 Measuring Reporting and Sumamrizing Performance. `our position 
       (4) Partitioning - How vertices of the graph, originally in storage, are divided up to be
       stored across memory of the system's multiple1 worker machines
   }
+}
+
+@article{Barnett2005,
+  title={Early writings on graph theory: Euler circuits and the K{\"o}nigsberg bridge problem},
+  author={Barnett, Janet Heine},
+  journal={Part II: Historical Projects in Discrete Mathematics and Computer Science of Resources for Teaching Discrete Mathematics: Classroom Project, History Modules, and Articles, MAA Notes},
+  volume={74},
+  pages={197--208},
+  year={2005},
+  publisher={Citeseer},
+  comment={Beginning of Graph Theory}
+}
+
+@article{Buluc2012,
+  title={Parallel sparse matrix-matrix multiplication and indexing: Implementation and experiments},
+  author={Bulu{\c{c}}, Aydin and Gilbert, John R},
+  journal={SIAM Journal on Scientific Computing},
+  volume={34},
+  number={4},
+  pages={C170--C191},
+  year={2012},
+  publisher={SIAM},
+  comments={As the number of cores per node increases due to multicore scaling, so does the contention on the network interface card. Without hierarchical parallelism that exploits the faster on-chip network, the flat MPI parallelism will be unscalable becausemore processes will be competing for the same network link. Therefore, designing hierarchically parallel SpGEMM and SpRef algorithms is an important future direction of our work.}
 }
 %%% SCAN ALL BELOW HERE %%%
 
