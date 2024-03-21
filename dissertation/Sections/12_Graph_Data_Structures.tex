@@ -155,12 +155,13 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 
 %
 \nrscomment{missing the opening sentence where you tell me what this section is and why i should care. what even is a primative? need that before i learn there's disagreement}
+
 \nrscomment{Suggest opening this with an example of a field with clear primatives and what they are, and then explain why graphs doesn't have that. Otherwise youre just listing things that could kind of be primatives but I have nothing to ground that to really appreciate the point youre trying to make}
 %
 There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
 
 %
-\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "caninical representatio is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
+\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "caninical representation is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
 %
 The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
 The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
@@ -235,14 +236,20 @@ The `canonical' representations do not appear to have clearly defined primitive 
 The reasons that distilling primitive operations is important in benchmark design are, first, that identifying the primitives allows us to design micro-benchmarks to understand how each building block of an algorithm can be optimized. 
 Second, by limiting to a set of primitives, the hardware implementation of those primitives can be optimized, meaning that the hardware designers can focus on developing hardware for a few specific operations, rather than general-purpose ones. 
 
+%
+\nrscomment{i think you should cut 1.2.4 entirely}
+%
 
 \subsection{General Characteristics}
 \label{section:124-general-characteristics}
-Decades of research yield the characteristics of graphs that are `generally true' and interact with the \textit{efficency} of graph analytics.
+Decades of research yield the characteristics of graphs that are `generally true' and interact with the \textit{efficiency} of graph analytics.
 These graph characteristics focus on the \textit{topological} features of graphs.
 Depending on the context, the addition of attribute information may simplify or complicate the algorithms that operate on the graphs. 
 
-\textbf{Input dependence.}
+\textbf{Input dependence.} 
+%
+\nrscomment{"Input dependence" is not a graph characteristic, and this subsubsection talks about random graphs. I think you can just cut this chunk entirely, or maybe move it to the discussion of what kinds of graphs are going into the benchmark.}
+%
 The \textit{efficiency} and \textit{effectiveness} of every graph algorithm depends on the size and shape of the input graph.
 The data dependence of graph algorithms is one of the driving reasons that empirical evaluation favors a collection of `real-world' graphs drawn from the domain of intended use.
 While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
@@ -253,6 +260,9 @@ Formally, given $G(n,p)$ where $n$ is the number of vertices to create and $p$ i
 Random graphs are important as they provide the point of reference for other graph characteristics, discussed below. 
 
 \textbf{Size Matters.}
+%
+\nrscomment{please a different header}
+%
 Section~\ref{section:11-Intelligence-Security-Context} identifies that graphs in the I\&S domain can be billions to trillions of vertices and edges. 
 The \textit{size} of a graph impacts graph processing. 
 In the most obvious sense, like all computations, there is some relationship between the size of the input and the time required to process it.
