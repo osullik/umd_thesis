@@ -153,17 +153,37 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 \label{section:123-graph-primitives}
 \osullikomment{The back half of the primitives section is just points I collected in my travels and need to synthesize}
 
+%
+\nrscomment{missing the opening sentence where you tell me what this section is and why i should care. what even is a primative? need that before i learn there's disagreement}
+\nrscomment{Suggest opening this with an example of a field with clear primatives and what they are, and then explain why graphs doesn't have that. OTherwise youre just listing things that could kind of be primatives but I have nothing to ground that to really appreciate the point youre trying to make}
+%
 There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+
+%
+\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "caninical representatio is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
+%
 The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
 The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
+
+%
+\nrscomment{ok, i now think you might just need a subsubsection on how graphs can be stored. jamming spatial locality into here is unexpected and breaks up the flow}
+%
 These chunks may also include details of the labels, weights and other non-topological information stored in the graph, or just house pointers to that information.
 Using this representation for large and dense graphs causes the `chunks' of memory for neighboring nodes to not be spatially co-located. 
 Without spatial locality, modern processor optimizations like caching and prefetching are ineffective, and the processor will need to wait for the relevant node vertex to be retrieved from the main memory before continuing. 
+%
+\nrscomment{so what? i think this is porbably important, but here isnt the place to talk about it, its a takeaway, or a motivation, or something, but it doesnt belong in "laying the groundwork and defining what you need to know to understand my thesis" section}
+%
+
+
 
 \osullikomment{Add in Combinatorial BLAS here. }
 Drawing inspiration from the relationship between the Basic Linear Algebra Subprogram (BLAS) library and the development of accelerators for Floating Point Operations (FLOPs), an alternative linear algebraic representation of graphs and implementation of graph algorithms is emerging. 
 The GraphBLAS project is an effort to formalize graph operations using linear algebra~\cite{Mattson2013}.
 Using the incidence matrices for graphs in a CSC/CSR format, the GrahBLAS is building a mathematical abstraction layer for graph operations based on the realization that graph operations are matrix operations~\cite{Kepner2015, Kepner2016}.
+%
+\nrscomment{that was too deep in the weeds- i was expecting to learn what graph primitives are and i got "theres this new project trying to abstract something". i think you may be able to cut that chunk altogether, unless it comes back to be important}
+%
 
 The GraphBLAS team identified five primitive operations and five additional compound operations that can be composed of primitive operations. 
 The five primitive operations are \textit{Construct Matrix from Triples (\textbf{Sparse}}), \textit{Extract Triples from a Matrix (\textbf{Find}}), \textit{Element-Wise addition (\textbf{SpEWiseA}}), \textit{Element-Wise Multiplication (\textbf{SpEWiseX}}), and \textit{Matrix Products (\textbf{SpGEMM}})~\cite{Kepner2015}.
