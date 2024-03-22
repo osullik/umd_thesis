@@ -90,21 +90,40 @@ Trying to cater to too many customers simultaneously is a fraught path, however,
 Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in section~\ref{section:33-GAI-Design}.
 
 \subsection{Benchmarking Graph Applications}
-Prior work in graph benchmarking informs the development of this benchmark. 
 
-\osullikomment{worth highlighting the difference between benchmark datasets and benchmark suites}
+%Relevant, Fair, Reproducible, Verifiable, Usable, Economic
+
+There are three core components to the existing graph benchmarking landscape. 
+\textit{Datasets Collections} only provide the graphs to be used as inputs and occasionally target outputs. 
+The variance in \textit{program} performance in graph processing is highly dependent on the shape and size of the input and so curated collections of varied graphs are critical for benchmark development.
+\textit{Benchmark Suites} provide some or all of the \textit{Problems}, \textit{Programs}, and \textit{Systems} to evaluate relative performance, typically drawing the \textit{datasets} from the \textit{dataset collections} to generate \textit{timing} and \textit{throughput} metrics.
+\textit{Workload Analyses} are detailed reports and empirical studies of how \textit{systems} perform with various \textit{workloads}. 
+They are typically more involved, involving code instrumentation and system profiling to build a detailed understanding of computational, memory and network bottlenecks. 
+
+Reviewing the available benchmark suites and workload analyses yields 47 distinct kernels that are used to characterize the performance of graph applications.
+The vast majority of those kernels exist in only the Graph-Based Benchmark Suite (GBBS)~\cite{Dhulipala2020, Dhulipala2021} or the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2016}. 
+Both the GBBS and SNAP are better characterized as repositories for efficient parallel and sequential graph kernel implementations respectively, and most of the available kernels are not widely used in benchmark suites or workload analysis. 
+The most commonly used kernels are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), and \textit{Mean Local Clustering Coefficient} (MLCC). 
+Graph Database benchmarks tend to focus on measuring the \textit{Create, Read, Update} and \textit{Delete} operations, with simple index lookups and neighborhood expansions.
+
+
 
 HPC Scalable Graph Analysis Benchmark~\cite{Bader2009}
-Graph500~\cite{Murphy2010}
+Graph500~\cite{Murphy2010} %Atomic, System Focused, Synthetic Data, Huge Scale
 PBBS~\cite{Shun2012}
 Social Graph~\cite{Angles2013}
-SNAP~\cite{Leskovec2014}
+SNAP~\cite{Leskovec2016}
 LDBC Social Benchmark~\cite{Erling2015}
 Graphalytics~\cite{Capota2015, Iosup2016}
 Graphalytics V1.2~\cite{Iosup2023}
 GAP~\cite{Beamer2017}
 GBBS~\cite{Dhulipala2020}
 PBBSV2~\cite{Anderson2022}
+
+\osullikomment{Working on the table and word picture to go in here now}
+
+\input{Tables/01_kernels.tex}
+
 %GNNS
 Open Graph Benchamark~\cite{Hu2020}
 Benchamrking GNNs~\cite{Dwivedi2023}
