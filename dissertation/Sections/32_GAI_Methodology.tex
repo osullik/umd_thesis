@@ -1,18 +1,26 @@
 \section{Methodology}
 \label{section:32-GAI-Methodology}
 
+%
+\nrscomment{this is kind of a weak opening. "We propose the following methodology to enable ... (mimic the RQ to drive home that you solved it)" and let the rest of it speak for itself}
+%
+
 At a high level, the research methodology to develop the benchmarking framework is qualitative. 
 A literature review of benchmark design principles, components of a good benchmark, existing graph and AI benchmarks and empirical methods in computer science yields the framework outlined in section~\ref{section:33-GAI-Design}.
 
 \osullikomment{Optional to include a bit of benchmark history here}
+
+\nrscomment{please no more history}
 Linpack~\cite{Dongarra2003}
 SATLIB~\cite{Hoos2000}
 
 
 \subsection{Benchmark Design Principles}
 
+\nrscomment{i think you should scrap this and focus on comprehensiveness, and maybe one or two other things that are specific to benchmarks and obviously good metrics to judge them by. unless theres some strong agreement that these really are the critera. they just feel like terms from another field shoved in and redefined to make it kind of work. worst case you can come up with the criteria you think are right, then throw these terms into the definitions for those and still cite the same ting. "Comprehensive problem coverage- the benchmark includes a sufficiently varied pool of tasks that are Relevant to the area of investigation and represent the breadth of tasks that might be expected of ..." or something like that}
+
 When designing a benchmark, the needs of the \textit{customer} must remain front-of-mind~\cite{Carpinetti2002}.
-Common design criterial include \textit{Relevance, Fairness, Reproducability, Verifiability, Usablility} and \textit{Economy}~\cite{Huppler2009, Kistowski2015}.
+Common design criteria include \textit{Relevance, Fairness, Reproducability, Verifiability, Usablility} and \textit{Economy}~\cite{Huppler2009, Kistowski2015}.
 \textit{Relevance} is the focus on the needs of the customer and alignment of the benchmark to the problem under investigation. 
 \textit{Fairness} allows the systems under test to compete without artificial constraints. 
 \textit{Reproducability} of results is an essential characteristic of any scientific inquiry, and here means both ensuring the internal consistency of benchmark results and providing sufficient detail for the benchmark to be replicated by a separate team. 
@@ -23,6 +31,9 @@ In particular, the balance of measuring \textit{Effectiveness} and \textit{Effic
 These six principles are the framework we use to evaluate the quality of existing frameworks
 
 \subsection{Benchmark Components}
+
+\nrscomment{replace this section with a walkthrough of my diagram and keep the bit you have about how you fix everything and vary one component to see the effects, but just state it as a general principle rather than an example. CD will be your example later, this section is meant to be abstract.}
+
 The simplest \textit{benchmark} architecture consists of a \textit{system} under test and the \textit{workloads} executed on that system~\cite{Hennessy2019} (figure~\ref{figure:taxonomy-benchmark}).
 Here, the \textit{system} is the underlying hardware, operating system and software stack that enables an application to run, while the \textit{workload} is comprised of some \textit{problems} and \textit{programs}.
 \textit{Problems} composed of \textit{tasks} and  \textit{datasets}, representative of the distribution of data that the system is expected to process in the real world, where a \textit{task} is the goal that processing the \textit{datasets} with a \textit{program} is working towards--how we measure success.
@@ -60,6 +71,9 @@ Capital cost is a matter for procurement officers, so we focus on \textit{power 
 Finally, the \textit{validity} of the result can be measured by comparing the output of a \textit{program} to some set of known solutions, generating metrics such as \textit{accuracy, precision, recall, F1, R$^{2}$, MSE, NMI} that can be used to approximate the \textit{effectiveness} of a solution. 
 It is then up to the \textit{competitive} benchmark customer to balance the tradeoff in \textit{efficency} and \textit{effectiveness}.
 
+\nrscomment{replace everything in metrics above this point with "competitive benchmarks use metrics that measure efficiency (execution time, power consumption, etc.) and effectiveness (accuracy, precision, etc.)". we dont need an example to know that 10 is better than 100 but it costs more. at most you can say theres a tradeoff and improving some lead to hurting others}
+
+
 Benchmarks for \textit{empirical} study of graph-based AI require more depth than \textit{competitive} benchmarks.
 The purpose of \textit{empirical} benchmarks is to enable detailed study of a \textit{system} or \textit{workload}, and so while the \textit{effectiveness} metrics from the \textit{competitive} benchmarking methodology port directly across, the summary metrics preferred by lay-users to compare performance are insufficient to reveal the bottlenecks that need to be \textit{exploited} or \textit{elevated} for ongoing improvement~\cite{Saavedra1996, Hooker1994, Hooker1995}.
 As discussed in Section~\ref{section:126-processing-bottlenecks} several bottlenecks can emerge during graph and AI processing depending on the \textit{workload} characteristics. 
@@ -89,7 +103,19 @@ For metrics to be effective they need to meet the needs of the user.
 Trying to cater to too many customers simultaneously is a fraught path, however, provided that telemetry is well-implemented the \textit{cometetive} metrics can be extracted as a subset of the more detailed \textit{empirical} metrics that will inform further research.
 Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in section~\ref{section:33-GAI-Design}.
 
+%
+\nrscomment{the beginning of empirical metrics about them being more in-depth and helping you find bottle necks is good. the laundry list of metrics shouldnt be in the prose- move it to a table. the formulas dont add any value and putting whole words in math cursive is impossible to parse. id scrap them and give formulas for whatever metrcis you use in the CD case study, formatted like proper math equations.}
+%
+
+%
+\nrscomment{i was expecting this section to teach me how to choose metrics, and didnt really get that. id boil it down based on my comments above and then see if you can synthesize that into something that resembles an abstract framework for choosing benchmark metrics}
+%
+
 \subsection{Benchmarking Graph Applications}
+
+%
+\nrscomment{this section is an info dump that gives me nothing of value. what are you trying to get across here?}
+%
 
 %Relevant, Fair, Reproducible, Verifiable, Usable, Economic
 
