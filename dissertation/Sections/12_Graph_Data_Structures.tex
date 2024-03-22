@@ -152,6 +152,7 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 \subsection{Graph Primitives}
 \label{section:123-graph-primitives}
 \osullikomment{The back half of the primitives section is just points I collected in my travels and need to synthesize}
+\nrscomment{i think this primitives section should be a table, and then you A. explain why primitives matter then B. summarize the table and the key takeaway about how the primitives differ by representation format and there arent agreed-upon ones across all formats then C. why is that problematic}
 
 %
 \nrscomment{missing the opening sentence where you tell me what this section is and why i should care. what even is a primative? need that before i learn there's disagreement}
@@ -161,7 +162,7 @@ The I\&S community is constantly collecting and removing data, and so must be ab
 There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
 
 %
-\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "caninical representation is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
+\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "canonical representation is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
 %
 The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
 The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
@@ -173,7 +174,7 @@ These chunks may also include details of the labels, weights and other non-topol
 Using this representation for large and dense graphs causes the `chunks' of memory for neighboring nodes to not be spatially co-located. 
 Without spatial locality, modern processor optimizations like caching and prefetching are ineffective, and the processor will need to wait for the relevant node vertex to be retrieved from the main memory before continuing. 
 %
-\nrscomment{so what? i think this is porbably important, but here isnt the place to talk about it, its a takeaway, or a motivation, or something, but it doesnt belong in "laying the groundwork and defining what you need to know to understand my thesis" section}
+\nrscomment{so what? i think this is probably important, but here isnt the place to talk about it, its a takeaway, or a motivation, or something, but it doesnt belong in "laying the groundwork and defining what you need to know to understand my thesis" section}
 %
 
 
@@ -233,6 +234,10 @@ The \textit{Compute} function defines the computation that happens on each edge.
 
 The `canonical' representations do not appear to have clearly defined primitive operations in the general sense, though high-performance parallel processing programming paradigms have done significant work in this area~\cite{Dhulipala2021}.
 
+
+%
+\nrscomment{below is the "why am i talking about primitives" bit, which should come at the start of the subsubsection, not the end}
+%
 The reasons that distilling primitive operations is important in benchmark design are, first, that identifying the primitives allows us to design micro-benchmarks to understand how each building block of an algorithm can be optimized. 
 Second, by limiting to a set of primitives, the hardware implementation of those primitives can be optimized, meaning that the hardware designers can focus on developing hardware for a few specific operations, rather than general-purpose ones. 
 
@@ -242,17 +247,23 @@ Second, by limiting to a set of primitives, the hardware implementation of those
 
 \subsection{General Characteristics}
 \label{section:124-general-characteristics}
+\nrscomment{this section feels like it should be moved to the abstract graph benchmark design. these are basically your characteristics to vary and account for. it doesnt belong up here. rest of the comment sin this section still apply but assume that this whole chunk will be with the benchmark stuff later.}
+
 Decades of research yield the characteristics of graphs that are `generally true' and interact with the \textit{efficiency} of graph analytics.
 These graph characteristics focus on the \textit{topological} features of graphs.
 Depending on the context, the addition of attribute information may simplify or complicate the algorithms that operate on the graphs. 
 
 \textbf{Input dependence.} 
 %
-\nrscomment{"Input dependence" is not a graph characteristic, and this subsubsection talks about random graphs. I think you can just cut this chunk entirely, or maybe move it to the discussion of what kinds of graphs are going into the benchmark.}
+\nrscomment{"Input dependence" is not a graph characteristic, and this subsubsection talks about random graphs. I think you can just cut this chunk entirely, or maybe reframe it, since you keep bringing up random graphs when explaining the subsequent characteristics. Maybe you first describe broad classes of graph domains (synthetic vs real. then within that the hierarchy you drew out) and compare the 'naive' random graph that one might use for a benchmark to the others and highlight the characteristics that matter for the benchmark. For instance show random edges vs fully connected, visually, and then explain why it affects processing. And then repeat for the other characteristics.}
 %
 The \textit{efficiency} and \textit{effectiveness} of every graph algorithm depends on the size and shape of the input graph.
 The data dependence of graph algorithms is one of the driving reasons that empirical evaluation favors a collection of `real-world' graphs drawn from the domain of intended use.
 While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
+%
+\nrscomment{ok, in that case you need a section explicitly outlining those classes, and possibly 
+a table comparing them across the characteristics you're about to describe. you currently have it mixed in with the characteristics, so i come away not understanding what the classes are or what the characteristics are. decouple them.}
+%
 \textit{Random Graphs} are the baseline. 
 A random graph is synthetic.
 It is generated by creating a set of vertices and then creating an edge between each vertex in the set with a given probability. 
@@ -262,6 +273,7 @@ Random graphs are important as they provide the point of reference for other gra
 \textbf{Size Matters.}
 %
 \nrscomment{please a different header}
+\nrscomment{replace this entire description with a picture. this can be 2 sentences}
 %
 Section~\ref{section:11-Intelligence-Security-Context} identifies that graphs in the I\&S domain can be billions to trillions of vertices and edges. 
 The \textit{size} of a graph impacts graph processing. 
@@ -280,9 +292,15 @@ So, any discussion of graph `size' must also account for the number of edges.
 \textbf{Degree Distribution.}
 The \textit{size} of the graph is closely linked to the number of edges in it. 
 Beyond a raw edge count, consideration must be given to the Degree $K$, the mean degree $\bar{K}$, the mean in-degree $\bar{K}_{in}$ and mean out-degree $\bar{K}_{out}$ and the \textit{distribution} of these values across the graph. 
+%
+\nrscomment{we dont know what any of those things mean, or why 'consideration must be given' to them}
+%
 Random graphs are quite regular in their distribution of degrees, and we expect the modal degree to approximate the mean degree.
 Similarly, on graphs derived from physical phenomena like road networks, the mean degree is generally consistent.
 Conversely, graphs derived from social interactions like phone call records or follower lists on social media tend to follow a power-law distribution. 
+%
+\nrscomment{if youre going to define scale-free, do it properly}
+%
 In these \textit {`Scale-Free'} graphs only a small percentage of the vertices possess most of the edges, and most vertices have very few edges.
 Intuitively, consider that a few celebrities are extremely popular and have large followings, while most people have only small followings.
 The scale-free graph shape is one of the key drivers of computational \textit{inefficeny} in graph processing. (see: section~\ref{section:126-processing-bottlenecks}).
