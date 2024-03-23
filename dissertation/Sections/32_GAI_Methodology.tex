@@ -158,8 +158,17 @@ The divergence from the GDB and GNN use is because most of the traditional graph
 GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
 Gaps exist in applying the traditional graph algorithms to more complicated graph structures, the inclusion of mesh graphs and the use of dynamic (streaming) graphs that a graph-based AI benchmark needs to account for. 
 
-
+\input{Tables/03_metrics}
 \textbf{Metric Coverage.}
+The coverage of the metrics of interest by the existing benchmarks (~\ref{table:benchmark-metrics}) reflects the reality of benchmarking.
+To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
+Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
+The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
+More telling is the reverse, where newer benchmarks that are still trying to demonstrate the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
+A graph-based AI benchmark needs to be able to handle approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficency} tradeoff.
+Further, as much of the known bottlenecks are in memory overheads, tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
+Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
+Alternately, a virtualized environment the equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
 
 \textbf{Program Coverage.}
 
