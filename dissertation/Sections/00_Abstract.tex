@@ -13,7 +13,7 @@
 \hspace{-.15in}
 \begin{tabular}{ll}
 Title of Thesis:    & {\large  A FRAMEWORK FOR BENCHMARKING }\\
-&                     {\large  GRAPH HARDWARE ACCELERATORS} \\
+&                     {\large  GRAPH-BASED ARTIFICIAL INTELLIGENCE} \\
 \ \\
 &                          {\large  Kent Daniel O'Sullivan} \\
 &                           {\large Master of Science, 2024} \\
@@ -27,4 +27,21 @@ Thesis Directed by: & {\large  Professor William Regli} \\
 \renewcommand{\baselinestretch}{2}
 \large \normalsize
 
-ABSTRACT HERE
+Graph-based Artificial intelligence (GraphAI) encompasses all the AI problems that we formulate as graphs, that operate on graphs, or that rely on the structural characteristics of graphs for some kind of learning task. 
+GraphAI is becoming increasingly important with the emergence of generative AI as a mechanism for grounding generation and improving transparency, explainability and performance.
+GraphAI is important in many real-world applications beyond abstract generative use cases, with a cursory survey of national security problems highlighting the deep permeation of tasks that can be formulated as graph problems, operate on graphs or learn to make predictions from graphs. 
+
+To continue advancing GraphAI we need to be able to develop the enabling representations, algorithms, and systems as well as the metrics that characterize relative performance.
+Clear comparison of performance is hard because graphs as data structures vary in size, shape, representation and information density they trigger irregular changes in computation patterns, memory-bounded execution, communication-computation ratio and sparsity.
+The unpredictable results of combining different representations, algorithms and systems for GraphAI are exacerbated by a broad diffusion of abstractions and programming models further obfuscating what characterizes `good' performance in GraphAI.
+
+Existing Benchmarks address some of these issues by providing collections of shared datasets, identifying the most fundamental tasks for comparison and giving a general idea of the relative execution-time performance between algorithms.
+However, current approaches do not address GraphAI problems holistically as collections of kernels that combine to achieve more complicated tasks. 
+Datasets are sorely lacking in coverage of weighted, directed, attributed multigraphs characteristic of knowledge graphs that form the basis of most modern GraphAI inputs.
+There is almost no support for dynamic (streaming) graphs, or approaching GraphAI problems within size, weight and power constraints. 
+Metrics are limited to efficiency measures of execution time (largely ignoring graph extraction, transformation and load times), with a minimal standard evaluation of the effectiveness of the produced output. 
+
+By taking an empirical approach to designing a framework for benchmarking GraphAI we address the issues of task, dataset and metric coverage and develop a methodology to balance the evaluation of a GraphAI solution's fitness-for-purpose with the need for a deep understanding of the bottlenecks preventing its next development increment.
+To demonstrate how our proposed methodology addresses the problem, we apply our abstract graph benchmarking framework to the structural analysis problem of community detection and develop a community detection benchmark that extends current work with broader dataset coverage, and metrics to enable future development and the view that the output should evaluate a system in the `real world'.
+
+\newpage
