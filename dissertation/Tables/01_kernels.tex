@@ -4,32 +4,42 @@
 
     \begin{table}[htbp]
         \centering
-        \begin{tabular}{lllllllll}
-            ~   & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Graph\\ Manipulations\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Search, Plan\\ \& Schedule\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Constraint\\ Satisfaction\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Pattern\\ Matching\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Structural\\ Analysis\end{minipage}}          
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Influence\\ Mapping\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Graph\\ Representation\\ Learning\end{minipage}}           
-                & \rotatebox{60}{\footnotesize \begin{minipage}{2.5cm}Graph\\ Neural\\ Networks\end{minipage}}       \\
+        \begin{tabular}{ll|cccccccc}
+                ~ 
+                & ~  
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Graph\\ Manipulations\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Search, Plan\\ \& Schedule\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Constraint\\ Satisfaction\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Pattern\\ Matching\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Structural\\ Analysis\end{minipage}}          
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Influence\\ Mapping\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Graph\\ Embedding \end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Predictive\\Tasks\end{minipage}}       \\
             \hline
-            Graph500~\cite{Murphy2010}                  & $\checkmark$  & $\checkmark$  &               &               &               &               &               &           \\
-            PBBS$_{1.0}$~\cite{Shun2012}                &               & $\checkmark$  &               & $\checkmark$  &               &               &               &           \\
-            SocialGraph~\cite{Angles2013}               & $\checkmark$  & $\checkmark$  &               &               &               &               &               &           \\
-            SocialBench~\cite{Erling2015}               & $\checkmark$  & $\checkmark$  &               &               &               &               &               &           \\
-            SNAP~\cite{Leskovec2016}                    & $\checkmark$  & $\checkmark$  &               & $\checkmark$  & $\checkmark$  & $\checkmark$  &               &           \\
-            Graphalytics$_{0.1}$~\cite{Capota2015}      & $\checkmark$  & $\checkmark$  &               &               & $\checkmark$  &               &               &           \\
-            Graphalytics$_{1.0}$~\cite{Iosup2016}       &               & $\checkmark$  &               & $\checkmark$  & $\checkmark$  &               &               &           \\
-            GAP~\cite{Beamer2017}                       &               & $\checkmark$  &               &               & $\checkmark$  & $\checkmark$  &               &           \\
-            GBBS~\cite{Dhulipala2020,Dhulipala2021}     &               & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  &               &           \\
-            PBBS$_{2.0}$~\cite{Anderson2022}            &               & $\checkmark$  &               & $\checkmark$  &               &               &               &           \\
-            Graphalytics$_{1.2}$~\cite{Iosup2023}       & $\checkmark$  & $\checkmark$  &               &               & $\checkmark$  &               &               &           \\
-            BenchGraph~\cite{Javor2022,Javor2023}       & $\checkmark$  & $\checkmark$  &               &               &               &               &               &           \\
-            %Row 12                                      &               &               &               &               &               &               &               &           \\
-            %Row 13                                      &               &               &               &               &               &               &               &           \\
+               {\footnotesize \textbf{Graphs}}  & {\footnotesize Graph500~\cite{Murphy2010}              }      & $\checkmark$  & $\checkmark$  &               &               &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize PBBS$_{1.0}$~\cite{Shun2012}            }      &               & $\checkmark$  &               & $\checkmark$  &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize SNAP~\cite{Leskovec2016}                }      & $\checkmark$  & $\checkmark$  &               & $\checkmark$  & $\checkmark$  & $\checkmark$  &               &               \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{0.1}$~\cite{Capota2015}  }      & $\checkmark$  & $\checkmark$  &               &               & $\checkmark$  &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{1.0}$~\cite{Iosup2016}   }      &               & $\checkmark$  &               & $\checkmark$  & $\checkmark$  &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize GAP~\cite{Beamer2017}                   }      &               & $\checkmark$  &               &               & $\checkmark$  & $\checkmark$  &               &               \\
+               {\footnotesize ~              }  & {\footnotesize GBBS~\cite{Dhulipala2020,Dhulipala2021} }      &               & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  &               &               \\
+               {\footnotesize ~              }  & {\footnotesize PBBS$_{2.0}$~\cite{Anderson2022}        }      &               & $\checkmark$  &               & $\checkmark$  &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{1.2}$~\cite{Iosup2023}   }      &               & $\checkmark$  &               &               & $\checkmark$  &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize ~                                       }      &       ~       &       ~       &       ~       &       ~       &       ~       &       ~       &       ~       &      ~        \\
+               {\footnotesize \textbf{GDBs}  }  & {\footnotesize SocialGraph~\cite{Angles2013}           }      & $\checkmark$  & $\checkmark$  &               &               &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize SocialBench~\cite{Erling2015}           }      & $\checkmark$  & $\checkmark$  &               &               &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize TEKG~\cite{Mcnight2021}           }            & $\checkmark$  & $\checkmark$  &               &               &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize BenchGraph~\cite{Javor2022,Javor2023}   }      & $\checkmark$  & $\checkmark$  &               &               &               &               &               &               \\
+               {\footnotesize ~              }  & {\footnotesize ~                                       }      &       ~       &       ~       &       ~       &       ~       &       ~       &       ~       &       ~       &      ~        \\
+               {\footnotesize \textbf{GNNs}  }  & {\footnotesize OGB~\cite{Hu2020}                       }      &               &               &               &               &               &               & $\checkmark$  & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize PAGNNF${^\dagger}$~\cite{Wu2021a}          }   &               &               &               &               &               &               &               & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize GNNMark~\cite{Baruah2021}               }      &               &               &               &               &               &               &               & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize Bridging-GNN$^{\dagger}$~\cite{Huang2021}  }   &               &               &               &               &               &               &               & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize LRGB~\cite{Dwivedi2022}                 }      &               &               &               &               &               &               &               & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize BGNN~\cite{Dwivedi2023}                 }      &               &               &               &               &               &               &               & $\checkmark$  \\
+               {\footnotesize ~              }  & {\footnotesize CogDL~\cite{Cen2023}                    }      &               &               &               &               &               &               & $\checkmark$  & $\checkmark$  \\
         \end{tabular}
-        \caption{Coverage of Graph-Based AI tasks by Benchmark Suites}
+        \caption{Coverage of Graph-Based AI tasks by Benchmark Suites and Workload Analyses ($\dagger$)}
         \label{table:benchmark-kernels}
     \end{table}
 \end{landscape}

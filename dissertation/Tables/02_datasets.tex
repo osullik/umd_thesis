@@ -1,0 +1,45 @@
+% Graph Based AI Table to go Here. 
+\begin{landscape}
+    
+
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{ll|cccccccc}
+                ~ 
+                & ~  
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Distinct\\Datasets\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Max Edges\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Attributed\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Directed\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Weighted\end{minipage}}          
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Graph\\Types\end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Data\\Origin \end{minipage}}           
+                & \rotatebox{65}{\footnotesize \begin{minipage}{2.5cm}Input\\ Format\end{minipage}}       \\
+            \hline                                                                                              %count      % Max Edges    % Attributed    % Directed      % Weighted     & Types          & Origin        & Format
+               {\footnotesize \textbf{Graphs}}  & {\footnotesize Graph500~\cite{Murphy2010}              }      &  $6$      &    $70$T     &               &               &     (O)       &      SF       &  S$_{UG}$     &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize PBBS$_{1.0}$~\cite{Shun2012}            }      &  $6$      &    $112$M    &               & $\checkmark$  &     (O)       &      R,SF     &  S$_{UG}$     &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize SNAP~\cite{Leskovec2016}                }      &  $126$    &    $1.8$B    & $\checkmark$  & $\checkmark$  & $\checkmark$  & R,SF,M,MG,KG  &  R            &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{0.1}$~\cite{Capota2015}  }      &  $6$      &     $5$B     &               & $\checkmark$  & $\checkmark$  & R,SF          & S$_{UG}$      &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{1.0}$~\cite{Iosup2016}   }      &  $37$     &    $17$B     &               & $\checkmark$  & $\checkmark$  & R,SF          & S$_{PB}$      &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize GAP~\cite{Beamer2017}                   }      &  $5$      &    $2.1$B    &               & $\checkmark$  & $\checkmark$  & R,SF,M        & R,S$_{PB}$    &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize GBBS~\cite{Dhulipala2020,Dhulipala2021} }      &  $0$      &      N/A     &     N/A       &     N/A       &    N/A        &      N/A      &     N/A       &  N/A          \\
+               {\footnotesize ~              }  & {\footnotesize PBBS$_{2.0}$~\cite{Anderson2022}        }      &  $6$      &    $112$M    &               & $\checkmark$  &     (O)       & R,SF          & S$_{UG}$      &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize Graphalytics$_{1.2}$~\cite{Iosup2023}   }      &  $37$     &    $17$B     &               & $\checkmark$  & $\checkmark$  & R,SF          & R,S$_{PB}$    &  AL           \\
+               {\footnotesize ~              }  & {\footnotesize ~                                       }      &           &       ~      &       ~       &       ~       &       ~       &       ~       &       ~       &      ~        \\
+               {\footnotesize \textbf{GDBs}  }  & {\footnotesize SocialGraph~\cite{Angles2013}           }      &  $5$      &    $161$M    &               & $\checkmark$  &               & SF,KG         & S$_{UG}$      &  RDF          \\
+               {\footnotesize ~              }  & {\footnotesize SocialBench~\cite{Erling2015}           }      &  $4$      & $20$B        &                & $\checkmark$  &              & SF,KG         & S$_{UG}$      &  RDF          \\
+               {\footnotesize ~              }  & {\footnotesize TEKG~\cite{Mcnight2021}           }            &  $1$      & $1$T         &                & $\checkmark$  &              & SF,KG         & S$_{UG}$      &  RDF          \\
+               {\footnotesize ~              }  & {\footnotesize BenchGraph~\cite{Javor2022,Javor2023}   }      &  $9$      & $52$M        &               & $\checkmark$  &               & SF,KG         & S$_{PB}$      &  Cypher       \\
+               {\footnotesize ~              }  & {\footnotesize ~                                       }      &   ~       &       ~      &       ~       &       ~       &       ~       &       ~       &       ~       &      ~        \\
+               {\footnotesize \textbf{GNNs}  }  & {\footnotesize OGB~\cite{Hu2020}                       }      &  $15$     &  $1.6$B      & $\checkmark$  & $\checkmark$  &               & SF,KG         & R             & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize PAGNNF${^\dagger}$~\cite{Wu2021a}          }   &  $5$      &  $44.4$K     & $\checkmark$  & $\checkmark$  &               & SF,M,Dyn      & R             & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize GNNMark~\cite{Baruah2021}               }      &  $12$     &  $1.9$M      & $\checkmark$  & $\checkmark$  &               & SF,M          & R             & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize Bridging-GNN$^{\dagger}$~\cite{Huang2021}  }   &  $8$      &  $21$K       & $\checkmark$  & $\checkmark$  &               & SF,M          & R             & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize LRGB~\cite{Dwivedi2022}                 }      &  $8$      &  $2.3$M      & $\checkmark$  & $\checkmark$  &               & SF,M          & R,S$_{PB}$    & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize BGNN~\cite{Dwivedi2023}                 }      &  $5$      &  $2693$K     & $\checkmark$  & $\checkmark$  &               & SF,M          & R,S$_{PB}$    & SFF           \\
+               {\footnotesize ~              }  & {\footnotesize CogDL~\cite{Cen2023}                    }      &  $81$     &  $132$M      & $\checkmark$  & $\checkmark$  &               & SF,M          & R             & SFF           \\
+        \end{tabular}
+        \caption{Coverage of Graph-Based AI Datasets by Benchmark Suites and Workload Analyses ($\dagger$)}
+        \label{table:benchmark-datasets}
+    \end{table}
+\end{landscape}

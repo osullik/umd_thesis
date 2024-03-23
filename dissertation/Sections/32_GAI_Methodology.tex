@@ -132,31 +132,38 @@ Both the GBBS and SNAP are better characterized as repositories for efficient pa
 The most commonly used kernels are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), and \textit{Mean Local Clustering Coefficient} (MLCC). 
 Graph Database benchmarks tend to focus on measuring the \textit{Create, Read, Update} and \textit{Delete} operations, with simple index lookups and neighborhood expansions.
 
-
-
-HPC Scalable Graph Analysis Benchmark~\cite{Bader2009}
-Graph500~\cite{Murphy2010} %Atomic, System Focused, Synthetic Data, Huge Scale
-PBBS~\cite{Shun2012}
-Social Graph~\cite{Angles2013}
-SNAP~\cite{Leskovec2016}
-LDBC Social Benchmark~\cite{Erling2015}
-Graphalytics~\cite{Capota2015, Iosup2016}
-Graphalytics V1.2~\cite{Iosup2023}
-GAP~\cite{Beamer2017}
-GBBS~\cite{Dhulipala2020}
-PBBSV2~\cite{Anderson2022}
-
-\osullikomment{Working on the table and word picture to go in here now}
-
 \input{Tables/01_kernels.tex}
 
-%GNNS
-Open Graph Benchamark~\cite{Hu2020}
-Benchamrking GNNs~\cite{Dwivedi2023}
+\textbf{Task Coverage.}
+Table~\ref{table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
+The coverage of graph-based AI tasks from Chapter~\ref{chapter:10-Introduction} is recorded for each benchmark. 
+In general, task coverage clusters around the core operations of the underlying programs, and results in GDB benchmarks focusing on the \textit{Create, Read, Update, Delete} (CRUD) operations, and GNN benchmarks focusing on prediction tasks.
+Within the graph benchmarks 47 distinct kernels are studied. 
+The modally studied kernels were BFS, SSSP, Weakly Connected Components (WCC) and Mean Local Clustering Coefficient (MLCC). 
+The remaining 43 kernels are a mix of specific subtypes of these kernels and are almost all drawn from the extensive \textit{Graph Based Benchmark Suite} (GBBS)~\cite{Dhulipala2020, Dhulipala2021} and \textit{Stanford Network Analysis Project} (SNAP)~\cite{Leskovec2016}.
+Both GBBS and SNAP are better characterized as collections of efficient programs for the kernels.
+No single benchmark suite covers the breadth of graph-based AI tasks, and all of them focus on kernel-level programs in evaluation. 
+Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but as there is no commonly agreed primitive building blocks for graph processing, a fair comparison between approaches is difficult at the kernel level only.
+Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces. 
+A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that actually address the AI problem. 
 
-%Graph Databases:
-Stardog~\cite{Mcnight2021}
-Memgraph and Neo4j~\cite{Javor2022, Javor2023, Memgraph2023}
+\input{Tables/02_datasets.tex}
+\textbf{Dataset Coverage.}
+The performance of graph-based AI tasks is highly dependent on the shape of the input data. 
+Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
+While the GNN graphs are typically much smaller, these datasets will often have hundreds or thousands of graphs belonging to the same dataset for the GNN to learn on. 
+Most of the benchmarks have at least one random and one scale-free graph in their collections, though mesh graphs and dynamic graphs are very under-represented. 
+Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
+The divergence from the GDB and GNN use is because most of the traditional graph algorithms operate only on the topological data, and so the attributes are not included.
+GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
+Gaps exist in applying the traditional graph algorithms to more complicated graph structures, the inclusion of mesh graphs and the use of dynamic (streaming) graphs that a graph-based AI benchmark needs to account for. 
+
+
+\textbf{Metric Coverage.}
+
+\textbf{Program Coverage.}
+
+\textbf{System Coverage.}
 
 %Critiques:
 ~\cite{DeMarzi2023}
