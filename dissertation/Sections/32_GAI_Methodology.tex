@@ -149,6 +149,11 @@ A graph-based AI benchmark must cover the full suite of graph-based AI tasks and
 
 \input{Tables/02_datasets.tex}
 \textbf{Dataset Coverage.}
+
+%
+\nrscomment{this feels like it belongs in related work. assuming that, the info is fine, just condense it down to drive home a few key takeaways and leave it there.}
+%
+
 The performance of graph-based AI tasks is highly dependent on the shape of the input data. 
 Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
 While the GNN graphs are typically much smaller, these datasets will often have hundreds or thousands of graphs belonging to the same dataset for the GNN to learn on. 
@@ -160,15 +165,19 @@ Gaps exist in applying the traditional graph algorithms to more complicated grap
 
 \input{Tables/03_metrics}
 \textbf{Metric Coverage.}
+
+%
+\nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
+%
 The coverage of the metrics of interest by the existing benchmarks (~\ref{table:benchmark-metrics}) reflects the reality of benchmarking.
 To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
 Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
 The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
 More telling is the reverse, where newer benchmarks that are still trying to demonstrate the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
-A graph-based AI benchmark needs to be able to handle approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficency} tradeoff.
+A graph-based AI benchmark needs to be able to handle approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficiency} tradeoff.
 Further, as much of the known bottlenecks are in memory overheads, tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
 Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
-Alternately, a virtualized environment the equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
+Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
 
 \textbf{Program Coverage.}
 
