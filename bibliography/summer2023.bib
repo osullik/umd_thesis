@@ -548,7 +548,8 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   year={2016},
   publisher={VLDB Endowment},
   abstract={In this paper we introduce LDBC Graphalytics, a new industrial-grade benchmark for graph analysis platforms. It consists of six deterministic algorithms, standard datasets, synthetic dataset generators, and reference output, that enable the objective comparison of graph analysis platforms. Its test harness produces deep metrics that quantify multiple kinds of system scalability, such as horizontal/vertical and weak/strong, and of robustness, such as failures and performance variability. The benchmark comes with open-source software for generating data and monitoring performance. We describe and analyze six implementations of the benchmark (three from the community, three from the industry), providing insights into the strengths and weaknesses of the platforms. Key to our contribution, vendors perform the tuning and benchmarking of their platforms.},
-  comment={}
+  comment={Graph Benchmark},
+  groups={graph_benchmark}
 }
 
 @inproceedings{Spasic2016,
@@ -3710,4 +3711,194 @@ comments={
   title       = {A Hierarchical Identify Verify Exploit (HIVE) Project: Programmable and Integrated Unified Memory Architecture (PIUMA) Workload Analysis Document},
   year        = {2020},
   comment = {}
+}
+
+@article{Leskovec2016,
+  title={Snap: A general-purpose network analysis and graph-mining library},
+  author={Leskovec, Jure and Sosi{\v{c}}, Rok},
+  journal={ACM Transactions on Intelligent Systems and Technology (TIST)},
+  volume={8},
+  number={1},
+  pages={1--20},
+  year={2016},
+  publisher={ACM New York, NY, USA},
+  comments={SNAP has been developed for single big-memory multiple-core machines; as such, it balances the trade-off between maximum perfor- mance, compact in-memory graph representation, and the ability to handle dynamic graphs in which nodes and edges are being added or removed over time.
+  Methods that operate on graph/network containers can be split into several groups: (1) graph generation methods, which create new graphs as well as networks; (2) graph manipulation methods, which manipulate the graph structure; and (3) graph analytic methods, which do not change the underlying graph structure, but compute specific graph statistics.
+  In SNAP, we define graphs to consist of a set of nodes and a set of edges, each edge connecting two nodes. Edges can be either directed or undirected. In multigraphs, more than one edge can exist between a pair of nodes. In SNAP terminology, networks are defined as graphs in which attributes or features
+  },
+  groups={graph_benchmarking}
+}
+
+% % % % % % % % % GNN BENCHMARKING % % % % % % % %
+
+@article{Hu2020,
+  title={Open graph benchmark: Datasets for machine learning on graphs},
+  author={Hu, Weihua and Fey, Matthias and Zitnik, Marinka and Dong, Yuxiao and Ren, Hongyu and Liu, Bowen and Catasta, Michele and Leskovec, Jure},
+  journal={Advances in neural information processing systems},
+  volume={33},
+  pages={22118--22133},
+  year={2020},
+  comments={
+    This is the defacto benchmark for GNNs. 
+    SYSTEM: Open Graph Benchmark Pipeline (System Agnostic)
+    TASKS: Node Prediction, Link Prediction, Graph Property Prediction // [Biary Classification, Multi Classification, Link Prediction, KG Completion]
+    DATASETS: OBGN customizations of 14 Datasets (Task Dependent 8 x Node Class, 4 x Link Pred, 2 x KG Completion, 1x sub token prediction ) 
+    PROGRAMS:Node2Vec, [Full batch: GCN, GraphSAGE], [MiniBatch: NeighborSample, ClusterGCN, GraphSAINT], [KG Embedding: TransE, DistMult, ComplEx, RotatE], [GCN, GIN]
+    METRICS: Various Effectiveness Metrics depending on task, References to Peak Memory Usage
+  }
+}
+
+@inproceedings{Wu2021,
+  title={Performance analysis of graph neural network frameworks},
+  author={Wu, Junwei and Sun, Jingwei and Sun, Hao and Sun, Guangzhong},
+  booktitle={2021 IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+  pages={118--127},
+  year={2021},
+  organization={IEEE},
+  comments={
+    SYSTEM: Pytorch Geometric and DeepGraphLibrary
+    TASKS: Node Classification, Graph Classification
+    DATASETS: Cora, PubMed, Enzymes, Minst, DD
+    PROGRAMS: GCN, GAT, GrapSAGE, MoNet, GatedGCN
+    METRICS: [Time: Data Load, Forward Pass, BackProp, Update, Other], [GPU Utilization: (see formula)], [Peak Mem Usage:]
+
+    FINDINGS: 
+      (1) Load time dominates GPU processing. 
+      (2) Anisotropic Models (MoNet, GatedGCN) are more memory hungry than the other isotroric models
+      (3) Gpu Utilization is less than 40\% on average
+      (4) Test accuracy not significantly different between models, suggesting efficency may not have as big a performance tradeoff. 
+  }
+}
+
+@INPROCEEDINGS{Baruah2021,
+  author={Baruah, Trinayan and Shivdikar, Kaustubh and Dong, Shi and Sun, Yifan and Mojumder, Saiful A and Jung, Kihoon and Abellán, José L. and Ukidave, Yash and Joshi, Ajay and Kim, John and Kaeli, David},
+  booktitle={2021 IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)}, 
+  title={GNNMark: A Benchmark Suite to Characterize Graph Neural Network Training on GPUs}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={13-23},
+  keywords={Training;Machine learning algorithms;Scalability;Software performance;Benchmark testing;Hardware;Graph neural networks;graphs;benchmarks;GNN training;GPUs},
+  doi={10.1109/ISPASS51385.2021.00013},
+  comments={
+    A GNN training Benchmark. 
+
+    SYSTEM: PyTorch
+    TASKS: Recommendation, Traffic Forecasting, Graph Property Prediction, Node Clustering, Sentiment Classification. 
+    DATASETS: 3 Types of Graph Datasets: Homogenous, Heterogenous and Dynamic (Which can be either hetero or homo). 
+    PROGRAMS: PinSAGE, STGCN, DGCN, GraphWriter, K-GNN, AGRA, TLSTM
+    METRICS: Based on primitives at the Operation level: [General Matrix Multiply, Sparse Matrix Multiply, Convolution, Scatter, Gather, Reduce, Index Selection, Sort, Element-wise ops.]. Looks at Execution Time per Op Primitive, Cache Miss Rate per op primitive, Memory Usage per primitive
+
+    FINDINGS: 
+      (1) Extremely difficult to optimize GNN hardware because the bottleneck varies between input data and model and framework. 
+      (2) GNN Training is Memory-Bound. 
+      (3) Memory Dependency, Execution Dependence and Instruction Fetch as well as very poor L1 cache utiliztion makes GPU use memory bound. 
+      (4) There is an opportunity to exploit the sparsity in GNNs with compression to fit bigger graphs in GPU memory. 
+      (5) Not all workloads benefit from splitting across multiple GPU
+
+    Weaknesses: 
+      They don't mention any metircs of effectiveness for the tasks they they set their programs on. 
+  }
+  }
+
+  @inproceedings{Huang2021,
+  title={Understanding and bridging the gaps in current GNN performance optimizations},
+  author={Huang, Kezhao and Zhai, Jidong and Zheng, Zhen and Yi, Youngmin and Shen, Xipeng},
+  booktitle={Proceedings of the 26th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
+  pages={119--132},
+  year={2021},
+  comments={
+    A workload characterization paper, not a true benchmark per se. 
+
+    SYSTEM: DeepGraphLibrary, PytorchGeometric, ROC, NuGraph
+    TASKS: Not Specified, hints at Node Classification, Graph Classification and Link Prediction. 
+    DATASETS: 8 of the Open Graph Benchmark Datasets. 
+    PROGRAMS: GCN, GAT and GraphSAGE
+    METRICS: L2 Cache Miss Rate, Execution Time. 
+
+    FINDINGS: 
+      (1) There is poor Locality in GNN operations due to edge granularity. 
+      (2) There is severe workload imbalance because of the varying degrees of nodes in the graph. 
+      (3) Redundancy in memory accesses and large overhead due to intensive function calls. 
+      (4) Large memory footprints and redundant computations when expanding neural operations by graph structure. 
+      (5) Variant Feature lengths are inefficent. 
+
+    OBSERVATIONS: 
+      (1) On a Tesla V100 the current frameworks achieve less than 10\% of peak GPU throughput, less than 50\% of peak memory bandwidth and less than 10\% of the GPU is occpied for 87\% of the time. 
+      (2) There are large performance gaps between the frameworks. 
+
+    RECOMMENDATIONS:
+      They make several architectural and algorithmic recommendations to improve which they use to eval against the other mechanisms. 
+  }
+}
+
+@article{Dwivedi2023,
+  title={Benchmarking graph neural networks},
+  author={Dwivedi, Vijay Prakash and Joshi, Chaitanya K and Luu, Anh Tuan and Laurent, Thomas and Bengio, Yoshua and Bresson, Xavier},
+  journal={Journal of Machine Learning Research},
+  volume={24},
+  number={43},
+  pages={1--48},
+  year={2023},
+  comments={
+    Second most popular GNN Benchmarking framwework. Gives entire pipeline. 
+    SYSTEM: Pytorch, DeepGraphLibrary
+    TASKS: GraphRegression, Node Classification, Edge Classification, Graph Classification, Multi-Node/Graph Task
+    DATASETS: 12, 6 are real world, 6 are synthetic. All tied to the Tasks. 
+    PROGRAMS: [Message Passing GCNs: GCN, GraphSAGE, MoNet, GAI, Gated-GCN, GIN], [Wiesfelier-Lehman GNNs: RingGNN, 3WLGNN]
+    METRICS: Task Specific Effectiveness Metrics, Throughput as Execution Time per Epoch. 
+  }
+}
+
+@article{Dwivedi2022,
+  title={Long range graph benchmark},
+  author={Dwivedi, Vijay Prakash and Ramp{\'a}{\v{s}}ek, Ladislav and Galkin, Michael and Parviz, Ali and Wolf, Guy and Luu, Anh Tuan and Beaini, Dominique},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={22326--22340},
+  year={2022},
+  comments={
+    Focuses on capturing longer range dependencies in graphs than simple neighborhood aggregation message passing models can. 
+    SYSTEM: Not Spec. 
+    TASKS: Node Class, Link Pred, Graph Classification, Graph Regression. 
+    DATSETS: 5 Long Range Datasets created from Computer Vision, Quantum Chemistry and Chemistry domains. 
+    PROGRAMS: [MP-GNN: GCN, GCNII, GINE. Gated-GCN], [GraphTransformers: LAP-PE, SAN]
+    METRICS: Various Effectiveness Metrics, No Efficency metrics. 
+
+    Observations: This paper follows the same pattern as many fields, they're focused on makeing Long Range GNNs work, and then somewhere down the line when the basic model is working they'll try and make it work efficenctly. 
+  }
+}
+
+@inproceedings{Cen2023,
+  title={Cogdl: A comprehensive library for graph deep learning},
+  author={Cen, Yukuo and Hou, Zhenyu and Wang, Yan and Chen, Qibin and Luo, Yizhen and Yu, Zhongming and Zhang, Hengrui and Yao, Xingcheng and Zeng, Aohan and Guo, Shiguang and others},
+  booktitle={Proceedings of the ACM Web Conference 2023},
+  pages={747--758},
+  year={2023},
+  comments={
+    SYSTEM: CogDL (Pytorch)
+    TASKS: Network Embedding,. Node Classification, Graph Classification, Heterogeneous Node Classification, Link Prediction, KG Completion, Graph CLustering, Graph Attack, Multiplex Link Prediction, Top-K Search
+    DATASETS: Fuckloads of them.
+    PROGRAMS: Lots, the paper is presenting Cog-DL as a more efficient framework for GNN research, so it is able to impelement many existing algo's. 
+    METRICS: Speedup (Execition Time), and various effectiveness metrics depending on the task. 
+
+    OBSERVATION: This is a bit like SNAP, where it's a collection of tools that happens to include some benchmark results, rather than being a benchmark or workload analysis in its own right. 
+  }
+}
+
+@article{Zhiyao2024,
+  title={OpenGSL: A Comprehensive Benchmark for Graph Structure Learning},
+  author={Zhiyao, Zhou and Zhou, Sheng and Mao, Bochao and Zhou, Xuanyi and Chen, Jiawei and Tan, Qiaoyu and Zha, Daochen and Feng, Yan and Chen, Chun and Wang, Can},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2024},
+  comments={
+    This is a benchmark(ish) for graph structure learning, a paradigm and new family of models that achieves the same tasks as other approaches. 
+    
+    SYSTEM: 1 x Linux host with a 12GB GPU that ran out of memory, so also 1 x Linux Host with a GPU with 80GB of memory. 
+    TASKS: Node Classification using Graph Structure Learning Paradigm. 
+    DATASETS: 10 x GSL Specific Datasets
+    PROGRAMS: LDS, ProGNN, GRCN, GAug, SLAPS, GEN, WSGNN, NodeFormer, CoGSL, SUBLIME, STABLE, SEGSL
+    METRICS: Accuracy, Execution Time, Peak Memory Usage.  
+  }
 }
