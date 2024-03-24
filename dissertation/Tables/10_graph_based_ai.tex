@@ -1,41 +1,55 @@
-\begin{table*}[t]
-    \begin{center}
-    \small
-        \begin{tabular}{lll} 
-            Relation to AI     &  AI Problem    &       Example Workloads      \\%&       \textbf{Citation(s)}    \\
-            \hline
-            & & \\
-            Formulated as graph problem & Search                   & BFS, DFS, UC, A*, MinMax              \\%& \cite{Russell2021}            \\
-                                        & Constraint Satisfaction  & Forward Checking, Backtracking        \\%& \cite{Russell2021}            \\
-                                        & Planning                 & GraphPlan                             \\%& \cite{Russell2021}            \\
-                                        & Scheduling               & CriticalPath                          \\%& \cite{Russell2021}            \\
-                                        & Inference                & Variable Elimination (Bayes Net)     \\% & \cite{Russell2021}            \\
-                                        & Reinforcement Learning   & Q-Learning                           \\% & \cite{Russell2021}            \\
-            & & \\
-            Operates on graph           & Pattern Matching         & Spatial Subgraph Matching             \\%& \cite{Osullivan2023}          \\
-                                        & Graph Clustering         & Community Detection                  \\% & \cite{Girvan2002}             \\
-                                        & Graph Partitioning       & Modularity Optimization               \\%& \cite{Brandes2006}            \\
-                                        & Influence Mapping        & PageRank, BetweennessCentrality       \\%& \cite{Page1998, Brandes2001}  \\
-                                        & Representation Learning  & Node2Vec, DeepWalk                    \\%& \cite{Grover2016, Perozzi2014} \\
-            & & \\
-            Operates on knowledge graph & Knowledge Acquisition & KG Completion, Ontology Learning   \\%& \cite{Ji2021, Maedche2004}          \\
-                                        & Knowledge Representation Learning & Complex Vector Embeddings \\%& \cite{Ji2021} \\ 
-                                        & Logic-Based Reasoning             & Logical Inference, Ontological Inference \\%& \cite{Chen2020} \\
-                                        & Representation Based Reasoning    & Tensor Factorization, Semantic Matching  \\%& \cite{Chen2020} \\
-                                        & Neural Reasoning                  & Relation Inference, Entity Resolution \\%& \cite{Chen2020} \\
-            & & \\
-            Graph Neural Networks       & Recurrent GNN             & Time Series Prediction               \\% & \cite{Wu2020} \\
-                                        & Convolutional GNN         & Syntactic GCN, Scene-Graph Generation \\%& \cite{Zhang2019, Chang2021} \\
-                                        & Graph AutoEncoders        & Link Prediction                       \\%& \cite{Wu2020} \\
-                                        & Spatio-Temporal GNN       & Traffic Flow Prediction               \\%& \cite{Wu2020} \\
-            & & \\
-            Explainability \&  Interpretability              & Post-Hoc Explanations & XGNN                         \\% & \cite{Yuan2020} \\
-                                        & Interpretable-By-Design  & GNN-Subset                           \\% & \cite{Pfiffer2022}\\
-
+\begin{landscape}
+    
+    \begin{table*}[t]
+        \begin{center}
+        \small
+            \begin{tabular}{lll} 
+                Relation to AI              &  AI Problem              &       Example Tasks      \\%&       \textbf{Citation(s)}    \\
+                \hline
+                & & \\
+                \textbf{Searching, Planning \& Scheduling} & Search                   & BFS, DFS, UC, A*, MinMax              \\%& \cite{Russell2021}            \\
+                \textit{Formulate as graph problem}~\cite{Russell2021} & Constraint Satisfaction  & Forward Checking, Backtracking        \\%& \cite{Russell2021}            \\
+                                            & Planning                 & GraphPlan, SSSP, MST                  \\%& \cite{Russell2021}            \\
+                                            & Scheduling               & CriticalPath                          \\%& \cite{Russell2021}            \\
+                                            & Inference                & Variable Elimination (Bayes Net)      \\% & \cite{Russell2021}            \\
+                                            & Reinforcement Learning   & Q-Learning                            \\% & \cite{Russell2021}            \\
+                & & \\
+                \textbf{Structural Analysis}        & Pattern Matching         & Subgraph Matching, Spatial Pattern Matching\\%\cite{Zeng2020,Osullivan2023} \\%& \cite{Osullivan2023}          \\
+                \textit{Operate on graph topology}~\cite{Zeng2020,Osullivan2023,Girvan2002,Brandes2006,Page1998,Brandes2001,Leskovec2014} & Characterization         & WCC, SCC, LCC, GCC, TC  \\
+                & Graph Clustering         & Community Detection\\%~\cite{Girvan2002}             \\
+                                                    & Graph Partitioning       & Modularity Optimization\\%~\cite{Brandes2006}            \\
+                                                    & Influence Mapping        & PageRank, BetweennessCentrality\\%~\cite{Page1998, Brandes2001}  \\
                                             
-        \end{tabular}
-    \normalsize
-    \caption{A brief taxonomy of Graph-Based AI Problems} 
-    \label{table:taxonomy}
-    \end{center}
-\end{table*}
+                & & \\
+                \textbf{Reasoning} & Knowledge Acquisition    & KG Completion, Ontology Learning\\%~\cite{Ji2021, Maedche2004}          \\
+                \textit{Operate on graph knowledge}~\cite{Ji2021,Maedche2004,Chen2020} & Logic-Based Reasoning    & Logical Inference, Ontological Inference\\%~\cite{Chen2020} \\
+                                            & Representation Reasoning & Tensor Factorization, Semantic Matching\\%~\cite{Chen2020} \\
+                                            & Neural Reasoning         & Relation Inference, Entity Resolution\\%~\cite{Chen2020} \\
+                & & \\
+                \textbf{Graph Abstraction}  & Topological Representation Learning  & Node2Vec, DeepWalk\\%~\cite{Grover2016, Perozzi2014} \\
+                \textit{Embed for downstream tasks}~\cite{Grover2016,Perozzi2014,Ji2021} & Knowledge Representation Learning & Complex Vector Embeddings\\%~\cite{Ji2021} \\ 
+                                            
+                & & \\
+                \textbf{Graph Prediction}           & Graph Classification     & Node, Edge \& Graph Classification\\
+                \textit{Learn directly on graphs}~\cite{Cen2023,Baruah2021,Wu2020}   & Graph Completion         & Link \& Property Prediction, Knowledge Acquisition \\
+                                                    & Dynamic Graph Prediction & Traffic Flow Prediction\\
+                % Graph Prediction            & Recurrent GNN             & Time Series Prediction               \\% & \cite{Wu2020} \\
+                %                             & Convolutional GNN         & Syntactic GCN, Scene-Graph Generation \\%& \cite{Zhang2019, Chang2021} \\
+                %                             & Graph AutoEncoders        & Link Prediction                       \\%& \cite{Wu2020} \\
+                %                             & Spatio-Temporal GNN       & Traffic Flow Prediction               \\%& \cite{Wu2020} \\
+                & & \\
+                \textbf{Trustworthy AI}  & Grounding & Symbolic Support Systems \\
+                \textit{Explainability \& Interpretability}~\cite{Yuan2020,Pfeifer2022,Lenat2023,Yu2022,Zhao2024} & Knowledge Structuring & Retrieval Augmented Generation \\
+                                                              & Output Interpretation & Post-Hoc Explanation\\%~\cite{Yuan2020,Pfeifer2022} \\ 
+                % Explainability \& Interpretability& Post-Hoc Explanations & XGNN                         \\% & \cite{Yuan2020} \\
+                %                             & Interpretable-By-Design  & GNN-Subset                           \\% & \cite{Pfiffer2022}\\
+
+                                                
+            \end{tabular}
+        \normalsize
+        \caption{A brief taxonomy of Graph-Based AI Problems} 
+        \label{table:taxonomy}
+        \end{center}
+    \end{table*}
+
+\end{landscape}
