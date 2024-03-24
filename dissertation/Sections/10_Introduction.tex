@@ -3,16 +3,37 @@
 \label{chapter:10-Introduction}
 Graph data structures and the algorithms that operate on them are foundational to computer science.
 Since the early days of the field, they have been a focal point for theoretical computer science. 
-As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, the world has become increasingly aware of the descriptive power of graphs to model the real world. 
-The Intelligence and Security (I\&S) community uses graphs to structure collected information, analyze it and generate insights to drive operations in the national interest. 
-However, the billions-to-trillions of edges scale the I\&S deals in, the dynamic nature of graphs, temporal constraints on data possession and the criticality of their work create an imperative to improve the \textit{efficency} and \textit{effectiveness} of large-scale graph analysis. 
 
+%
+\nrscomment{not sure "theyre a focal point of theoretical CS" really adds anything}
+%
+As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, the world has become increasingly aware of the descriptive power of graphs to model the real world. 
+
+%
+\nrscomment{"graphs are used increasingly for xyz reason/applications/etc.", not the world has become more aware of them}
+%
+
+The Intelligence and Security (I\&S) community uses graphs to structure collected information, analyze it, and generate insights to drive operations in the national interest. 
+
+%
+\nrscomment{this is too much in one sentence. "In national security applications, graph processing must be done on massive dynamic graphs in resource constrained environments, making the efficiency and effectiveness of graph algorithms critical in these contexts."}
+%
+However, the billions-to-trillions of edges scale the I\&S deals in, the dynamic nature of graphs, temporal constraints on data possession and the criticality of their work create an imperative to improve the \textit{efficiency} and \textit{effectiveness} of large-scale graph analysis. 
+
+\nrscomment{From here I think you need to tie it into GraphAI, which youre about to talk about in the next subsection. Need a bridge from I&S to graphAI then youre golden.}
+
+%
+\nrscomment{this feels important, but i dont think it belongs here. maybe in ch3 where you talk about the motivation for the benchmark? basically a tool to enable these 3 avenues of improvement/comparison?}
+%
 Improvements can typically come from three sources.
 First, the \textit{algorithms} used to analyze the graphs can be improved, or modified to operate in a time-constrained setting, for example by implementing early-stopping, incremental solving or sampling. 
 Second, the underlying \textit{data structure/implementation paradigm} can be modified to exploit new technologies, for example by moving to shared memory parallelism or switching from the canonical `pointer and memory-block' representation to a linear algebraic representation. 
-The third major avenue for improvement is using \textit{hardware acceleration} to operate on graphs more \textit{efficently} and \textit{effectively}, for example by reducing network latency in distributed systems or reducing memory access latency. 
+The third major avenue for improvement is using \textit{hardware acceleration} to operate on graphs more \textit{efficiently} and \textit{effectively}, for example by reducing network latency in distributed systems or reducing memory access latency. 
 
-This Thesis focuses on exploring \textit{Hardare Acceleration} for graph processing.
+%
+\nrscomment{wait what? i thought its not hardware focused anymore? id just get rid of this chunk, or move it to the CD chapter}
+%
+This Thesis focuses on exploring \textit{Hardware Acceleration} for graph processing.
 In particular, it explores if and when graph hardware accelerators should be used, and demonstrates how the process of comparing across hardware architectures can generate insights about the problems themselves that can inform future algorithmic and implementation work. 
 
 %\include{11_Intelligence_Security_Context}
