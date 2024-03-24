@@ -410,7 +410,7 @@ abstract={Both static and streaming graph processing are central in data analyti
   groups={telemetry},
   url = {https://github.com/osullik/summer2023/blob/main/Papers/bibliography/reference_papers/Basak2019.pdf},
 	abstract={Graph processing is an important analysis technique for a wide range of big data applications. The ability to explicitly represent relationships between entities gives graph analytics a significant performance advantage over traditional relational databases. However, at the microarchitecture level, performance is bounded by the inefficiencies in the memory subsystem for single-machine in-memory graph analytics. This paper consists of two contributions in which we analyze and optimize the memory hierarchy for graph processing workloads. First, we perform an in-depth data-type-aware characterization of graph processing workloads on a simulated multi-core architecture. We analyze 1) the memory-level parallelism in an out-of-order core and 2) the request reuse distance in the cache hierarchy. We find that the load-load dependency chains involving different application data types form the primary bottleneck in achieving a high memory-level parallelism. We also observe that different graph data types exhibit heterogeneous reuse distances. As a result, the private L2 cache has negligible contribution to performance, whereas the shared L3 cache shows higher performance sensitivity.},
-  comments={GOAL: The goal of this paper is to solve the memory ineffi- ciency issue for single-machine in-memory graph analyt- ics. FINDINGS:(0) (1) Different graph data types exhibit heterogeneous reuse distances. (2) load-load dependency chains, with consumer graph property data, form the bottleneck in achieving a high Memory Level Parallelism (MLP), the L2 cache has little impact on the system performance, whereas the LLC exhibits a higher perfor- mance sensitivity. (3) The best place to put prefetched data is the L2 Cache because it reduces risk of cache pollution and makes the L2 cache useful (4) Structurea and Property Data should be prefetched (5) Prefetching should be be done in a streaming fashion and the prefetcher should be decoupled, (5) Property prefetches should be guided by structure prefetches.  METHOD: DROPLET is data-aware and prefetches graph structure and property data in a physically decoupled but functionally cooperative manner. DROPLET achieves 19%-102% performance improvement over a no- prefetch baseline, 9%-74% performance improvement over a conventional stream prefetcher, 14%-74% performance improvement over VLDP, and 19%-115% performance im- provement over a G/DC GHB. RANDOM NOTES: Property data is indirectly indexed using information from the structure data in CSC/CSR. They profile on the SNIPER simulator, using the GAP benchmark suite. Memory Level Paralellism (MLP) is difficuly because they are constrained by true data dependencies that have to be executed in program order. **LOADING THE PROPERTIES IS A DELAY-INDUCING OPERATION**}
+  comments={GOAL: The goal of this paper is to solve the memory inefficiency issue for single-machine in-memory graph analytics. FINDINGS:(0) (1) Different graph data types exhibit heterogeneous reuse distances. (2) load-load dependency chains, with consumer graph property data, form the bottleneck in achieving a high Memory Level Parallelism (MLP), the L2 cache has little impact on the system performance, whereas the LLC exhibits a higher perfor- mance sensitivity. (3) The best place to put prefetched data is the L2 Cache because it reduces risk of cache pollution and makes the L2 cache useful (4) Structurea and Property Data should be prefetched (5) Prefetching should be be done in a streaming fashion and the prefetcher should be decoupled, (5) Property prefetches should be guided by structure prefetches.  METHOD: DROPLET is data-aware and prefetches graph structure and property data in a physically decoupled but functionally cooperative manner. DROPLET achieves 19%-102% performance improvement over a no- prefetch baseline, 9%-74% performance improvement over a conventional stream prefetcher, 14%-74% performance improvement over VLDP, and 19%-115% performance im- provement over a G/DC GHB. RANDOM NOTES: Property data is indirectly indexed using information from the structure data in CSC/CSR. They profile on the SNIPER simulator, using the GAP benchmark suite. Memory Level Paralellism (MLP) is difficuly because they are constrained by true data dependencies that have to be executed in program order. **LOADING THE PROPERTIES IS A DELAY-INDUCING OPERATION**}
 }
 
 @inproceedings{Zhuo2019,
@@ -604,17 +604,6 @@ abstract={This paper describes extensions to Rice University's HPCToolkit perfor
   year={2005},
   publisher={Taylor \& Francis},
   abstract={There is a large, popular, and growing literature on "scale-free" networks with the Internet along with metabolic networks representing perhaps the canonical examples. While this has in many ways reinvigorated graph theory, there is unfortunately no consistent, precise definition of scale-free graphs and few rigorous proofs of many of their claimed properties. In fact, it is easily shown that the existing theory has many inherent contradictions and that the most celebrated claims regarding the Internet and biology are verifiably false. In this paper, we introduce a structural metric that allows us to differentiate between all simple, connected graphs having an identical degree sequence, which is of particular interest when that sequence satisfies a power law relationship. We demonstrate that the proposed structural metric yields considerable insight into the claimed properties of SF graphs and provides one possible measure of the extent to which a graph is scale-free. This structural view can be related to previously studied graph properties such as the various notions of self-similarity, likelihood, betweenness and assortativity. Our approach clarifies much of the confusion surrounding the sensational qualitative claims in the current literature, and offers a rigorous and quantitative alternative, while suggesting the potential for a rich and interesting theory. This paper is aimed at readers familiar with the basics of Internet technology and comfortable with a theorem-proof style of exposition, but who may be unfamiliar with the existing literature on scale-free networks.},
-  comment={}
-}
-
-@article{Hu2020,
-  title={Open graph benchmark: Datasets for machine learning on graphs},
-  author={Hu, Weihua and Fey, Matthias and Zitnik, Marinka and Dong, Yuxiao and Ren, Hongyu and Liu, Bowen and Catasta, Michele and Leskovec, Jure},
-  journal={Advances in neural information processing systems},
-  volume={33},
-  pages={22118--22133},
-  year={2020},
-  abstract={We present the Open Graph Benchmark (OGB), a diverse set of challenging and realistic benchmark datasets to facilitate scalable, robust, and reproducible graph machine learning (ML) research. OGB datasets are large-scale, encompass multiple important graph ML tasks, and cover a diverse range of domains, ranging from social and information networks to biological networks, molecular graphs, source code ASTs, and knowledge graphs. For each dataset, we provide a unified evaluation protocol using meaningful application-specific data splits and evaluation metrics. In addition to building the datasets, we also perform extensive benchmark experiments for each dataset. Our experiments suggest that OGB datasets present significant challenges of scalability to large-scale graphs and out-of-distribution generalization under realistic data splits, indicating fruitful opportunities for future research. Finally, OGB provides an automated end-to-end graph ML pipeline that simplifies and standardizes the process of graph data loading, experimental setup, and model evaluation. OGB will be regularly updated and welcomes inputs from the community. OGB datasets as well as data loaders, evaluation scripts, baseline code, and leaderboards are publicly available at https://ogb.stanford.edu.},
   comment={}
 }
 
@@ -1963,18 +1952,6 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   pages={1--4},
   year={2015},
   groups={graph_benchmarking, graph_analysis}
-}
-
-
-@article{Dwivedi2023,
-  title={Benchmarking Graph Neural Networks},
-  author={Dwivedi, Vijay Prakash and Joshi, Chaitanya K and Luu, Anh Tuan and Laurent, Thomas and Bengio, Yoshua and Bresson, Xavier},
-  journal={Journal of Machine Learning Research},
-  volume={24},
-  number={43},
-  pages={1--48},
-  year={2023},
-  groups={graph_ml, graph_benchmarks}
 }
 
 @inproceedings{Kestur2010,
@@ -3748,7 +3725,7 @@ comments={
   }
 }
 
-@inproceedings{Wu2021,
+@inproceedings{Wu2021a,
   title={Performance analysis of graph neural network frameworks},
   author={Wu, Junwei and Sun, Jingwei and Sun, Hao and Sun, Guangzhong},
   booktitle={2021 IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
@@ -3886,9 +3863,9 @@ comments={
   }
 }
 
-@article{Zhiyao2024,
+@article{Zhou2024,
   title={OpenGSL: A Comprehensive Benchmark for Graph Structure Learning},
-  author={Zhiyao, Zhou and Zhou, Sheng and Mao, Bochao and Zhou, Xuanyi and Chen, Jiawei and Tan, Qiaoyu and Zha, Daochen and Feng, Yan and Chen, Chun and Wang, Can},
+  author={Zhou, Zhiyao and Zhou, Sheng and Mao, Bochao and Zhou, Xuanyi and Chen, Jiawei and Tan, Qiaoyu and Zha, Daochen and Feng, Yan and Chen, Chun and Wang, Can},
   journal={Advances in Neural Information Processing Systems},
   volume={36},
   year={2024},
@@ -3900,5 +3877,48 @@ comments={
     DATASETS: 10 x GSL Specific Datasets
     PROGRAMS: LDS, ProGNN, GRCN, GAug, SLAPS, GEN, WSGNN, NodeFormer, CoGSL, SUBLIME, STABLE, SEGSL
     METRICS: Accuracy, Execution Time, Peak Memory Usage.  
+  }
+}
+
+%%%%% Streaming Graphs %%%%%%
+
+@inproceedings{Basak2020,
+  title={Saga-bench: Software and hardware characterization of streaming graph analytics workloads},
+  author={Basak, Abanti and Lin, Jilan and Lorica, Ryan and Xie, Xinfeng and Chishti, Zeshan and Alameldeen, Alaa and Xie, Yuan},
+  booktitle={2020 IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+  pages={12--23},
+  year={2020},
+  organization={IEEE},
+  comments={
+    An honest-to-god look at streaming graphs. 
+    SYSTEM: CPU, Shared Memory Parallel. NO GPU.
+    TASKS: BFS, Connected Componentes, Maximum Computation, PageRank, SSSP, Single Source Widest Path.
+    DATASETS:LiveJournal, OrKut, RMAT, WikiTopcats, WikiTalk. Largest is RMAT with 500,000,000 Edges. Data is taken from SNAP and batched 500,000 edges at a time in random order. 
+    PROGRAMS: (1) From-Scratch Compute (Each Round sees graphs as a fresh start) (2) Incremental Update.
+    METRICS: (1) Batch Latency [Time from new nodes added to end of computation], (2) Cache Hit Rate
+
+    OBSERVATIONS:
+    (1) 40\% of latency comes from Graph Updates. 
+    (2) Incremental Compute model is better for larger graphs. 
+    (3) The best data structure to represent the graph depends on the shape of the input graph. Skewed distributions are better as a hash table, More regular degree distributions are better as adj list. COMMENT: Since you can't know streaming data a-priori this seems to almost be a moot point. 
+    (4) Using software and archtectures from static graph processing has introduced problems 
+  }
+}
+
+@inproceedings{Zhang2012,
+  title={SRBench: a streaming RDF/SPARQL benchmark},
+  author={Zhang, Ying and Duc, Pham Minh and Corcho, Oscar and Calbimonte, Jean-Paul},
+  booktitle={The Semantic Web--ISWC 2012: 11th International Semantic Web Conference, Boston, MA, USA, November 11-15, 2012, Proceedings, Part I 11},
+  pages={641--657},
+  year={2012},
+  organization={Springer},
+  comments={
+    This focuses on streaming semantially related data into a streaming graph database structure. 
+
+    SYSTEM: Unspecified. 
+    TASKS: Searching and Reasoning. 
+    DATASETS: LinkedSensorData, GeoNames and DBPedia. 
+    PROGRAMS: SPARQLstream, CSPARQL, CQECS
+    METRICS: Precision and Recall for Effectiveness, Throughput (num triples per timestep), Scalability and Response Time (sameAs BatchLatency)
   }
 }
