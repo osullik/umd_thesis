@@ -435,7 +435,7 @@ abstract={Both static and streaming graph processing are central in data analyti
 	abstract={Graph Pattern Mining (GPM) algorithms mine structural patterns in graphs. The performance of GPM workloads is bottlenecked by control flow and memory stalls. This is because of data-dependent branches used in set intersection and difference operations that dominate the execution time. This paper first conducts a systematic GPM workload analysis and uncovers four new observations to inform the optimization effort. First, GPM workloads mostly fetch inputs of costly set operations from different memory banks. Second, to avoid redundant computation, modern GPM workloads employ symmetry breaking that discards several data reads, resulting in cache pollution and wasted DRAM bandwidth. Third, sparse pattern mining algorithms perform redundant memory reads and computations. Fourth, GPM workloads do not fully utilize the in-DRAM data parallelism. Based on these observations, this paper presents NDMiner, a Near Data Processing (NDP) architecture that improves the performance of GPM workloads. To reduce in-memory data transfer of fetching data from different memory banks, NDMiner integrates compute units to offload set operations in the buffer chip of DRAM. To alleviate the wasted memory bandwidth caused by symmetry breaking, NDMiner integrates a load elision unit in hardware that detects the satisfiability of symmetry breaking constraints and terminates unnecessary loads. To optimize the performance of sparse pattern mining, NDMiner employs compiler optimizations and maps reduced reads and composite computation to NDP hardware that improves algorithmic efficiency of sparse GPM. Finally, NDMiner proposes a new graph remapping scheme in memory and a hardware-based set operation reordering technique to best optimize bank, rank, and channel-level parallelism in DRAM. To orchestrate NDP computation, this paper presents design modifications at the host ISA, compiler, and memory controller. We compare the performance of NDMiner with state-of-the-art software and hardware baselines using a mix of dense and sparse GPM algorithms. Our evaluation shows that NDMiner significantly outperforms software and hardware baselines by 6.4X and 2.5X, on average, while incurring a negligible area overhead on CPU and DRAM.}
 }
 
-@article{Chen2020,
+@article{Chen2020a,
   title={Pangolin: An efficient and flexible graph mining system on cpu and gpu},
   author={Chen, Xuhao and Dathathri, Roshan and Gill, Gurbinder and Pingali, Keshav},
   journal={Proceedings of the VLDB Endowment},
@@ -3921,4 +3921,87 @@ comments={
     PROGRAMS: SPARQLstream, CSPARQL, CQECS
     METRICS: Precision and Recall for Effectiveness, Throughput (num triples per timestep), Scalability and Response Time (sameAs BatchLatency)
   }
+}
+
+@article{Lenat2023,
+  title={Getting from generative ai to trustworthy ai: What llms might learn from cyc},
+  author={Lenat, Doug and Marcus, Gary},
+  journal={arXiv preprint arXiv:2308.04445},
+  year={2023},
+  comment={Generative AI could be augmented with Symbolic AI systems}
+}
+
+@inproceedings{Yu2022,
+  title={Retrieval-augmented generation across heterogeneous knowledge},
+  author={Yu, Wenhao},
+  booktitle={Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies: Student Research Workshop},
+  pages={52--58},
+  year={2022},
+  comment={RAG with Knowledge Graphs}
+}
+
+@article{Zhao2024,
+  title={Retrieval-Augmented Generation for AI-Generated Content: A Survey},
+  author={Zhao, Penghao and Zhang, Hailin and Yu, Qinhan and Wang, Zhengren and Geng, Yunteng and Fu, Fangcheng and Yang, Ling and Zhang, Wentao and Cui, Bin},
+  journal={arXiv preprint arXiv:2402.19473},
+  year={2024},
+  comments={RAF with Knowledge Graphs}
+}
+
+@article{Fillmore2003,
+  title={Background to framenet},
+  author={Fillmore, Charles J and Johnson, Christopher R and Petruck, Miriam RL},
+  journal={International journal of lexicography},
+  volume={16},
+  number={3},
+  pages={235--250},
+  year={2003},
+  publisher={Oxford University Press},
+  comment={Framenet - Textual Reasoning}
+}
+
+@inproceedings{Speer2017,
+  title={Conceptnet 5.5: An open multilingual graph of general knowledge},
+  author={Speer, Robyn and Chin, Joshua and Havasi, Catherine},
+  booktitle={Proceedings of the AAAI conference on artificial intelligence},
+  volume={31},
+  year={2017},
+  comment={ConceptNet - Textual Reasoning}
+}
+
+@inproceedings{Sap2019,
+  title={Atomic: An atlas of machine commonsense for if-then reasoning},
+  author={Sap, Maarten and Le Bras, Ronan and Allaway, Emily and Bhagavatula, Chandra and Lourie, Nicholas and Rashkin, Hannah and Roof, Brendan and Smith, Noah A and Choi, Yejin},
+  booktitle={Proceedings of the AAAI conference on artificial intelligence},
+  volume={33},
+  pages={3027--3035},
+  year={2019},
+  comment={ATOMIC - Textual Reasoning}
+}
+
+@article{Bosselut2019,
+  title={COMET: Commonsense transformers for automatic knowledge graph construction},
+  author={Bosselut, Antoine and Rashkin, Hannah and Sap, Maarten and Malaviya, Chaitanya and Celikyilmaz, Asli and Choi, Yejin},
+  journal={arXiv preprint arXiv:1906.05317},
+  year={2019},
+  comment={COMET - Transformers for KG Construction}
+}
+
+@article{Lenat1990,
+  title={Cyc: toward programs with common sense},
+  author={Lenat, Douglas B and Guha, Ramanathan V. and Pittman, Karen and Pratt, Dexter and Shepherd, Mary},
+  journal={Communications of the ACM},
+  volume={33},
+  number={8},
+  pages={30--49},
+  year={1990},
+  publisher={ACM New York, NY, USA},
+  comment={Cyc - Reasoning}
+}
+
+@misc{Mccarthy1959,
+  title={Programs with common sense},
+  author={McCarthy, John},
+  year={1959},
+  publisher={London}
 }

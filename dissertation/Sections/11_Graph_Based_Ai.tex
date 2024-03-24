@@ -4,8 +4,25 @@
 \input{Tables/10_graph_based_ai.tex}
 
 \subsection{What is graph AI?}
+Graph-Based Artificial Intelligence (AI) is a sub-field of computer science dedicated to developing models and algorithms to support learning and reasoning over graph data structures and the information they represent. 
+Graphs are powerful abstractions of the real world that capture the way entities relate to each other across a variety of dimensions, including social, spatial, semantic and logical. 
+Their abstractive power is why they have enjoyed such an intimate relationship with the AI community since the early days of the field.
+
+Many of the `classical' AI problems in \textit{searching, planning and scheduling} start by abstracting the complexity of the real world to a graph-based formulation before searching for solutions, planning actions, making inferences or training agents~\cite{Russell2021}.
+When the input is a graph, AI approaches focus on the graph topology or the information in the attributes of the graph. 
+Topological problems necessitate \textit{structural analysis} to generate some useful knowledge or transformation, like matching locations based on spatial similarity~\cite{Osullivan2023} or detecting latent structures in the graph~\cite{Girvan2002, Brandes2006}.
+Information problems involve \textit{reasoning} over the graph abstraction of some knowledge with programs like Cyc~\cite{Lenat1990}, FrameNet~\cite{Fillmore2003}, ConceptNet~\cite{Speer2017}, ATOMIC~\cite{Sap2019} and COMET~\cite{Bosselut2019} garnering significant attention, inching towards the idea of a general-purpose common-sense AI that has driven research for the last sixty-odd years~\cite{Mccarthy1959}.
+As machine learning grew in popularity, the desire to apply machine learning to graph data structures followed.
+The initial push developed methods for \textit{graph abstraction} to embed graphs in vector space for classical machine learning applications.
+Neural approaches have yielded techniques for generating \textit{predictions} on graphs directly, with Graph Neural Networks (GNN) for classification, link prediction and traffic analysis providing even more powerful uses of graphs. 
+Finally, the structure of graphs and the long history of their use in reasoning are gaining attention as a mechanism to improve \textit{AI Trustworthiness}.
+For example, Retrieval Augmented Generation (RAG) research is exploring how to use knowledge graphs to improve Large Language Model (LLM) output and the use of symbolic AI to ground the outputs of generative models in verified, provable facts is an emerging area of interest. 
+
+Table \ref{table:taxonomy} summarizes the six-component taxonomy of GraphAI presented here with example tasks that link the AI problem to representative the GraphAI approaches and example tasks within each of those approaches.
+
 \subsection{Why does graph AI matter?}
-\subsection{I&S}
+
+
 \subsection{What is the challenge with graph AI?}
 \subsection{What do we need to fix the problem?}
 \subsection{Why don't current benchmarks suffice?}
