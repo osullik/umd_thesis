@@ -132,7 +132,7 @@ Both the GBBS and SNAP are better characterized as repositories for efficient pa
 The most commonly used kernels are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), and \textit{Mean Local Clustering Coefficient} (MLCC). 
 Graph Database benchmarks tend to focus on measuring the \textit{Create, Read, Update} and \textit{Delete} operations, with simple index lookups and neighborhood expansions.
 
-\input{Tables/01_kernels.tex}
+\input{Tables/31_kernels.tex}
 
 \textbf{Task Coverage.}
 Table~\ref{table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
@@ -147,7 +147,7 @@ Decomposing a complicated program to primitive kernels is useful for characteriz
 Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces. 
 A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that actually address the AI problem. 
 
-\input{Tables/02_datasets.tex}
+\input{Tables/32_datasets.tex}
 \textbf{Dataset Coverage.}
 
 %
@@ -163,7 +163,7 @@ The divergence from the GDB and GNN use is because most of the traditional graph
 GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
 Gaps exist in applying the traditional graph algorithms to more complicated graph structures, the inclusion of mesh graphs and the use of dynamic (streaming) graphs that a graph-based AI benchmark needs to account for. 
 
-\input{Tables/03_metrics}
+\input{Tables/33_metrics}
 \textbf{Metric Coverage.}
 
 %
