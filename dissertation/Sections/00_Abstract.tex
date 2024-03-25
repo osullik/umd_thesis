@@ -27,52 +27,25 @@ Thesis Directed by: & {\large  Professor William Regli} \\
 \renewcommand{\baselinestretch}{2}
 \large \normalsize
 
-Graph-based Artificial intelligence (GraphAI) encompasses all the AI problems that we formulate as graphs, that operate on graphs, or that rely on the structural characteristics of graphs for some kind of learning task. 
-GraphAI is becoming increasingly important with the emergence of generative AI as a mechanism for grounding generation
-%
-\nrscomment{grounding it in what? reliable knowledge? abstract representations of the real-world?}
-%
-and improving transparency, explainability and performance.
-GraphAI is important in many real-world applications beyond abstract generative use cases, with a cursory survey of national security problems highlighting the 
-%
-\nrscomment{"highlighting the ubiquitous need for.... (whatever the tie to graphs is)"}
-%
-deep permeation of tasks that can be formulated as graph problems, operate on graphs or learn to make predictions from graphs. 
+Graph-based Artificial intelligence (\gai) encompasses all the AI problems that we formulate as graphs, that operate on graphs, or that rely on the structural characteristics of graphs for learning. 
+\gai is becoming increasingly important with the emergence of generative AI as a mechanism for grounding generation in curated, traceable knowledge and improving transparency, explainability and performance.
+\gai is important in many real-world applications beyond abstract generative use cases, with a cursory survey of national security problems highlighting the ubiquitous need to convert unstructured data to graphs, analyze their content and structure and build predictive models from them.
 
-To continue advancing GraphAI we need to be able to develop the enabling 
-%
-\nrscomment{replace 'enabling' with 'new'?}
-%
-representations, algorithms, and systems as well as the metrics that characterize relative performance.
-%
-\nrscomment{relative performance of... those systems/algos? "their relative performance"}
-%
-Clear comparison of performance is hard because \nrscomment{simplify to  "because as graphs very in size..."} graphs as data structures vary in size, shape, representation and information density they trigger irregular \nrscomment{irregular or unpredictable?} changes in computation patterns, memory-bounded execution, communication-computation ratio and sparsity.
-%
-\nrscomment{can you simplify that list a bit? maybe "changes in compute, memory, and network usage" or something else that flows nicely? }
-%
-The unpredictable results of combining different representations, algorithms and systems for GraphAI are exacerbated by a broad diffusion of abstractions and programming models further obfuscating what characterizes `good' performance in GraphAI.
-%
-\nrscomment{simplify: "Since GraphAI requires combining different representations, algorithms, and systems, it is particularly hard to characterize good GraphAI performance."}
-%
+Since \gai requires combining different representations, algorithms, and systems, it is particularly hard to characterize good \gai performance whether in development or when deployed to solve problems in the real world.
+Clear comparison of performance is hard because as graphs vary in size and shape, they trigger unpredictable changes in computing, memory, and network usage.
+The unpredictable results of combining different representations, algorithms and systems for \gai are exacerbated by a broad diffusion of abstractions and programming models further obfuscating what characterizes `good' performance in \gai.
 
-Existing Benchmarks address some of these issues by providing collections of shared datasets, identifying the most fundamental tasks for comparison and \nrscomment{enabling the comparison of relative execution time...} giving a general idea of the relative execution-time performance between algorithms.
-However, current approaches do not address GraphAI problems holistically as collections of kernels that combine to achieve more complicated tasks. 
-%
-\nrscomment{maybe just say they arent sufficient to capture the breadth of complexity needed for GraphAI? we dont really know what 'collections of kernels' means at this point yet}
+Existing Benchmarks address some of these issues by providing collections of shared datasets, identifying the most fundamental tasks for comparison and enabling the comparison of relative execution time.
+However, current approaches are not sufficient to capture the breadth of complexity needed to characterize \gai.
 %
 Datasets are sorely lacking in coverage of weighted, directed, attributed multigraphs characteristic of knowledge graphs that form the basis of most modern GraphAI inputs.
 There is almost no support for dynamic (streaming) graphs, or approaching GraphAI problems within size, weight and power constraints. 
 Metrics are limited to efficiency measures of execution time (largely ignoring graph extraction, transformation and load times), with a minimal standard evaluation of the effectiveness of the produced output. 
 
-By taking an empirical approach to designing a framework for benchmarking GraphAI we \nrscomment{swap the next 2 clauses- we develop a methodology for constructing a graphAI benchmark that addresses ...} address the issues of task, dataset, and metric coverage and develop a methodology to balance the evaluation of a GraphAI solution's fitness-for-purpose with the need for a deep understanding of the bottlenecks \nrscomment{" bottlenecks constraining progress" or something that covers more than development increment} preventing its next development increment.
-To demonstrate how our proposed methodology addresses the problem, 
-%
-\nrscomment{this is a good place to tie back into I\&S saying why you picked CD}
-%
-we apply our abstract graph benchmarking framework to the structural analysis problem of community detection and develop a community detection benchmark that extends current work with broader dataset coverage, and metrics \nrscomment{end here and then properly address the implications in a new sentence} to enable future development and the view that the output should evaluate a system in the `real world'.
-%
-\nrscomment{need one last sentence on impact or potential impact looking forward}
-%
+By taking an empirical approach to designing a framework for benchmarking \gai we develop a taxonomy of \gai tasks, a summary of current dataset, system and metric coverage in existing benchmarks and create a methodology for constructing a comprehensive \gai benchmark that addresses the identified task, dataset, and metric coverage shortcomings.
+The approach balances the evaluation of a \gai solution's fitness-for-purpose with characterizing the bottlenecks constraining progress.
+To demonstrate how our proposed methodology addresses the problem, we select the problem of \textit{Demographic Segmentation} using the \textit{structural analysis} \gai task of \textit{Community Detection} from our survey of national security problems as a case study, and develop a benchmark that extends current work with broader dataset coverage, and metrics.
+The case study shows how the methodical construction of the benchmark using empirical methods yields an effective benchmark for \textit{Comminity Detection} and a viable template for implementing other \gai benchmarks as part of the suite in the future.
+
 
 \newpage
