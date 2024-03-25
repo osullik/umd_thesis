@@ -6,4 +6,15 @@
 \newcommand{\billcomment}[1]{\pinaforecomment{Red}{Bill}{#1}{white}}
 \newcommand{\nrscomment}[1]{\pinaforecomment{violet}{Nicole}{#1}{white}}
 
+%Emphasis commands
 \newcommand{\gai}{{\small \fontfamily{phv}\selectfont GraphAI~}}
+
+
+%Definition Commands:
+\makeatletter
+\newcommand{\define}[2]{%
+    \par\vspace{\baselineskip}% Add some space before the definition
+    \noindent\textbf{Definition \arabic{section}}\ [#1]: #2% Print the definition
+    \stepcounter{section}% Increment the section counter
+}
+\makeatother
