@@ -4,49 +4,20 @@
 Graph data structures and the algorithms that operate on them are foundational to computer science.
 As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, graphs have increasingly been used as powerful abstractions to represent interconnected data collected from the real world. 
 Recent years have seen a `Cambrian explosion' of artificial intelligence (AI) applications, and the hardware accelerators used to improve their efficency~\cite{Regli2022b}.
-There is a significant overlap between the problems that have traditionally been in the domain of graph-processing and what modern, neural approaches to machine learning are advancing.
+Tasks that have traditionally been in the domain of graph processing are being challenged by modern, neural approaches to machine learning on graphs.
 We term the overlap of graph processing and AI and \gai.
 For \gai to be useful in the real world it must be capable of processing \textit{massive}, \textit{heterogeneous}, \textit{dynamic} graphs in \textit{resource-constrained} environments. 
 As a result, the efficiency and effectiveness of \gai is critical.
 
-\textbf{Massive.} 
-The largest available `real world' graph datasets are over $3.5$ billion vertices and $128$ billion edges~\cite{Dhulipala2021}, and the `huge' synthetic benchmark from Graph500 has over $4.3$ trillion vertices and over $70$ trillion edges\footnote{\url{https://graph500.org/?page_id=12\#sec-3_4}}.
-In uncompressed formats using inefficient algorithms, these sizes are well beyond the capability of any single commercial machine's memory, and sequential processing is extremely unlikely to be completed within any reasonable timeframe.
-As available data continues to increase in volume, the problems caused by massive datasets will only get worse.
 
-\textbf{Heterogeneous.}
-The `huge' Graph500 benchmark graph is a simple, unattributed, undirected, unweighted graph with a (mostly) regular structure.
-Real-world graphs are only analyzed because they contain interesting information. 
-The topological structure of vertices and edges holds huge amounts of latent information.
-It is the difference in the shapes of graphs that provide much of their utility, while also introducing complications in computation because the structure of each graph is so varied.
-The attributes of the vertices and edges hold huge amounts of explicitly encoded information.
-In particular, as \textit{Knowledge Graphs} (KG) become increasingly common they introduce complications of large amounts of data being stored in addition to the topology of the graph and often yield complex structures like multi-graphs and hyper-edges that dramatically increase the complexity of graph processing. 
-Effective \gai solutions need to handle the heterogeneity of graph shape and graph content without unacceptable performance degradation. 
 
-\textbf{Dynamic.}
-The velocity of big data is well established. 
-In \gai a high velocity of data, combined with the need to quickly generate solutions drive the adoption of dynamic (streaming) graph architectures. 
-Dynamic graphs mean that the cost of constructing the graph cannot be divorced from its analysis, meaning that representations with slow, expensive update procedures are unviable. 
-Further, live-data links to a demand for live-answers, and algorithms that cannot run in near-real time are unsuitable for these applications. 
-Dynamic graph processing is under-explored in traditional graph processing, and almost completely untouched in the context of \gai.
-Effective \gai solutions must support dynamic graphs to remain relevant into the future. 
-
-\textbf{Resource Constrained.}
-Processing massive heterogeneous graphs quickly enough to be useful is an expensive undertaking. 
-Budgets are limited, so simply adding more computing resources that increase capital and operating costs does not work economically, even for the few \gai tasks where it makes sense computationally. 
-The value of streaming data decays over time, and the longer it takes to generate insights, the less impactful they are. 
-Further, because of storage and other limitations, data is not perpetually available, so processing within a given time budget becomes an important challenge. 
-Commercial computers hit practical limits in memory and compute capacity that drives memory and compute efficiency. 
-Distributed computing as a solution then introduces the need for communication efficiency.
-Finally, as the push to `move processing to where the data is' motivates deploying \gai at-the-edge, Size, Weight and Power (SWaP) budgets will constrain the processing model and so incremental, approximate and other resource-preserving approaches must be developed to achieve tasks in constrained environments.   
-
-The remainder of Chapter~\ref{chapter:10-Introduction} will define \gai, explain its importance in the real world and provide an overview of the challenges in understanding and improving \gai
+The remainder of Chapter~\ref{chapter:10-Introduction} will define \gai, explain its importance in the real world and provide an overview of the challenges in understanding and improving \gai.
 
 
 
 %\include{11_Intelligence_Security_Context}
 \include{11_Graph_Based_Ai}
 \include{12_Graph_Data_Structures}
-\include{13_Graph_Hardware_Acceleration}
-\include{14_Benchmarking_Graphs}
+% \include{13_Graph_Hardware_Acceleration}
+% \include{14_Benchmarking_Graphs}
 \include{15_Thesis_Outline} 
