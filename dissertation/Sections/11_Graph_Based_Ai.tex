@@ -1,17 +1,54 @@
 \section{Graph-Based Artificial Intelligence}
-\label{section:graph-based-ai}
+\label{section:11-graph-based-ai}
 
-\input{Tables/10_graph_based_ai.tex}
-
-\subsection{What is graph AI?}
+\subsection{A Taxonomy of \gai}
 Graph-Based Artificial Intelligence (\gai) is a sub-field of computer science dedicated to developing models and algorithms to support learning and reasoning over information represented in graph data structures.
 Graphs are powerful abstractions of the real world that capture how entities relate to each other across a variety of dimensions, including social, spatial, semantic and logical. 
 %
 While graphs can express a wealth of information about the world, applying AI to that information effectively is challenging.
 %
-Most \gai approaches focus on analyzing the graph topology, which works well for exploring search spaces in planning problems, and basic pattern matching. 
-For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches to handle dynamic graphs, heterogeneous graphs and graphs at the exa-scale. 
+Most \gai approaches focus on analyzing the graph topology, suitable for exploring search spaces in planning problems, and basic pattern matching. 
+For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches for dynamic graphs, heterogeneous graphs and graphs at the exa-scale. 
 Most recently, the focus has shifted to using graphs to improve other AI models, such as with the Retrieval Augmented Generation (RAG) paradigm, where symbolic AI reasoning over graphs grounds generated content in curated, traceable facts.
+
+\gai problems can be broken down into several overarching "AI Problem" categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in Table~\ref{table:taxonomy}. 
+Each \gai problem lists several typical tasks within the \gai problem space. 
+The \gai taxonomy highlights the breadth of problems that a framework for benchmarking \gai must cover and emphasizes how difficult it is to fairly gauge `good performance' across \gai tasks.
+
+\input{Tables/10_graph_based_ai.tex}
+
+\subsection{Real-world uses of \gai}
+\gai is used heavily in real-world problem-solving. 
+The breadth of tasks means that the `real-world' use varies from routine use to preliminary experimental work. 
+A recent survey of \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows just how deeply \gai permeates. 
+
+We extend that survey with a literature review (Table~\ref{table:problem-survey}), finding that many interesting problems need to examine the relationships between data, as well as the data itself. 
+Graphs are highly suited to representing the relationships between data.
+The problems span geospatial, social, financial and multi-sensor fusion domains, with many of the specific problems easily generalizable beyond an I\&S context.
+Most input data are \textit{graph-native}, with the remainder easily represented as graph problems.
+Of note, almost all the input data are heterogeneous attributed multigraphs, and many of the problems are expected to receive continuous update streams. 
+Graph heterogeneity and streaming are two known sources of complexity in \gai.
+
+The problems are spread across four of the six domains identified in the \gai Taxonomy (Table~\ref{table:taxonomy}).
+\textit{Graph abstraction} is implicitly present in the \textit{graph prediction} (a downstream ML model can be used in place of a GNN), and \textit{Trustworthy AI} is an ongoing goal for all organizations, and will support human interfaces to these \gai tasks in the back-end. 
+All of the tasks are constrained by the size of the input data and the complexity of representation. 
+Of particular note, temporal limitations reflect either the requirement for near-real-time monitoring, or limited time to access data.
+
+Overall, the problem survey shows that \gai problems deeply proliferate in the real world. 
+The complexities introduced by heterogeneous representations, temporal constraints, streaming data and the breadth of tasks further emphasize the importance of characterizing \gai performance and understanding how interactions between the representations, programs, and systems manifest and the tradeoffs that need to be made when selecting the optimal approach to solve the problem(s) facing an organization.
+ 
+
+
+\input{Tables/11_problem_survey.tex}
+
+\osullikomment{Maturity Model}
+
+
+\subsection{What is the challenge with graph AI?}
+\subsection{What do we need to fix the problem?}
+\subsection{Why don't current benchmarks suffice?}
+\subsection{How will you fix the problem?}
+
 
 % Many of the `classical' AI problems in \textit{searching, planning and scheduling} start by abstracting the complexity of the real world to a graph-based formulation before searching for solutions, planning actions, making inferences or training agents~\cite{Russell2021}.
 % When the input is a graph, AI approaches focus on the graph topology or the information in the attributes of the graph. 
@@ -24,20 +61,3 @@ Most recently, the focus has shifted to using graphs to improve other AI models,
 % For example, Retrieval Augmented Generation (RAG) research is exploring how to use knowledge graphs to improve Large Language Model (LLM) output and the use of symbolic AI to ground the outputs of generative models in verified, provable facts is an emerging area of interest. 
 
 %
-\gai problems can be broken down into several overarching "AI Problem" categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in Table~\ref{table:taxonomy}. 
-Each \gai problem lists several typical tasks within the \gai problem space. 
-The \gai taxonomy highlights the breadth of problems that a framework for benchmarking \gai must cover and foreshadows the heterogeneity of systems, datasets, programs and metrics that attempt to optimize small components, often at the expense of performance in other areas.
-
-%
-\nrscomment{"foreshadows.." onward: this doesnt make sense. youre saying the heterogeneity attempts to optimize...? Were still early and just motivating the problem- what do we need to take away from this table? That there are a lot of graph tasks in a variety of problem areas that are central to AI, and so its hard to gauge "good graph performance" or a given hardware or system across them? }
-%
-
-\subsection{Why does graph AI matter?}
-
-\input{Tables/11_problem_survey.tex}
-
-
-\subsection{What is the challenge with graph AI?}
-\subsection{What do we need to fix the problem?}
-\subsection{Why don't current benchmarks suffice?}
-\subsection{How will you fix the problem?}

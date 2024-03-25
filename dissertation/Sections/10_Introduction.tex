@@ -2,39 +2,47 @@
 \chapter{Introduction}
 \label{chapter:10-Introduction}
 Graph data structures and the algorithms that operate on them are foundational to computer science.
-Since the early days of the field, they have been a focal point for theoretical computer science. 
+As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, graphs have increasingly been used as powerful abstractions to represent interconnected data collected from the real world. 
+Recent years have seen a `Cambrian explosion' of artificial intelligence (AI) applications, and the hardware accelerators used to improve their efficency~\cite{Regli2022b}.
+There is a significant overlap between the problems that have traditionally been in the domain of graph-processing and what modern, neural approaches to machine learning are advancing.
+We term the overlap of graph processing and AI and \gai.
+For \gai to be useful in the real world it must be capable of processing \textit{massive}, \textit{heterogeneous}, \textit{dynamic} graphs in \textit{resource-constrained} environments. 
+As a result, the efficiency and effectiveness of \gai is critical.
 
-%
-\nrscomment{not sure "theyre a focal point of theoretical CS" really adds anything}
-%
-As the social media platforms of the early $21^{st}$ century have proliferated into the global consciousness, the world has become increasingly aware of the descriptive power of graphs to model the real world. 
+\textbf{Massive.} 
+The largest available `real world' graph datasets are over $3.5$ billion vertices and $128$ billion edges~\cite{Dhulipala2021}, and the `huge' synthetic benchmark from Graph500 has over $4.3$ trillion vertices and over $70$ trillion edges\footnote{\url{https://graph500.org/?page_id=12\#sec-3_4}}.
+In uncompressed formats using inefficient algorithms, these sizes are well beyond the capability of any single commercial machine's memory, and sequential processing is extremely unlikely to be completed within any reasonable timeframe.
+As available data continues to increase in volume, the problems caused by massive datasets will only get worse.
 
-%
-\nrscomment{"graphs are used increasingly for xyz reason/applications/etc.", not the world has become more aware of them}
-%
+\textbf{Heterogeneous.}
+The `huge' Graph500 benchmark graph is a simple, unattributed, undirected, unweighted graph with a (mostly) regular structure.
+Real-world graphs are only analyzed because they contain interesting information. 
+The topological structure of vertices and edges holds huge amounts of latent information.
+It is the difference in the shapes of graphs that provide much of their utility, while also introducing complications in computation because the structure of each graph is so varied.
+The attributes of the vertices and edges hold huge amounts of explicitly encoded information.
+In particular, as \textit{Knowledge Graphs} (KG) become increasingly common they introduce complications of large amounts of data being stored in addition to the topology of the graph and often yield complex structures like multi-graphs and hyper-edges that dramatically increase the complexity of graph processing. 
+Effective \gai solutions need to handle the heterogeneity of graph shape and graph content without unacceptable performance degradation. 
 
-The Intelligence and Security (I\&S) community uses graphs to structure collected information, analyze it, and generate insights to drive operations in the national interest. 
+\textbf{Dynamic.}
+The velocity of big data is well established. 
+In \gai a high velocity of data, combined with the need to quickly generate solutions drive the adoption of dynamic (streaming) graph architectures. 
+Dynamic graphs mean that the cost of constructing the graph cannot be divorced from its analysis, meaning that representations with slow, expensive update procedures are unviable. 
+Further, live-data links to a demand for live-answers, and algorithms that cannot run in near-real time are unsuitable for these applications. 
+Dynamic graph processing is under-explored in traditional graph processing, and almost completely untouched in the context of \gai.
+Effective \gai solutions must support dynamic graphs to remain relevant into the future. 
 
-%
-\nrscomment{this is too much in one sentence. "In national security applications, graph processing must be done on massive dynamic graphs in resource constrained environments, making the efficiency and effectiveness of graph algorithms critical in these contexts."}
-%
-However, the billions-to-trillions of edges scale the I\&S deals in, the dynamic nature of graphs, temporal constraints on data possession and the criticality of their work create an imperative to improve the \textit{efficiency} and \textit{effectiveness} of large-scale graph analysis. 
+\textbf{Resource Constrained.}
+Processing massive heterogeneous graphs quickly enough to be useful is an expensive undertaking. 
+Budgets are limited, so simply adding more computing resources that increase capital and operating costs does not work economically, even for the few \gai tasks where it makes sense computationally. 
+The value of streaming data decays over time, and the longer it takes to generate insights, the less impactful they are. 
+Further, because of storage and other limitations, data is not perpetually available, so processing within a given time budget becomes an important challenge. 
+Commercial computers hit practical limits in memory and compute capacity that drives memory and compute efficiency. 
+Distributed computing as a solution then introduces the need for communication efficiency.
+Finally, as the push to `move processing to where the data is' motivates deploying \gai at-the-edge, Size, Weight and Power (SWaP) budgets will constrain the processing model and so incremental, approximate and other resource-preserving approaches must be developed to achieve tasks in constrained environments.   
 
-\nrscomment{From here I think you need to tie it into GraphAI, which youre about to talk about in the next subsection. Need a bridge from I\&S to graphAI then youre golden.}
+The remainder of Chapter~\ref{chapter:10-Introduction} will define \gai, explain its importance in the real world and provide an overview of the challenges in understanding and improving \gai
 
-%
-\nrscomment{this feels important, but i dont think it belongs here. maybe in ch3 where you talk about the motivation for the benchmark? basically a tool to enable these 3 avenues of improvement/comparison?}
-%
-Improvements can typically come from three sources.
-First, the \textit{algorithms} used to analyze the graphs can be improved, or modified to operate in a time-constrained setting, for example by implementing early-stopping, incremental solving or sampling. 
-Second, the underlying \textit{data structure/implementation paradigm} can be modified to exploit new technologies, for example by moving to shared memory parallelism or switching from the canonical `pointer and memory-block' representation to a linear algebraic representation. 
-The third major avenue for improvement is using \textit{hardware acceleration} to operate on graphs more \textit{efficiently} and \textit{effectively}, for example by reducing network latency in distributed systems or reducing memory access latency. 
 
-%
-\nrscomment{wait what? i thought its not hardware focused anymore? id just get rid of this chunk, or move it to the CD chapter}
-%
-This Thesis focuses on exploring \textit{Hardware Acceleration} for graph processing.
-In particular, it explores if and when graph hardware accelerators should be used, and demonstrates how the process of comparing across hardware architectures can generate insights about the problems themselves that can inform future algorithmic and implementation work. 
 
 %\include{11_Intelligence_Security_Context}
 \include{11_Graph_Based_Ai}
