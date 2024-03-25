@@ -1,6 +1,25 @@
 \section{Graph Definitions}
 \label{section:21-graph-definitions}
 
-\define{BFS}{Breadth First Search}
+This section will introduce key notation and definitions used throughout the thesis. 
 
-\define{DFS}{Depth First Search}
+The following definitions describe the commonly agreed building blocks and descriptors of a graph in an abstract sense. 
+\define{Vertex ($V$)}{Represent the `entities' or `things'. Also called a node.}
+\define{Edge ($E$)}{Represent the relationships between vertices. Also called arcs or links.}
+\define{Graph ($G$)}{The data structures comprising of the related vertices and edges such that $G=\{V,E\}$. Also called a `network'.}
+\define{Topology}{The structure of a graph is created when edges link vertices together. The defining feature of graphs.}
+\define{Attribute}{The labels, properties or other information that is encoded in the vertices or edges of a graph. Optional in graphs.}
+\define{Weight}{The numerical value assigned to an edge to describe its importance in a graph. Optional in graphs.}
+\define{Direction}{The flow of information across an edge. If a graph is directed, the order of source and destination vertex is important. If undirected, vertex order is not important.}
+
+The following definitions describe the aggregations, generalizations and descriptors of graphs: 
+\define{Degree}{The count of edges at a vertex. Frequently split between degree$_{out}$ and degree$_{in}$ in directed graphs. Larger average degrees indicate denser graphs.}
+\define{Diameter}{The shortest path between the two most distant vertices in a graph. Sparser graphs tend to have larger diameters.}
+\define{Heterogeneity}{Describes a graph with multiple `types' of vertex, for example, a social graph that has vertices to represent `person' and vertices to represent `organization'.}
+\define{Static}{A graph that is known apriori and does not change.}
+\define{Dynamic}{A graph that evolves with edges being created, updated and deleted over time. Also called a streaming graph.}
+
+
+
+The following definitions describe the characteristics of graphs: 
+\define{Degree Distribution}{The distribution of vertex degrees in a given graph. Can follow any statistical distribution.}
