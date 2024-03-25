@@ -11,14 +11,6 @@
 
 
 %Definition Commands:
-% \makeatletter
-% \newcommand{\define}[2]{%
-%     \par\vspace{\baselineskip}% Add some space before the definition
-%     \noindent\textbf{Definition \arabic{section}}\ [#1]: #2% Print the definition
-%     \stepcounter{section}% Increment the section counter
-% }
-% \makeatother
-
 \newcounter{definition} % Counter for definitions
 \renewcommand{\thedefinition}{\arabic{definition}} % Define the format of the counter
 
