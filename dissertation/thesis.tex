@@ -53,6 +53,8 @@
 \usepackage{supertabular}
 \usepackage[onehalfspacing]{setspace} %used for footnote spacing
 \usepackage{tikz} %For rendering graphs
+\usepackage{amssymb} %For check marks
+\usepackage{xspace}
 
 
 %hyperref
@@ -145,8 +147,8 @@
 \setcounter{page}{1}
 \pagenumbering{arabic}
 %Subsections nested in the below
-\include{10_Introduction.tex}
-\include{20_Related_Work.tex}
+\include{10_Introduction}
+\include{20_Preliminaries}
 \include{30_Graph_AI_Benchmarking}
 \include{40_Community_Detection_Case_Study.tex}
 \include{50_Conclusion.tex}
@@ -159,6 +161,6 @@
 
 % \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{unsrt}
-\bibliography{bibliography/summer2023.bib} 
+\bibliography{../bibliography/summer2023.bib} 
 
 \end{document}
