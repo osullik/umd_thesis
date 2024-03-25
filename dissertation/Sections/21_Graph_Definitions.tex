@@ -7,19 +7,49 @@ The following definitions describe the commonly agreed building blocks and descr
 \define{Vertex ($V$)}{Represent the `entities' or `things'. Also called a node.}
 \define{Edge ($E$)}{Represent the relationships between vertices. Also called arcs or links.}
 \define{Graph ($G$)}{The data structures comprising of the related vertices and edges such that $G=\{V,E\}$. Also called a `network'.}
+%
+\nrscomment{you might want to do graph first, and then vertex/edge since graph is really the main topic here.}
+%
+
 \define{Topology}{The structure of a graph is created when edges link vertices together. The defining feature of graphs.}
+%
+\nrscomment{topology feels important and this definition doesnt give much flavor. maybe add examples of common topological structures? or be more descriptive with the definition?}
+%
+
 \define{Attribute}{The labels, properties or other information that is encoded in the vertices or edges of a graph. Optional in graphs.}
 \define{Weight}{The numerical value assigned to an edge to describe its importance in a graph. Optional in graphs.}
 \define{Direction}{The flow of information across an edge. If a graph is directed, the order of source and destination vertex is important. If undirected, vertex order is not important.}
+%
+\nrscomment{can you put attribute, weight, and direction up with edges? like in edges defn say they can be attributed, weighted, and directed, then the reader is expecting you to define those terms and you do immediately after. maintains the progression from components to higher level (topo).}
+%
 
 The following definitions describe the aggregations, generalizations and descriptors of graphs: 
+%
+\nrscomment{id say graphs have a number of important characteristics, including... and then do the definitions}
+%
 \define{Degree}{The count of edges at a vertex. Frequently split between degree$_{out}$ and degree$_{in}$ in directed graphs. Larger average degrees indicate denser graphs.}
+%
+\nrscomment{id explicitly say that the average degree is the average of the degree values for all the nodes in the graph, and then you can say what larger average degree indicates.. and actually that relates to degree distribution as a summary statistic, so im not sure if that belongs up here or down there}
+%
+
+%
+\nrscomment{diameter, static, and dynamic all seem like entire graph characteristics. move them to the next section about graph characteristics, along with degree distribution? that leaves degree as your only sub-characteristic though... do we need to distinguish? are there other node-level characteristics you need to explain? neighborhood maybe? if not then maybe not worth separating them out}
+%
 \define{Diameter}{The shortest path between the two most distant vertices in a graph. Sparser graphs tend to have larger diameters.}
 \define{Heterogeneity}{Describes a graph with multiple `types' of vertex, for example, a social graph that has vertices to represent `person' and vertices to represent `organization'.}
 \define{Static}{A graph that is known apriori and does not change.}
-\define{Dynamic}{A graph that evolves with edges being created, updated and deleted over time. Also called a streaming graph.}
+%
+\nrsocmment{what about it doesnt change? the constituent nodes and the edge relationships between them? may as well state it explicitly}
+%
 
+\define{Dynamic}{A graph that evolves with edges being created, updated and deleted over time. Also called a streaming graph.}
+%
+\nrscomment{can the nodes change? }
+%
 
 
 The following definitions describe the characteristics of graphs: 
 \define{Degree Distribution}{The distribution of vertex degrees in a given graph. Can follow any statistical distribution.}
+%
+\nrscomment{what does this really characterize about the graph? why do we care about this particular metric? if theres something intrinsically captured by degree distribution that describes the fundamental nature of the graph, state it here}
+%
