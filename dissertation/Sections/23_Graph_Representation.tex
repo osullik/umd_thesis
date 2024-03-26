@@ -19,54 +19,59 @@ Representing weights as part of the topology is possible using a list of tuples 
 Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive -- linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
 
 \subsubsection{Adjacency Matrices}
-An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix to represent the graph.
-The presence of a $1$ at location $V_{i},V_{j}$ indicates that an edge exists from vertex $i$ to vertex $j$. 
+An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix ($M$) to represent the graph.
+The presence of a $1$ at location $M_{i,j}$ indicates that an edge exists from vertex $i$ to vertex $j$. 
 
 %
-\nrscomment{replace $V_{i},V_{j}$ with $V_{i,j}$. why are we using V as the matrix and not M? like M of size VxV -- $M_{i...V,i...V}$?}
+% \nrscomment{replace $V_{i},V_{j}$ with $V_{i,j}$. why are we using V as the matrix and not M? like M of size VxV -- $M_{i...V,i...V}$?}
 %
-They can represent directed or undirected graphs, and the value at position $V_{i},V_{j}$ can be changed to represent the weight of the edge. 
+They can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent the weight of the edge. 
 Attributes are stored separately from the matrix. 
-\textit{Adjacency matrices} have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
+Adjacency matrices have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
 %
-\nrscomment{you already introduced adjacency matrix term, dont italicize down here}
+% \nrscomment{you already introduced adjacency matrix term, dont italicize down here}
 %
 One of their major drawbacks is the requirement to store all the $0$s where edges to not exist--essentially useless information.
 
 \subsubsection{Incidence Matrices}
-Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|V|\times|E|$ matrix to represent the graph. 
-An edge is represented with a $-1$ at position $E_{i},V_{j}$ to indicate the source and a $1$ at position $E_{i},V_{k}$ to indicate the destination. 
+Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
+An edge is represented with a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
+Here, $i$ is the index of the edge, $j$ and $k$ are the vertices that the edge connects.
 Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-edges}.
+A multi-graph encoding could see a $-1$ at $M_{a,j}$ and $M_{b,j}$ and $+1$ at $M_{a,k}$ and $M_{b,k}$ describing two directed edges going from vertex $j$ to $k$.
+A hyper-edge encoding could see a $-1$ at $M_{a,j}$ and a $+1$ at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that conects the vertex $j$ to $k,l$ and $m$.
 Weights can be expressed by modifying the numbers in the matrix and the attributes are typically stored separately. 
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|>>|V|$. 
-%
-\nrscomment{use the real math symbol $\gg$}
-%
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|\gg|V|$. 
+% %
+% \nrscomment{use the real math symbol $\gg$}
+% %
 The lookup time for edge existence is slower than for an \textit{adjacency list}. 
 To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
 
 \subsubsection{Compressed representations}
 To balance expressiveness, memory consumption and computability, numerous compressed representations have been developed. 
 The dominant choices are the Compressed Sparse Row (CSR) and Compressed Sparse Column (CSC) formats (Figure~\ref{figure:csr}).
-The CSR format uses three lists to compress the rows of a sparse matrix, like an adjacency matrix~\cite{Bulucc2009}. 
+The CSR format uses three lists to compress the rows of a sparse (adjacency) matrix~\cite{Bulucc2009}. 
 %
-\nrscomment{from here down this is too much and its impossible to follow without going back and forth to the figure. i'll try making a figure for this that explains itself, with a caption to do the rest of the work. nearly a full page to get across how these representations work is too much and is painful to read}
+% \nrscomment{from here down this is too much and its impossible to follow without going back and forth to the figure. i'll try making a figure for this that explains itself, with a caption to do the rest of the work. nearly a full page to get across how these representations work is too much and is painful to read}
 %
-First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
-The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
-The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
-So in figure~\ref{figure:csr}, the values associated with the \textbf{A} vertex (row $0$ of the adjacency matrix) are at positions $[0,1]$ in the value list in figure~\ref{figure:csr}. 
-We derive this by looking at the row index in figure~\ref{figure:csr} and seeing that the second row begins from index $2$.
-Knowing that the first two values in the value list are the sources of our edges, we know that the first two values in the column index in figure~\ref{figure:csr} are the destinations $[1,2]$.
-In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
-The CSC format reverses the function of the row and column indices so that the columns are compressed.
+% First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
+% The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
+% The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
+% So in figure~\ref{figure:csr}, the values associated with the \textbf{A} vertex (row $0$ of the adjacency matrix) are at positions $[0,1]$ in the value list in figure~\ref{figure:csr}. 
+% We derive this by looking at the row index in figure~\ref{figure:csr} and seeing that the second row begins from index $2$.
+% Knowing that the first two values in the value list are the sources of our edges, we know that the first two values in the column index in figure~\ref{figure:csr} are the destinations $[1,2]$.
+% In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
+% The CSC format reverses the function of the row and column indices so that the columns are compressed.
+The CSC format reverses the format so that the columns are compressed.
 The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix.
 More complicated representations exist which are capable of compressing the graph representations even further. 
 But, in general, the more aggressive a compression scheme, the more computation overhead is introduced by the encoding/decoding process~\cite{Shun2015}.
 
-%
-\nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
-%
+
+% %
+% \nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
+% %
 
 \osullikomment{Fix Formatting of figures}
 
