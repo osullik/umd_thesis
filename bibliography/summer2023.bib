@@ -3556,6 +3556,49 @@ comments={
   comments={As the number of cores per node increases due to multicore scaling, so does the contention on the network interface card. Without hierarchical parallelism that exploits the faster on-chip network, the flat MPI parallelism will be unscalable becausemore processes will be competing for the same network link. Therefore, designing hierarchically parallel SpGEMM and SpRef algorithms is an important future direction of our work.}
 }
 
+@inproceedings{Gonzalez2014,
+  title={$\{$GraphX$\}$: Graph processing in a distributed dataflow framework},
+  author={Gonzalez, Joseph E and Xin, Reynold S and Dave, Ankur and Crankshaw, Daniel and Franklin, Michael J and Stoica, Ion},
+  booktitle={11th USENIX symposium on operating systems design and implementation (OSDI 14)},
+  pages={599--613},
+  year={2014},
+  comments={GraphX uses Edge-Centic Processing}
+}
+
+@article{Coimbra2021,
+  title={An analysis of the graph processing landscape},
+  author={Coimbra, Miguel E and Francisco, Alexandre P and Veiga, Lu{\'\i}s},
+  journal={journal of Big Data},
+  volume={8},
+  number={1},
+  pages={55},
+  year={2021},
+  publisher={Springer},
+  comment={This is a pretty comprehensive overview of all things graph processing. But it's not well laid out and I don't like how they've grouped some things.
+    XStream Uses the edge-centric abstraction. }
+}
+
+@inproceedings{Roy2013,
+  title={X-stream: Edge-centric graph processing using streaming partitions},
+  author={Roy, Amitabha and Mihailovic, Ivo and Zwaenepoel, Willy},
+  booktitle={Proceedings of the Twenty-Fourth ACM Symposium on Operating Systems Principles},
+  pages={472--488},
+  year={2013},
+  comment={Edge-Centric processing}
+}
+
+@article{Kalavri2017,
+  title={High-level programming abstractions for distributed graph processing},
+  author={Kalavri, Vasiliki and Vlassov, Vladimir and Haridi, Seif},
+  journal={IEEE Transactions on Knowledge and Data Engineering},
+  volume={30},
+  number={2},
+  pages={305--324},
+  year={2017},
+  publisher={IEEE},
+  comment={Think Like a Graph abstraction (Girafe++)}
+}
+
 %%%% BUILDING A BENCHMARK %%%%
 
 @inproceedings{Kistowski2015,
@@ -3705,6 +3748,8 @@ comments={
   },
   groups={graph_benchmarking}
 }
+
+
 
 % % % % % % % % % GNN BENCHMARKING % % % % % % % %
 
@@ -4053,3 +4098,5 @@ comments={
   year={1999},
   publisher={American Association for the Advancement of Science}
 }
+
+

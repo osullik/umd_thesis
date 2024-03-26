@@ -1,5 +1,5 @@
 \section{Graph Representations}
-\label{section:21-graph-representations}
+\label{section:23-graph-representations}
 The tradeoff between memory efficiency and lookup efficiency is a core tension in graph processing and many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
 This section introduces key concepts of graph representation, including storage, abstractions and primitive operations as the primary levers used to balance memory consumption and compute efficiency. 
 
@@ -60,11 +60,37 @@ But, in general, the more aggressive a compression scheme, the more computation 
 \input{Figures/Graphs/13_combined_representations.tex}
 
 \subsection{Graph Abstractions}
+Graph abstractions are important mechanisms for simplifying the representation of graphs and allow us to build effective primitives. 
+There are two dominant abstractions, the \textit{Canonical} and the \textit{Linear Algebraic}.
 
 \subsubsection{Canonical}
+Canonical representations focus on the representations of graphs as \textit{Vertices} and \textit{Edges}.
+The most basic of these representations are the ones everyone encounters in their introduction to computer science courses, and reflect most of the descriptions in sections~\ref{section:21-graph-definitions}~and~\ref{section:23-graph-representations} that are used in simple, sequential graph processing.
+
+To enable more powerful parallel processing methods and leveraging hardware accelerators \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric} and \textit{data-centric} abstractions have been developed within the canonical domain, all of which use a \textit{Message-Passing Model} (MPM) of computing designed to enable \textit{Bulk-Synchronous Parallelism} (BSP).
+The \textit{think like a vertex} (TLAV), or (vertex-centric) abstraction uses the vertex as the focus of attention and breaks algorithms up into iterative operations on vertices, updating their states based on the properties of vertices in their neighborhood~\cite{Mccune2015}.
+Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach. 
+\textit{Thinking like an Edge} (TLAE) or (edge-centric) abstraction applies a similar focus on edges, updating them based on the properties of the vertices incident to them~\cite{Liu2019}.
+The X-Stream~\cite{Roy2013} and GraphX~\cite{Gonzalez2014} implement the edge-centric approach. 
+\textit{Thinking like a Graph} (TLAG) or (graph-centric) abstraction focuses on explicitly partitioning the input graphs into subgraphs for processing~\cite{Coimbra2021}.
+ApacheGiraffe++ is a noted adopter of the graph-centric abstraction~\cite{Kalavri2017}
+\textit{Data-Centric} graph processing focuses on subsetting the graph into `active' and `inactive' parts.
+`Active' nodes are added to a `\textit{frontier}' that allows for more efficient computing by limiting the number of edges or vertices being processed at any time. 
+The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}
+
+These abstractions all have tradeoffs. 
+Vertex and edge-centric abstractions tend to inflict high communication overheads as each vertex and edge are treated as an individual unit. 
+Graph-centric abstractions can struggle with optimally partitioning the graphs and load imbalance in the partitions but can reduce communication overheads by abstracting them to subgraphs.
+Data-centric abstractions using the frontier have shown significant improvements in execution time, but many implementations are unable to implement certain classes of algorithms~\cite{Dhulipala2017}.
 
 \subsubsection{Linear-Algebraic}
+Linear-algebraic abstractions exploit the ability to represent graphs as sparse matrices using their incidence and adjacency matrices. 
+The Combinatorial Basic Linear Algebra Subprograms (CombBLAS)~\cite{Buluc2011,Azad2021} and Graph Basic Linear Algebra Subprograms (GraphBLAS)~\cite{Mattson2013,Kepner2015} are the two most popular linear algebraic graph abstractions. 
+The abstraction exploits the latent coarse-grained parallelism within graphs and seeks to leverage advances in high-performance linear algebra processing to improve graph processing~\cite{Buluc2011}. 
+Both similarly identify that many graph operations can be composed of general and sparse matrix-vector multiplications so that actions like a single step in a BFS can be represented as a single linear-algebraic operation~\cite{Kepner2016}.
+Linear algebraic representations are powerful and they offer a promising direction but can be difficult to implement certain classes of algorithms (like those leveraging priority queues)~\cite{Buluc2011}, can be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
 
 \subsection{Graph Primitives}
+The \textit{Gather, Apply, Scatter} framework is the most popular implementation of vertex-centric computing
 
 \subsubsection{Vertex-Centric}
