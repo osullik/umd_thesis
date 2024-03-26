@@ -68,17 +68,21 @@ Canonical representations focus on the representations of graphs as \textit{Vert
 The most basic of these representations are the ones everyone encounters in their introduction to computer science courses, and reflect most of the descriptions in sections~\ref{section:21-graph-definitions}~and~\ref{section:23-graph-representations} that are used in simple, sequential graph processing.
 
 To enable more powerful parallel processing methods and leveraging hardware accelerators \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric} and \textit{data-centric} abstractions have been developed within the canonical domain, all of which use a \textit{Message-Passing Model} (MPM) of computing designed to enable \textit{Bulk-Synchronous Parallelism} (BSP).
-The \textit{think like a vertex} (TLAV), or (vertex-centric) abstraction uses the vertex as the focus of attention and breaks algorithms up into iterative operations on vertices, updating their states based on the properties of vertices in their neighborhood~\cite{Mccune2015}.
-Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach. 
-\textit{Thinking like an Edge} (TLAE) or (edge-centric) abstraction applies a similar focus on edges, updating them based on the properties of the vertices incident to them~\cite{Liu2019}.
+
+\textbf{Vertex-Centric.} The \textit{think like a vertex} (TLAV) abstraction uses the vertex as the focus of attention and breaks algorithms up into iterative operations on vertices, updating their states based on the properties of vertices in their neighborhood~\cite{Mccune2015}.
+Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach.
+
+\textbf{Edge-Centric.}\textit{Thinking like an Edge} (TLAE) abstraction applies a similar focus on edges, updating them based on the properties of the vertices incident to them~\cite{Liu2019}.
 The X-Stream~\cite{Roy2013} and GraphX~\cite{Gonzalez2014} implement the edge-centric approach. 
-\textit{Thinking like a Graph} (TLAG) or (graph-centric) abstraction focuses on explicitly partitioning the input graphs into subgraphs for processing~\cite{Coimbra2021}.
+
+\textbf{Graph-Centric.}\textit{Thinking like a Graph} (TLAG) abstraction focuses on explicitly partitioning the input graphs into subgraphs for processing~\cite{Coimbra2021}.
 ApacheGiraffe++ is a noted adopter of the graph-centric abstraction~\cite{Kalavri2017}
-\textit{Data-Centric} graph processing focuses on subsetting the graph into `active' and `inactive' parts.
+
+\textbf{Data-Centric.}\textit{Data-Centric} graph processing focuses on subsetting the graph into `active' and `inactive' parts.
 `Active' nodes are added to a `\textit{frontier}' that allows for more efficient computing by limiting the number of edges or vertices being processed at any time. 
 The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}
 
-These abstractions all have tradeoffs. 
+These canonical abstractions all have tradeoffs. 
 Vertex and edge-centric abstractions tend to inflict high communication overheads as each vertex and edge are treated as an individual unit. 
 Graph-centric abstractions can struggle with optimally partitioning the graphs and load imbalance in the partitions but can reduce communication overheads by abstracting them to subgraphs.
 Data-centric abstractions using the frontier have shown significant improvements in execution time, but many implementations are unable to implement certain classes of algorithms~\cite{Dhulipala2017}.
@@ -91,6 +95,32 @@ Both similarly identify that many graph operations can be composed of general an
 Linear algebraic representations are powerful and they offer a promising direction but can be difficult to implement certain classes of algorithms (like those leveraging priority queues)~\cite{Buluc2011}, can be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
 
 \subsection{Graph Primitives}
+Primitive operations are the abstract building blocks that compose more complicated programs. 
+For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
+Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize for to improve performance. 
+However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+The four representations and six abstractions above are representative of the heterogeneity of approaches in representing graphs, which in turn drives a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
+
+The primitive operations for sequential, parallel, graph Database and linear-algebraic operations all vary. 
+
+\textbf{Sequential.}
+Sequential graph processing doesn't have defined primitive operations, and most graph applications implemented sequentially just directly operate on the data structures.
+Common operations include \textit{expanding neighbors}, \textit{checking attributes} and adding or removing nodes from data structures being used to track progress. 
+
+\textbf{Parallel.}
+Distributed approaches developed primitives that build on the ideas of MapReduce to parallelize processing and reduce inter-vertex dependencies~\cite{Malewicz2010}. 
+The message-passing frameworks typically execute in three primitive phases. \textit{Gather} aggregates the information of a vertex's neighbors to itself, \textit{Apply} does some computation on the gathered information and \textit{Scatter} pushes the results of the computation to the neighborhood of the node.
+\textit{Frontier}-based approaches usually employ the GAS model, just on smaller sections of the graph. 
+
+\osullikomment{Finishing here before class}
+Shared-memory approaches have 
+
+
+\textbf{Graph Database.}
+
+\textbf{Linear Algebraic.}
+
+
 The \textit{Gather, Apply, Scatter} framework is the most popular implementation of vertex-centric computing
 
 \subsubsection{Vertex-Centric}
