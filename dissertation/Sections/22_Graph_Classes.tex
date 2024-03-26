@@ -19,7 +19,7 @@ One of the most well-known random graph generation models is the Erd\H{o}s-R\'en
 
 Two other random graph generation methodologies permeate widely. 
 Both the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} and \textit{Kronecker}~\cite{Leskovec2010} methodologies aim to produce \textit{Skewed Random Graphs}, and have been used in the Graph500 benchmark. 
-\nrscommen{idk where theyre used, tell me what the heck skewed graph means}
+\nrscomment{idk where theyre used, tell me what the heck skewed graph means}
 
 An \textit{RMAT Random Graph} uses four probability parameters $a,b,c$ and $d$ that add to $1.0$. 
 The RMAT generation process recursively subdivides an adjacency matrix into quadrants and creates an edge in each quadrant with probabilities $a,b,c$ and $d$ until there are approximately $2^{n}$ vertices in the graph, where $n$ is a scaling factor. 

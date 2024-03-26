@@ -5,50 +5,50 @@
 \osullikomment{Add section overview}
 
 % Graph-Based AI -- Include a discussion on the Overlap between Sybmolic (graph) and sub-symbolic (Generative) AI.
-\subsection{Notation}
-\label{section:121-graph-notation}
+% \subsection{Notation}
+% \label{section:121-graph-notation}
 
-%
-\nrscomment{Id put these in the style of the way math papers introduce notation. bolded Definition. type thing. You have it as prose currently, but its very choppy to read as prose, so you may as well lean into this being a bunch of definitions}
-%
-This section outlines the notation and terminology that will be used throughout the remainder of this thesis.
-A \textit{Graph}, sometimes called a \textit{Network} in the social sciences, is a foundational data structure and computing concept to describe combinatorial structures~\cite{Kleinberg2014}. 
-The simplest graph $G$ has two components. 
-The \textit{Vertices} $V$, sometimes called \textit{Nodes} is a set of objects that represent `entities' or `things'.
-The \textit{Edges} $E$, sometimes called \textit{Arcs} or \textit{Links} are the set of connections between the vertices that describe some relation between them.
+% %
+% \nrscomment{Id put these in the style of the way math papers introduce notation. bolded Definition. type thing. You have it as prose currently, but its very choppy to read as prose, so you may as well lean into this being a bunch of definitions}
+% %
+% This section outlines the notation and terminology that will be used throughout the remainder of this thesis.
+% A \textit{Graph}, sometimes called a \textit{Network} in the social sciences, is a foundational data structure and computing concept to describe combinatorial structures~\cite{Kleinberg2014}. 
+% The simplest graph $G$ has two components. 
+% The \textit{Vertices} $V$, sometimes called \textit{Nodes} is a set of objects that represent `entities' or `things'.
+% The \textit{Edges} $E$, sometimes called \textit{Arcs} or \textit{Links} are the set of connections between the vertices that describe some relation between them.
 
-%
-\nrscomment{here seems like the better place to mention attributed edges. a bit jarring circling back to it down below after topology.}
+% %
+% \nrscomment{here seems like the better place to mention attributed edges. a bit jarring circling back to it down below after topology.}
 
-\nrscomment{youre also going from defining graph components to higher level graph features here. i dont think you finished with components (hyper edge? multi edge?) and a signal of the switch would help with navigating this section}
-%
-So, the graph $G$ has the sets of vertices ($V$) and edges ($E$), giving us $G = \{V,E\}$.
-The \textit{Degree} ($K$) of a vertex is the count of the edges it participates in. 
-In directed graphs, it is often separated to \textit{in-degree} ($K_{in}$) and \textit{out-degree} ($K_{out}$).
-The structure of the graph, the pattern formed by the vertices and edges that connect them is the \textit{topology} of the graph. 
+% \nrscomment{youre also going from defining graph components to higher level graph features here. i dont think you finished with components (hyper edge? multi edge?) and a signal of the switch would help with navigating this section}
+% %
+% So, the graph $G$ has the sets of vertices ($V$) and edges ($E$), giving us $G = \{V,E\}$.
+% The \textit{Degree} ($K$) of a vertex is the count of the edges it participates in. 
+% In directed graphs, it is often separated to \textit{in-degree} ($K_{in}$) and \textit{out-degree} ($K_{out}$).
+% The structure of the graph, the pattern formed by the vertices and edges that connect them is the \textit{topology} of the graph. 
 
-%
-\nrscomment{put the term before the defn i.e. the topology is...}
-%
-The \textit{topology} is the distinctive feature of a graph data structure.
-Analyzing and exploiting the \textit{topology} is core to many algorithms that seek to solve graph problems. 
+% %
+% \nrscomment{put the term before the defn i.e. the topology is...}
+% %
+% The \textit{topology} is the distinctive feature of a graph data structure.
+% Analyzing and exploiting the \textit{topology} is core to many algorithms that seek to solve graph problems. 
 
-%
-\nrscomment{the defns below these seem kind of arbitrary, will you actually use them? are they relevant?}
-%
-The \textit{diameter} of the graph is the length of the shortest path between the two most `distant' nodes.
-The \textit{eccentricity} of a graph is the greatest geodesic distance between two vertices in the graph~\cite{Wu2015}.
-The \textit{radius} of the graph is the minimum graph eccentricity.~\cite{Wu2015}
-The \textit{algebraic connectivity} of a graph describes how well-connected it is~\cite{Wu2015}
-the \textit{traversal depth} of a graph algorithm is how many traverse iterations need to occur to complete an algorithm and is directly proportional to the eccentricity and connectivity of a graph~\cite{Wu2015}. 
+% %
+% \nrscomment{the defns below these seem kind of arbitrary, will you actually use them? are they relevant?}
+% %
+% The \textit{diameter} of the graph is the length of the shortest path between the two most `distant' nodes.
+% The \textit{eccentricity} of a graph is the greatest geodesic distance between two vertices in the graph~\cite{Wu2015}.
+% The \textit{radius} of the graph is the minimum graph eccentricity.~\cite{Wu2015}
+% The \textit{algebraic connectivity} of a graph describes how well-connected it is~\cite{Wu2015}
+% the \textit{traversal depth} of a graph algorithm is how many traverse iterations need to occur to complete an algorithm and is directly proportional to the eccentricity and connectivity of a graph~\cite{Wu2015}. 
 
 
 
-Figures~\ref{figure:graph-simple}--~\ref{figure:graph-multi} show how quickly complexity builds in graphs with the addition of attributes (labels), direction, weights and heterogeneous vertex and edge types.
+% Figures~\ref{figure:graph-simple}--~\ref{figure:graph-multi} show how quickly complexity builds in graphs with the addition of attributes (labels), direction, weights and heterogeneous vertex and edge types.
 
-%
-\nrscomment{i'm not sure saying they show complexity is really what you want, maybe just that the fig shows the variety of basic properties a graph can have?}
-%
+% %
+% \nrscomment{i'm not sure saying they show complexity is really what you want, maybe just that the fig shows the variety of basic properties a graph can have?}
+% %
 
 
 \osullikomment{Combine into subfigures}
@@ -64,70 +64,70 @@ Figures~\ref{figure:graph-simple}--~\ref{figure:graph-multi} show how quickly co
 \subsection{Graph Representation}
 \label{section:122-graph-representation}
 
-%
-\nrscomment{again here some more structure than a block of prose might help the reader refer back to the different representations later, esp since youre giving the same kind of info for each (space complexity, etc.) maybe summarize in a table as well?}
-%
+% %
+% \nrscomment{again here some more structure than a block of prose might help the reader refer back to the different representations later, esp since youre giving the same kind of info for each (space complexity, etc.) maybe summarize in a table as well?}
+% %
 
-Graphs can be represented in numerous ways, with the two most common being the \textit{Adjacency List} and \textit{Adjacency Matrix} formats. 
-Consider the graph in figure~\ref{figure:graph-example} with five vertices and five edges.
-Representing it using an adjacency list (figure~\ref{figure:graph-adj-list}) yields a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive being linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
-Conversely, representing it as an \textit{adjacency matrix} (figure~\ref{figure:adjacency_matrix}) has a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
-The tradeoff between memory efficiency and lookup efficiency is a core tension in graph processing and many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions (see section~\ref{section:13-Graph-Hardware-Acceleration}).
+% Graphs can be represented in numerous ways, with the two most common being the \textit{Adjacency List} and \textit{Adjacency Matrix} formats. 
+% Consider the graph in figure~\ref{figure:graph-example} with five vertices and five edges.
+% Representing it using an adjacency list (figure~\ref{figure:graph-adj-list}) yields a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive being linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
+% Conversely, representing it as an \textit{adjacency matrix} (figure~\ref{figure:adjacency_matrix}) has a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
+% The tradeoff between memory efficiency and lookup efficiency is a core tension in graph processing and many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions (see section~\ref{section:13-Graph-Hardware-Acceleration}).
 
-%
-\nrscomment{the sentence about the tradeoff i think ought to be your opener for this subsection. tucked in after the first two representations is too late- i need to know why i even care about representation in the first place before im willing to read it}
-%
+% %
+% \nrscomment{the sentence about the tradeoff i think ought to be your opener for this subsection. tucked in after the first two representations is too late- i need to know why i even care about representation in the first place before im willing to read it}
+% %
 
-The adjacency list and adjacency matrix are capable of implicitly encoding the direction of edges but are not innately capable of representing edge weights or multigraph structures. 
-\nrscomment{para sep ought to be here instead}
-Another encoding of graphs, the \textit{incidence matrix}, encodes both the source and destination of an edge. 
-The representation in figure~\ref{figure:incidence_matrix} uses a negative integer to indicate the source, and a positive to indicate the destination. 
-The integers can be replaced with any real number to represent weights, encoding more information.
-Because the edges are represented as distinct entities, the \textit{incidence matrix} is capable of representing more complicated graph formats that are directed, weighted, multi-edge and hyper-edge~\cite{Kepner2016}.
-%
-\nrscomment{i dont think youve defined multi/hyper edge, have you?}
-%
+% The adjacency list and adjacency matrix are capable of implicitly encoding the direction of edges but are not innately capable of representing edge weights or multigraph structures. 
+% \nrscomment{para sep ought to be here instead}
+% Another encoding of graphs, the \textit{incidence matrix}, encodes both the source and destination of an edge. 
+% The representation in figure~\ref{figure:incidence_matrix} uses a negative integer to indicate the source, and a positive to indicate the destination. 
+% The integers can be replaced with any real number to represent weights, encoding more information.
+% Because the edges are represented as distinct entities, the \textit{incidence matrix} is capable of representing more complicated graph formats that are directed, weighted, multi-edge and hyper-edge~\cite{Kepner2016}.
+% % %
+% % \nrscomment{i dont think youve defined multi/hyper edge, have you?}
+% % %
 
 
-%
-\nrscomment{youre using |.| to mean cardinality, i think, so it might be worth writing that out in words as well as reminding what V, E are, i.e. the space complexity is O(...), where |V| represents the number of vertices and |E| represents the number of edges}
-%
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume more memory where $|E|>|V|$.
+% %
+% \nrscomment{youre using |.| to mean cardinality, i think, so it might be worth writing that out in words as well as reminding what V, E are, i.e. the space complexity is O(...), where |V| represents the number of vertices and |E| represents the number of edges}
+% %
+% The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume more memory where $|E|>|V|$.
 
-%
-\nrscomment{again maybe worth writing out "... more memory when the number of edges is greater than the number of nodes, i.e. |E| > |V|"}
-%
-The lookup time for edge existence in an incidence matrix is also slower than for an adjacency list. 
-To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
+% %
+% \nrscomment{again maybe worth writing out "... more memory when the number of edges is greater than the number of nodes, i.e. |E| > |V|"}
+% %
+% The lookup time for edge existence in an incidence matrix is also slower than for an adjacency list. 
+% To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
 
-Many formats have been developed to improve the balance between storage efficiency and lookup speed. 
-The dominant choices are the Compressed Sparse Row (CSR) and Compressed Sparse Column (CSC) formats.
-The CSR format uses three lists to compress the rows of a sparse matrix, like an adjacency matrix~\cite{Bulucc2009}. 
-First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
-The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
-The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
-So in figure~\ref{figure:csr}, the values associated with the \textbf{A} vertex (row $0$ of the adjacency matrix) are at positions $[0,1]$ in the value list in figure~\ref{figure:csr}. 
-We derive this by looking at the row index in figure~\ref{figure:csr} and seeing that the second row begins from index $2$.
-Knowing that the first two values in the value list are the sources of our edges, we know that the first two values in the column index in figure~\ref{figure:csr} are the destinations $[1,2]$.
-In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
+% Many formats have been developed to improve the balance between storage efficiency and lookup speed. 
+% The dominant choices are the Compressed Sparse Row (CSR) and Compressed Sparse Column (CSC) formats.
+% The CSR format uses three lists to compress the rows of a sparse matrix, like an adjacency matrix~\cite{Bulucc2009}. 
+% First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
+% The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
+% The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
+% So in figure~\ref{figure:csr}, the values associated with the \textbf{A} vertex (row $0$ of the adjacency matrix) are at positions $[0,1]$ in the value list in figure~\ref{figure:csr}. 
+% We derive this by looking at the row index in figure~\ref{figure:csr} and seeing that the second row begins from index $2$.
+% Knowing that the first two values in the value list are the sources of our edges, we know that the first two values in the column index in figure~\ref{figure:csr} are the destinations $[1,2]$.
+% In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
 
-%
-\nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
-%
+% %
+% \nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
+% %
 
-The CSC format reverses the function of the row and column indices so that the columns are compressed.
-The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix.
+% The CSC format reverses the function of the row and column indices so that the columns are compressed.
+% The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix.
 
-\input{Figures/Graphs/08_example_graph.tex}
-\input{Figures/Graphs/09_adj-list}
-\input{Figures/Graphs/10_adjacency}
-\input{Figures/Graphs/11_incidence}
-\input{Figures/Graphs/12_csr}
+% % \input{Figures/Graphs/08_example_graph.tex}
+% % \input{Figures/Graphs/09_adj-list}
+% % \input{Figures/Graphs/10_adjacency}
+% % \input{Figures/Graphs/11_incidence}
+% % \input{Figures/Graphs/12_csr}
 
-More complicated representations exist which are capable of compressing the graph representations even further. 
-\textit{Ligra+} uses an encoding scheme that splits the graph into two arrays \textit{Compressed Edges-in} and \textit{Compressed Edges-out}.
-The arrays use k-bit block encoding to approximately halve the memory requirements to represent each graph compared to CSC/CSR. 
-The compression has an encode/decode overhead that makes it impractical in serial systems but has been shown to improve overall performance in parallel implementations~\cite{Shun2015}.
+% More complicated representations exist which are capable of compressing the graph representations even further. 
+% \textit{Ligra+} uses an encoding scheme that splits the graph into two arrays \textit{Compressed Edges-in} and \textit{Compressed Edges-out}.
+% The arrays use k-bit block encoding to approximately halve the memory requirements to represent each graph compared to CSC/CSR. 
+% The compression has an encode/decode overhead that makes it impractical in serial systems but has been shown to improve overall performance in parallel implementations~\cite{Shun2015}.
 
 
 %

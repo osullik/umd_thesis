@@ -22,3 +22,12 @@ LFR Benchmark (CD)
 Do any of these measure beyond the Kernel level? 
 
 \cite{Hennessy2019} There are many different kinds of benchmark to measure different tasks --> hennesey etc discuss all of the desktop vs server benchmarks, but it also justifies graphs. Could go deeper to highlight community detection benchmarks vs others. 
+
+
+Scale-free graphs have been shown to improve locality in graph processing~\cite{Beamer2015}, but are more difficult for parallel algorithms to process because they are difficult to cleanly partition and the variance in neighborhood size leads to imbalanced workload between worker nodes.
+\nrscomment{idk if we have the background to really grasp this point yet. maybe bring it up when you talk about representation and spatial locality? at this stage i dont know why scale free would improve locality, since i dont even know how graphs are stored yet}
+
+Mesh Graphs are typically better suited to parallel processing because their large diameter and local neighborhood structure mean there are minimal cross-partition dependencies, and the workload is more balanced. 
+However, for algorithms that must visit the entire graph each iteration (like PageRank), the poor spatial locality of the vertices in memory incurs additional processing latency. 
+The expressive power of graphs is being explored beyond `graph-native' problems. 
+\nrscomment{same issue here, dont really have the background to talk about this yet}
