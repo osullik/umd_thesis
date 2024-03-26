@@ -20,10 +20,17 @@ Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but find
 
 \subsubsection{Adjacency Matrices}
 An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix to represent the graph.
-The presence of a $1$ at location $V_{i},V_{j}$ indicates that an edge exists from vertex $i$ to vertex $j$.
+The presence of a $1$ at location $V_{i},V_{j}$ indicates that an edge exists from vertex $i$ to vertex $j$. 
+
+%
+\nrscomment{replace $V_{i},V_{j}$ with $V_{i,j}$. why are we using V as the matrix and not M? like M of size VxV -- $M_{i...V,i...V}$?}
+%
 They can represent directed or undirected graphs, and the value at position $V_{i},V_{j}$ can be changed to represent the weight of the edge. 
 Attributes are stored separately from the matrix. 
 \textit{Adjacency matrices} have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
+%
+\nrscomment{you already introduced adjacency matrix term, dont italicize down here}
+%
 One of their major drawbacks is the requirement to store all the $0$s where edges to not exist--essentially useless information.
 
 \subsubsection{Incidence Matrices}
@@ -31,14 +38,20 @@ Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|V|\times|E|$ matrix
 An edge is represented with a $-1$ at position $E_{i},V_{j}$ to indicate the source and a $1$ at position $E_{i},V_{k}$ to indicate the destination. 
 Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-edges}.
 Weights can be expressed by modifying the numbers in the matrix and the attributes are typically stored separately. 
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|>>|V|$.
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|>>|V|$. 
+%
+\nrscomment{use the real math symbol $\gg$}
+%
 The lookup time for edge existence is slower than for an \textit{adjacency list}. 
 To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
 
-\subsubsection{Compressed representaions}
+\subsubsection{Compressed representations}
 To balance expressiveness, memory consumption and computability, numerous compressed representations have been developed. 
 The dominant choices are the Compressed Sparse Row (CSR) and Compressed Sparse Column (CSC) formats (Figure~\ref{figure:csr}).
 The CSR format uses three lists to compress the rows of a sparse matrix, like an adjacency matrix~\cite{Bulucc2009}. 
+%
+\nrscomment{from here down this is too much and its impossible to follow without going back and forth to the figure. i'll try making a figure for this that explains itself, with a caption to do the rest of the work. nearly a full page to get across how these representations work is too much and is painful to read}
+%
 First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
 The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
 The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
@@ -66,8 +79,13 @@ There are two dominant abstractions, the \textit{Canonical} and the \textit{Line
 \subsubsection{Canonical}
 Canonical representations focus on the representations of graphs as \textit{Vertices} and \textit{Edges}.
 The most basic of these representations are the ones everyone encounters in their introduction to computer science courses, and reflect most of the descriptions in sections~\ref{section:21-graph-definitions}~and~\ref{section:23-graph-representations} that are used in simple, sequential graph processing.
+%
+\nrscomment{you said things without saying anything and i still dont know what canonical means. dont refer to intro CS courses, it doesnt help explain anything. need a better way of defining canonical reporesentation}
+%
 
 To enable more powerful parallel processing methods and leveraging hardware accelerators \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric} and \textit{data-centric} abstractions have been developed within the canonical domain, all of which use a \textit{Message-Passing Model} (MPM) of computing designed to enable \textit{Bulk-Synchronous Parallelism} (BSP).
+
+\nrscomment{can we get rid of TLAV/TLAE/TLAG and just say vertex-centric, edge-centric, graph-centri? fewer acronyms better and these dont seem necessary when the more descriptive term is just as good}
 
 \textbf{Vertex-Centric.} The \textit{think like a vertex} (TLAV) abstraction uses the vertex as the focus of attention and breaks algorithms up into iterative operations on vertices, updating their states based on the properties of vertices in their neighborhood~\cite{Mccune2015}.
 Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach.
@@ -85,23 +103,26 @@ The \textit{Gunrock} framework introduced and champions the data-centric frontie
 These canonical abstractions all have tradeoffs. 
 Vertex and edge-centric abstractions tend to inflict high communication overheads as each vertex and edge are treated as an individual unit. 
 Graph-centric abstractions can struggle with optimally partitioning the graphs and load imbalance in the partitions but can reduce communication overheads by abstracting them to subgraphs.
-Data-centric abstractions using the frontier have shown significant improvements in execution time, but many implementations are unable to implement certain classes of algorithms~\cite{Dhulipala2017}.
+Data-centric abstractions using the frontier have shown significant improvements in execution time, but many implementations are unable to implement \nrscomment{support} certain classes of algorithms~\cite{Dhulipala2017}.
 
 \subsubsection{Linear-Algebraic}
 Linear-algebraic abstractions exploit the ability to represent graphs as sparse matrices using their incidence and adjacency matrices. 
 The Combinatorial Basic Linear Algebra Subprograms (CombBLAS)~\cite{Buluc2011,Azad2021} and Graph Basic Linear Algebra Subprograms (GraphBLAS)~\cite{Mattson2013,Kepner2015} are the two most popular linear algebraic graph abstractions. 
 The abstraction exploits the latent coarse-grained parallelism within graphs and seeks to leverage advances in high-performance linear algebra processing to improve graph processing~\cite{Buluc2011}. 
 Both similarly identify that many graph operations can be composed of general and sparse matrix-vector multiplications so that actions like a single step in a BFS can be represented as a single linear-algebraic operation~\cite{Kepner2016}.
-Linear algebraic representations are powerful and they offer a promising direction but can be difficult to implement certain classes of algorithms (like those leveraging priority queues)~\cite{Buluc2011}, can be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
+Linear algebraic representations are powerful and they offer a promising direction but can be difficult to implement \nrscomment{cannot support certain (otherwise "LinAlg repr can be difficult to implement certain classes of.." doesnt make sense} certain classes of algorithms (like those leveraging priority queues)~\cite{Buluc2011}, 
+\nrscomment{new sentence. They can also be memory intensive and...}
+can be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
 
 \subsection{Graph Primitives}
 Primitive operations are the abstract building blocks that compose more complicated programs. 
 For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
 Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize for to improve performance. 
 However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
-The four representations and six abstractions above are representative of the heterogeneity of approaches in representing graphs, which in turn drives a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
+The four representations and six abstractions above \nrscomment{can you just say "The canonical and linear algebraic abstractions each have their own sets of associated primitives"} are representative of the heterogeneity of approaches in representing graphs, which in turn drives a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
 
 The primitive operations for sequential, parallel, graph Database and linear-algebraic operations all vary. 
+\nrscomment{the first 3 of those you didnt really introduce, as they arent representation formats, but the last one is. If youre going to talk about graph operations now, put it in section 24 and give it the title so its easier to find. i think you need to do operations before you can talk about primitives, if the operations define the primitives. currently its not clear if the representation format or the operation type is what drives the primitives.}
 
 \textbf{Sequential.}
 Sequential graph processing doesn't have defined primitive operations, and most graph applications implemented sequentially just directly operate on the data structures.
@@ -110,6 +131,8 @@ Common operations include \textit{expanding neighbors}, \textit{checking attribu
 \textbf{Parallel.}
 Distributed approaches developed primitives that build on the ideas of MapReduce to parallelize processing and reduce inter-vertex dependencies~\cite{Malewicz2010}. 
 The message-passing frameworks typically execute in three primitive phases. \textit{Gather} aggregates the information of a vertex's neighbors to itself, \textit{Apply} does some computation on the gathered information and \textit{Scatter} pushes the results of the computation to the neighborhood of the node.
+
+\nrscomment{you told me to expect definitions for 3 things, gave those, and then went straight into a fourth, so i dont know if its related or were moving onto a new thing}
 \textit{Frontier}-based approaches usually employ the GAS model, just on smaller sections of the graph. 
 
 \osullikomment{Finishing here before class}
