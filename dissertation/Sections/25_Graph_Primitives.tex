@@ -1,0 +1,33 @@
+\section{Graph Primitives}
+\label{section:25-graph-primitives}
+Primitive operations are the abstract building blocks that compose more complicated programs. 
+For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
+Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize for to improve performance. 
+However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+The four representations and six abstractions above \nrscomment{can you just say "The canonical and linear algebraic abstractions each have their own sets of associated primitives"} are representative of the heterogeneity of approaches in representing graphs, which in turn drives a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
+
+The primitive operations for sequential, parallel, graph Database and linear-algebraic operations all vary. 
+\nrscomment{the first 3 of those you didnt really introduce, as they arent representation formats, but the last one is. If youre going to talk about graph operations now, put it in section 24 and give it the title so its easier to find. i think you need to do operations before you can talk about primitives, if the operations define the primitives. currently its not clear if the representation format or the operation type is what drives the primitives.}
+
+\textbf{Sequential.}
+Sequential graph processing doesn't have defined primitive operations, and most graph applications implemented sequentially just directly operate on the data structures.
+Common operations include \textit{expanding neighbors}, \textit{checking attributes} and adding or removing nodes from data structures being used to track progress. 
+
+\textbf{Parallel.}
+Early parallel primitives were extensions of the MapReduce to parallelize processing and reduce inter-vertex dependencies~\cite{Malewicz2010}. 
+The message-passing frameworks typically execute in three primitive phases. \textit{Gather} aggregates the information of a vertex's neighbors to itself, \textit{Apply} does some computation on the gathered information and \textit{Scatter} pushes the results of the computation to the neighborhood of the node.
+These primitives (GAS) form the basis of most parallel graph processing formats that use vertex-centric and data-centric abstractions.
+
+Recent approaches to theoretically work-efficient parallel graph processing in shared-memory systems define a comprehensive hierarchy of primitives for mapping, packing, reducing and filtering neighborhoods, built on work-efficient atomic and parallel processing primitives~\cite{Shun2013, Shun2015, Dhulipala2017, Dhulipala2021}.
+It makes use of the frontier abstraction to further reduce complexity. 
+
+\textbf{Graph Database.}
+Graph databases focus on the database operations to create, maintain and query the database. 
+Their primitives focus on the need to \textit{Create} vertices and edges, \textit{Read} them from memory, \textit{Update} their weights, attributes and neighbors and \textit{Delete} them when no longer needed (CRUD).
+The CRUD operations have limited use in static graph processing algorithms, but time spent optimizing individual and batch CRUD operations is essential to developing effcient streaming graph processing algorithms, where the cost of maintaining the graph is not excluded from measures of performance. 
+
+\textbf{Linear Algebraic.}
+Linear algebraic primitives are all derived from matrix operations, particularly matrix multiplication operations. 
+There are numerous primitive operations described in detail in the CombBLAS and GraphBLAS work~\cite{Buluc2011, Azad2021, Mattson2013, Kepner2015, Kepner2016}.
+The primitives, in general, use sparse and general matrix multiplications, and spare and general vector-matrix multiplications on incidence and adjacency matrices of graphs to apply linear-algebraic transformations that compose key graph algorithms. 
+

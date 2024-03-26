@@ -149,197 +149,197 @@
 % \osullikomment{Summary of Representation here}
 
 
-\subsection{Graph Primitives}
-\label{section:123-graph-primitives}
-\osullikomment{The back half of the primitives section is just points I collected in my travels and need to synthesize}
-\nrscomment{i think this primitives section should be a table, and then you A. explain why primitives matter then B. summarize the table and the key takeaway about how the primitives differ by representation format and there arent agreed-upon ones across all formats then C. why is that problematic}
+% \subsection{Graph Primitives}
+% \label{section:123-graph-primitives}
+% \osullikomment{The back half of the primitives section is just points I collected in my travels and need to synthesize}
+% \nrscomment{i think this primitives section should be a table, and then you A. explain why primitives matter then B. summarize the table and the key takeaway about how the primitives differ by representation format and there arent agreed-upon ones across all formats then C. why is that problematic}
+
+% %
+% \nrscomment{missing the opening sentence where you tell me what this section is and why i should care. what even is a primative? need that before i learn there's disagreement}
+
+% \nrscomment{Suggest opening this with an example of a field with clear primatives and what they are, and then explain why graphs doesn't have that. Otherwise youre just listing things that could kind of be primatives but I have nothing to ground that to really appreciate the point youre trying to make}
+% %
+% There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+
+% %
+% \nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "canonical representation is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
+% %
+% The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
+% The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
+
+% %
+% \nrscomment{ok, i now think you might just need a subsubsection on how graphs can be stored. jamming spatial locality into here is unexpected and breaks up the flow}
+% %
+% These chunks may also include details of the labels, weights and other non-topological information stored in the graph, or just house pointers to that information.
+% Using this representation for large and dense graphs causes the `chunks' of memory for neighboring nodes to not be spatially co-located. 
+% Without spatial locality, modern processor optimizations like caching and prefetching are ineffective, and the processor will need to wait for the relevant node vertex to be retrieved from the main memory before continuing. 
+% %
+% \nrscomment{so what? i think this is probably important, but here isnt the place to talk about it, its a takeaway, or a motivation, or something, but it doesnt belong in "laying the groundwork and defining what you need to know to understand my thesis" section}
+% %
+
+
+
+% \osullikomment{Add in Combinatorial BLAS here. }
+% Drawing inspiration from the relationship between the Basic Linear Algebra Subprogram (BLAS) library and the development of accelerators for Floating Point Operations (FLOPs), an alternative linear algebraic representation of graphs and implementation of graph algorithms is emerging. 
+% The GraphBLAS project is an effort to formalize graph operations using linear algebra~\cite{Mattson2013}.
+% Using the incidence matrices for graphs in a CSC/CSR format, the GrahBLAS is building a mathematical abstraction layer for graph operations based on the realization that graph operations are matrix operations~\cite{Kepner2015, Kepner2016}.
+% %
+% \nrscomment{that was too deep in the weeds- i was expecting to learn what graph primitives are and i got "theres this new project trying to abstract something". i think you may be able to cut that chunk altogether, unless it comes back to be important}
+% %
+
+% The GraphBLAS team identified five primitive operations and five additional compound operations that can be composed of primitive operations. 
+% The five primitive operations are \textit{Construct Matrix from Triples (\textbf{Sparse}}), \textit{Extract Triples from a Matrix (\textbf{Find}}), \textit{Element-Wise addition (\textbf{SpEWiseA}}), \textit{Element-Wise Multiplication (\textbf{SpEWiseX}}), and \textit{Matrix Products (\textbf{SpGEMM}})~\cite{Kepner2015}.
+% These primitive operations are composed to represent graph operations, like a single step in a Breadth First Search (BFS) which is a matrix-vector multiplication of the adjacency matrix and the vector representing the node(s) to start from~\cite{Kepner2016}.
+
+% \osullikomment{Here down is 'collection of things I should probably include but haven't integrated yet' Lots of it is redundant and covered later. }
+
+% Wu et al identify two families of graph primitive operation, \textit{traversal}-based and \textit{dense-computation}-based.
+% Traversal-based primitives systematically explore neighbors until some condition is met and only deal with small subsets of vertices. 
+% Dense-computation primitives expect most or all vertices to be active. 
+% Traversal primitives include BFS, Betweenness-Centrality (BC), Single-Source Shortest Path (SSSP) and depending on implemenation Connected Components (CC)~\cite{Wu2015}.
+% Dense-computation primitives include PageRank~\cite{Wu2015}.
+% Ham includes \textit{Collaborative Filtering} as a dense-computation primitive~\cite{Ham2016}.
+% Each of these `primitives' is an algorithm in its own right, and are commonly thought of as \textit{kernels} rather than a `primitive' operation.
+
+% Some programming models offer more conceptual primitives. 
+% GPU-based programming models utilize the Bulk-Synchronous Parallel (BSP) programming model. 
+% The \textit{Gather-Apply-Scatter} (GAS) is a BSP approach that decomposes a graph program into the \textit{gather} phase which accumulates information about all the adjacent vertices. 
+% The \textit{Apply} phase creates a new attribute on the active vertex with the computed results of the accumulated values from the previous step. 
+% The \textit{Scatter} phase propagates a predicate evaluation on all adjacent edges and vertices~\cite{Wu2015}.
+% The \textit{Data-Centric Model} (DCM) uses the \textit{Advance, Filter} and \textit{Compute} operations to manipulate the \textit{frontier} of vertices. 
+% The \textit{frontier} is the collection of vertices currently `active' in the algorithm.
+% The \textit{Advance} operation generates a new frontier by expanding the neighbors of the current vertex frontier. 
+% the \textit{Filter} operation chooses a subset of the frontier based on some specified criteria.
+% the \textit{Compute} operation executes some specified action on all vertices in the frontier~\cite{Wu2015}. 
+
+% Several fundamental graph algorithms cannot be expressed as frontier-based algorithms.~\cite{Dhulipala2017}
+
+% The Pegasus graph analysis system also takes a linear-algebraic view. 
+% It introduces the \textit{Generalized Integrated Matrix-Vector Multiplication} (GIM-V), a generalization of standard matrix-vector multiplication.
+% They decompose it into three atomic operations \textit{combine2, combineAll} and \textit{Apply}.
+% They use these three operations to implement \textit{PageRank, Random Walk, Diamater Estimation} and \textit{Connected Components}.
+
+% There are two families of Programming Models for Graphs. 
+% \textit{Vertex-Centric} and \textit{Edge-Centric}.
+% \textit{Vertex-Centric} models effectively express the entire algorithm as operations on a single vertex and its edges~\cite{Ham2016}
+% \textit{Vertex-Centric} models have two functions \textit{vertex\_scatter} and \textit{vertex\_gather}.
+% \textit{Vertex\_scatter} defines what operations need to be performed on a vertex, and \textit{vertex\_gather} applies that operation and updates the vertex. 
+% The \textit{Edge-Centric} model has two functions \textit{edge\_scatter} and \textit{edge\_gather}.
+% \textit{Edge\_scatter} sends the information of the source vertex and edge to the destination vertex where the \textit{edge\_gather} function applies the updates~\cite{Liu2019}. 
+
+% The \textit{Single Instruction Multiple Data - X}  (SIMD-X) paradigm defines \textit{Active, Compute} and \textit{Combining} operations. Is a BSP paradigm that aims to extend beyond vertex or edge centric computing. 
+% The \textit{Active} function filters the graph and returns only the vertices which meet the conditions to be `active'.
+% The \textit{Compute} function defines the computation that happens on each edge. 
+% \textit{Combine} merges all the computed updates. 
+
+% The `canonical' representations do not appear to have clearly defined primitive operations in the general sense, though high-performance parallel processing programming paradigms have done significant work in this area~\cite{Dhulipala2021}.
+
 
 %
-\nrscomment{missing the opening sentence where you tell me what this section is and why i should care. what even is a primative? need that before i learn there's disagreement}
+% \nrscomment{below is the "why am i talking about primitives" bit, which should come at the start of the subsubsection, not the end}
+% %
+% The reasons that distilling primitive operations is important in benchmark design are, first, that identifying the primitives allows us to design micro-benchmarks to understand how each building block of an algorithm can be optimized. 
+% Second, by limiting to a set of primitives, the hardware implementation of those primitives can be optimized, meaning that the hardware designers can focus on developing hardware for a few specific operations, rather than general-purpose ones. 
 
-\nrscomment{Suggest opening this with an example of a field with clear primatives and what they are, and then explain why graphs doesn't have that. Otherwise youre just listing things that could kind of be primatives but I have nothing to ground that to really appreciate the point youre trying to make}
-%
-There is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+% %
+% \nrscomment{i think you should cut 1.2.4 entirely}
+% %
 
-%
-\nrscomment{this bit about canonical representations is confusing and feels like its presented backwards. first tell me what a canonical representation is "canonical representation is the common ... something". then tell me about the memory thing. then tell me all those formats can be used for canonical representations. in fact, why is this in this section and not the intro to representations before you list them out and define them?}
-%
-The \textit{adjacency list, adjacency matrix, incidence matrix} and \textit{CSC/CSR} formats are all used for \textit{canonical} representations of graphs. 
-The \textit{canonical} representation of a graph views the vertices as a chunk of memory, and the edges as pointers between those chunks. 
+% \subsection{General Characteristics}
+% \label{section:124-general-characteristics}
+% \nrscomment{this section feels like it should be moved to the abstract graph benchmark design. these are basically your characteristics to vary and account for. it doesnt belong up here. rest of the comment sin this section still apply but assume that this whole chunk will be with the benchmark stuff later.}
 
-%
-\nrscomment{ok, i now think you might just need a subsubsection on how graphs can be stored. jamming spatial locality into here is unexpected and breaks up the flow}
-%
-These chunks may also include details of the labels, weights and other non-topological information stored in the graph, or just house pointers to that information.
-Using this representation for large and dense graphs causes the `chunks' of memory for neighboring nodes to not be spatially co-located. 
-Without spatial locality, modern processor optimizations like caching and prefetching are ineffective, and the processor will need to wait for the relevant node vertex to be retrieved from the main memory before continuing. 
-%
-\nrscomment{so what? i think this is probably important, but here isnt the place to talk about it, its a takeaway, or a motivation, or something, but it doesnt belong in "laying the groundwork and defining what you need to know to understand my thesis" section}
-%
+% Decades of research yield the characteristics of graphs that are `generally true' and interact with the \textit{efficiency} of graph analytics.
+% These graph characteristics focus on the \textit{topological} features of graphs.
+% Depending on the context, the addition of attribute information may simplify or complicate the algorithms that operate on the graphs. 
 
+% \textbf{Input dependence.} 
+% %
+% \nrscomment{"Input dependence" is not a graph characteristic, and this subsubsection talks about random graphs. I think you can just cut this chunk entirely, or maybe reframe it, since you keep bringing up random graphs when explaining the subsequent characteristics. Maybe you first describe broad classes of graph domains (synthetic vs real. then within that the hierarchy you drew out) and compare the 'naive' random graph that one might use for a benchmark to the others and highlight the characteristics that matter for the benchmark. For instance show random edges vs fully connected, visually, and then explain why it affects processing. And then repeat for the other characteristics.}
+% %
+% The \textit{efficiency} and \textit{effectiveness} of every graph algorithm depends on the size and shape of the input graph.
+% The data dependence of graph algorithms is one of the driving reasons that empirical evaluation favors a collection of `real-world' graphs drawn from the domain of intended use.
+% While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
+% %
+% \nrscomment{ok, in that case you need a section explicitly outlining those classes, and possibly 
+% a table comparing them across the characteristics you're about to describe. you currently have it mixed in with the characteristics, so i come away not understanding what the classes are or what the characteristics are. decouple them.}
+% %
+% \textit{Random Graphs} are the baseline. 
+% A random graph is synthetic.
+% It is generated by creating a set of vertices and then creating an edge between each vertex in the set with a given probability. 
+% Formally, given $G(n,p)$ where $n$ is the number of vertices to create and $p$ is the probability of any two vertices being connected by an edge, the generator creates $n$ vertices $\{v \in V\}$, and the set of edges $E = \{(u,v)|u,v \in V, u \neq v$ with probability $P$\} yielding the random graph $G=\{V, E\}$~\cite{Erdhos1960}.
+% Random graphs are important as they provide the point of reference for other graph characteristics, discussed below. 
 
+% \textbf{Size Matters.}
+% %
+% \nrscomment{please a different header}
+% \nrscomment{replace this entire description with a picture. this can be 2 sentences}
+% %
+% Section~\ref{section:11-Intelligence-Security-Context} identifies that graphs in the I\&S domain can be billions to trillions of vertices and edges. 
+% The \textit{size} of a graph impacts graph processing. 
+% In the most obvious sense, like all computations, there is some relationship between the size of the input and the time required to process it.
+% The count of the vertices can give us a false understanding of the scale of the graph. 
+% For example, suppose a graph with $10$ vertices. 
+% Each vertex except for the first and last is connected by an undirected edge to only two other vertices, such that they form a straight line of $10$ vertices.
+% The graph will have $10$ vertices and $9$ edges. 
+% But, suppose a fully connected graph, where each of those vertices is connected to every other vertex.
+% That then becomes a graph of $10$ vertices and $45$ edges.
+% If directed (and symmetric), we would have $18$ and $90$ edges respectively for the same graph of $10$ vertices. 
+% If it is a more complicated multi-graph structure the edge count could increase even further. 
+% So, any discussion of graph `size' must also account for the number of edges. 
+% \osullikomment{Needs a Cite}
 
-\osullikomment{Add in Combinatorial BLAS here. }
-Drawing inspiration from the relationship between the Basic Linear Algebra Subprogram (BLAS) library and the development of accelerators for Floating Point Operations (FLOPs), an alternative linear algebraic representation of graphs and implementation of graph algorithms is emerging. 
-The GraphBLAS project is an effort to formalize graph operations using linear algebra~\cite{Mattson2013}.
-Using the incidence matrices for graphs in a CSC/CSR format, the GrahBLAS is building a mathematical abstraction layer for graph operations based on the realization that graph operations are matrix operations~\cite{Kepner2015, Kepner2016}.
-%
-\nrscomment{that was too deep in the weeds- i was expecting to learn what graph primitives are and i got "theres this new project trying to abstract something". i think you may be able to cut that chunk altogether, unless it comes back to be important}
-%
+% \textbf{Degree Distribution.}
+% The \textit{size} of the graph is closely linked to the number of edges in it. 
+% Beyond a raw edge count, consideration must be given to the Degree $K$, the mean degree $\bar{K}$, the mean in-degree $\bar{K}_{in}$ and mean out-degree $\bar{K}_{out}$ and the \textit{distribution} of these values across the graph. 
+% %
+% \nrscomment{we dont know what any of those things mean, or why 'consideration must be given' to them}
+% %
+% Random graphs are quite regular in their distribution of degrees, and we expect the modal degree to approximate the mean degree.
+% Similarly, on graphs derived from physical phenomena like road networks, the mean degree is generally consistent.
+% Conversely, graphs derived from social interactions like phone call records or follower lists on social media tend to follow a power-law distribution. 
+% %
+% \nrscomment{if youre going to define scale-free, do it properly}
+% %
+% In these \textit {`Scale-Free'} graphs only a small percentage of the vertices possess most of the edges, and most vertices have very few edges.
+% Intuitively, consider that a few celebrities are extremely popular and have large followings, while most people have only small followings.
+% The scale-free graph shape is one of the key drivers of computational \textit{inefficeny} in graph processing. (see: section~\ref{section:126-processing-bottlenecks}).
+% \osullikomment{Needs a Cite}
 
-The GraphBLAS team identified five primitive operations and five additional compound operations that can be composed of primitive operations. 
-The five primitive operations are \textit{Construct Matrix from Triples (\textbf{Sparse}}), \textit{Extract Triples from a Matrix (\textbf{Find}}), \textit{Element-Wise addition (\textbf{SpEWiseA}}), \textit{Element-Wise Multiplication (\textbf{SpEWiseX}}), and \textit{Matrix Products (\textbf{SpGEMM}})~\cite{Kepner2015}.
-These primitive operations are composed to represent graph operations, like a single step in a Breadth First Search (BFS) which is a matrix-vector multiplication of the adjacency matrix and the vector representing the node(s) to start from~\cite{Kepner2016}.
+% \textbf{Graph Diameter and Transitivity}
+% The \textit{diameter} of the graph is the length of the shortest path between the two most `distant' nodes.
+% The \textit{transitivity} describes the probability that adjacent nodes in a graph are connected. 
+% The \textit{clustering coefficient} is a measure of the transitivity at a local or global level (with slightly different calculations depending on scope).
 
-\osullikomment{Here down is 'collection of things I should probably include but haven't integrated yet' Lots of it is redundant and covered later. }
+% Random graphs tend to have a middling diameter and clustering coefficient, depending on the density parameter used to generate the graph.
+% Graphs derived from physical phenomena like road networks tend to have a large diameter and small global clustering coefficient.
+% Scale-free graphs representing social phenomena like social media follower graphs tend to have a small diameter and large clustering coefficient. 
+% Known as the \textit{small-world} characteristic, we can say that of a scale-free graph, most vertices are `close' to each other.
+% Some graphs have a \textit{small-world} property in some component subgraphs but have other subgraphs that are of a larger diameter and lower density.
 
-Wu et al identify two families of graph primitive operation, \textit{traversal}-based and \textit{dense-computation}-based.
-Traversal-based primitives systematically explore neighbors until some condition is met and only deal with small subsets of vertices. 
-Dense-computation primitives expect most or all vertices to be active. 
-Traversal primitives include BFS, Betweenness-Centrality (BC), Single-Source Shortest Path (SSSP) and depending on implemenation Connected Components (CC)~\cite{Wu2015}.
-Dense-computation primitives include PageRank~\cite{Wu2015}.
-Ham includes \textit{Collaborative Filtering} as a dense-computation primitive~\cite{Ham2016}.
-Each of these `primitives' is an algorithm in its own right, and are commonly thought of as \textit{kernels} rather than a `primitive' operation.
-
-Some programming models offer more conceptual primitives. 
-GPU-based programming models utilize the Bulk-Synchronous Parallel (BSP) programming model. 
-The \textit{Gather-Apply-Scatter} (GAS) is a BSP approach that decomposes a graph program into the \textit{gather} phase which accumulates information about all the adjacent vertices. 
-The \textit{Apply} phase creates a new attribute on the active vertex with the computed results of the accumulated values from the previous step. 
-The \textit{Scatter} phase propagates a predicate evaluation on all adjacent edges and vertices~\cite{Wu2015}.
-The \textit{Data-Centric Model} (DCM) uses the \textit{Advance, Filter} and \textit{Compute} operations to manipulate the \textit{frontier} of vertices. 
-The \textit{frontier} is the collection of vertices currently `active' in the algorithm.
-The \textit{Advance} operation generates a new frontier by expanding the neighbors of the current vertex frontier. 
-the \textit{Filter} operation chooses a subset of the frontier based on some specified criteria.
-the \textit{Compute} operation executes some specified action on all vertices in the frontier~\cite{Wu2015}. 
-
-Several fundamental graph algorithms cannot be expressed as frontier-based algorithms.~\cite{Dhulipala2017}
-
-The Pegasus graph analysis system also takes a linear-algebraic view. 
-It introduces the \textit{Generalized Integrated Matrix-Vector Multiplication} (GIM-V), a generalization of standard matrix-vector multiplication.
-They decompose it into three atomic operations \textit{combine2, combineAll} and \textit{Apply}.
-They use these three operations to implement \textit{PageRank, Random Walk, Diamater Estimation} and \textit{Connected Components}.
-
-There are two families of Programming Models for Graphs. 
-\textit{Vertex-Centric} and \textit{Edge-Centric}.
-\textit{Vertex-Centric} models effectively express the entire algorithm as operations on a single vertex and its edges~\cite{Ham2016}
-\textit{Vertex-Centric} models have two functions \textit{vertex\_scatter} and \textit{vertex\_gather}.
-\textit{Vertex\_scatter} defines what operations need to be performed on a vertex, and \textit{vertex\_gather} applies that operation and updates the vertex. 
-The \textit{Edge-Centric} model has two functions \textit{edge\_scatter} and \textit{edge\_gather}.
-\textit{Edge\_scatter} sends the information of the source vertex and edge to the destination vertex where the \textit{edge\_gather} function applies the updates~\cite{Liu2019}. 
-
-The \textit{Single Instruction Multiple Data - X}  (SIMD-X) paradigm defines \textit{Active, Compute} and \textit{Combining} operations. Is a BSP paradigm that aims to extend beyond vertex or edge centric computing. 
-The \textit{Active} function filters the graph and returns only the vertices which meet the conditions to be `active'.
-The \textit{Compute} function defines the computation that happens on each edge. 
-\textit{Combine} merges all the computed updates. 
-
-The `canonical' representations do not appear to have clearly defined primitive operations in the general sense, though high-performance parallel processing programming paradigms have done significant work in this area~\cite{Dhulipala2021}.
-
-
-%
-\nrscomment{below is the "why am i talking about primitives" bit, which should come at the start of the subsubsection, not the end}
-%
-The reasons that distilling primitive operations is important in benchmark design are, first, that identifying the primitives allows us to design micro-benchmarks to understand how each building block of an algorithm can be optimized. 
-Second, by limiting to a set of primitives, the hardware implementation of those primitives can be optimized, meaning that the hardware designers can focus on developing hardware for a few specific operations, rather than general-purpose ones. 
-
-%
-\nrscomment{i think you should cut 1.2.4 entirely}
-%
-
-\subsection{General Characteristics}
-\label{section:124-general-characteristics}
-\nrscomment{this section feels like it should be moved to the abstract graph benchmark design. these are basically your characteristics to vary and account for. it doesnt belong up here. rest of the comment sin this section still apply but assume that this whole chunk will be with the benchmark stuff later.}
-
-Decades of research yield the characteristics of graphs that are `generally true' and interact with the \textit{efficiency} of graph analytics.
-These graph characteristics focus on the \textit{topological} features of graphs.
-Depending on the context, the addition of attribute information may simplify or complicate the algorithms that operate on the graphs. 
-
-\textbf{Input dependence.} 
-%
-\nrscomment{"Input dependence" is not a graph characteristic, and this subsubsection talks about random graphs. I think you can just cut this chunk entirely, or maybe reframe it, since you keep bringing up random graphs when explaining the subsequent characteristics. Maybe you first describe broad classes of graph domains (synthetic vs real. then within that the hierarchy you drew out) and compare the 'naive' random graph that one might use for a benchmark to the others and highlight the characteristics that matter for the benchmark. For instance show random edges vs fully connected, visually, and then explain why it affects processing. And then repeat for the other characteristics.}
-%
-The \textit{efficiency} and \textit{effectiveness} of every graph algorithm depends on the size and shape of the input graph.
-The data dependence of graph algorithms is one of the driving reasons that empirical evaluation favors a collection of `real-world' graphs drawn from the domain of intended use.
-While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
-%
-\nrscomment{ok, in that case you need a section explicitly outlining those classes, and possibly 
-a table comparing them across the characteristics you're about to describe. you currently have it mixed in with the characteristics, so i come away not understanding what the classes are or what the characteristics are. decouple them.}
-%
-\textit{Random Graphs} are the baseline. 
-A random graph is synthetic.
-It is generated by creating a set of vertices and then creating an edge between each vertex in the set with a given probability. 
-Formally, given $G(n,p)$ where $n$ is the number of vertices to create and $p$ is the probability of any two vertices being connected by an edge, the generator creates $n$ vertices $\{v \in V\}$, and the set of edges $E = \{(u,v)|u,v \in V, u \neq v$ with probability $P$\} yielding the random graph $G=\{V, E\}$~\cite{Erdhos1960}.
-Random graphs are important as they provide the point of reference for other graph characteristics, discussed below. 
-
-\textbf{Size Matters.}
-%
-\nrscomment{please a different header}
-\nrscomment{replace this entire description with a picture. this can be 2 sentences}
-%
-Section~\ref{section:11-Intelligence-Security-Context} identifies that graphs in the I\&S domain can be billions to trillions of vertices and edges. 
-The \textit{size} of a graph impacts graph processing. 
-In the most obvious sense, like all computations, there is some relationship between the size of the input and the time required to process it.
-The count of the vertices can give us a false understanding of the scale of the graph. 
-For example, suppose a graph with $10$ vertices. 
-Each vertex except for the first and last is connected by an undirected edge to only two other vertices, such that they form a straight line of $10$ vertices.
-The graph will have $10$ vertices and $9$ edges. 
-But, suppose a fully connected graph, where each of those vertices is connected to every other vertex.
-That then becomes a graph of $10$ vertices and $45$ edges.
-If directed (and symmetric), we would have $18$ and $90$ edges respectively for the same graph of $10$ vertices. 
-If it is a more complicated multi-graph structure the edge count could increase even further. 
-So, any discussion of graph `size' must also account for the number of edges. 
-\osullikomment{Needs a Cite}
-
-\textbf{Degree Distribution.}
-The \textit{size} of the graph is closely linked to the number of edges in it. 
-Beyond a raw edge count, consideration must be given to the Degree $K$, the mean degree $\bar{K}$, the mean in-degree $\bar{K}_{in}$ and mean out-degree $\bar{K}_{out}$ and the \textit{distribution} of these values across the graph. 
-%
-\nrscomment{we dont know what any of those things mean, or why 'consideration must be given' to them}
-%
-Random graphs are quite regular in their distribution of degrees, and we expect the modal degree to approximate the mean degree.
-Similarly, on graphs derived from physical phenomena like road networks, the mean degree is generally consistent.
-Conversely, graphs derived from social interactions like phone call records or follower lists on social media tend to follow a power-law distribution. 
-%
-\nrscomment{if youre going to define scale-free, do it properly}
-%
-In these \textit {`Scale-Free'} graphs only a small percentage of the vertices possess most of the edges, and most vertices have very few edges.
-Intuitively, consider that a few celebrities are extremely popular and have large followings, while most people have only small followings.
-The scale-free graph shape is one of the key drivers of computational \textit{inefficeny} in graph processing. (see: section~\ref{section:126-processing-bottlenecks}).
-\osullikomment{Needs a Cite}
-
-\textbf{Graph Diameter and Transitivity}
-The \textit{diameter} of the graph is the length of the shortest path between the two most `distant' nodes.
-The \textit{transitivity} describes the probability that adjacent nodes in a graph are connected. 
-The \textit{clustering coefficient} is a measure of the transitivity at a local or global level (with slightly different calculations depending on scope).
-
-Random graphs tend to have a middling diameter and clustering coefficient, depending on the density parameter used to generate the graph.
-Graphs derived from physical phenomena like road networks tend to have a large diameter and small global clustering coefficient.
-Scale-free graphs representing social phenomena like social media follower graphs tend to have a small diameter and large clustering coefficient. 
-Known as the \textit{small-world} characteristic, we can say that of a scale-free graph, most vertices are `close' to each other.
-Some graphs have a \textit{small-world} property in some component subgraphs but have other subgraphs that are of a larger diameter and lower density.
-
-The variance in the diameter and density of graphs, even internally on large complicated graphs like \textit{knowledge graphs} means that a graph processing algorithm may need to intermittently deal with extremely dense and sparse sections within the same algorithm, complicating the ability to efficiently process them.
-\osullikomment{Needs a Cite}
+% The variance in the diameter and density of graphs, even internally on large complicated graphs like \textit{knowledge graphs} means that a graph processing algorithm may need to intermittently deal with extremely dense and sparse sections within the same algorithm, complicating the ability to efficiently process them.
+% \osullikomment{Needs a Cite}
 
 
-\textbf{Community Structure.}
-Closely linked to the idea of degree distribution and clustering coefficient is \textit{community structure}.
-Characterized by Michelle Girvan Mark and Newman in 2002, a community is broadly defined as a subgraph that is more densely connected to itself than it is to the remainder of the parent graph~\cite{Girvan2002}.
-It is a generalization of \textit{Cliques}, which are fully connected subgraphs within a parent graph.
-Communities are more distinct in graphs that have variance in their degree distributions and local versus global structure. 
-Exploiting the latent information in communities relies on the variance in graph structure and provides a useful highlight of why graphs of heterogeneous shape are not only expected but essential in many of the graph analysis tasks. 
+% \textbf{Community Structure.}
+% Closely linked to the idea of degree distribution and clustering coefficient is \textit{community structure}.
+% Characterized by Michelle Girvan Mark and Newman in 2002, a community is broadly defined as a subgraph that is more densely connected to itself than it is to the remainder of the parent graph~\cite{Girvan2002}.
+% It is a generalization of \textit{Cliques}, which are fully connected subgraphs within a parent graph.
+% Communities are more distinct in graphs that have variance in their degree distributions and local versus global structure. 
+% Exploiting the latent information in communities relies on the variance in graph structure and provides a useful highlight of why graphs of heterogeneous shape are not only expected but essential in many of the graph analysis tasks. 
 
-\textbf{Sparsity.}
-The discussion of size, degree, diameter, transitivity and community structure highlights that it is the \textit{topology} of a graph that contains much of the latent information that graph analysis algorithms try to extract. 
-A defining feature of graphs is their \textit{sparsity}.
-\textit{Sparsity} is most easily understood by looking at an adjacency matrix (figure~\ref{figure:adjacency_matrix}).
-Of the $|V|^{2}$ matrix, only $|E|$ of the values contain `information', with the remainder of the values being $0$.
-There are two impacts relevant to graph hardware acceleration. 
-First, if the graph is stored as an adjacency matrix, it also needs to allocate memory to represent the $0$s, greatly increasing the memory footprint. 
-Second, if the graph is stored in the canonical format, even if the $0$s are not represented, many memory management approaches will create the graphs in memory in the order that the vertexes are created, potentially leading to vertices connected by edges (neighbors) being stored in different locations in memory, and so will not be pre-fetched together when being processed. 
-More sophisticated graph database systems use the \textit{index-free adjacency principle} to colocate adjacent nodes in memory and use internal pointers to track the locations of neighbors without a separate index~\cite{Vukotic2015}.
+% \textbf{Sparsity.}
+% The discussion of size, degree, diameter, transitivity and community structure highlights that it is the \textit{topology} of a graph that contains much of the latent information that graph analysis algorithms try to extract. 
+% A defining feature of graphs is their \textit{sparsity}.
+% \textit{Sparsity} is most easily understood by looking at an adjacency matrix (figure~\ref{figure:adjacency_matrix}).
+% Of the $|V|^{2}$ matrix, only $|E|$ of the values contain `information', with the remainder of the values being $0$.
+% There are two impacts relevant to graph hardware acceleration. 
+% First, if the graph is stored as an adjacency matrix, it also needs to allocate memory to represent the $0$s, greatly increasing the memory footprint. 
+% Second, if the graph is stored in the canonical format, even if the $0$s are not represented, many memory management approaches will create the graphs in memory in the order that the vertexes are created, potentially leading to vertices connected by edges (neighbors) being stored in different locations in memory, and so will not be pre-fetched together when being processed. 
+% More sophisticated graph database systems use the \textit{index-free adjacency principle} to colocate adjacent nodes in memory and use internal pointers to track the locations of neighbors without a separate index~\cite{Vukotic2015}.
 
-\subsubsection{Summary of Graph Characteristics}
-\osullikomment{Summary here}
+% \subsubsection{Summary of Graph Characteristics}
+% \osullikomment{Summary here}
 
 
 \subsection{The Intelligence and Security Graph Problems}

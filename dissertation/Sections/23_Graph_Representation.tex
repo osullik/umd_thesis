@@ -1,7 +1,7 @@
 \section{Graph Representations}
 \label{section:23-graph-representations}
 The tradeoff between memory efficiency and lookup efficiency is a core tension in graph processing and many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
-This section introduces key concepts of graph representation, including storage, abstractions and primitive operations as the primary levers used to balance memory consumption and compute efficiency. 
+This section introduces key concepts of graph representation including storage and the abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
 A graph's storage format has a direct impact on the space it consumes in memory, the speed of operations over it and the operations it can perform.
@@ -114,36 +114,4 @@ Linear algebraic representations are powerful and they offer a promising directi
 \nrscomment{new sentence. They can also be memory intensive and...}
 can be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
 
-\subsection{Graph Primitives}
-Primitive operations are the abstract building blocks that compose more complicated programs. 
-For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
-Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize for to improve performance. 
-However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
-The four representations and six abstractions above \nrscomment{can you just say "The canonical and linear algebraic abstractions each have their own sets of associated primitives"} are representative of the heterogeneity of approaches in representing graphs, which in turn drives a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
 
-The primitive operations for sequential, parallel, graph Database and linear-algebraic operations all vary. 
-\nrscomment{the first 3 of those you didnt really introduce, as they arent representation formats, but the last one is. If youre going to talk about graph operations now, put it in section 24 and give it the title so its easier to find. i think you need to do operations before you can talk about primitives, if the operations define the primitives. currently its not clear if the representation format or the operation type is what drives the primitives.}
-
-\textbf{Sequential.}
-Sequential graph processing doesn't have defined primitive operations, and most graph applications implemented sequentially just directly operate on the data structures.
-Common operations include \textit{expanding neighbors}, \textit{checking attributes} and adding or removing nodes from data structures being used to track progress. 
-
-\textbf{Parallel.}
-Distributed approaches developed primitives that build on the ideas of MapReduce to parallelize processing and reduce inter-vertex dependencies~\cite{Malewicz2010}. 
-The message-passing frameworks typically execute in three primitive phases. \textit{Gather} aggregates the information of a vertex's neighbors to itself, \textit{Apply} does some computation on the gathered information and \textit{Scatter} pushes the results of the computation to the neighborhood of the node.
-
-\nrscomment{you told me to expect definitions for 3 things, gave those, and then went straight into a fourth, so i dont know if its related or were moving onto a new thing}
-\textit{Frontier}-based approaches usually employ the GAS model, just on smaller sections of the graph. 
-
-\osullikomment{Finishing here before class}
-Shared-memory approaches have 
-
-
-\textbf{Graph Database.}
-
-\textbf{Linear Algebraic.}
-
-
-The \textit{Gather, Apply, Scatter} framework is the most popular implementation of vertex-centric computing
-
-\subsubsection{Vertex-Centric}
