@@ -35,18 +35,19 @@ One of their major drawbacks is the requirement to store all the $0$s where edge
 
 \subsubsection{Incidence Matrices}
 Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
-An edge is represented with a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
+An edge is represented with \nrscomment{insert "two values, namely" here} a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
 Here, $i$ is the index of the edge, $j$ and $k$ are the vertices that the edge connects.
-Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-edges}.
-A multi-graph encoding could see a $-1$ at $M_{a,j}$ and $M_{b,j}$ and $+1$ at $M_{a,k}$ and $M_{b,k}$ describing two directed edges going from vertex $j$ to $k$.
-A hyper-edge encoding could see a $-1$ at $M_{a,j}$ and a $+1$ at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that conects the vertex $j$ to $k,l$ and $m$.
-Weights can be expressed by modifying the numbers in the matrix and the attributes are typically stored separately. 
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|\gg|V|$. 
+Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-edges}. \nrscomment{either multi-graphs and hyper-graphs(?) or multi-edges and hyper-edges, but they should be of consistent type if youre listing them}
+A multi-graph encoding \nrscomment{can be achieved using} could see a $-1$ at $M_{a,j}$ and $M_{b,j}$ and $+1$ at $M_{a,k}$ and $M_{b,k}$ describing two directed edges going from vertex $j$ to $k$. \nrscomment{if j and k are the vertices, shouldnt you say Maj and Mbj (the first edge) and then say Mbj and bk (the second edge)? i guess youre saving on having to list -1 and 1 twice, but its a bit confusing this way. maybe make it more generic and say "values at" instead of explicitly putting 1s and -1s? "values at $M_{a,j}$ and $M_{a,k}$ and $M_{b,j}$ and $M_{b,k}$ encoding two directed edges, $a$ and $b$, between vertices $j$ and $k$."}
+A hyper-edge encoding \nrscomment{can be achieved using} could see a $-1$ at $M_{a,j}$ and a $+1$ at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
+Weights can be expressed by modifying the numbers in the matrix and the attributes are typically stored separately. \nrscomment{the attributes being stored separately seems true across all of them, can you just put that in the intro summary bit and take it out of each subsequent explanation?}
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs \nrscomment{this format} may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|\gg|V|$. 
 % %
 % \nrscomment{use the real math symbol $\gg$}
 % %
-The lookup time for edge existence is slower than for an \textit{adjacency list}. 
+The lookup time for edge existence is slower \nrscomment{for this format} than for an \textit{adjacency list}. 
 To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
+\nrscomment{combine the 2 previous sentences: "Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$, since it requires scanning the entire edge list for each vertex of interest, which is more expensive than the $\mathcal{O}(|V|)$ edge lookup using adjacency lists."}
 
 \subsubsection{Compressed representations}
 To balance expressiveness, memory consumption and computability, numerous compressed representations have been developed. 
@@ -64,8 +65,8 @@ The CSR format uses three lists to compress the rows of a sparse (adjacency) mat
 % In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
 % The CSC format reverses the function of the row and column indices so that the columns are compressed.
 The CSC format reverses the format so that the columns are compressed.
-The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix.
-More complicated representations exist which are capable of compressing the graph representations even further. 
+The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix \nrscomment{"matrix M, encoding $|V|$ vertices"} of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix. \nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
+More complicated representations exist which are capable of compressing the graph representations even further \nrscomment{"... , but they require more computation overhead for the encoding and decoding process." and then kill the next sentence}. 
 But, in general, the more aggressive a compression scheme, the more computation overhead is introduced by the encoding/decoding process~\cite{Shun2015}.
 
 
