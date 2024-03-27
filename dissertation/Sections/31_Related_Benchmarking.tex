@@ -1,17 +1,27 @@
 \section{Benchmarking}
 \label{section:31_related-benchmarking}
+\nrscomment{this is PROBLEM section}
 
+\nrscomment{"Benchmarking is a process by which systems or components are compared according to some criteria, which are captured in a benchmark~\cite{Kistowski2015}."}
 Benchmarking is a process for the evaluation and comparison of systems or components according to some specific criteria or characteristics~\cite{Kistowski2015}.
 Benchmarks provide a point of reference to measure the relative performance of systems or components. 
+\nrscomment{combine into one sentence. Also, "the purpose of measurement" and "reduce uncertainty" are both vague... uncertainty in what? by measurement do you mean benchmarking?}
 The purpose of measurement is to reduce uncertainty~\cite{Hubbard2014}.
+
+\nrscomment{progress can be substantial or fast but it cant really be effective}
 Reduction in uncertainty leads to better decision-making and more effective progress. 
 
-Benchmarking is a process that applies to many fields and there are many different tasks, but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficency}, which will be collectively called \textit{performance}.
+Benchmarking is a process that \nrscomment{is used in} applies to many fields and there are many different tasks, \nrscomment{rest of this sentence: isnt this chunk supposed to be about benchmarking abstractly and empirical CS principles for it? why narrow to graphAI and name your metrics in this section?} but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficiency}, which will be collectively called \textit{performance}.
+
+\nrscomment{ok, i guess efficiency and effectiveness are very generically applicable, but i still think its better to start with the higher level methodological approach}
 Effectiveness is a measure of `how well' a problem is solved and typically uses metrics like accuracy, precision, recall, and error rate.
 Ideally, a system should maximize its effectiveness. 
 Efficiency is a measure of `how expensive' it is for a system to solve a problem and uses metrics reflecting execution time, throughput and resource usage statistics. 
 Ideally, a system should maximize its efficiency (minimize its cost).
+
+\nrscomment{not sure you need another signpost so soon after the last one}
 This section identifies why benchmarking is useful for both users and developers identifies the core principles of benchmark design and development, and how balancing the trade-offs between effectiveness and efficiency is at the core of decision-making. 
+
 
 \subsection{Why Benchmark}
 Benchmarking has long proven its utility in assisting users to make decisions about which systems to procure or frameworks to use, and helping developers understand how to optimize their systems, abstractions and algorithms in future iterations. 
@@ -21,7 +31,7 @@ In either case, a user wishes to measure the relative performance of candidate c
 A \textit{developer} represents someone working to design and build the fundamental hardware, programs, algorithms and representations that comprise the \gai stack. 
 Developers are focused on building and optimizing the individual components of \gai systems, and benchmarks provide a starting point to target more detailed workload analyses to identify bottlenecks and inform future development~\cite{Saavedra1996, Hooker1994, Hooker1995}. 
 
-Whether for a user or a developer, that benchmarking process relies on measuring the \textit{effectiveness} and \textit{efficency} of systems to reduce their uncertainty about the aspects of \gai relevant to them.
+Whether for a user or a developer, that benchmarking process relies on measuring the \textit{effectiveness} and \textit{efficiency} of systems to reduce their uncertainty about the aspects of \gai relevant to them.
 Benchmarks for high-performance computing like the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}, for solving linear equations like the LINPACK Top500~\cite{Dongarra2003}, for satisfiability problems like SATLIB~\cite{Hoos2000}, and far more have been essential in driving acquisition decisions for users and guiding optimization efforts for developers across all these fields. 
 Benchmarks are a useful tool, and section~\ref{section:32-related-benchmarking-gai} shows how they have been useful for \gai specifically.
 
