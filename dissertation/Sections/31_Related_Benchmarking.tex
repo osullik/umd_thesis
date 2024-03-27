@@ -6,10 +6,10 @@ Benchmarks provide a point of reference to measure the relative performance of s
 The purpose of measurement is to reduce uncertainty~\cite{Hubbard2014}.
 Reduction in uncertainty leads to better decision-making and more effective progress. 
 
-Benchmarking is a process that applies to many fields and there are many different tasks, but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficency}, which will be collectively referred to as \textit{performance}.
+Benchmarking is a process that applies to many fields and there are many different tasks, but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficency}, which will be collectively called \textit{performance}.
 Effectiveness is a measure of `how well' a problem is solved and typically uses metrics like accuracy, precision, recall, and error rate.
 Ideally, a system should maximize its effectiveness. 
-Efficiency is a measure of `how expensive' it is for a system to solve a problem and uses metrics reflecting execution time, throughput and various resource utilization statistics. 
+Efficiency is a measure of `how expensive' it is for a system to solve a problem and uses metrics reflecting execution time, throughput and resource usage statistics. 
 Ideally, a system should maximize its efficiency (minimize its cost).
 This section identifies why benchmarking is useful for both users and developers identifies the core principles of benchmark design and development, and how balancing the trade-offs between effectiveness and efficiency is at the core of decision-making. 
 
@@ -17,7 +17,7 @@ This section identifies why benchmarking is useful for both users and developers
 Benchmarking has long proven its utility in assisting users to make decisions about which systems to procure or frameworks to use, and helping developers understand how to optimize their systems, abstractions and algorithms in future iterations. 
 Here, a \textit{user} represents somebody deciding which system they should procure to meet their business need. 
 Users can also be software engineers who are making decisions about which framework, abstraction, programming model or algorithm to implement in their system. 
-In either case, a user wishes to measure the relative performance of candidate components in order to make an informed decision about the \gai components they are integrating it into a larger system to address a business problem~\cite{Carpinetti2002}.
+In either case, a user wishes to measure the relative performance of candidate components to make an informed decision about the \gai components they are integrating it into a larger system to address a business problem~\cite{Carpinetti2002}.
 A \textit{developer} represents someone working to design and build the fundamental hardware, programs, algorithms and representations that comprise the \gai stack. 
 Developers are focused on building and optimizing the individual components of \gai systems, and benchmarks provide a starting point to target more detailed workload analyses to identify bottlenecks and inform future development~\cite{Saavedra1996, Hooker1994, Hooker1995}. 
 
@@ -36,7 +36,7 @@ Synthetic programs make heavy use of stubs and other mocks to simulate a real pr
 In \gai, almost all existing benchmarks are at the kernel level of abstraction.
 The decomposition into smaller, more granular components addressed the amortization of efficiency across the whole program, which was impeding the identification of bottlenecks~\cite{Saavedra1996}.
 Examining each operation, kernel and sub-program as they compose up to the full program implementation will provide the best information on where the bottlenecks in a system are, particularly at the interface points between operations, kernels and programs, which are typically where weaknesses in systems exist. 
-However, partly because of the lack of shared abstractions and primitives (section~\ref{section:25-graph-primitives}), benchmarks do not go through the compositional process and instead focus on kernel-level performance as the median granularity layer.
+However, partly because of the lack of shared abstractions and primitives (section~\ref{section:25-graph-primitives}), benchmarks do not go through the compositional process, instead focusing on kernel-level performance as the median granularity layer.
 Focusing on independent kernel operations is not a good benchmark because the multitude of small kernels do not give a realistic understanding of holistic system performance `in the real world'~\cite{Hennessy2019}.
 
 An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 

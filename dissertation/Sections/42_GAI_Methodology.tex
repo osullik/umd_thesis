@@ -1,200 +1,200 @@
 \section{Methodology}
 \label{section:32-GAI-Methodology}
 
-%
-\nrscomment{this is kind of a weak opening. "We propose the following methodology to enable ... (mimic the RQ to drive home that you solved it)" and let the rest of it speak for itself}
-%
+% %
+% \nrscomment{this is kind of a weak opening. "We propose the following methodology to enable ... (mimic the RQ to drive home that you solved it)" and let the rest of it speak for itself}
+% %
 
-At a high level, the research methodology to develop the benchmarking framework is qualitative. 
-A literature review of benchmark design principles, components of a good benchmark, existing graph and AI benchmarks and empirical methods in computer science yields the framework outlined in section~\ref{section:33-GAI-Design}.
+% At a high level, the research methodology to develop the benchmarking framework is qualitative. 
+% A literature review of benchmark design principles, components of a good benchmark, existing graph and AI benchmarks and empirical methods in computer science yields the framework outlined in section~\ref{section:33-GAI-Design}.
 
-\osullikomment{Optional to include a bit of benchmark history here}
+% \osullikomment{Optional to include a bit of benchmark history here}
 
-\nrscomment{please no more history}
-Linpack~\cite{Dongarra2003}
-SATLIB~\cite{Hoos2000}
-
-
-\subsection{Benchmark Design Principles}
-
-\nrscomment{i think you should scrap this and focus on comprehensiveness, and maybe one or two other things that are specific to benchmarks and obviously good metrics to judge them by. unless theres some strong agreement that these really are the critera. they just feel like terms from another field shoved in and redefined to make it kind of work. worst case you can come up with the criteria you think are right, then throw these terms into the definitions for those and still cite the same ting. "Comprehensive problem coverage- the benchmark includes a sufficiently varied pool of tasks that are Relevant to the area of investigation and represent the breadth of tasks that might be expected of ..." or something like that}
-
-When designing a benchmark, the needs of the \textit{customer} must remain front-of-mind~\cite{Carpinetti2002}.
-Common design criteria include \textit{Relevance, Fairness, Reproducability, Verifiability, Usablility} and \textit{Economy}~\cite{Huppler2009, Kistowski2015}.
-\textit{Relevance} is the focus on the needs of the customer and alignment of the benchmark to the problem under investigation. 
-\textit{Fairness} allows the systems under test to compete without artificial constraints. 
-\textit{Reproducability} of results is an essential characteristic of any scientific inquiry, and here means both ensuring the internal consistency of benchmark results and providing sufficient detail for the benchmark to be replicated by a separate team. 
-\textit{Verifiability} makes the results credible and includes checking the correctness of system outputs as well as transparency of input and measurement.
-In particular, the balance of measuring \textit{Effectiveness} and \textit{Efficency} is of critical importance. 
-\textit{Usablility} should reduce the cost-of-entry to using the benchmark, abstracting away as much as possible to make it as accessible as possible. 
-\textit{Economy} accounts for the cost of implementing a benchmark, and for participating in evaluation. 
-These six principles are the framework we use to evaluate the quality of existing frameworks
-
-\subsection{Benchmark Components}
-
-\nrscomment{replace this section with a walkthrough of my diagram and keep the bit you have about how you fix everything and vary one component to see the effects, but just state it as a general principle rather than an example. CD will be your example later, this section is meant to be abstract.}
-
-The simplest \textit{benchmark} architecture consists of a \textit{system} under test and the \textit{workloads} executed on that system~\cite{Hennessy2019} (figure~\ref{figure:taxonomy-benchmark}).
-Here, the \textit{system} is the underlying hardware, operating system and software stack that enables an application to run, while the \textit{workload} is comprised of some \textit{problems} and \textit{programs}.
-\textit{Problems} composed of \textit{tasks} and  \textit{datasets}, representative of the distribution of data that the system is expected to process in the real world, where a \textit{task} is the goal that processing the \textit{datasets} with a \textit{program} is working towards--how we measure success.
-\textit{Programs} are the implemented data structures and algorithms that achieve the task(s) required to solve the problem.
-
-\osullikomment{Need to go into more detail on dataset selection}
-
-For example, to undertake a hardware benchmark comparing a CPU \textit{system} against a GPU \textit{system}, a representative \textit{workload} might be a graph search. 
-The \textit{problem} of finding a target vertex in a graph given the start vertex requires an \textit{Program} that can achieve the \textit{task} of manipulating graph vertices and their attributes to find the target.
-To ameliorate the impact of random variations in a graph structure, three \textit{datasets}: a random graph, a mesh graph and a scale-free graph need to be tackled by the \textit{Program} to generate an average-case result. 
-
-The focus of the benchmark can change based on which components are fixed, and which can vary. 
-To study hardware, in the example above, we would fix the \textit{Workloads} and vary the \textit{System}.
-To instead study the difference in performance between a BFS, DFS, binary search of the vertex list or random guessing of the target vertex each of these \textit{programs} vary in turn while the \textit{system} and \textit{problems} remain fixed. 
-
-\input{Figures/Taxonomy/01_benchmark_components}
-
-\subsection{Metrics}
-
-The missing component of the benchmark framework so far is the \textit{metrics}.
-\textit{metrics} in benchmarking can be split between \textit{efficency} and \textit{effectiveness} measures. 
-\textit{Efficency} metrics describe the resource consumption to run a \textit{workload} on a \textit{system}, whereas \textit{Effectiveness} metrics capture how well the \textit{program} solves the \textit{problem}.
-
-The \textit{metrics} are heavily dependent on the component of the benchmark ecosystem being compared, the user's requirements and what the goal of the benchmarking is. 
-The \textit{system} and \textit{problems} form the inputs to the benchmark (figure~\ref{figure:taxonomy-benchmark}). 
-All measurable outputs are filtered through the \textit{program} lens. 
-Even the simplest \textit{atomic} microbenchmark is a \textit{program} performing some \textit{task} on a \textit{dataset} hosted on a \textit{system}. 
-While the \textit{program} itself is an input, all measurements are dependent on the execution of the program that generates observable outputs.
-
-Focusing first on \textit{metrics} for \textit{competitive} benchmarks, the most consistent and reliable measure of performance is the \textit{execution time} of programs~\cite{Hennessy2019}.
-Execution time is an extremely useful metric in \textit{competitive} benchmarking because it gives an absolute measure of \textit{efficency}.
-If two hardware \textit{systems} executing the same workloads finish in $10$ and $100$ minutes respectively, the former system is a clear winner. 
-However, users rarely have the luxury of unlimited resources, and if in our example system $1$ consists of $100$ GPUs and system $2$ is an old, single-core personal computer the prohibitive capital and operating costs may outweigh the time efficiency. 
-Capital cost is a matter for procurement officers, so we focus on \textit{power consumption} as an indicator of operating cost as a proxy for general operating costs like maintenance, staff, lighting, climate control, rent etc. 
-Finally, the \textit{validity} of the result can be measured by comparing the output of a \textit{program} to some set of known solutions, generating metrics such as \textit{accuracy, precision, recall, F1, R$^{2}$, MSE, NMI} that can be used to approximate the \textit{effectiveness} of a solution. 
-It is then up to the \textit{competitive} benchmark customer to balance the tradeoff in \textit{efficency} and \textit{effectiveness}.
-
-\nrscomment{replace everything in metrics above this point with "competitive benchmarks use metrics that measure efficiency (execution time, power consumption, etc.) and effectiveness (accuracy, precision, etc.)". we dont need an example to know that 10 is better than 100 but it costs more. at most you can say theres a tradeoff and improving some lead to hurting others}
+% \nrscomment{please no more history}
+% Linpack~\cite{Dongarra2003}
+% SATLIB~\cite{Hoos2000}
 
 
-Benchmarks for \textit{empirical} study of graph-based AI require more depth than \textit{competitive} benchmarks.
-The purpose of \textit{empirical} benchmarks is to enable detailed study of a \textit{system} or \textit{workload}, and so while the \textit{effectiveness} metrics from the \textit{competitive} benchmarking methodology port directly across, the summary metrics preferred by lay-users to compare performance are insufficient to reveal the bottlenecks that need to be \textit{exploited} or \textit{elevated} for ongoing improvement~\cite{Saavedra1996, Hooker1994, Hooker1995}.
-As discussed in Section~\ref{section:126-processing-bottlenecks} several bottlenecks can emerge during graph and AI processing depending on the \textit{workload} characteristics. 
-\textit{Power} and \textit{timing} metrics described above are useful in \textit{empirical} benchmarks, providing a grounding function that allows for the composition of more descriptive metrics. 
-For \textit{Memory}, measuring \textit{Memory Bandwidth Utilization, Peak Memory Usage, Total Memory Usage, Memory Latency, LLC miss rate} and \textit{branch misprediction rate} can provide useful information about memory bottlenecks. 
-For \textit{Computation}, operation counting like \textit{Traversed Edge Count} or \textit{Floating Point Operation Count} (FLOPs) is helpful, and can be grounded in time to give \textit{Traversed Edges per Second} (TEPS), \textit{Floating Point Operations per Second} (FLOPS - note the large `S') which describe \textit{throughput}. 
-They can be further combined with power metrics to give \textit{TEPS per Watt} (TEPS/W) or \textit{FLOPS per Watt} (FLOPS/W).
-Combining throughput with memory metrics gives \textit{arithmetic intensity} $\left(\frac{\#~FLOPs~to~complete~program}{\#~Bytes~of~Cache~Memory~Accessed}\right)$ or \textit{operational intensity} $\left(\frac{\#~FLOPs~to~complete~program}{\#~Bytes~of~Main~Memory~Accessed}\right)$, i.e. computations per byte of DRAM traffic~\cite{Williams2009}. 
-\textit{Network} metrics measuring \textit{round-trip latency} and \textit{network bandwidth} provide information useful to evaluating distributed systems. 
+% \subsection{Benchmark Design Principles}
 
-Combined, \textit{memory, network} and \textit{compute} times can be used to discover bottleneck mathematically:
+% \nrscomment{i think you should scrap this and focus on comprehensiveness, and maybe one or two other things that are specific to benchmarks and obviously good metrics to judge them by. unless theres some strong agreement that these really are the critera. they just feel like terms from another field shoved in and redefined to make it kind of work. worst case you can come up with the criteria you think are right, then throw these terms into the definitions for those and still cite the same ting. "Comprehensive problem coverage- the benchmark includes a sufficiently varied pool of tasks that are Relevant to the area of investigation and represent the breadth of tasks that might be expected of ..." or something like that}
 
- $Time~Estimate=T_{est}=max\left(T_{mem},~T_{comp},~T_{net}\right)$
+% When designing a benchmark, the needs of the \textit{customer} must remain front-of-mind~\cite{Carpinetti2002}.
+% Common design criteria include \textit{Relevance, Fairness, Reproducability, Verifiability, Usablility} and \textit{Economy}~\cite{Huppler2009, Kistowski2015}.
+% \textit{Relevance} is the focus on the needs of the customer and alignment of the benchmark to the problem under investigation. 
+% \textit{Fairness} allows the systems under test to compete without artificial constraints. 
+% \textit{Reproducability} of results is an essential characteristic of any scientific inquiry, and here means both ensuring the internal consistency of benchmark results and providing sufficient detail for the benchmark to be replicated by a separate team. 
+% \textit{Verifiability} makes the results credible and includes checking the correctness of system outputs as well as transparency of input and measurement.
+% In particular, the balance of measuring \textit{Effectiveness} and \textit{Efficency} is of critical importance. 
+% \textit{Usablility} should reduce the cost-of-entry to using the benchmark, abstracting away as much as possible to make it as accessible as possible. 
+% \textit{Economy} accounts for the cost of implementing a benchmark, and for participating in evaluation. 
+% These six principles are the framework we use to evaluate the quality of existing frameworks
 
-\noindent Where the Memory, Network or Compute with the maximal duration calculated as:
+% \subsection{Benchmark Components}
 
- $Memory~Time=T_{mem}=\frac{Bytes~Accessed~in~Memory}{Memory~Bandwidth}$
+% \nrscomment{replace this section with a walkthrough of my diagram and keep the bit you have about how you fix everything and vary one component to see the effects, but just state it as a general principle rather than an example. CD will be your example later, this section is meant to be abstract.}
 
- $Network~Time=T_{net}=\frac{Bytes~over~Network~Interface}{Network~Bandwidth}$
+% The simplest \textit{benchmark} architecture consists of a \textit{system} under test and the \textit{workloads} executed on that system~\cite{Hennessy2019} (figure~\ref{figure:taxonomy-benchmark}).
+% Here, the \textit{system} is the underlying hardware, operating system and software stack that enables an application to run, while the \textit{workload} is comprised of some \textit{problems} and \textit{programs}.
+% \textit{Problems} composed of \textit{tasks} and  \textit{datasets}, representative of the distribution of data that the system is expected to process in the real world, where a \textit{task} is the goal that processing the \textit{datasets} with a \textit{program} is working towards--how we measure success.
+% \textit{Programs} are the implemented data structures and algorithms that achieve the task(s) required to solve the problem.
 
- $Compute~Time=T_{comp}=\frac{Number~of~Iterations \times avg~Instructions~per~Iteration}{Effective~Instructions~Per~Cycle}$
+% \osullikomment{Need to go into more detail on dataset selection}
 
-\noindent indicates the bottleneck in the system\footnote{Note: Formulae assume a GAS programming model that iterates until convergance}~\cite{Intel2020}.
-Bottlenecks can also be detected visually using a \textit{Roofline} analysis that plots observed \textit{Operatinal Intensity} against the theoretically attainable \textit{throughput} of a system~\cite{Williams2009}.
+% For example, to undertake a hardware benchmark comparing a CPU \textit{system} against a GPU \textit{system}, a representative \textit{workload} might be a graph search. 
+% The \textit{problem} of finding a target vertex in a graph given the start vertex requires an \textit{Program} that can achieve the \textit{task} of manipulating graph vertices and their attributes to find the target.
+% To ameliorate the impact of random variations in a graph structure, three \textit{datasets}: a random graph, a mesh graph and a scale-free graph need to be tackled by the \textit{Program} to generate an average-case result. 
 
-For metrics to be effective they need to meet the needs of the user. 
-Trying to cater to too many customers simultaneously is a fraught path, however, provided that telemetry is well-implemented the \textit{cometetive} metrics can be extracted as a subset of the more detailed \textit{empirical} metrics that will inform further research.
-Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in section~\ref{section:33-GAI-Design}.
+% The focus of the benchmark can change based on which components are fixed, and which can vary. 
+% To study hardware, in the example above, we would fix the \textit{Workloads} and vary the \textit{System}.
+% To instead study the difference in performance between a BFS, DFS, binary search of the vertex list or random guessing of the target vertex each of these \textit{programs} vary in turn while the \textit{system} and \textit{problems} remain fixed. 
 
-%
-\nrscomment{the beginning of empirical metrics about them being more in-depth and helping you find bottle necks is good. the laundry list of metrics shouldnt be in the prose- move it to a table. the formulas dont add any value and putting whole words in math cursive is impossible to parse. id scrap them and give formulas for whatever metrcis you use in the CD case study, formatted like proper math equations.}
-%
+% \input{Figures/Taxonomy/01_benchmark_components}
 
-%
-\nrscomment{i was expecting this section to teach me how to choose metrics, and didnt really get that. id boil it down based on my comments above and then see if you can synthesize that into something that resembles an abstract framework for choosing benchmark metrics}
-%
+% \subsection{Metrics}
 
-\subsection{Benchmarking Graph Applications}
+% The missing component of the benchmark framework so far is the \textit{metrics}.
+% \textit{metrics} in benchmarking can be split between \textit{efficency} and \textit{effectiveness} measures. 
+% \textit{Efficency} metrics describe the resource consumption to run a \textit{workload} on a \textit{system}, whereas \textit{Effectiveness} metrics capture how well the \textit{program} solves the \textit{problem}.
 
-%
-\nrscomment{this section is an info dump that gives me nothing of value. what are you trying to get across here?}
-%
+% The \textit{metrics} are heavily dependent on the component of the benchmark ecosystem being compared, the user's requirements and what the goal of the benchmarking is. 
+% The \textit{system} and \textit{problems} form the inputs to the benchmark (figure~\ref{figure:taxonomy-benchmark}). 
+% All measurable outputs are filtered through the \textit{program} lens. 
+% Even the simplest \textit{atomic} microbenchmark is a \textit{program} performing some \textit{task} on a \textit{dataset} hosted on a \textit{system}. 
+% While the \textit{program} itself is an input, all measurements are dependent on the execution of the program that generates observable outputs.
+
+% Focusing first on \textit{metrics} for \textit{competitive} benchmarks, the most consistent and reliable measure of performance is the \textit{execution time} of programs~\cite{Hennessy2019}.
+% Execution time is an extremely useful metric in \textit{competitive} benchmarking because it gives an absolute measure of \textit{efficency}.
+% If two hardware \textit{systems} executing the same workloads finish in $10$ and $100$ minutes respectively, the former system is a clear winner. 
+% However, users rarely have the luxury of unlimited resources, and if in our example system $1$ consists of $100$ GPUs and system $2$ is an old, single-core personal computer the prohibitive capital and operating costs may outweigh the time efficiency. 
+% Capital cost is a matter for procurement officers, so we focus on \textit{power consumption} as an indicator of operating cost as a proxy for general operating costs like maintenance, staff, lighting, climate control, rent etc. 
+% Finally, the \textit{validity} of the result can be measured by comparing the output of a \textit{program} to some set of known solutions, generating metrics such as \textit{accuracy, precision, recall, F1, R$^{2}$, MSE, NMI} that can be used to approximate the \textit{effectiveness} of a solution. 
+% It is then up to the \textit{competitive} benchmark customer to balance the tradeoff in \textit{efficency} and \textit{effectiveness}.
+
+% \nrscomment{replace everything in metrics above this point with "competitive benchmarks use metrics that measure efficiency (execution time, power consumption, etc.) and effectiveness (accuracy, precision, etc.)". we dont need an example to know that 10 is better than 100 but it costs more. at most you can say theres a tradeoff and improving some lead to hurting others}
+
+
+% Benchmarks for \textit{empirical} study of graph-based AI require more depth than \textit{competitive} benchmarks.
+% The purpose of \textit{empirical} benchmarks is to enable detailed study of a \textit{system} or \textit{workload}, and so while the \textit{effectiveness} metrics from the \textit{competitive} benchmarking methodology port directly across, the summary metrics preferred by lay-users to compare performance are insufficient to reveal the bottlenecks that need to be \textit{exploited} or \textit{elevated} for ongoing improvement~\cite{Saavedra1996, Hooker1994, Hooker1995}.
+% As discussed in Section~\ref{section:126-processing-bottlenecks} several bottlenecks can emerge during graph and AI processing depending on the \textit{workload} characteristics. 
+% \textit{Power} and \textit{timing} metrics described above are useful in \textit{empirical} benchmarks, providing a grounding function that allows for the composition of more descriptive metrics. 
+% For \textit{Memory}, measuring \textit{Memory Bandwidth Utilization, Peak Memory Usage, Total Memory Usage, Memory Latency, LLC miss rate} and \textit{branch misprediction rate} can provide useful information about memory bottlenecks. 
+% For \textit{Computation}, operation counting like \textit{Traversed Edge Count} or \textit{Floating Point Operation Count} (FLOPs) is helpful, and can be grounded in time to give \textit{Traversed Edges per Second} (TEPS), \textit{Floating Point Operations per Second} (FLOPS - note the large `S') which describe \textit{throughput}. 
+% They can be further combined with power metrics to give \textit{TEPS per Watt} (TEPS/W) or \textit{FLOPS per Watt} (FLOPS/W).
+% Combining throughput with memory metrics gives \textit{arithmetic intensity} $\left(\frac{\#~FLOPs~to~complete~program}{\#~Bytes~of~Cache~Memory~Accessed}\right)$ or \textit{operational intensity} $\left(\frac{\#~FLOPs~to~complete~program}{\#~Bytes~of~Main~Memory~Accessed}\right)$, i.e. computations per byte of DRAM traffic~\cite{Williams2009}. 
+% \textit{Network} metrics measuring \textit{round-trip latency} and \textit{network bandwidth} provide information useful to evaluating distributed systems. 
+
+% Combined, \textit{memory, network} and \textit{compute} times can be used to discover bottleneck mathematically:
+
+%  $Time~Estimate=T_{est}=max\left(T_{mem},~T_{comp},~T_{net}\right)$
+
+% \noindent Where the Memory, Network or Compute with the maximal duration calculated as:
+
+%  $Memory~Time=T_{mem}=\frac{Bytes~Accessed~in~Memory}{Memory~Bandwidth}$
+
+%  $Network~Time=T_{net}=\frac{Bytes~over~Network~Interface}{Network~Bandwidth}$
+
+%  $Compute~Time=T_{comp}=\frac{Number~of~Iterations \times avg~Instructions~per~Iteration}{Effective~Instructions~Per~Cycle}$
+
+% \noindent indicates the bottleneck in the system\footnote{Note: Formulae assume a GAS programming model that iterates until convergance}~\cite{Intel2020}.
+% Bottlenecks can also be detected visually using a \textit{Roofline} analysis that plots observed \textit{Operatinal Intensity} against the theoretically attainable \textit{throughput} of a system~\cite{Williams2009}.
+
+% For metrics to be effective they need to meet the needs of the user. 
+% Trying to cater to too many customers simultaneously is a fraught path, however, provided that telemetry is well-implemented the \textit{cometetive} metrics can be extracted as a subset of the more detailed \textit{empirical} metrics that will inform further research.
+% Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in section~\ref{section:33-GAI-Design}.
+
+% %
+% \nrscomment{the beginning of empirical metrics about them being more in-depth and helping you find bottle necks is good. the laundry list of metrics shouldnt be in the prose- move it to a table. the formulas dont add any value and putting whole words in math cursive is impossible to parse. id scrap them and give formulas for whatever metrcis you use in the CD case study, formatted like proper math equations.}
+% %
+
+% %
+% \nrscomment{i was expecting this section to teach me how to choose metrics, and didnt really get that. id boil it down based on my comments above and then see if you can synthesize that into something that resembles an abstract framework for choosing benchmark metrics}
+% %
+
+% \subsection{Benchmarking Graph Applications}
+
+% %
+% \nrscomment{this section is an info dump that gives me nothing of value. what are you trying to get across here?}
+% %
 
 %Relevant, Fair, Reproducible, Verifiable, Usable, Economic
 
-There are three core components to the existing graph benchmarking landscape. 
-\textit{Datasets Collections} only provide the graphs to be used as inputs and occasionally target outputs. 
-The variance in \textit{program} performance in graph processing is highly dependent on the shape and size of the input and so curated collections of varied graphs are critical for benchmark development.
-\textit{Benchmark Suites} provide some or all of the \textit{Problems}, \textit{Programs}, and \textit{Systems} to evaluate relative performance, typically drawing the \textit{datasets} from the \textit{dataset collections} to generate \textit{timing} and \textit{throughput} metrics.
-\textit{Workload Analyses} are detailed reports and empirical studies of how \textit{systems} perform with various \textit{workloads}. 
-They are typically more involved, involving code instrumentation and system profiling to build a detailed understanding of computational, memory and network bottlenecks. 
+% % There are three core components to the existing graph benchmarking landscape. 
+% % \textit{Datasets Collections} only provide the graphs to be used as inputs and occasionally target outputs. 
+% % The variance in \textit{program} performance in graph processing is highly dependent on the shape and size of the input and so curated collections of varied graphs are critical for benchmark development.
+% % \textit{Benchmark Suites} provide some or all of the \textit{Problems}, \textit{Programs}, and \textit{Systems} to evaluate relative performance, typically drawing the \textit{datasets} from the \textit{dataset collections} to generate \textit{timing} and \textit{throughput} metrics.
+% % \textit{Workload Analyses} are detailed reports and empirical studies of how \textit{systems} perform with various \textit{workloads}. 
+% % They are typically more involved, involving code instrumentation and system profiling to build a detailed understanding of computational, memory and network bottlenecks. 
 
-Reviewing the available benchmark suites and workload analyses yields 47 distinct kernels that are used to characterize the performance of graph applications.
-The vast majority of those kernels exist in only the Graph-Based Benchmark Suite (GBBS)~\cite{Dhulipala2020, Dhulipala2021} or the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2016}. 
-Both the GBBS and SNAP are better characterized as repositories for efficient parallel and sequential graph kernel implementations respectively, and most of the available kernels are not widely used in benchmark suites or workload analysis. 
-The most commonly used kernels are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), and \textit{Mean Local Clustering Coefficient} (MLCC). 
-Graph Database benchmarks tend to focus on measuring the \textit{Create, Read, Update} and \textit{Delete} operations, with simple index lookups and neighborhood expansions.
+% % Reviewing the available benchmark suites and workload analyses yields 47 distinct kernels that are used to characterize the performance of graph applications.
+% % The vast majority of those kernels exist in only the Graph-Based Benchmark Suite (GBBS)~\cite{Dhulipala2020, Dhulipala2021} or the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2016}. 
+% % Both the GBBS and SNAP are better characterized as repositories for efficient parallel and sequential graph kernel implementations respectively, and most of the available kernels are not widely used in benchmark suites or workload analysis. 
+% % The most commonly used kernels are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), and \textit{Mean Local Clustering Coefficient} (MLCC). 
+% % Graph Database benchmarks tend to focus on measuring the \textit{Create, Read, Update} and \textit{Delete} operations, with simple index lookups and neighborhood expansions.
 
-\input{Tables/31_kernels.tex}
+% % \input{Tables/31_kernels.tex}
 
-\textbf{Task Coverage.}
-Table~\ref{table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
-The coverage of graph-based AI tasks from Chapter~\ref{chapter:10-Introduction} is recorded for each benchmark. 
-In general, task coverage clusters around the core operations of the underlying programs, and results in GDB benchmarks focusing on the \textit{Create, Read, Update, Delete} (CRUD) operations, and GNN benchmarks focusing on prediction tasks.
-Within the graph benchmarks 47 distinct kernels are studied. 
-The modally studied kernels were BFS, SSSP, Weakly Connected Components (WCC) and Mean Local Clustering Coefficient (MLCC). 
-The remaining 43 kernels are a mix of specific subtypes of these kernels and are almost all drawn from the extensive \textit{Graph Based Benchmark Suite} (GBBS)~\cite{Dhulipala2020, Dhulipala2021} and \textit{Stanford Network Analysis Project} (SNAP)~\cite{Leskovec2016}.
-Both GBBS and SNAP are better characterized as collections of efficient programs for the kernels.
-No single benchmark suite covers the breadth of graph-based AI tasks, and all of them focus on kernel-level programs in evaluation. 
-Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but as there is no commonly agreed primitive building blocks for graph processing, a fair comparison between approaches is difficult at the kernel level only.
-Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces. 
-A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that actually address the AI problem. 
+% \textbf{Task Coverage.}
+% Table~\ref{table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
+% The coverage of graph-based AI tasks from Chapter~\ref{chapter:10-Introduction} is recorded for each benchmark. 
+% In general, task coverage clusters around the core operations of the underlying programs, and results in GDB benchmarks focusing on the \textit{Create, Read, Update, Delete} (CRUD) operations, and GNN benchmarks focusing on prediction tasks.
+% Within the graph benchmarks 47 distinct kernels are studied. 
+% The modally studied kernels were BFS, SSSP, Weakly Connected Components (WCC) and Mean Local Clustering Coefficient (MLCC). 
+% The remaining 43 kernels are a mix of specific subtypes of these kernels and are almost all drawn from the extensive \textit{Graph Based Benchmark Suite} (GBBS)~\cite{Dhulipala2020, Dhulipala2021} and \textit{Stanford Network Analysis Project} (SNAP)~\cite{Leskovec2016}.
+% Both GBBS and SNAP are better characterized as collections of efficient programs for the kernels.
+% No single benchmark suite covers the breadth of graph-based AI tasks, and all of them focus on kernel-level programs in evaluation. 
+% Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but as there is no commonly agreed primitive building blocks for graph processing, a fair comparison between approaches is difficult at the kernel level only.
+% Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces. 
+% A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that actually address the AI problem. 
 
-\input{Tables/32_datasets.tex}
-\textbf{Dataset Coverage.}
+% \input{Tables/32_datasets.tex}
+% \textbf{Dataset Coverage.}
 
-%
-\nrscomment{this feels like it belongs in related work. assuming that, the info is fine, just condense it down to drive home a few key takeaways and leave it there.}
-%
+% %
+% \nrscomment{this feels like it belongs in related work. assuming that, the info is fine, just condense it down to drive home a few key takeaways and leave it there.}
+% %
 
-The performance of graph-based AI tasks is highly dependent on the shape of the input data. 
-Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
-While the GNN graphs are typically much smaller, these datasets will often have hundreds or thousands of graphs belonging to the same dataset for the GNN to learn on. 
-Most of the benchmarks have at least one random and one scale-free graph in their collections, though mesh graphs and dynamic graphs are very under-represented. 
-Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
-The divergence from the GDB and GNN use is because most of the traditional graph algorithms operate only on the topological data, and so the attributes are not included.
-GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
-Gaps exist in applying the traditional graph algorithms to more complicated graph structures, the inclusion of mesh graphs and the use of dynamic (streaming) graphs that a graph-based AI benchmark needs to account for. 
+% The performance of graph-based AI tasks is highly dependent on the shape of the input data. 
+% Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
+% While the GNN graphs are typically much smaller, these datasets will often have hundreds or thousands of graphs belonging to the same dataset for the GNN to learn on. 
+% Most of the benchmarks have at least one random and one scale-free graph in their collections, though mesh graphs and dynamic graphs are very under-represented. 
+% Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
+% The divergence from the GDB and GNN use is because most of the traditional graph algorithms operate only on the topological data, and so the attributes are not included.
+% GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
+% Gaps exist in applying the traditional graph algorithms to more complicated graph structures, the inclusion of mesh graphs and the use of dynamic (streaming) graphs that a graph-based AI benchmark needs to account for. 
 
-\input{Tables/33_metrics}
-\textbf{Metric Coverage.}
+% \input{Tables/33_metrics}
+% \textbf{Metric Coverage.}
 
-%
-\nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
-%
-The coverage of the metrics of interest by the existing benchmarks (~\ref{table:benchmark-metrics}) reflects the reality of benchmarking.
-To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
-Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
-The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
-More telling is the reverse, where newer benchmarks that are still trying to demonstrate the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
-A graph-based AI benchmark needs to be able to handle approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficiency} tradeoff.
-Further, as much of the known bottlenecks are in memory overheads, tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
-Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
-Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
+% %
+% \nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
+% %
+% The coverage of the metrics of interest by the existing benchmarks (~\ref{table:benchmark-metrics}) reflects the reality of benchmarking.
+% To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
+% Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
+% The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
+% More telling is the reverse, where newer benchmarks that are still trying to demonstrate the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
+% A graph-based AI benchmark needs to be able to handle approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficiency} tradeoff.
+% Further, as much of the known bottlenecks are in memory overheads, tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
+% Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
+% Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
 
-\textbf{Program Coverage.}
+% \textbf{Program Coverage.}
 
-\textbf{System Coverage.}
+% \textbf{System Coverage.}
 
-\osullikomment{Explain the Link to Maturity Models here.}
+% \osullikomment{Explain the Link to Maturity Models here.}
 
 %Critiques:
-~\cite{DeMarzi2023}
+% ~\cite{DeMarzi2023}
 
 
 
-\cite{Basak2021}
+% \cite{Basak2021}
 
 
-\subsection{Benchmarking Artificial Intelligence Applications}
+% \subsection{Benchmarking Artificial Intelligence Applications}
 
-\subsection{Empirical Methods in Computer Science}
+% \subsection{Empirical Methods in Computer Science}
 
-\subsection{Principles for designing a Graph-Based AI Benchmark}
+% \subsection{Principles for designing a Graph-Based AI Benchmark}
