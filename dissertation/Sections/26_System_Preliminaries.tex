@@ -1,0 +1,47 @@
+\section{System Preliminaries}
+\label{section:26-system-preliminaries}
+
+\subsection{Locality}
+
+
+
+\textbf{Spatial Locality.} 
+\textit{Spatial locality} is the idea that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon, and so proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
+In figure~\ref{figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
+Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the impact that poor \textit{spatial locality} is evident.
+In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found. 
+So, for the graph in figure~\ref{figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
+The first `expansion' of \textbf{A} enqueues the pointers to \textbf{B} and \textbf{F}.
+\textbf{B} is already in the cache and the `cache hit' when it is dequeued for expansion means that the vertex is quickly retrieved, exploiting the spatial locality of \textbf{A} and \textbf{B} in this instance. 
+The processer expands \textbf{B} to add the pointer to its neighbor \textbf{C} to the queue.
+When it comes time to expand \textbf{F}, however, there is a `cache miss'.
+\textbf{F} is not in the cache, so the processor must now wait for it to be loaded from main memory, incurring a penalty proportional to the latency of retrieving the vertex from main memory plus the time it takes to load the whole block given memory bandwidth constraints. 
+For simplicity, let us now assume that we have loaded another $3$ vertices starting from \textbf{F} (\textbf{F, G, H}) to replace the content of the cache and expand \textbf{F}, adding its neighbor \textbf{D} to the queue. 
+\textbf{C} is now at the front of the queue but has been bumped out of the cache by the load of (\textbf{F, G, H}) so the processor must wait again for \textbf{C} to be loaded from main memory before it can be expanded. 
+The problem continues throughout the algorithm, effectively `chasing pointers' all over the main memory, the `irregular memory accesses' that cause so much difficulty in graph processing~\cite{Beamer2015}.
+The `pointer chasing' behavior here happens because of the poor \textit{spatial locality} in this graph.
+Put simply, the vertices that are close to each other in the graph topologically are not close to each other in memory. 
+It also shows how only a small percentage of each cache line is used in each step, putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
+The irregular memory access problem is exacerbated in larger graphs, where it is more likely that the vertex list does not fit in the cache and will have to access the main memory to retrieve the data~\cite{Chung2012}, reflected empirically in a decreasing \textit{instructions per miss} rate on larger graphs~\cite{Beamer2015}.
+
+\input{Figures/Locality/01_simple_locality.tex}
+
+\textbf{Temporal Locality.} 
+There is, however, some natural locality in \textit{scale-free} graphs that can be readily exploited. 
+Consider figure~\ref{figure:locality-simple} again. 
+While it isn't a scale-free graph in any real sense, vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
+To \textit{exploit} the \textit{temporal locality} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm.
+So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality~\cite{Beamer2015}.
+
+\input{Figures/Locality/02_attributed_locality}
+
+\textbf{Attribted Graphs and Locality}
+The latency problem is exacerbated by attributed graphs. 
+It is common for the topological and attribute data of a graph to be stored separately in memory~\cite{Buluc2013}. 
+Figure~\ref{figure:locality-attributed} expands on the example from figure~\ref{figure:locality-simple} by adding in vertex attributes. 
+The attributes are stored at separate memory locations, with pointers from the topological vertex (memory positions $1-9$) to their respective attributes (memory positions $10-29$). 
+Attributes consume more memory so more memory bandwidth is required to load them.
+The heterogeneous data types being loaded in attributed graphs (like knowledge graphs) have been shown to inflict significant Dynamic Random Access Memory (DRAM) accesses and hence, increase latency and memory bandwidth pressure~\cite{Basak2019}.
+To illustrate why, again consider a BFS that is searching for the `\textbf{Grape}' vertex. 
+Each time a vertex is dequeued, its attribute must be retrieved from memory to see if it is the target vertex. 
+In the worst case, this is a memory access each time a vertex is checked, or, if reducing the latency of the comparison by pre-fetching the attribute along with the vertex, the cache block of $3$ quickly becomes filled with the vertex plus its attribute, exacerbating the spatial locality problem.
