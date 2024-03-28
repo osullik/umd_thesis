@@ -3,7 +3,7 @@
 
 A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is equal to or less than the demand placed on it~\cite{Goldratt2004}. 
 To improve the overall performance of a system under test, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, elevate the capacity of the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
-This section reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of accelerators to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-related-gai-acceleration}.
+This section reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-related-gai-acceleration}.
 
 Table~\ref{table:benchmark-metrics} in section~\ref{section:32-related-benchmarking-gai} shows that most benchmark suites cannot capture the detailed metrics required to identify specific bottlenecks because of limited access to the systems under test to implement code instrumentation and system profiling.
 \textit{Workload Analyses} are the more detailed, invasive investigations that have access to the environment and the implementation to gather the required data. 
@@ -143,6 +143,7 @@ Graphs are updated in batches and performance is measured in batch latency, the 
 
 
 \subsection{Summary of \gai bottlenecks}
+\osullikomment{Summary Here}
 
 % The sizes of graphs have been increasing in the `big data' era, w
 % Beyond the Input/Output (I/O) problems that `big data' graphs pose in the face of no universally accepted binary exchange format~\cite{Azad2021}, large graphs quickly became unable to fit in the memory of a single machine, and some algorithms 

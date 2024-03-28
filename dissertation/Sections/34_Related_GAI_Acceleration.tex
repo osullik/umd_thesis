@@ -1,13 +1,47 @@
 \section{\gai Acceleration}
 \label{section:34-related-gai-acceleration}
 
-elevate vs exploit
+This section reviews current efforts to accelerate \gai to identify what the current areas of focus are and to inform which metrics are likely to make the benchmark a useful discriminative tool.
+After identifying a bottleneck, the three options to proceed are \textit{exploit the bottleneck}, \textit{elevate the bottleneck} or \textit{accept the bottleneck}~\cite{Goldratt1990,Goldratt2004}.
+Accepting the bottleneck is a business decision that may be made if the costs of exploiting or elevating the bottleneck outweigh the benefits. 
 
+\subsection{Exploitation Techniques}
+\textit{Exploiting} a bottleneck involves making changes to the implementation that enable it to better utilize the resources available in the environment. 
+Cache blocking, graph-reordering, traversal scheduling, compression, sampling and new programming paradigms are all \textit{exploitation} techniques.
+
+Cache blocking aims to divide a graph into a collection of subgraphs that are no larger than the available cache block size. 
+The general idea is that by decomposing everything to be small enough to fit in the cache, there should be a significant reduction in irregular memory accesses. 
+The effectent and effective decomposition remains a challenge~\cite{Balaji2018,Beamer2017, Ham2016, Zhang2020, Sundaram2015}
+
+Graph reordering is a preprocessing technique that aims to optimize the order in which vertices are stored in memory to improve spatial locality. 
+It can be done statically or dynamically, but in general, is computationally expensive and generally outweighs the benefits when amortized over queries~\cite{Balaji2018}
+
+Traversal scheduling aims to pick the optimal order to traverse edges to maximize temporal locality in graph processing. 
+It can be done in an offline or an online mode but typically has a high computational overhead that can overshadow the gains in graph processing speed~\cite{Mukkara2018}
+
+Compression is useful for balancing the size of a graph in memory with the speed of computation. 
+An adjacency list is more compact than an adjacency matrix is more compact than an incidence matrix~\cite{Kepner2015}, but each level of expansion here has additional information.
+The CSR/CSC format is much more compact than a regular adjacency matrix and is the de facto standard representation for graphs~\cite{Saad2003}.
+Compression beyond the CSR/CSC level has shown to be highly effective in parallel graph processing~\cite{Dhulipala2021}, but the encoding/decoding overheads must be offset by computation gains, and so is generally infeasible for sequential implementations~\cite{Shun2015}.
+
+Many machine learning models make aggressive use of sampling to reduce the complexity of computation. 
+Embedding methods like deepwalk~\cite{Perozzi2014} and node2vec~\cite{Grover2016} use techniques like random walks to build embeddings reflective of nodes and their neighborhoods. 
+Work on GNNs find that by combining topological and attribute information, a sampling approach can yield results very close to the performance of full-graph analysis~\cite{Hamilton2017}.
+Sampling may have some drawbacks for tasks that require more exact information, like GNN-based Structural Analysis tasks based on subgraph isomorphism.
+
+Limited research so far has explored the ability to use approximate or incremental algorithms to reduce processing overheads. 
+One exploration of incremental graph partitioning for entity resolution on dynamic graphs illustrates the utility of incremental approaches~\cite{Tauer2019}, and incremental algorithms performed much better on the SAGA-Bench dynamic graph benchmark, based on batch-latency metrics~\cite{Basak2020}.
+
+\osullikomment{Stop here for Thurs, 28 Mar}
+
+\subsection{Elevation Techniques}
+\textit{Elevating} a bottleneck involves upgrading the environment to increase the capacity of the bottleneck.
+Distributing computing, adding memory, adding compute, upgrading network adapters and adding hardware accelerators are all \textit{elevation} techniques.
 
 
 \textbf{Graph Pre-Processing}
 Many of the computational problems are not from the graph processing itself, but from generating heuristics and optimizing approximate solutions. 
-One option to mitigate the impact of poor spatial locality is to pre-process the graph and re-order the vertices in memory which can be computationally expensive and time-consuming~\cite{Balaji2018}
+
 Another is to use vertex scheduling to determine the optimal order to visit vertices to maximize spatial locality. 
 vertex scheduling can be offline or online, though online approaches are generally infeasible because of their computational cost~\cite{Mukkara2018}.
 Another optimization that aims to reduce memory bandwidth consumption and latency is `cache-blocking' where the graph is decomposed to subgraphs that can fit into the available cache. 
