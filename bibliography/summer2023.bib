@@ -447,7 +447,11 @@ abstract={Both static and streaming graph processing are central in data analyti
   groups={HIVE},
   url = {https://github.com/osullik/summer2023/blob/main/Papers/bibliography/reference_papers/Chen2020.pdf},
 	abstract={There is growing interest in graph pattern mining (GPM) problems such as motif counting. GPM systems have been developed to provide unified interfaces for programming algorithms for these problems and for running them on parallel systems. However, existing systems may take hours to mine even simple patterns in moderate-sized graphs, which significantly limits their real-world usability. We present Pangolin, an efficient and flexible in-memory GPM framework targeting shared-memory CPUs and GPUs. Pangolin is the first GPM system that provides high-level abstractions for GPU processing. It provides a simple programming interface based on the extend-reduce-filter model, which allows users to specify application specific knowledge for search space pruning and isomorphism test elimination. We describe novel optimizations that exploit locality, reduce memory consumption, and mitigate the overheads of dynamic memory allocation and synchronization. Evaluation on a 28-core CPU demonstrates that Pangolin outperforms existing GPM frameworks Arabesque, RStream, and Fractal by 49x, 88x, and 80x on average, respectively. Acceleration on a V100 GPU further improves performance of Pangolin by 15x on average. Compared to state-of-the-art hand-optimized GPM applications, Pangolin provides competitive performance with less programming effort.},
-  comments={PiUMA Competitor}
+  comments={PiUMA Competitor
+  
+  Targets shared-memory CPUs and GPUs.
+  provides high-level abstractions for GPU processing based on the extend-reduce-filter model
+  optimizations exploit locality, reduce memory consumption, and mitigate the overheads of dynamic memory allocation and synchronization}
 }
 
 
@@ -2028,7 +2032,9 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   organization={IEEE},
   groups={graph_hardware},
   comment={Alternate to PIUMA; PROBLEMS: “data-intensive” applications do not exhibit the same locality traits as compute-intensive applications thus the latency of individual memory accesses overwhelms the advantages of deeply pipelined, fast cores.These “data-intensive” applications do not exhibit the same locality traits as compute-intensive applications thus the latency of individual memory accesses overwhelms the ad- vantages of deeply pipelined, fast cores.
-  SOLUTION: They exploit `weak locality' i.e. locality over 10's of MB to GB -- locality larger than cache size.}
+  SOLUTION: They exploit `weak locality' i.e. locality over 10's of MB to GB -- locality larger than cache size.
+  
+  uses PIM, Programmabable Global Address space and thread migration to improve the efficency. I.e. move the computation to the data to reduce accesses to memory. }
 }
 
 @inproceedings{Song2016,
@@ -2039,7 +2045,15 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   year={2016},
   organization={IEEE},
   groups={graph_hardware},
-  comments={Alernate to PiUMA. PROBLEMS: Lack of locality means poor cache usage; large graph processing tasks often run inefficiently on conventional parallel processors. The speedup often levels off after only a small number of processors are utilized because the computing patterns for graph algorithms require much more communication between processor nodes than conventional, highly localized processing requires. The limited communication bandwidth of conventional parallel processors generally cannot keep pace with the demands of graph algorithms. graph algorithms incur significant computational overhead for index manipulation tasks required by graph traversing queries.}
+  comments={Alernate to PiUMA. 
+  PROBLEMS: Lack of locality means poor cache usage; large graph processing tasks often run inefficiently on conventional parallel processors. The speedup often levels off after only a small number of processors are utilized because the computing patterns for graph algorithms require much more communication between processor nodes than conventional, highly localized processing requires. The limited communication bandwidth of conventional parallel processors generally cannot keep pace with the demands of graph algorithms. graph algorithms incur significant computational overhead for index manipulation tasks required by graph traversing queries.
+  SOLUTIONS: 
+  - DISTRIBUTED SPARSE MATRIX PROCESSING
+  - a sparse matrix-based graph instruction set (i.e. exploit Linear Albrgraic primitives) 
+  - a cacheless memory system (i.e. move away from caches to a number of specialized modules, including matrix reader, matrix writer, sorter, arithmetic logic unit (ALU), and communication modules enabling highly parallel pipelined computations)
+  accelerator-based architecture, a systolic sorter, 
+  high-bandwidth multi dimensional toroidal communication network (6D toroidal configuration using high bandwidth optical links. The 6D toroid provides much higher communication performance than lower-dimensional toroids because of the higher bisection bandwidth.) IE: Elevate the network latency communiction bottleneck, 
+  and randomized communications.}
 }
 
 @inproceedings{Ham2016,
@@ -2050,7 +2064,21 @@ Spectral2 speeds up this process by using greedy bisection to speed up the searc
   year={2016},
   organization={IEEE},
   groups={graph_hardware},
-  comment={Alternate to Piuma}
+  comment={Alternate to Piuma.
+  SIMULATED. 
+  uses GraphMAT programming framework (a Linear Algebra approach)
+  Decomposes into phases (Process, Reduce, Apply).
+  uses on-chip memory to buffer vertex reads and writes. 
+  Stores the edgelist on chip to reduce latency.
+  
+  For algorithms that access the whole graph (PR,CC) they ignore edge strucutre and just read vertices sequentially from memory. 
+  
+  They use sequential memeory reads.
+  
+  RESULTS:
+  - Does well on dense compute algos and dense graphs because of big sequential reads and reuse. 
+  - Traversal based algorithms are still memory Bound
+  - More energy efficient. }
 }
 
 @article{Peccerillo2022,
@@ -3020,7 +3048,8 @@ comments={
   OBSERVATIONS: Uses sparse matrix representations. The main idea of GraphMat is to take vertex programs and map them to generalized sparse matrix vector multiplication operations. We get the productivity benefits of vertex programming while enjoying the high performance of a matrix backend. Graph analytics frameworks come with a variety of different pro- gramming models. Some common ones are vertex programming (“think like a vertex”), matrix operations (“graphs are sparse matri- ces”), task models (“vertex/edge updates can be modeled as tasks”), declarative programming (“graph operations can be written as data- log programs”), and domain-specific languages (“graph processing needs its own language”)
   PROBLEMS: CombBLAS runs out of memory on GPU when running, as does MapGraph -> GPU Memory is a problem. 
   SOLUTINS:
-  METHODS:}
+  METHODS: Vertex Centric model supported by Linear Algebra in the back end
+  }
 }
 
 @inproceedings{Satish2014,
@@ -3414,6 +3443,10 @@ comments={
     (3) non-Slicing avoids barriers and slice-switching data movement. Slicing can hard optimal ordering by limiting the scheduling scope. Slicing does make more effective use of on-chip memory.
     (4) Push reduces communication bandwidth and better hides communication latency. Pull-based methods with tuned pre-fetching that are based on vertex convergance can be more effective.
     PRIMITIVES:
+
+    HARDWARE ACCELERATONS: 
+    1. Accelerated unit for task scheduling. 
+    2. Shared Cache on-chip memory 
   }
 }
 
@@ -4116,4 +4149,138 @@ comments={
   journal={arXiv preprint arXiv:2306.14052},
   year={2023},
   comment={"GNNs use hardware accelerators like GPU, FPGA and ASIC"}
+}
+
+@inproceedings{Yan2020,
+  title={Hygcn: A gcn accelerator with hybrid architecture},
+  author={Yan, Mingyu and Deng, Lei and Hu, Xing and Liang, Ling and Feng, Yujing and Ye, Xiaochun and Zhang, Zhimin and Fan, Dongrui and Xie, Yuan},
+  booktitle={2020 IEEE International Symposium on High Performance Computer Architecture (HPCA)},
+  pages={15--29},
+  year={2020},
+  organization={IEEE}, 
+  abstract={Inspired by the great success of neural networks, graph convolutional neural networks (GCNs) are proposed to analyze graph data. GCNs mainly include two phases with distinct execution patterns. The Aggregation phase, behaves as graph processing, showing a dynamic and irregular execution pattern. The Combination phase, acts more like the neural networks, presenting a static and regular execution pattern. The hybrid execution patterns of GCNs require a design that alleviates irregularity and exploits regularity. Moreover, to achieve higher performance and energy efficiency, the design needs to leverage the high intra-vertex parallelism in Aggregation phase, the highly reusable inter-vertex data in Combination phase, and the opportunity to fuse phase-by-phase execution introduced by the new features of GCNs. However, existing architectures fail to address these demands. In this work, we first characterize the hybrid execution patterns of GCNs on Intel Xeon CPU. Guided by the characterization, we design a GCN accelerator, HyGCN, using a hybrid architecture to efficiently perform GCNs. Specifically, first, we build a new programming model to exploit the fine-grained parallelism for our hardware design. Second, we propose a hardware design with two efficient processing engines to alleviate the irregularity of Aggregation phase and leverage the regularity of Combination phase. Besides, these engines can exploit various parallelism and reuse highly reusable data efficiently. Third, we optimize the overall system via inter-engine pipeline for inter-phase fusion and priority-based off-chip memory access coordination to improve off-chip bandwidth utilization. Compared to the state-of-the-art software framework running on Intel Xeon CPU and NVIDIA V100 GPU, our work achieves on average 1509× speedup with 2500× energy reduction and average 6.5× speedup with 10× energy reduction, respectively.},
+comments={}
+}
+
+@inproceedings{Zhang2018,
+  title={GraphP: Reducing communication for PIM-based graph processing with efficient data partition},
+  author={Zhang, Mingxing and Zhuo, Youwei and Wang, Chao and Gao, Mingyu and Wu, Yongwei and Chen, Kang and Kozyrakis, Christos and Qian, Xuehai},
+  booktitle={2018 IEEE International Symposium on High Performance Computer Architecture (HPCA)},
+  pages={544--557},
+  year={2018},
+  organization={IEEE},
+  comment={ ELEVATE paper - using PIM techniques
+            EXPLOITs with graph partitiong andCommunication Reduction
+            }
+}
+
+@article{Cheng2018,
+  title={A communication-reduced and computation-balanced framework for fast graph computation},
+  author={Cheng, Yongli and Wang, Fang and Jiang, Hong and Hua, Yu and Feng, Dan and Zhang, Lingling and Zhou, Jun},
+  journal={Frontiers of Computer Science},
+  volume={12},
+  pages={887--907},
+  year={2018},
+  publisher={Springer},
+  comments={makes BSP a low communication implementation by batching communications at each superstep}
+}
+
+@misc{Zhu2023,
+      title={MEGA: A Memory-Efficient GNN Accelerator Exploiting Degree-Aware Mixed-Precision Quantization}, 
+      author={Zeyu Zhu and Fanrong Li and Gang Li and Zejian Liu and Zitao Mo and Qinghao Hu and Xiaoyao Liang and Jian Cheng},
+      year={2023},
+      eprint={2311.09775},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      comments={Quantization improves memory efficency}
+}
+@article{Zhang2023a,
+  title={Accelerating GNN Training by Adapting Large Graphs to Distributed Heterogeneous Architectures},
+  author={Zhang, Lizhi and Lu, Kai and Lai, Zhiquan and Fu, Yongquan and Tang, Yu and Li, Dongsheng},
+  journal={IEEE Transactions on Computers},
+  year={2023},
+  publisher={IEEE},
+  comment={Uses buffers and caches to improve data reuse (temporal locality)}
+}
+
+@inproceedings{Chen2023,
+  title={Lift: Exploiting Hybrid Stacked Memory for Energy-Efficient Processing of Graph Convolutional Networks},
+  author={Chen, Jiaxian and Zhong, Zhaoyu and Sun, Kaoyi and Ma, Chenlin and Mao, Rui and Wang, Yi},
+  booktitle={2023 60th ACM/IEEE Design Automation Conference (DAC)},
+  pages={1--6},
+  year={2023},
+  organization={IEEE},
+  comments={A PIM strategy.
+  Data Reuse: near bank processing units to process vertices with strong resusability (processing is computed in a location near the memory banks - memory banks are stacked in 3 dimensions on top of the microprocessor}
+}
+
+@inproceedings{Lin2023,
+  title={Hyscale-gnn: A scalable hybrid gnn training system on single-node heterogeneous architecture},
+  author={Lin, Yi-Chien and Prasanna, Viktor},
+  booktitle={2023 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  pages={557--567},
+  year={2023},
+  organization={IEEE},
+  comments={Hybrid Architecture, Sampling, Minibatching}
+}
+
+@article{Zhong2023,
+  title={CoGNN: An algorithm-hardware co-design approach to accelerate GNN inference with mini-batch sampling},
+  author={Zhong, Kai and Zeng, Shulin and Hou, Wentao and Dai, Guohao and Zhu, Zhenhua and Zhang, Xuecang and Xiao, Shihai and Yang, Huazhong and Wang, Yu},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+  year={2023},
+  publisher={IEEE},
+  comments={Optimizations: Buffer for data reuse, Quantization, sampling}
+}
+
+@inproceedings{Zhang2023b,
+  title={Dynasparse: Accelerating gnn inference through dynamic sparsity exploitation},
+  author={Zhang, Bingyi and Prasanna, Viktor},
+  booktitle={2023 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  pages={233--244},
+  year={2023},
+  organization={IEEE},
+  comments={Optimizations: Specialized FPGA compute modules for each graph primitive}
+}
+
+@inproceedings{Abi2023,
+  title={Gnnbuilder: An automated framework for generic graph neural network accelerator generation, simulation, and optimization},
+  author={Abi-Karam, Stefan and Hao, Cong},
+  booktitle={2023 33rd International Conference on Field-Programmable Logic and Applications (FPL)},
+  pages={212--218},
+  year={2023},
+  organization={IEEE},
+  comments={GNN optimizations are model specific, and a `general' GNN accelerator isn't really a thing.}
+}
+
+@article{Lin2024,
+  title={HitGNN: High-throughput GNN training framework on CPU+ Multi-FPGA heterogeneous platform},
+  author={Lin, Yi-Chien and Zhang, Bingyi and Prasanna, Viktor},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  year={2024},
+  publisher={IEEE},
+  comments={Hybrid CPU/FPGA model}
+}
+
+@inproceedings{Chen2022,
+  title={ReGNN: A redundancy-eliminated graph neural networks accelerator},
+  author={Chen, Cen and Li, Kenli and Li, Yangfan and Zou, Xiaofeng},
+  booktitle={2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA)},
+  pages={429--443},
+  year={2022},
+  organization={IEEE},
+  comments={Reduces redundancy by caching high-degree vertices for reuse}
+}
+
+@article{Kiningham2022,
+  title={GRIP: A graph neural network accelerator architecture},
+  author={Kiningham, Kevin and Levis, Philip and R{\'e}, Christopher},
+  journal={IEEE Transactions on Computers},
+  volume={72},
+  number={4},
+  pages={914--925},
+  year={2022},
+  publisher={IEEE}, 
+    abstract={We present GRIP, a graph neural network accelerator architecture designed for low-latency inference. Accelerating GNNs is challenging because they combine two distinct types of computation: arithmetic-intensive vertex-centric operations and memory-intensive edge-centric operations. GRIP splits GNN inference into a three edge- and vertex-centric execution phases that can be implemented in hardware. GRIP specializes each unit for the unique computational structure found in each phase. For vertex-centric phases, GRIP uses a high performance matrix multiply engine coupled with a dedicated memory subsystem for weights to improve reuse. For edge-centric phases, GRIP use multiple parallel prefetch and reduction engines to alleviate the irregularity in memory accesses. Finally, GRIP supports several GNN optimizations, including an optimization called vertex-tiling that increases the reuse of weight data. We evaluate GRIP by performing synthesis and place and route for a 28nm implementation capable of executing inference for several widely-used GNN models (GCN, GraphSAGE, G-GCN, and GIN). Across several benchmark graphs, it reduces 99th percentile latency by a geometric mean of 17× and 23× compared to a CPU and GPU baseline, respectively, while drawing only 5W .},
+    comment={Kiningham and Levi's 2022 Paper presents the GRap Inference Processor (GRIP). GRIP is a GNN hardware accelerator design that aims to increase the performance of GNN inference by reducing latency across the inference process. Prior work in GNN and Graph hardware accelerators still struggles with memory access latency. For example, HyGCN must load all weights before processing, and lacks sufficient on-chip memory bandwidth, indicing memory latency. A modification of Google's TPU Design TPU+ struggles with GNNs because it has no optimization to handle processing edge-centric operations and lacks the memory bandwidth to load the weights effectively. The Graphicionado Graph Analysis accelerator is optimized to accelerate graph algorithms that use a small amount of state per vertex, needs to load all weights before processing and splits vertex processing into seperate channels, increasing memory bandwidth requirements. To improve on prior work, GRIP uses the stateless 4 function 'Gather-Reduce-Transform-Activate' (GReTA) programming model which divides inference into three phases: Edge Accumulate, Vertex Accumulate and Vertex Update. Each of these phases is then implemented seperately in hardware optimized for the function it performs. The Edge accumulator uses prefetching to gather a partition of the source nodes and split them into 'lanes'. The lanes allow the processing to be partitioned to seperate SRAMs for processing. The Vertex Unit casts the transformation as a pipelined matrix multiplication action, allowing multiple concurrent multiplication actions and reducing latency. Their update unit pre-computes nonlinearities and approximates the input to the closest nonlinearity. The two key optimizations are Execution Partitioning and Vertex Tiling. Execution partitioning effectively means that only small parititions of the graph are loaded at a time, reducing the amount of on-chip memory needed. Vertex Tiling effecively allows them to compute the matrix multiplication in small 'tiles' rather than loading the whole matirx into memory. They evaluate on fouce datasets: Youtube, Livejournal, Pokec and Reddit using four types of GNN: a Graph Convolution Network (GCN), GraphSAGE, Graph Isomorphism Network (GIN) and a Gated Graph Convolution Network (GGCN). They shows that at best, their system has a geometric mean of 17x speedup across all datasets on a CPU baseline and a geometric mean of 23.4x speedup on a GPU baseline. The GPU is slower because of the latency incurred copying from main memory to GPU memory. They found that the majority of power is consumed by accessing main memory, and the second most was uses loading weights in and out of the buffers.}
 }
