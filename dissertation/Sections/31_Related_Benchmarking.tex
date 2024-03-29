@@ -55,24 +55,29 @@ Focusing on independent kernel operations is not a good benchmark because the mu
 An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 
 
 \subsection{Components of a Benchmark}
-There are abstract three dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{figure:benchmark_components}).
+\nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
+\nrscomment{rephrase this as "Benchmarks contain three major components, which are outlined in fig x: datasets drawn from a domain of interest, tasks drawn from a relevant problem space, and metrics covering relevant evaluation criteria." then skip the bit about SUT for now and go into your explanation of datasets/tasks/etc.. Talk about SUT once youre done with that.}
+There are three abstract dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{figure:benchmark_components}).
 
 The abstract dimensions of the a benchmark define what the `challenge' is that needs to be solved, and how to differentiate performance.
 The domain is source of the \textit{datasets} that will be used as input to the benchmark.
 A good benchmark that adheres to the \textit{relevance} principle must use datasets that are sourced from the domain, or that are from the same distribution as the domain so that results can be interpreted in context. 
 The problem dimension is informed jointly by the domain and the purpose of the benchmark. 
 The problem defines the \textit{tasks} that comprise the benchmark. 
-The tasks should be drawn from the domain, and decomposed to such a level that measuring their completion yields useful information. 
+The tasks should be drawn from the domain \nrscomment{problem space not domain}, and decomposed to such a level that measuring their completion yields useful information. 
 Together, a dataset and a task comprise a \textit{workload}.
 The evaluation dimension defines, collects and computes the \textit{metrics} of interest. 
 Metrics must be relevant to the purpose of the benchmark and fair to all of the systems under test. 
 Careful definition and documentation of the abstract dimensions of benchmark design are essential to developing a benchmark that is \textit{verifiable} and \textit{reproducible}.
 
+\nrscomment{Id open this with something like: "Benchmarks provide the tools to compare systems or system components. The systems under test (SUTs) by the benchmark are comprised of hardware..." then tie it together with "To gain useful insight, all but one aspect of the Benchmark-SUT framework is held constant, and the difference in performance attributable to the aspect that varied is measured. For instance, one can add or remove hardware, ..."}
 The system under test is what is being measured by the benchmark. 
 The environment consists of the \textit{hardware} and underlying \textit{software stack} that defines the system under test. 
 Changes to the environment typically look like adding or removing hardware (e.g. adding DRAM, modifying cache), adding accelerators (GPUs, TPUs etc), using a distributed system or even changing the operating system or database components of the software that don't directly participate in solving tasks on a given dataset but may that may elevate existing bottlenecks in a given workload.
 The implementations are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
 Changes in implementations might look like trailing new data structures, abstractions, programming models, algorithms or other techniques to exploit the latent capacity of a system under test to execute a workload more efficiently or effectively. 
+
+\nrscomment{Are there enough things that can be varied that they warrant a bulleted list or table or something?}
 
 \input{Figures/Diagrams/01_benchmark_components.tex}
 
