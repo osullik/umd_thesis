@@ -1,6 +1,48 @@
 \section{Problem}
 \label{section:12-problem}
 
+\gai covers a broad collection of tasks with very different computational requirements. 
+The real-world requirements of an organization will define which tasks they need to complete and the size and shape of the data those tasks are run on. 
+Choosing the best \gai implementation and optimal environment to run that implementation relies on understanding how efficient and effective a particular implementation of \gai on a particular environment performing particular tasks on relevant data is.
+Users of \gai may need to achieve multiple \gai tasks in the same environment, so they will need to understand the tradeoffs in efficiency and effectiveness of completing each task for given combinations of implementations and environments while staying within some cost constraint.
+With no other information, the effectiveness, efficiency and cost aspects are uncertain.
+The best way to reduce uncertainty is by taking measurements~\cite{Hubbard2014}.
+Reduction in uncertainty leads to better decision-making, and so effective judicious measurement of the effectiveness, efficiency and cost of \gai implementations and environments will lead to superior outcomes for the users of \gai.
+The problem is then, how to effectively measure the trade-offs between the effectiveness, efficiency and cost of \gai systems. 
+ 
+Benchmarking is a process by which systems or components are compared according to some criteria, that provide a point of reference to measure the relative performance~\cite{Kistowski2015}.
+It is used in many fields and for many different tasks, but here specifically refers to evaluating and comparing \textit{effectiveness} and \textit{efficiency}, (which will be collectively called \textit{performance}) and \textit{cost}.
+Effectiveness is a measure of `how well' a problem is solved and typically uses metrics like accuracy, precision, recall, and error rate.
+Ideally, a system should maximize its effectiveness. 
+Efficiency is a measure of `how quickly' a system solves a problem and uses metrics reflecting execution time, throughput and resource usage statistics. 
+Ideally, a system should maximize its efficiency (minimize its cost).
+Cost is a measure of `how expensive' it is for a system to solve a problem and can use purely financial metrics, or proxy estimates like power consumption.
+Ideally, a system should minimize cost. 
+The problem is then, what should a comprehensive \gai benchmark to effectively compare the effectiveness, efficiency and cost of a system look like?
+
+\osullikomment{Diagram here about the tension between effectiveness, efficency and cost}
+
+
+This thesis proposes a hybrid solution to the problem of \gai benchmarking, where we draw from both existing benchmarking and workload analysis studies to develop an approach that allows for an investigator to trade-off between effectiveness and efficiency when testing a system.
+A hybrid benchmark must provide the dataset coverage to test variance from differing input shapes and sizes, support the varying abstractions and representations that drive implementations and collect the metrics required to make informed decisions about the tradeoffs between effectiveness and efficiency. 
+It must allow one component to vary while the others remain fixed, and decouple the components sufficiently so that any desired combination of components can be tested. 
+
+
+% \subsection{Why Benchmark}
+% \nrscomment{this also feels like problem/motivation content. I didn't read it in detail, but from the high level look at what its saying, id suggest reframing it slightly to get away from the user/developer focus and instead attach it as "the types of things a benchmark should enable are x, y decision making, which requires z information. That can be supported with examples of how someone doing procurement might use that info, but i think that can be secondary to the motivation youre trying to accomplish, rather than the primary focus of this chunk. If you do use an example to demonstrate the utility and can make it more specific to intelligence context that seven better. this whole thing is starting to stray from the IandS perspective, so i think sprinkling it in whenever you need to use examples will help keep it cohesive.}
+
+% Benchmarking has long proven its utility in assisting users to make decisions about which systems to procure or frameworks to use, and helping developers understand how to optimize their systems, abstractions and algorithms in future iterations. 
+% Here, a \textit{user} represents somebody deciding which system they should procure to meet their business need. 
+% Users can also be software engineers who are making decisions about which framework, abstraction, programming model or algorithm to implement in their system. 
+% In either case, a user wishes to measure the relative performance of candidate components to make an informed decision about the \gai components they are integrating it into a larger system to address a business problem~\cite{Carpinetti2002}.
+% A \textit{developer} represents someone working to design and build the fundamental hardware, programs, algorithms and representations that comprise the \gai stack. 
+% Developers are focused on building and optimizing the individual components of \gai systems, and benchmarks provide a starting point to target more detailed workload analyses to identify bottlenecks and inform future development~\cite{Saavedra1996, Hooker1994, Hooker1995}. 
+
+% Whether for a user or a developer, that benchmarking process relies on measuring the \textit{effectiveness} and \textit{efficiency} of systems to reduce their uncertainty about the aspects of \gai relevant to them.
+% Benchmarks for high-performance computing like the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}, for solving linear equations like the LINPACK Top500~\cite{Dongarra2003}, for satisfiability problems like SATLIB~\cite{Hoos2000}, and far more have been essential in driving acquisition decisions for users and guiding optimization efforts for developers across all these fields. 
+% Benchmarks are a useful tool, and section~\ref{section:32-related-benchmarking-gai} shows how they have been useful for \gai specifically.
+
+
 
 
 % 1. Data Size is increasing 
@@ -10,12 +52,11 @@
 % 5. We don't have a good method to trade-off between the iron triangle of Scope, Time and Resources, or in this case: Optimality, Time and Cost. 
 % 6. There are a lot of acceleration methods and we can't really compare them at the moment. 
 
-\osullikomment{Add motivation here: Tradeoff between time, accuracy and power / resources, and the requirement to understand the relationship between these}
+% \osullikomment{Add motivation here: Tradeoff between time, accuracy and power / resources, and the requirement to understand the relationship between these}
 
 % \nrscomment{youre proposing a hybrid solution- state that}
-This thesis proposes a hybrid solution to the problem of \gai benchmarking, where we draw from both existing benchmarking and workload analysis studies to develop an approach that allows for an investigator to trade-off between effectiveness and efficiency when testing a system.
+
 % To advance the adoption and development of \gai, we need to balance the comparability of benchmarks with the insight generated by workload analyses. 
 % An ideal benchmark will support the breadth of problems in the \gai taxonomy, and provide the depth of datasets and tasks to effectively characterize their best, worst, expected and typical performance in the real world. 
 % It must provide interpretable effectiveness and efficiency metrics for comparing \gai approaches using different abstractions, programming paradigms, system configurations and hardware accelerators. 
-A hybrid benchmark must provide sufficient dataset coverage to test the impact of varying input shapes and sizes, support the varying abstractions and representations that drive implementations and collect the metrics required to make informed decisions about the tradeoffs between effectiveness and efficiency. 
-It must allow one component to vary while the others remain fixed, and decouple the components sufficiently so that any desired combination of components can be tested. 
+
