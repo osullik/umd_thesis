@@ -4,12 +4,11 @@
 \subsection{A Taxonomy of \gai}
 Graph-Based Artificial Intelligence (\gai) is a sub-field of computer science dedicated to developing models and algorithms to support learning and reasoning over information represented in graph data structures.
 Graphs are powerful abstractions of the real world that capture how entities relate to each other across a variety of dimensions, including social, spatial, semantic and logical. 
-%
-While graphs can express a wealth of information about the world, applying AI to that information effectively is challenging.
-%
-Most \gai approaches focus on analyzing the graph topology, which is suitable for exploring search spaces in planning problems, and basic pattern matching. 
-For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches for dynamic graphs, heterogeneous graphs, and graphs at the exa-scale. 
-Most recently, the focus has shifted to using graphs to improve other AI models, such as with the Retrieval Augmented Generation (RAG) paradigm, where symbolic AI reasoning over graphs grounds generated content in curated, traceable facts.
+While graphs can express a wealth of information about the world, applying AI to that information efficiently and effectively is challenging.
+
+% Most \gai approaches focus on analyzing the graph topology, which is suitable for exploring search spaces in planning problems, and basic pattern matching. 
+% For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches for dynamic graphs, heterogeneous graphs, and graphs at the exa-scale. 
+% Most recently, the focus has shifted to using graphs to improve other AI models, such as with the Retrieval Augmented Generation (RAG) paradigm, where symbolic AI reasoning over graphs grounds generated content in curated, traceable facts.
 
 \gai problems can be broken down into several overarching "AI Problem" categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in Table~\ref{table:taxonomy}. 
 Each \gai problem lists several typical tasks within the \gai problem space. 
@@ -17,168 +16,208 @@ The \gai taxonomy highlights the breadth of problems that a framework for benchm
 
 \input{Tables/10_graph_based_ai.tex}
 
+\textbf{Searching, Planning and Scheduling.}
+These problems are the `classical' AI problems that are common in simple agent-based systems.
+They become \gai problems when the input data is transformed into a graph to make a simplified representation of the world and support autonomous navigation, decision making and discovery tasks in the real world. 
+
+\textbf{Structural Analysis.}
+These problems extract latent information from the topology of graphs. 
+\gai problems in this category focus on pattern matching, discovering which data points are related and understanding how information flows through the graph. 
+In the real world, SA tasks try to match known behavioral or spatial patterns, discover subcommunities, partition resources and identify critical people in influence networks. 
+
+\textbf{Graph Reasoning.}
+These problems build on the idea of programs with common-sense~\cite{Mccarthy1959}, and the semantic web efforts of the $90$s and early $2000$s.
+These \gai problems focus on information extraction, knowledge structuring, question answering and `thinking' based problems.
+They tend to generate knowledge graphs or accept a knowledge graph as input. 
+Reasoning tasks in the real world can include automated fact-checking, question-answering over knowledge graphs, and ontological inference tasks. 
+
+\textbf{Graph Abstraction.}
+As machine learning gained popularity, the problem of how to encode graphs into formats usable by models emerged. 
+Initial efforts generated embeddings from graphs so that they were described by some vector of features that could be passed to a downstream machine learning model. 
+Real-world applications of graph abstraction emerge as part of processing pipelines and usually contribute to classification or prediction tasks. 
+
+\textbf{Graph Prediction.}
+The abstraction methods had inherent information loss, and so this class of AI problem aims to learn directly from graphs. 
+Comprised primarily of Graph Neural Networks (GNN), these \gai tasks focus on classification, prediction and transformation problems.
+Real-world applications have used GNNs for anomaly detection, missing link prediction, and forecasting traffic flow.
+
+\textbf{Trustworthy AI.}
+The transparency, explainability, interpretability and trustworthiness of AI systems remain unsolved problems in AI/ML safety~\cite{Hendrycks2021}.
+\gai tasks in this category aim to improve the trustworthiness of existing systems by combining sub-symbolic generative models with symbolic graph-based representations, providing structured knowledge to generation and making reasoning processes more transparent. 
+Using \gai to enhance trustworthiness is an emerging field of research. 
+
 \subsection{Real-World Uses of \gai}
 
-\nrscomment{may as well lean into the IandS motivation and title it IandS use cases}
-
+% \nrscomment{may as well lean into the IandS motivation and title it IandS use cases}
 \gai is used heavily in real-world problem-solving. 
 The breadth of tasks means that the `real-world' use varies from routine use to preliminary experimental work. 
-A recent survey of \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows just how deeply \gai permeates. 
-%
-\nrscomment{a recent survey of people shows how deeply graphsAI permeates... the people? reword this. and say something better than graphAI permeates. it is widely used across... or something}
-%
+A recent survey of the problems, datasets and challenges faced by \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows that \gai is in use and significant opportunities exist for expanding its contributions in solving real-world problems. 
+% %
+% \nrscomment{a recent survey of people shows how deeply graphsAI permeates... the people? reword this. and say something better than graphAI permeates. it is widely used across... or something}
+% %
 
-\nrscomment{i would introduce the table instead by saying something like "IandS problems spanning xyz are graph native or otherwise require analysis of the relationships between data and can benefit from graphAI. We review several of the major ... in table x." then maybe talk about whatever the takeaway is, im guessing its where the constraints are since you took the time to add that column in.}
-We extend that survey with a literature review (Table~\ref{table:problem-survey}), finding that many interesting problems need to examine the relationships between data, as well as the data itself. 
-Graphs are highly suited to representing the relationships between data.
-The problems span geospatial, social, financial and multi-sensor fusion domains, with many of the specific problems easily generalizable beyond an I\&S context.
+We extend that survey with a literature review and find that I\&S problems from geospatial, targeting, cyber security, financial and incident response are either graph-native or can be represented with graphs and analyzed using \gai. 
+We summarize the results of the review in table~\ref{table:problem-survey}, finding that many the most common expected inputs are extremely large streaming knowledge graphs.
+The complexities of streaming and heterogeneous graph data are discussed in detail in section~\ref{section:32-related-benchmarking-gai}, but generally, they increase complexity and degrade the efficiency of \gai tasks. 
+Given the most commonly identified constraint is temporal (either because of the need to support real-time monitoring and reporting or because of limited data availability windows) there is a direct tension between the nature of the input data, the complexity of the \gai tasks and the constraints on processing those problems. 
 
-\nrscomment{"Most IandS problems operate on graph-native input data, with the remainder..."}
-Most input data are \textit{graph-native}, with the remainder easily represented as graph problems.
+% \nrscomment{i would introduce the table instead by saying something like "IandS problems spanning xyz are graph native or otherwise require analysis of the relationships between data and can benefit from graphAI. We review several of the major ... in table x." then maybe talk about whatever the takeaway is, im guessing its where the constraints are since you took the time to add that column in.}
 
-\nrscomment{again make the IandS problems the subject of the sentence}
-Of note, almost all the input data are heterogeneous attributed multigraphs, and many of the problems are expected to receive continuous update streams. 
-Graph heterogeneity and streaming are two known sources of complexity in \gai.
 
-The problems are spread across four of the six domains identified in the \gai Taxonomy (Table~\ref{table:taxonomy}).
 
-\nrscomment{why are we talking about these 2 problems specifically? and the point youre making with them isnt really clear. is there one?}
-\textit{Graph abstraction} is implicitly present in the \textit{graph prediction} (a downstream ML model can be used in place of a GNN), and \textit{Trustworthy AI} is an ongoing goal for all organizations, and will support human interfaces to these \gai tasks in the back-end. 
-All of the tasks are constrained by the size of the input data and the complexity of representation. 
-Of particular note, temporal limitations reflect either the requirement for near-real-time monitoring, or limited time to access data.
+% \nrscomment{"Most IandS problems operate on graph-native input data, with the remainder..."}
+% Most input data are \textit{graph-native}, with the remainder easily represented as graph problems.
 
-Overall, the problem survey shows that \gai problems deeply proliferate in the real world. 
-\nrscomment{in real-world IandS problems}
-The complexities introduced by heterogeneous representations, temporal constraints, streaming data and the breadth of tasks further emphasize the importance of characterizing \gai performance and understanding how interactions between the representations, programs, and systems manifest and the tradeoffs that need to be made when selecting the optimal approach to solve the problem(s) facing an organization.
-\nrscomment{this says "the complexities emphasize the importance of understanding how interactions manifest and tradeoffs that must be made when choosing the approach". its too much for one sentence. boil it down to the key point or break it up into 2. for the last bit instead of "...solve the problem(s) facing an organization" something like "... to solve IandS problems"}
+% \nrscomment{again make the IandS problems the subject of the sentence}
+% Of note, almost all the input data are heterogeneous attributed multigraphs, and many of the problems are expected to receive continuous update streams. 
+% Graph heterogeneity and streaming are two known sources of complexity in \gai.
+
+% The problems are spread across four of the six domains identified in the \gai Taxonomy (Table~\ref{table:taxonomy}).
+
+% \nrscomment{why are we talking about these 2 problems specifically? and the point youre making with them isnt really clear. is there one?}
+% \textit{Graph abstraction} is implicitly present in the \textit{graph prediction} (a downstream ML model can be used in place of a GNN), and \textit{Trustworthy AI} is an ongoing goal for all organizations, and will support human interfaces to these \gai tasks in the back-end. 
+% All of the tasks are constrained by the size of the input data and the complexity of representation. 
+% Of particular note, temporal limitations reflect either the requirement for near-real-time monitoring, or limited time to access data.
+
+% Overall, the problem survey shows that \gai problems deeply proliferate in the real world. 
+% \nrscomment{in real-world IandS problems}
+% The complexities introduced by heterogeneous representations, temporal constraints, streaming data and the breadth of tasks further emphasize the importance of characterizing \gai performance and understanding how interactions between the representations, programs, and systems manifest and the tradeoffs that need to be made when selecting the optimal approach to solve the problem(s) facing an organization.
+% \nrscomment{this says "the complexities emphasize the importance of understanding how interactions manifest and tradeoffs that must be made when choosing the approach". its too much for one sentence. boil it down to the key point or break it up into 2. for the last bit instead of "...solve the problem(s) facing an organization" something like "... to solve IandS problems"}
  
 \input{Tables/11_problem_survey.tex}
 
 \subsection{\gai Challenges}
 Developing efficient and effective \gai is challenging because of the \textit{massive, heterogeneous} and increasingly \textit{dynamic} nature of input data. 
-The \textit{complexity} of \gai processing \nrscomment{processing or algorithms?} and the \textit{constraints} on time, compute and other resources introduce further challenges. 
-\nrscomment{"Time, compute, and other resource constraints on graphAI systems introduce further challenges. We briefly elaborate on each of these challenge areas below."}
+Input size and shape, time, computing, and other resource constraints on \gai systems introduce further challenges. We briefly elaborate on each of these challenge areas below.
+% \nrscomment{"Time, compute, and other resource constraints on graphAI systems introduce further challenges. We briefly elaborate on each of these challenge areas below."}
 
-\nrscomment{phrase these bunch of headers as challenges, not just one word each. the first bunch are dataset challenges and then the last one is a system challenge}
 
-\nrscomment{Handling large scale graphs.}
-\textbf{Massive.} 
-The largest available `real world' graph datasets are over $3.5$ billion vertices and $128$ billion edges~\cite{Dhulipala2021}, and the `huge' synthetic benchmark from Graph500 has over $4.3$ trillion vertices and $70$ trillion edges\footnote{\url{https://graph500.org/?page_id=12\#sec-3_4}}.
-In uncompressed formats using inefficient algorithms, these sizes are well beyond the capability of any single commercial machine's memory, and sequential processing is extremely unlikely to achieve a \gai task in a reasonable timeframe.
+
+% \nrscomment{phrase these bunch of headers as challenges, not just one word each. the first bunch are dataset challenges and then the last one is a system challenge}
+
+\textbf{Handling large scale graphs.}
+While the exact details of the I\&S datasets are not available, a fictional example from an adjacent domain can illustrate how quickly \gai datasets grow. 
+Consider a telecommunications provider who services one-third of a country's population. 
+Assuming that country has a population equivalent to the USA, that's about $111$ million customers.
+Customers can send messages to anyone else in the country with a phone that is willing to send and receive messages, approximately $80\%$ of the population, or around $266$ Million people. 
+The average messaging rate is around $33$ messages per person, per day\footnote{\scriptsize \url{https://intelligentcontacts.com/15-text-messaging-statistics-every-business-should-know/}}, or around $8.8$ billion text messages per day.
+Naively applying that average across the $16$ hours the average person is awake that comes out to about $548$ million messages per waking hour. 
+If, for example, that company wanted to build a graph of messages to identify individuals who might be spammers~\cite{Ren2023}, they need to be able to keep up with adding an average of $548$ million messages per hour to the graph, synthesize it with historical data and execute whatever \gai task helps them to classify a phone number as a scammer in that hour. 
+This fictional telecommunications graph would be only mid-sized. 
+The largest available `real world' static graph datasets are over $3.5$ billion vertices and $128$ billion edges~\cite{Dhulipala2021}, and the `huge' synthetic benchmark from Graph500 has over $4.3$ trillion vertices and $70$ trillion edges\footnote{\scriptsize \url{https://graph500.org/?page_id=12\#sec-3_4}}.
+% In uncompressed formats using inefficient algorithms, these sizes are well beyond the capability of any single commercial machine's memory, and sequential processing is extremely unlikely to achieve a \gai task in a reasonable timeframe.
 The volume of available data and the velocity it is created are increasing, and so \gai must accommodate ever-increasing input sizes.
-\nrscomment{this reads as "graphs can be really big. there are benchmarks that are big." but doesnt actually convince me that the graphs we care about for the IandS problems we care about are big. Do you have some examples of those? that would be more convincing than hearing there are big benchmarks. you can brag about that in the related work section}
 
-\nrscomment{Handling heterogeneous graphs.}
-\textbf{Heterogeneous.}
+% \nrscomment{this reads as "graphs can be really big. there are benchmarks that are big." but doesnt actually convince me that the graphs we care about for the IandS problems we care about are big. Do you have some examples of those? that would be more convincing than hearing there are big benchmarks. you can brag about that in the related work section}
+
+% \nrscomment{Handling heterogeneous graphs.}
+\textbf{Handling Heterogeneous Graphs.}
 The `huge' Graph500 benchmark graph is a simple, unattributed, undirected, unweighted graph with a (mostly) regular structure.
-\nrscomment{saying one big benchmark isnt reflective of the real world isnt particularly revealing- can you generalize a bit and say most major benchmarks?}
-Real-world graphs do not reflect these simplifying assumptions. 
-The topological structure of vertices and edges holds huge amounts of latent information. 
+Indeed, most of the large static benchmark graphs that exist focus on providing large numbers of vertices and edges, edge weights and directions for processing.
+Because the topological structure of vertices and edges holds huge amounts of latent information like which vertices are most influential, how information flows through the graph, what communities and subcommunities exist, and what patterns correlate, most of the research has focused on topology, rather than the analysis of graph attributes. 
+% , the introduction of information beyond the topological has not been studied as well. 
+% \nrscomment{saying one big benchmark isnt reflective of the real world isnt particularly revealing- can you generalize a bit and say most major benchmarks?}
+% Real-world graphs do not reflect these simplifying assumptions. 
 %
-\nrscomment{"latent information like...." so we get a sense of why this information is important (esp in IandS)}
-
-It is the difference in the shapes of graphs that provide much of their utility, while also introducing complications in computation because the structure of each graph is so varied.
-
+% \nrscomment{"latent information like...." so we get a sense of why this information is important (esp in IandS)}
+% It is the difference in the shapes of graphs that provide much of their utility, while also introducing complications in computation because the structure of each graph is so varied.
 %
-\nrscomment{why the difference in shape provides the info isnt intuitive, you need to explain it. and clarify the second point about variability introducing complications- say something more precise. The variability makes it hard for algorithms to operate efficiently across different graph inputs or something.}
-
-The attributes of the vertices and edges hold huge amounts of explicitly encoded information.
-In particular, as \textit{Knowledge Graphs} (KG) become an increasingly common representation they add attribute information to the vertices and edges, complicating the topology of the graph by creating complex structures like multi-graphs and hyper-edges.
-These complications in content and structure can dramatically increase the complexity of graph processing. 
-
+% \nrscomment{why the difference in shape provides the info isnt intuitive, you need to explain it. and clarify the second point about variability introducing complications- say something more precise. The variability makes it hard for algorithms to operate efficiently across different graph inputs or something.}
+% The attributes of the vertices and edges hold huge amounts of explicitly encoded information.
+% In particular, as \textit{Knowledge Graphs} (KG) become an increasingly common representation they add attribute information to the vertices and edges, complicating the topology of the graph by creating complex structures like multi-graphs and hyper-edges.
+% These complications in content and structure can dramatically increase the complexity of graph processing. 
+Knowledge Graphs augment graph topologies with valuable attribute information but can complicate topologies by transforming them into multigraphs and hyperedges, which are difficult to operate on efficiently.
 %
-\nrscomment{simplify these 2 sentences to nail down the point more clearly: "KGs can augment graphs with valuable attribute information but that complicates the graph's topology by introducing multi and hyper edges, which are difficult to operate on efficiently"}
+% \nrscomment{simplify these 2 sentences to nail down the point more clearly: "KGs can augment graphs with valuable attribute information but that complicates the graph's topology by introducing multi and hyper edges, which are difficult to operate on efficiently"}
+Effective \gai solutions must support the heterogeneity of graph shape and graph content without dramatically degrading performance. 
 
-Effective \gai solutions must support the heterogeneity of graph shape and graph content without \nrscomment{without dramatically degrading performance.} unacceptable performance degradation. 
-
-\nrscomment{Processing graphs dynamically.}
-\textbf{Dynamic.}
+% \nrscomment{Processing graphs dynamically.}
+\textbf{Processing Graphs Dynamically.}
 The velocity of big data is well established. 
-In \gai a high velocity of data, combined with the need to quickly \nrscomment{synthesize information? generate solutions is kind of vague and doesnt really fit} generate solutions drive the adoption of dynamic (streaming) graph architectures. 
-Dynamic graphs mean that the cost of constructing the graph cannot be divorced from its analysis, meaning that representations with slow, expensive update procedures are unviable. 
-
+\gai applications require data to be in a graph format.
+Because it is high-velocity, data is constantly arriving and the \gai developer cannot assume that they will be operating on a static graph. 
+With new information constantly being added, updated and deleted, the required representation is a dynamic graph (streaming) graph architecture. 
+% Dynamic graphs mean that the cost of constructing the graph cannot be divorced from its analysis, meaning that representations with slow, expensive update procedures are unviable. 
+Dynamic graphs require interleaving graph construction and analysis, meaning that the costs of creating and updating the graphs cannot be assumed away as a one-time cost, driving the adoption of graph representations that have fast insertion, lookup and deletion operations.
 %
-\nrscomment{double negative is confusing. "Dynamic graphs require interleaving graph construction and analysis, which obviate representation formats with expensive update procedures." obviate might not be the right word but i cant think of a better one}
-
+% \nrscomment{double negative is confusing. "Dynamic graphs require interleaving graph construction and analysis, which obviate representation formats with expensive update procedures." obviate might not be the right word but i cant think of a better one}
 Further, live data correlates with a demand for live answers, and algorithms that cannot run in near-real time are unsuitable for these applications. 
 Dynamic graph processing is under-explored in traditional graph processing and almost completely untouched concerning \gai.
-Effective \gai solutions must support dynamic graphs to remain relevant into the future. 
+Effective \gai solutions must support dynamic graphs to remain relevant in the future. 
 
-\nrscomment{Balancing Algorithmic complexity and information loss.}
-\textbf{Complex.}
-\nrscomment{this chunk is dense and not particularly coherent. I think your point is graphAI problems are broadly intractable without complexity reduction, which comes at the cost of information loss. Balancing the two or coming up with smarter algorithms are the only levers we have to improve efficiency.}
-Many \gai approaches are computationally complex. 
-`Simple' SPS problems like planning are $PSPACE$-complete~\cite{Kleinberg2014}, optimal solutions to SA problems like graph partitioning, graph clustering and subgraph isomorphism are $NP$-Complete, graph-based reasoning approaches are hampered by abstraction and completeness problems, and embedding and learning on graphs is well known to scale poorly, necessitating sampling approaches which cause information loss. 
-The asymptotic complexity source varies between \gai tasks but typically scales with the number of edges or the skew in degree distributions.  
-Effective \gai must balance complexity reduction with information loss and continue to improve the paradigms, algorithms reduce complexity or improve the throughput of the underlying systems so that the complexity has less impact.
+% \nrscomment{Balancing Algorithmic complexity and information loss.}
+\textbf{Balancing Algorithmic complexity and information loss.}
+% \nrscomment{this chunk is dense and not particularly coherent. I think your point is graphAI problems are broadly intractable without complexity reduction, which comes at the cost of information loss. Balancing the two or coming up with smarter algorithms are the only levers we have to improve efficiency.}
+Optimal solutions to \gai problems are broadly intractable without complexity reduction, which comes at the cost of information loss. 
+Balancing optimality (effectiveness) with tractability (efficiency) becomes a critical tradeoff when implementing a \gai system.
+While many of the \gai tasks within the SA problem category use heuristic approaches to get approximate answers, very few algorithms from any category use approximate or incremental algorithms~\cite{Panyala2017,Tauer2019}.
+% Community Detection, PageRank~\cite{Panyala2017} and entity resolution~\cite{Tauer2019}.
+The tradeoff between effectiveness and efficiency may change from day to day and task to task, so algorithms that generate approximate solutions initially, and refine to more optimal solutions over time will give \gai developers, (and more importantly \gai users) the ability to balance these competing priorities for themselves depending on their circumstances. 
+% Many \gai approaches are computationally complex. 
+% `Simple' SPS problems like planning are $PSPACE$-complete~\cite{Kleinberg2014}, optimal solutions to SA problems like graph partitioning, graph clustering and subgraph isomorphism are $NP$-Complete, graph-based reasoning approaches are hampered by abstraction and completeness problems, and embedding and learning on graphs is well known to scale poorly, necessitating sampling approaches which cause information loss. 
+% The asymptotic complexity source varies between \gai tasks but typically scales with the number of edges or the skew in degree distributions.  
+% Effective \gai must balance complexity reduction with information loss and continue to improve the paradigms, algorithms reduce complexity or improve the throughput of the underlying systems so that the complexity has less impact.
 
-\nrscomment{Operating on graphs in resource-constrained settings.}
-\textbf{Resource Constrained.}
+% \nrscomment{Operating on graphs in resource-constrained settings.}
+\textbf{Operating on graphs in resource-constrained settings.}
 Processing massive heterogeneous graphs quickly enough to be useful is an expensive undertaking. 
 Budgets are limited, so, adding infinitely more computing resources that increase capital and operating costs does not work economically, even for the few \gai tasks where it makes sense computationally. 
 The value of streaming data decays over time, and the longer it takes to generate insights, the less impactful they are. 
 Further, because of storage and other limitations, data is not perpetually available, so processing within a given time budget is an important challenge. 
-Commercial computers hit practical limits in memory and compute capacity that drive memory and compute efficiency. \nrscomment{this sentence is circular and has no point as its written}
+% Commercial computers hit practical limits in memory and compute capacity that drives memory and compute efficiency. \nrscomment{this sentence is circular and has no point as its written}
+% \nrscomment{"Distributing the computational burden across parallel processors relieves the computational bottleneck but introduces the need for communication efficiency."}
+Distributing the computational burden across parallel processors relieves the computational bottleneck but introduces the need for communication efficiency.
+Finally, the push to `move the processing to the data' by deploying \gai at-the-edge introduces Size, Weight and Power (SWaP) constraints and drives incremental, approximate, and other resource-preserving approaches. 
+% \nrscomment{Finally, the push to `move the processing to the data' by deploying \gai at-the-edge introduces Size, Weight and Power (SWaP) constraints and necessitates incremental, approximate, and other resource-preserving approaches. }
+% \nrscomment{this next chunk is all over the place, but you do need a summary sentence or two. how about "The aforementioned challenges must be addressed before GraphAI can attain widespread adoption, and reduce the burden of ... (what you said)"}
+% %
 
-\nrscomment{"Distributing the computational burden across parallel processors relieves the computational bottleneck but introduces the need for communication efficiency."}
-Distributed computing as a solution then introduces the need for communication efficiency.
-Finally, as the push to `move the processing to where the data is' motivates deploying \gai at-the-edge, Size, Weight and Power (SWaP) budgets will constrain the processing model and so incremental, approximate and other resource-preserving approaches must be developed to achieve tasks in constrained environments. 
-\nrscomment{Finally, the push to `move the processing to the data' by deploying \gai at-the-edge introduces Size, Weight and Power (SWaP) constraints and necessitates incremental, approximate, and other resource-preserving approaches. }
+The salient challenges to \gai are the increasing size and heterogeneous shape of inputs, the need to support dynamic graph processing, the requirement to balance effectiveness with efficiency and the omnipresent constraints of time and resources on the use of \gai to achieve these tasks in the real world. 
 
-
-\nrscomment{this next chunk is all over the place, but you do need a summary sentence or two. how about "The aforementioned challenges must be addressed before GraphAI can attain widespread adoption, and reduce the burden of ... (what you said)"}
-%
-
-There are two salient reasons to address these challenges. 
-First, as the survey of real-world applications shows, these \gai problems are real-world problems and these issues have tangible impacts to organizations.
-Second, the development of \gai, particularly for abstraction, prediction and trustworthiness is directly linked to the development of deep learning methods including generative AI, with the maturity of the field seeing a subtle shift from proving that the tasks are feasible to improving their effectiveness and efficiency.
-Success in addressing these challenges sees the wider adoption of \gai and the rapid development of capability needed to shepherd it across `the valley of death' into common use. 
-A common use of \gai reduces the burden of geospatial, financial, social and analytic tasks that currently fall to humans, improving productivity.
+% The aforementioned challenges must be addressed before GraphAI can attain widespread adoption, and reduce the burden of ... (what you said)
+% There are two salient reasons to address these challenges. 
+% First, as the survey of real-world applications shows, these \gai problems are real-world problems and these issues have tangible impacts to organizations.
+% Second, the development of \gai, particularly for abstraction, prediction and trustworthiness is directly linked to the development of deep learning methods including generative AI, with the maturity of the field seeing a subtle shift from proving that the tasks are feasible to improving their effectiveness and efficiency.
+% Success in addressing these challenges sees the wider adoption of \gai and the rapid development of capability needed to shepherd it across `the valley of death' into common use. 
+% A common use of \gai reduces the burden of geospatial, financial, social and analytic tasks that currently fall to humans, improving productivity.
 
 
 
 \subsection{\gai Way Forward}
-\nrscomment{"To begin to address the challenges outlined above, a clear mechanism to compare approaches/algorithms/something must be established."}
-To improve the permeation of \gai into organizations in the real world, there needs to be a comparison mechanism.
+To begin to address the challenges outlined above, a clear mechanism to compare \gai implementations and the environments they run in must be established.
+% To improve the permeation of \gai into organizations in the real world, there needs to be a comparison mechanism.
 \textit{Benchamrks} and \textit{Workload Analyses} are the two most widely used comparison mechanisms. 
 
 \textbf{Benchmarks.}
-\nrscomment{tighten this up a little bit}
-Benchmarks provide an objective mechanism to judge the relative performance of candidates on a representative problem and are useful in reducing uncertainty about how long a problem will take to solve, and what the likely resource burden to solve it is.
-Benchmarks are usually targeted at a general audience, and thus focus on simple metrics that can compare relative performance.
-Current SPS, SA and prediction benchmarks generate information about the execution time, and occasionally, throughput of a system at the `task' (kernel) level.
-The focus on execution time is, in general, a good thing as it is usually the best indicator of a system's performance~\cite{Hennessy2019}.
-However, task-level execution time benchmarks are an incomplete picture. 
-They generally exclude extract, transform, load (ETL) time, are almost exclusively focused on simplified, static graphs and do not compose the tasks into more complicated \gai programs. 
-Only rarely do these benchmarks report both the \textit{effectiveness} metrics that describe how well the task was completed along with the \textit{efficiency} metrics, making them unsuitable for evaluating approximate or incremental approaches.  
+% \nrscomment{tighten this up a little bit}
+Benchmarks provide an objective mechanism to judge the relative performance of candidates on a representative problem.
+% They are useful in reducing uncertainty about how long a problem will take to solve, and what the likely resource burden to solve it is.
+They are usually targeted to reduce uncertainty about how long a problem will take to solve to a general audience and thus focus on simple metrics that can compare relative performance.
+% Current SPS, SA and prediction benchmarks generate information about the execution time, and occasionally, throughput of a system at the `task' (kernel) level.
+The focus on execution time is typically a good thing as it is usually the best indicator of a system's performance~\cite{Hennessy2019}.
+% However, task-level execution time benchmarks are an incomplete picture. 
+Current benchmarks generally exclude extract, transform, load (ETL) time, are almost exclusively focused on simplified, static graphs and do not compose the tasks into more complicated \gai programs. 
+Benchmarks rarely report both the \textit{effectiveness} metrics that describe how well the task was completed along with the \textit{efficiency} metrics, making them unsuitable for evaluating approximate or incremental approaches.  
+Benchamrks are useful, but for comparing \gai a more robust approach is needed.
 
 \textbf{Workload Analyses.}
-\nrscomment{tighten this up a little bit- too many details at this stage and we lose sight of this being the 'way forward' section. you can get into more of these details in the designing a benchmark section}
-Workload analyses provide a detailed view of the performance of a given system on a particular workload. 
+% \nrscomment{tighten this up a little bit- too many details at this stage and we lose sight of this being the 'way forward' section. you can get into more of these details in the designing a benchmark section}
+Workload analyses provide a more robust analysis of a given implementation in a particular environment on a particular workload. 
 They are typically geared towards identifying bottlenecks and informing future development to exploit or elevate those bottlenecks. 
-Current SPS, SA and prediction workload analyses are useful for identifying bottlenecks in memory, computing and network dimensions of the networks. 
-The workload analyses are intrinsically linked to the abstractions, programming paradigms, and systems that they are run on. 
-The systems-under-test are frequently simulated to develop projections of performance. 
+% Current SPS, SA and prediction workload analyses are useful for identifying bottlenecks in memory, computing and network dimensions of the networks. 
+% The workload analyses are intrinsically linked to the abstractions, programming paradigms, and systems that they are run on. 
+% The systems-under-test are frequently simulated to develop projections of performance. 
 When they are executed on a real machine, the characterization typically requires code instrumentation and invasive system-level profiling to collect the metrics required to identify the bottlenecks. 
 As a result, it is difficult to compare results between systems, and most of the benefit is derived from varying the programming model, hardware allocation or graph representation on a single system. 
+A full workload analysis is impractical for a general \gai comparative tool, but they provide useful insights into where bottlenecks exist that will inform future benchmark development.
 
 
-\nrscomment{youre proposing a hybrid solution- state that}
-To advance the adoption and development of \gai, we need to balance the comparability of benchmarks with the insight generated by workload analyses. 
-An ideal benchmark will support the breadth of problems in the \gai taxonomy, and provide the depth of datasets and tasks to effectively characterize their best, worst, expected and typical performance in the real world. 
-It must provide interpretable effectiveness and efficiency metrics for comparing \gai approaches using different abstractions, programming paradigms, system configurations and hardware accelerators. 
+% %
+% \nrscomment{instead of saying what a recipient should be able to do with it, just say a benchmark should provide xyz to enable thorough comparison and promote... tie back to improving efficiency and effectiveness in graphAI problems}
+% %
 
-%
-\nrscomment{instead of saying what a recipient should be able to do with it, just say a benchmark should provide xyz to enable thorough comparison and promote... tie back to improving efficiency and effectiveness in graphAI problems}
-%
-
-A recipient of a benchmark report should be able to identify which use cases a given combination of system, dataset, problem and programming paradigm they can expect to perform `well' in, and what tradeoffs they can make between system effectiveness and efficiency to work within their constraints. 
-This thesis provides the framework for designing that benchmark. 
-
-
-% \subsection{What do we need to fix the problem?}
-% \subsection{Why don't current benchmarks suffice?}
-% \subsection{How will you fix the problem?}
+% A recipient of a benchmark report should be able to identify which use cases a given combination of system, dataset, problem and programming paradigm they can expect to perform `well' in, and what tradeoffs they can make between system effectiveness and efficiency to work within their constraints. 
+% This thesis provides the framework for designing that benchmark. 
 
 
 % Many of the `classical' AI problems in \textit{searching, planning and scheduling} start by abstracting the complexity of the real world to a graph-based formulation before searching for solutions, planning actions, making inferences or training agents~\cite{Russell2021}.
