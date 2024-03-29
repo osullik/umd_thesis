@@ -6,6 +6,8 @@
 % The variance in \textit{program} performance in graph processing is highly dependent on the shape and size of the input and so curated collections of varied graphs are critical for benchmark development.
 % \textit{Benchmark Suites} provide some or all of the \textit{Problems}, \textit{Programs}, and \textit{Systems} to evaluate relative performance, typically drawing the \textit{datasets} from the \textit{dataset collections} to generate \textit{timing} and \textit{throughput} metrics.
 
+\nrscomment{im all for summarizing the key (broad) findings up front but this is a bit of a rough way to introduce the lit review. maybe go with something higher level to ease in "In reviewing... we find that...(high level what are the big things)", and then at the end of the RW restate the specific takeaways now that we have sufficient context to understand them.}
+
 Reviewing the current \gai benchmarking landscape yields the summaries of task-coverage, dataset-coverage, metric-coverage and system-coverage presented below. 
 The key findings are:
 \begin{enumerate}
@@ -20,35 +22,52 @@ The key findings are:
 \end{enumerate}
 
 
+\nrscomment{you need a column header for the first column where youre categorizing the benchmarks}
 \input{Tables/31_kernels.tex}
 
 \subsection{Task Coverage.}
+\nrscomment{need a clean opening like "Current graph benchmarks cover a range of tasks from the GraphAI problem space. Of the xx graph benchmarks we surveyed, most focus on traditional graph tasks, graph database-specific tasks, and GNN-specific tasks." Then introduce the table and orient us to the headers, i.e. benchmarks are shown grouped according to xx, with their corresponding task types shown across the columns.}
 Table~\ref{table:benchmark-kernels} summarizes the problem coverage for \gai, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs, grouped by the \gai problems described in Chapter~\ref{chapter:10-Introduction}. 
-A `Graph manipulations' category is added here to reflect the coverage of CRUD operations required to support benchmarking of GDBs and dynamic graphs. 
-The threshold for `satisfying' coverage of a \gai problem in this survey is the inclusion of a single \gai of that problem category in their benchmark tasks.
+\nrscomment{The }A `Graph manipulations' category \nrscomment{reflects} is added here to reflect the coverage of CRUD operations required to support benchmarking of GDBs and dynamic graphs. 
 
-$62$ distinct tasks were identified in the survey, with the largest (GBBS~\cite{Dhulipala2021}) having $26$ tasks, and the median coverage being $5$ tasks.
+\nrscomment{CRUD are the basic persistent storage operations, might want to word it that way. Also saying "GDBs and dynamic graphs" reads a bit weird since they aren't 'like' objects that should be listed together. Really GDBs are used to store dynamic graphs or some other relationship like that, so i'd say whatever it is i.e. "to benchmark GDB functions used to store dynamic graphs" otherwise change it somehow so youre listing similar things}
+The threshold for `satisfying' coverage of a \gai problem in this survey is the inclusion of a single \gai of that problem category in their benchmark tasks. \nrscomment{what constitutes "a graphAI of that problem category"? you mean a graphAI task of that problem category?}
+
+\nrscomment{"In total, 62..." to avoid starting a sentence with a number} $62$ distinct tasks were identified in the survey, with the largest (GBBS~\cite{Dhulipala2021}) having $26$ tasks, and the median coverage being $5$ tasks.
+\nrscomment{how were they identified? dont say it passively. "We identified ... by ...". And you give these stats but dont say whether theyre good or bad or what, so i dont really know what to make of them. Need some context for what I should want them to be so i can evaluate what youre telling me they are.}
 % The five core \gai tasks in the benchmarks is focused on a few core kernel-level activities and artificially broadened by, coverage of three implementation libraries. 
 % The vast majority of tasks (over $50$) are contributed by the Graph-Based Benchmark Suite (GBBS)~\cite{Dhulipala2020, Dhulipala2021}, the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2016} and the Comprehensive Library for Graph Deep-Learning (CogDL)~\cite{Cen2023}. 
 % These three suites are better characterized as collections of efficient parallel, sequential and GNN implementations respectively, extremely useful for developing benchmark suites but only providing the \textit{implementations} themselves.
-The $5$ most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR) from traditional graph processing. 
-Additionally, node classification is the most popular task among GNN benchmarks, appearing in $5$ of the $6$ surveyed. 
+The $5$ \nrscomment{do you need to say the 5 here? how about just the most commonly?} most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR) from traditional graph processing. 
+Additionally, node classification is the most popular task among GNN benchmarks, appearing in \nrscomment{the majority. skip the numbers} $5$ of the $6$ surveyed. 
 
-No single benchmark suite covers the breadth of graph-based AI tasks, and all limit their scope to kernel-level implementations in evaluation. 
-Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but as there is no commonly agreed primitive building blocks for graph processing, a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019}.
+\nrscomment{i think this would be more digestible if you presented it with interpretation as you give info. it currently reads like a dump of facts about the papers you read, but its missing the interpretation (which is what the prose is really for- you already can get the stats fromt he table itself).}
+
+No single benchmark suite covers the breadth of graph-based AI tasks,  \nrscomment{ok so now youre giving me some context, but not all of it. you said the most popular traditional tasks, then the one very popular GNN task, and then jump to say the benchamrks dont cover the breadth of tasks for graphAI. missing the bit where you remind me what the breadth of tasks looks like}
+and all limit their scope to kernel-level implementations in evaluation. \nrscomment{is that a task thing or a metrics thing? it sounds like metrics from the wording. what do you mean by "kernel-level implementations in evaluation"?}
+
+\nrscomment{at this point you go from telling me about task coverage, which i can understand and can see in the table, to primitives and kernels, which i was not expecting. you need some sort of intro to that stuff if youre going to talk about it, and i need to know how it relates to what you were just talking about.}
+
+Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but since there is no commonly agreed primitive building blocks for graph processing, a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019}.
+\nrscomment{this is written in a way thats hard to understand. heres what i got: Benchmarks limit themselves to kernel-level tasks. Looking at the world from the (primitive) kernel level [im now wondering if primitive kernel is the same as kernel] is good for understanding bottlenecks. There are no agreed upon primitives so a fair comparison can only be done at the kernel, not primitive kernel, level. [i now know theyre different, and have to reread it with that assumption to get what youre trying to say]. find a way to explain it more clearly.}
+
 Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces.
+\nrscomment{i still really dont know what a primitive kernel is and how it differs from a kernel so this doesnt tell me anything useful. are you going with task or kernel as your terminology, or do you need both? in which case differentiate their meanings.}
 
 The general lack of coverage for graph manipulations graphs reflects a lack of support for dynamic graph processing, with only the two streaming graph-specific benchmarks (SAGA-Bench~\cite{Basak2020} and SRBench~\cite{Zhang2012}) and one of the GNN benchmarks (PAGNFF)~\cite{Wu2021a} providing explicit support to streaming graph tasks. 
+\nrscomment{before you tell me what the lack of coverage means, tell me there is a lack of coverage}
 
 The scale and velocity of graph data now and into the future require methods to process streaming graphs and support approximate or incremental approaches to solving \gai problems~\cite{Regli2022a}. 
 The current benchmark landscape does not cover these areas.
+\nrscomment{flip the order of those thoughts so its parallel to the other points "theres a lack of x and it means y"}
 
 A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that address the \gai problem. 
+\nrscomment{i dont think you mentioned before that the tasks should be composable. what does that even look like?}
 
 \input{Tables/32_datasets.tex}
 
 \subsection{Dataset Coverage.}
-The performance of \gai is highly dependent on the shape of the input data, and so a broad coverage of graph shapes from the domain of interest will provide a better tool for measuring performance. 
+The performance of \gai is highly dependent on the shape of the input data, and so a broad coverage of graph shapes from the domain of interest \nrscomment{"is important for measuring..." otherwise you have to say better than what} will provide a better tool for measuring performance. 
 Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets and that the maximal size of datasets varies from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to $20$ thousand edges~\cite{Huang2021}.
 
 On a per-benchmark basis, the domain coverage is generally varied, with social networks, citation networks being the most common. 
