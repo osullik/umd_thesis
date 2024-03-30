@@ -21,9 +21,9 @@ Memory bottlenecks manifest either because the volume of data required for proce
 \textbf{Memory Bandwidth.} 
 Memory bandwidth defines how much data can be retrieved from memory in a single cycle. 
 In general, being able to load more memory in one cycle (large bandwidth) is better for dense, data-hungry operations.
-Insufficient \textit{memory bandwidth} is commonly identified as the source of memory-boundedness for graph algorithms~\cite{Satish2014} particularly when the instruction window size cannot hold enough instructions to account for cache-missing instructions~\cite{Beamer2015}.
+Insufficient \textit{memory bandwidth} is commonly identified as the source of memory-boundedness for graph algorithms~\cite{Satish2014} particularly when the instruction window size cannot hold enough instructions to account for cache-missing instructions~\cite{Beamer2015}. \nrscomment{that last sentence doesnt make sense}
 It is a bottleneck because the irregular memory accesses prevent the effective use of the cache hierarchy and because very little computation is performed on each vertex when loaded from memory~\cite{Ahn2015}.
-Na\"{\i}ve `flat' parallel processing implementations exacerbate memory bandwidth issues and impose a scaling limit on the number of processors as they for limited memory bandwidth~\cite{Fu2014}.
+Na\"{\i}ve `flat' parallel processing implementations exacerbate memory bandwidth issues and impose a scaling limit on the number of processors as they for \nrscomment{youre missing some words here} limited memory bandwidth~\cite{Fu2014}.
 The observation is more concretely characterized by a decay factor of $P^{\frac{1}{2}}$ where $P$ is the number of processors~\cite{Buluc2012} because of the unfavorable communication-computation ratio.
 % While experiments on GPUs have shown that \textit{elevating} the memory bandwidth can increase throughput~\cite{Wu2015} through brute-force alone, it is insufficient to just increase the bandwidth, and more sophisticated methods are needed. 
 However, studies of memory bandwidth utilization in general show that around $95\%$ of production systems utilize less than one-third of their memory bandwidth~\cite{Kanev2015}.
@@ -72,7 +72,7 @@ These hybrid computation patterns can be particularly difficult to accelerate as
 \subsection{Communications Bottlenecks}
 Communication bottlenecks occur generally only in parallel computing settings.
 Parallel approaches (both distributed and shared-memory) to graph processing are essential to addressing the memory and computation bottlenecks, but they introduce communication bottlenecks because of the poor \textit{Communication to Computation} ratio of graph processing, which is seen as the primary bottleneck impeding the scaling of graphs processing to exa-scale~\cite{Azad2021}.
-The two driving causes of communication bottlenecks are the needs to partition the graph graphs, copy graph data between worker nodes and the need to enforce synchronization throughout processing.
+The two driving causes of communication bottlenecks are the needs to partition the graph graphs \nrscomment{wording}, copy graph data between worker nodes and the need to enforce synchronization throughout processing.
 
 \textbf{Graph Partitioning.}
 To parallelize the processing of graph algorithms, protections need to be put in place to prevent different workers from operating on the same data. 
