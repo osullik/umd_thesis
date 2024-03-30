@@ -67,24 +67,27 @@ A graph-based AI benchmark must cover the full suite of graph-based AI tasks and
 \input{Tables/32_datasets.tex}
 
 \subsection{Dataset Coverage.}
-The performance of \gai is highly dependent on the shape of the input data, and so a broad coverage of graph shapes from the domain of interest \nrscomment{"is important for measuring..." otherwise you have to say better than what} will provide a better tool for measuring performance. 
-Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets and that the maximal size of datasets varies from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to $20$ thousand edges~\cite{Huang2021}.
+\nrscomment{GraphAI performance} The performance of \gai is highly dependent on the \nrscomment{size and} shape of the input data, and so a broad coverage of graph shapes from the domain of interest \nrscomment{"is important for measuring..." otherwise you have to say better than what} will provide a better tool for measuring performance. 
+\nrscomment{A survey of benchmarks (condition for consideration) shows that most...} Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets \nrscomment{say something about the shape variety if you can, since thats what you just said matters} and that \nrscomment{dataset size varies greatly, ... something that puts these numbers in context} the maximal size of datasets varies from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to $20$ thousand edges~\cite{Huang2021}.
 
-On a per-benchmark basis, the domain coverage is generally varied, with social networks, citation networks being the most common. 
-The median number of datasets used by benchmarks is $6$, with most selections being loosely justified and not explicitly tied to any domain. 
-Only the GAP~\cite{Beamer2017} benchmark explicitly chooses its datasets to represent mesh, scale-free and uniform random distributions to changes in evaluation metrics. 
-While the use of synthetic graphs is common most benchmarks draw at least some of their datasets from the real-world Stanford Large Network Dataset Collection, which is an excellent resource with over 120 graphs from 23 different domains~\cite{Leskovec2014}.
-Most of the benchmarks have at least one random and one scale-free graph in their collections, though mesh graphs and dynamic graphs are very under-represented. 
+On a per-benchmark basis, the domain coverage is generally varied, with social networks, citation networks being the most common. \nrscomment{is this because those are graph-native domains? If theres a reason everyone picks those, say it here}
+The median number of datasets used by benchmarks is $6$, with most selections \nrscomment{not clear you mean dataset until the end of the sentence when i can rule out you dont mean domain selection. just say "most choices in dataset"} being loosely justified and not explicitly tied to any domain. 
+Only the GAP~\cite{Beamer2017} benchmark explicitly chooses its datasets to represent mesh, scale-free and uniform random distributions to changes in evaluation metrics. \nrscomment{ok, now youre talking about shape, which is what you opened with. The prelim defines those as classes of graphs though doesnt it? Normalize the naming when you open this section I know the main thing will be whether those classes/shapes are covered}
+While the use of synthetic graphs is common, most benchmarks draw at least some of their datasets from the \nrscomment{move real world to after the name} real-world Stanford Large Network Dataset Collection \nrscomment{"of real world graphs" otherwise ive forgotten its real word by the time i get through the long name}, which is an excellent resource with over 120 graphs from 23 different domains~\cite{Leskovec2014}.
+Most of the benchmarks have at least one random and one scale-free graph in their collections, \nrscomment{but} though mesh graphs and dynamic graphs are very under-represented. \nrscomment{why are they under-represented? "the vast majority lack them" or something. give numbers if you need to. Only x out of y surveyed contain...}
+\nrscomment{i think i need one more sentence here to drive home the gravity of skipping those 2 types in most benchmarks. how does that limit their utility? why is it so bad?}
 
 
-GNN datasets are typically much smaller than those used in traditional graph processing or graph databases. 
-However, they are often collections of hundreds or thousands of graphs belonging to the same distribution for the GNN to learn on. 
-It does, however, hint at the lack of scalability in GNNs, with the absence of large graphs suggesting the inability to process large-scale graphs with current approaches.
+\nrscomment{Is GNN datasets shorthand for "GNN benchmark datasets"? Write it out if so} GNN datasets are typically much smaller than those used in traditional graph processing or graph databases. \nrscomment{Or are you saying the literal input into GNNs is small and therefore the benchmarks for them contain smaller graphs than the other graph benchmarks? Clarify this point a bit, its unclear what exactly youre saying}
+However, they are often collections of hundreds or thousands of graphs belonging to the same distribution for the GNN to learn on. \nrscomment{this is quite a different profile from the rest of the kinds of benchmarks then isnt it? The table numbers dont really back up this claim though. Your examples of GNN benchmarks dont have hundreds of thousands of distinct datasets, in fact they dont seem to have clearly more than any of the other categories. need to reconcile this sentence with what the table shows}
+\nrscomment{unclear antecedent} It does, however, hint at the lack of scalability in GNNs, with the absence of large graphs suggesting the inability to process large-scale graphs with current approaches.
+\nrscomment{can you say something stronger here? it seems like youre speculating. say it with confidence and add other details to back it up}
 % Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
 % The divergence from the GDB and GNN use is because most of the traditional graph algorithms operate only on the topological data, and so the attributes are not included.
 % GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
 
-Overall, for existing \gai benchmarks gaps exist in applying the traditional graph algorithms to more complicated attributed multigraph graph structures, the absence of mesh graphs, and the lack of support for dynamic (streaming) graphs that a \gai benchmark needs to account for. 
+Overall, \nrscomment{the gaps are not "for" existing benchmarks, reword this} for existing \gai benchmarks gaps exist in applying the traditional graph algorithms to more complicated attributed multigraph graph structures, the absence of mesh graphs, and the lack of support for dynamic (streaming) graphs that a \gai benchmark needs to account for. 
+\nrscomment{you covered the lack of mesh graphs, but i dont think you talked about applying traditional algorithms to attributed graphs here, and i wouldnt expect anything about algorithms in this section anyway. and you didnt talk about dynamic graphs here at all either. take those out of the summary statement or give them the proper discussion before this point}
 
 \input{Tables/33_metrics}
 \subsection{Metric Coverage.}
