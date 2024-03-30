@@ -1,13 +1,15 @@
 \section{Graph Classes}
 \label{section:22-graph-classes}
 
-Graphs can be constructed synthetically, or they can come from real data.
-The size and topology directly impact the effectiveness and efficiency of graph processing. 
-While the structure of graphs exists on a spectrum and is influenced by several factors, it is useful to identify key categories and their characteristics. 
-\textit{Scale-Free, Mesh} and \textit{Random} are commonly identified groupings, with \textit{non-native} graphs emerging as another category.
+For simplicity, the spectrum of possible graph sizes and shapes (topologies) can be distilled into core classes that represent the breadth of graph processing problems. 
+Many graphs come from real data, but they can also be constructed synthetically using mathematical models or by imitating some prior distribution.
+Understanding the core graph classes and their properties is important because their varying size and topology directly impact the effectiveness and efficiency of graph processing. 
+% While the structure of graphs exists on a spectrum and is influenced by several factors, it is useful to identify key categories and their characteristics. 
+\textit{Scale-Free, Mesh} and \textit{Random} are commonly identified graph classes. 
+While either real-world or synthetic graphs are capable of fitting into these classes, a graph exhibiting uniform random characteristics is unlikely to occur in the real world.
+This section will first identify the `real world' graph classes before covering random graphs as a component of synthetic graphs. 
 
 \subsection{Scale-Free Graphs}
-
 Scale-free graphs are a naturally occurring graph class characterized by a distribution of vertex degrees following a power-law distribution. 
 Common in social networks, they form because the number of vertices tends to increase over time, and new vertices preferentially attach to vertices that already have high degrees~\cite{Barabasi1999a}. 
 They tend to have a small diameter, a large variance in neighborhood size, and a `global-neighborhood' characteristic where within a few hops all vertices are in the same neighborhood.
@@ -27,16 +29,16 @@ That is, only a small subset of vertices are reachable within a few hops of any 
 % For example, aggregating pixels by color to vertices and drawing edges between the vertices to represent an image in lower dimensional space~\cite{Cen2023}.
 % Non-native graph formats are introducing new graph shapes that will likely have further unpredictable downstream impacts on the effectiveness and efficiency of graph processing. 
 
-\subsection{Synthetic  Graphs}
+\subsection{Synthetic Graphs}
 Real-world \textit{Scale-free} and \textit{Mesh} graphs are extremely useful in testing graph algorithms. 
 They provide realistic inputs to algorithms reflecting the domain they are sourced from. 
 However, there are many domains, and data is not available for all of them. 
 Further, modeling theoretical performance on irregular distributions can be difficult. 
-As a solution, \textit{synthetic graphs} can be generated to provide simplified, and/or synthetic graphs for testing and evaluation. 
+As a solution, \textit{synthetic graphs} can be generated to provide simplified graphs for testing and evaluation. 
 They can be \textit{mathematically generated}, or \textit{imitatively generated}.
 
 \subsubsection{Mathematically Generated Synthetic Graphs (Random Graphs)}
-There are numerous mathematical functions that can be used to generate synthetic graphs.
+Multiple mathematical functions that can be used to generate synthetic graphs.
 Most of them exploit an existing probability distribution and generate a graph that reflects that probability distribution. 
 Notable generators include the Erd\H{o}s-R\'enyi generator to create \textit{Uniform Random Graphs}~\cite{Erdhos1960}, the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} generator to generate scale-free graphs and the \textit{Kronecker}~\cite{Leskovec2010} generator, also for scale-free graph generation. 
 Mathematically generated random graphs are useful approximations of the real world but provide a sub-optimal substitute for the irregularities of real graphs. 
@@ -49,9 +51,10 @@ Input features of \textit{Triangle Histograms, K-Hop Neighbor Histograms, Random
 
 
 \subsection{Summary}
-There is a heterogeneous distribution of graph classes.
+There is a wide distribution of graphs, and thinking of them belonging to `classes' is a useful simplifying tool.
 Scale-free, mesh, mathematically generated and synthetically generated graphs are important examples of graph classes drawn from a wider spectrum of graphs. 
 Each category has inherent drawbacks for graph processing, and these categories will be discussed throughout the remainder of this thesis as representatives of the `datasets' that \gai will operate on.
+A good benchmark for \gai should at a minimum explore the efficiency, effectiveness and cost of \gai tasks on a scale-free, mesh and uniform random graph to get a longitudinal view of expected performance. 
 
 % While the RMAT and Kronecker generators simulate graphs with a skewed degree distribution, they, along with the Erd\H{o}s-R\'enyi graphs are limited in their utility for evaluating the effectiveness of algorithms in `real-world' scenarios.
 % \nrscomment{why? why do they give an avergae but not typical case? if thersa a distinciton you need to explain what you mean by typical case and why it doesnt capture that well}

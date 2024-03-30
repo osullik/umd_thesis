@@ -1,53 +1,61 @@
 \section{Graph Representations}
 \label{section:23-graph-representations}
-The tradeoff between memory efficiency and lookup efficiency is a core tension in graph processing and many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
-This section introduces key concepts of graph representation including storage and the abstractions as the primary levers used to balance memory consumption and compute efficiency. 
+The representation of a graph (how it is abstracted and stored in memory) is a key contributor to the cost, effectiveness and efficiency of \gai tasks operating on graphs.
+The tradeoff between memory efficiency (how much space they consume) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
+Many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
+This section introduces key concepts of graph representation including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
-A graph's storage format has a direct impact on the space it consumes in memory, the speed of operations over it and the operations it can perform.
+A graph's storage format has a direct impact on the space it consumes in memory, the set of possible operations and the speed of those operations.
 The \textit{Adjacency Lists} have a small storage footprint, but slow lookup times, with \textit{Adjacency} and \textit{Incidence Matrices} having reciprocal properties. 
 Modern efforts show how \textit{compressed representations} can be used to balance memory and computational overheads. 
+Generally, attributes are stored separately to the topological information that this section discusses and are accessed by pointers or index lookups.
 The following examples will show the common ways to represent the graph in figure~\ref{figure:graph-example}. 
 
 \input{Figures/Graphs/08_example_graph.tex}
 
 \subsubsection{Adjacency Lists}
-The adjacency list representation (Figure~\ref{figure:graph-adj-list}) uses a linked list or array to store a graph.
-The first entry in each line is the source vertex and each subsequent entry indicates an edge exists to the listed vertex.
+The adjacency list representation (Figure~\ref{figure:graph-adj-list}) uses a linked list or array.
+The first entry in each line is the source vertex and each subsequent entry indicates an edge to the listed vertex.
 Adjacency lists can represent a directed or undirected graph. 
-Representing weights as part of the topology is possible using a list of tuples and attribute information is typically stored separately.
+Representing weights is possible using a list of tuples.
 Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive -- linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
+
+\input{Figures/Graphs/09_adj-list.tex}
 
 \subsubsection{Adjacency Matrices}
 An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix ($M$) to represent the graph.
-The presence of a $1$ at location $M_{i,j}$ indicates that an edge exists from vertex $i$ to vertex $j$. 
-
+A $1$ at location $M_{i,j}$ indicates there is an edge from vertex $i$ to vertex $j$. 
 %
 % \nrscomment{replace $V_{i},V_{j}$ with $V_{i,j}$. why are we using V as the matrix and not M? like M of size VxV -- $M_{i...V,i...V}$?}
 %
 They can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent the weight of the edge. 
-Attributes are stored separately from the matrix. 
+% Attributes are stored separately from the matrix. 
 Adjacency matrices have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
 %
 % \nrscomment{you already introduced adjacency matrix term, dont italicize down here}
 %
-One of their major drawbacks is the requirement to store all the $0$s where edges to not exist--essentially useless information.
+One of their major drawbacks is the requirement to store all the $0$s where edges do not exist, wasting space.
+
+\input{Figures/Graphs/10_adjacency.tex}
 
 \subsubsection{Incidence Matrices}
 Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
-An edge is represented with \nrscomment{insert "two values, namely" here} a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
+An edge is represented with two values, namely a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
 Here, $i$ is the index of the edge, $j$ and $k$ are the vertices that the edge connects.
-Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-edges}. \nrscomment{either multi-graphs and hyper-graphs(?) or multi-edges and hyper-edges, but they should be of consistent type if youre listing them}
-A multi-graph encoding \nrscomment{can be achieved using} could see a $-1$ at $M_{a,j}$ and $M_{b,j}$ and $+1$ at $M_{a,k}$ and $M_{b,k}$ describing two directed edges going from vertex $j$ to $k$. \nrscomment{if j and k are the vertices, shouldnt you say Maj and Mbj (the first edge) and then say Mbj and bk (the second edge)? i guess youre saving on having to list -1 and 1 twice, but its a bit confusing this way. maybe make it more generic and say "values at" instead of explicitly putting 1s and -1s? "values at $M_{a,j}$ and $M_{a,k}$ and $M_{b,j}$ and $M_{b,k}$ encoding two directed edges, $a$ and $b$, between vertices $j$ and $k$."}
-A hyper-edge encoding \nrscomment{can be achieved using} could see a $-1$ at $M_{a,j}$ and a $+1$ at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
-Weights can be expressed by modifying the numbers in the matrix and the attributes are typically stored separately. \nrscomment{the attributes being stored separately seems true across all of them, can you just put that in the intro summary bit and take it out of each subsequent explanation?}
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs \nrscomment{this format} may be more space-efficient than an \textit{adjacency matrix} but in general will consume significantly more memory in the typical case where $|E|\gg|V|$. 
+Incidence matrices are the most expressive representation and can encode \textit{multi-graphs} and \textit{hyper-graphs}. 
+A multi-graph encoding requires inserting source values at $M_{a,j}$ and $M_{a,k}$ and then destination values at $M_{b,j}$ and $M_{b,k}$, describing two directed edges going from vertex $j$ to $k$. 
+% \nrscomment{if j and k are the vertices, shouldnt you say Maj and Mbj (the first edge) and then say Mbj and bk (the second edge)? i guess youre saving on having to list -1 and 1 twice, but its a bit confusing this way. maybe make it more generic and say "values at" instead of explicitly putting 1s and -1s? "values at $M_{a,j}$ and $M_{a,k}$ and $M_{b,j}$ and $M_{b,k}$ encoding two directed edges, $a$ and $b$, between vertices $j$ and $k$."}
+A hyper-edge encoding requires placing source value at $M_{a,j}$ and destination values at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
+Weights can be expressed by modifying the numbers in the matrix. 
+% \nrscomment{the attributes being stored separately seems true across all of them, can you just put that in the intro summary bit and take it out of each subsequent explanation?}
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$ and so for sparse graphs the incidence matrix format may be more space-efficient than an adjacency matrix but in general, will consume significantly more memory in the typical case where $|E|\gg|V|$. 
 % %
 % \nrscomment{use the real math symbol $\gg$}
 % %
-The lookup time for edge existence is slower \nrscomment{for this format} than for an \textit{adjacency list}. 
-To find an edge connecting two vertices, we need to scan the entire edge list for each vertex and locate which edge(s), if any, are incident to both vertices, reducing to a complexity of $\mathcal{O}(|E|)$.
-\nrscomment{combine the 2 previous sentences: "Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$, since it requires scanning the entire edge list for each vertex of interest, which is more expensive than the $\mathcal{O}(|V|)$ edge lookup using adjacency lists."}
+Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$, since it requires scanning the entire edge list for each vertex of interest, which is more expensive than the $\mathcal{O}(|V|)$ edge lookup using adjacency lists.
+
+\input{Figures/Graphs/11_incidence.tex}
 
 \subsubsection{Compressed representations}
 To balance expressiveness, memory consumption and computability, numerous compressed representations have been developed. 
@@ -65,18 +73,19 @@ The CSR format uses three lists to compress the rows of a sparse (adjacency) mat
 % In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
 % The CSC format reverses the function of the row and column indices so that the columns are compressed.
 The CSC format reverses the format so that the columns are compressed.
-The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nnz)+nnz\log(|V|))$ for an adjacency matrix \nrscomment{"matrix M, encoding $|V|$ vertices"} of $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nnz))$ time to check the existence of an edge where $nnz$ is the count of non zero entries in the matrix. \nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
-More complicated representations exist which are capable of compressing the graph representations even further \nrscomment{"... , but they require more computation overhead for the encoding and decoding process." and then kill the next sentence}. 
-But, in general, the more aggressive a compression scheme, the more computation overhead is introduced by the encoding/decoding process~\cite{Shun2015}.
+The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nonzero)+nonzero\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nonzero))$ time to check the existence of an edge where $nonzero$ is the count of non zero entries in the matrix. 
+% \nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
+More complicated representations exist that are capable of compressing the graph representations even further but they require more computation overhead for the encoding and decoding process~\cite{Shun2015}.
 
+\input{Figures/Graphs/12_csr.tex}
 
 % %
 % \nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
 % %
 
-\osullikomment{Fix Formatting of figures}
+% \osullikomment{Fix Formatting of figures}
 
-\input{Figures/Graphs/13_combined_representations.tex}
+% \input{Figures/Graphs/13_combined_representations.tex}
 
 \subsection{Graph Abstractions}
 Graph abstractions are important mechanisms for simplifying the representation of graphs and allow us to build effective primitives. 
