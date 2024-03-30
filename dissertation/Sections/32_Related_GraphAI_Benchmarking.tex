@@ -96,23 +96,30 @@ Overall, \nrscomment{the gaps are not "for" existing benchmarks, reword this} fo
 % \nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
 % %
 
-The coverage of metrics by the existing benchmarks (~\ref{table:benchmark-metrics}) shows a strong preference for using kernel-level execution times, generally excluding any measurement of the time taken to construct or update the graph it is operating on.
-Throughput are generally \textit{estimated} by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the iterations to get the total edge traversals, which is then divided by the execution time. 
+The coverage of metrics by the existing benchmarks (\nrscomment{Table} ~\ref{table:benchmark-metrics}) shows a strong preference for using kernel-level execution times, generally excluding any measurement of the time taken to construct or update the graph it is operating on. \nrscomment{use your ETL acronym here so i dont have to go look it up to understand the table you just pointed me to}
+
+Throughput \nrscomment{can throughput be plural.. that just sounds wrong} are generally \textit{estimated} by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the \nrscomment{number of} iterations to get the total edge traversals, which is then divided by the execution time \nrsomment{"...to measure traversals per second" (or smthg)}.
+\nrscomment{"The drawback of this estimation strategy is that throughput becomes..."}
 Throughput becomes more difficult to estimate for algorithms that aggregate or otherwise change the structure of the graph each iteration. 
+\nrscomment{So what do they do in that case?}
 
 To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
-As a result, they are only really observed in detailed workload analysis studies, instead assuming only access to the I/O from the algorithm--a graph of a given size goes in, and a verifiable answer comes out a period of time later. 
-The I/O model for benchmarking is flexible, but does leave opaque many of the answers about where bottlenecks occur, and what part of the system causes them. 
+As a result, \nrscomment{unclear antecedent} they are only really observed in detailed workload analysis studies, instead assuming only access to the \nrscomment{inputs and outputs, drop the abbreviation} I/O from the algorithm--a graph of a given size goes in, and a verifiable answer comes out a period of time later. 
+The \nrscomment{Input/Output} I/O model for benchmarking is flexible, but \nrscomment{"... but does not facilitate discovery of bottlenecks, which is critical for understanding which parts of the system should be improved" or something to that effect} does leave opaque many of the answers about where bottlenecks occur, and what part of the system causes them. 
 
 % Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
-The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
+\nrscomment{Of the benchmarks we surveyed, many lacked effectiveness metrics.}
+The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, \nrscomment{the output must be correct} they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
+\nrscomment{On the other hand, benchmarks for newer problems like ..., often only include effectiveness metrics, ignoring time and space efficiency until the problem can be successfully solved.}
 More telling is the reverse, where newer benchmarks that are still demonstrating the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
-There is likely a need for a maturity model to describe the growth of a field to `proving it works' to `proving it works well' to `proving it is efficient', but given recent criticisms of poorly constructed maturity models~\cite{Lahrmann2011, Sadiq2021}, the formal development of a maturity model for benchmarking is left for future work. 
+There is likely a need for a maturity model to describe the growth of a field \nrscomment{from} to `proving it works' to `proving it works well' to `proving it is efficient', but given recent criticisms of poorly constructed maturity models~\cite{Lahrmann2011, Sadiq2021}, the formal development of a maturity model for benchmarking is left for future work. 
+\nrscomment{that last bit reads like "lots of people criticized this and were afraid of criticism so were going to cop out and skip that" it might be better to say what the criticism is, then it will be more apparent why it makes sense not to do it at this time}
 
+\nrscomment{You went from summarizing the state of things to saying what you think the ideal state should be, without a transition}
 A graph-based AI benchmark needs to support approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficiency} tradeoff.
-Further, as much of the known bottlenecks are in memory overheads, tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
-Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
-Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism.
+Further, as much of the known bottlenecks are in memory overheads, \nrscomment{i dont think youve said what the known bottlenecks are yet, have you?} tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
+Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network, and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
+Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism. \nrscomment{approximation to..?}
 
 \subsection{System and Implementation Coverage.}
 
