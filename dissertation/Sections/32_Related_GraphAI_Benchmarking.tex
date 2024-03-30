@@ -98,7 +98,7 @@ Overall, \nrscomment{the gaps are not "for" existing benchmarks, reword this} fo
 
 The coverage of metrics by the existing benchmarks (\nrscomment{Table} ~\ref{table:benchmark-metrics}) shows a strong preference for using kernel-level execution times, generally excluding any measurement of the time taken to construct or update the graph it is operating on. \nrscomment{use your ETL acronym here so i dont have to go look it up to understand the table you just pointed me to}
 
-Throughput \nrscomment{can throughput be plural.. that just sounds wrong} are generally \textit{estimated} by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the \nrscomment{number of} iterations to get the total edge traversals, which is then divided by the execution time \nrsomment{"...to measure traversals per second" (or smthg)}.
+Throughput \nrscomment{can throughput be plural.. that just sounds wrong} are generally \textit{estimated} by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the \nrscomment{number of} iterations to get the total edge traversals, which is then divided by the execution time \nrscomment{"...to measure traversals per second" (or smthg)}.
 \nrscomment{"The drawback of this estimation strategy is that throughput becomes..."}
 Throughput becomes more difficult to estimate for algorithms that aggregate or otherwise change the structure of the graph each iteration. 
 \nrscomment{So what do they do in that case?}
