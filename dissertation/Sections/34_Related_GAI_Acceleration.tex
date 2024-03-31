@@ -11,23 +11,26 @@ Parallelism, Cache blocking, graph-reordering, traversal scheduling, compression
 
 Parallelizing processing in a single-machine environment can bring more computation power to solve problems. 
 Almost all personal computers are multi-core, and most commercial machines are multi-socket, leaving ample latent capacity for parallelism to be exploited. 
-Parallel approaches to graph processing are essential to \textit{efficient} and \textit{effective} graph processing, but are hampered by problems with load imbalance, synchronization overheads and non-uniform memory accesses (NUMA)~\cite{Beamer2015}
+Parallel approaches to graph processing are essential to \textit{efficient} and \textit{effective} \nrscomment{why would parallelism be key to effectiveness?} graph processing, but are hampered by problems with load imbalance, synchronization overheads and non-uniform memory accesses (NUMA)~\cite{Beamer2015}. \nrscomment{do you really need the acronym}
 
 Cache blocking aims to divide a graph into a collection of subgraphs that are no larger than the available cache block size. 
 The general idea is that by decomposing everything to be small enough to fit in the cache, there should be a significant reduction in irregular memory accesses. 
-The effectent and effective decomposition remains a challenge~\cite{Balaji2018,Beamer2017, Ham2016, Zhang2020, Sundaram2015}
+The effectent and effective \nrscomment{efficient and effective decomposition? it feels like youre using those terms just to use them} decomposition remains a challenge~\cite{Balaji2018,Beamer2017, Ham2016, Zhang2020, Sundaram2015}.
 
 Graph reordering is a preprocessing technique that aims to optimize the order in which vertices are stored in memory to improve spatial locality. 
-It can be done statically or dynamically, but in general, is computationally expensive and generally outweighs the benefits when amortized over queries~\cite{Balaji2018}
+It can be done statically or dynamically, but in general, is computationally expensive and generally outweighs the benefits when amortized over queries~\cite{Balaji2018}.
 
 Traversal scheduling aims to pick the optimal order to traverse edges to maximize temporal locality in graph processing. 
-It can be done in an offline or an online mode but typically has a high computational overhead that can overshadow the gains in graph processing speed~\cite{Mukkara2018}
+It can be done in an offline or an online mode but typically has a high computational overhead that can overshadow the gains in graph processing speed~\cite{Mukkara2018}.
+\nrscomment{collapse this with graph reordering, youre saying nearly the same thing once you say what each is}
 
+\nrscomment{cut this section about compression. you already covered compressed formats in the graph representation section earlier}
 Compression is useful for balancing the size of a graph in memory with the speed of computation. 
 An adjacency list is more compact than an adjacency matrix is more compact than an incidence matrix~\cite{Kepner2015}, but each level of expansion here has additional information.
 The CSR/CSC format is much more compact than a regular adjacency matrix and is the de facto standard representation for graphs~\cite{Saad2003}.
 Compression beyond the CSR/CSC level has shown to be highly effective in parallel graph processing~\cite{Dhulipala2021}, but the encoding/decoding overheads must be offset by computation gains, and so is generally infeasible for sequential implementations~\cite{Shun2015}.
 
+\nrscomment{this is interesting and does feel like its worth mentioning that GNN stuff uses a very different approach than traditional graph tasks. But i dont think you should have a section on exploit/elevate techniques at all, so im not sure where this would go. Maybe earlier when discussing the problem categories? it seems like it belongs with explaining the GraphAI problems when you get to GNNs "Oh btw they dont ever operate on the full graph b/c it would be intractable, they do sampling". it gets lost buried down here, and i want to have known this before i hear about datasets and tasks in benchmarks so i can really understand how to interpret the fact that, for instance, GNN benchmark OGB has graphs with 1.6B edges. Thats way less impressive once you know how GNNs sample. hence i think this bit of info belongs much earlier with explaining GNNs, and maybe giving some similar context to some of the tasks might be worthwhile as well.}
 Many machine learning models make aggressive use of sampling to reduce the complexity of computation. 
 Embedding methods like deepwalk~\cite{Perozzi2014} and node2vec~\cite{Grover2016} use techniques like random walks to build embeddings reflective of nodes and their neighborhoods. 
 Work on GNNs finds that by combining topological and attribute information, a sampling approach can yield results very close to the performance of full-graph analysis~\cite{Hamilton2017}.
@@ -38,7 +41,13 @@ Communication reduction algorithms aim to improve the efficiency of distributed 
 Limited research so far has explored the ability to use approximate or incremental algorithms to reduce processing overheads. 
 One exploration of incremental graph partitioning for entity resolution on dynamic graphs illustrates the utility of incremental approaches~\cite{Tauer2019}, and incremental algorithms performed much better on the SAGA-Bench dynamic graph benchmark, based on batch-latency metrics~\cite{Basak2020}.
 
+\nrscomment{having gotten through all that, i think the only bit worth saving is the sampling. the rest of it is general background on graph optimization which is only tangentially relevant, unless it directly pertains to the design of your benchmark (i.e. if youre comparing parallel vs sequential CD, then yes, you need to survey SOTA for each of those) -- but it doesnt feel like thats going to be the case}
+
+
 \subsection{Elevation Techniques}
+
+\nrscomment{i think you should also cut this section. after reading it, the only thing i learned that i think might matter to benchmarking is the fact most of the GPU isnt being used most of the time during GNN processing. that makes me want a benchmark that would let that sort of thing be easily discovered, and possibly help find ways to use it more effectively. you can probably kill the rest of this section and move that one bit up to problem (where is the gap in benchmarking currently, assuming whats out there cant tell you that sort of thing easily) or down to abstract methods motivation (why do we need your empirical approach to designing a benchmark), though i lean towards up rather than down. it could probably support either, but its not RW. your diagram of problem type taxonomy that includes traversal, compute intensive, hybrid, probably goes along with that-- since GNNs are hybrid. that figure could go in prelim with a cursory overview of graph problem classes, where you sort graphAI tasks by compute intensive, etc.. }
+
 \textit{Elevating} a bottleneck involves upgrading the environment to increase the capacity of the bottleneck.
 We discuss elevation as a split of `conventional' techniques like distributing computing, adding memory, upgrading the environment and `hardware acceleration' using GPUs and other accelerators as \textit{elevation} techniques.
 
