@@ -6,8 +6,8 @@ Understanding the common bottlenecks in \gai systems helps design the tasks and 
 This section briefly reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-literature-gai-acceleration}.
 
 The Input/Output benchmark paradigm restricts the metrics that can be collected during the benchmarking process (see section~\ref{section:32-literature-benchmarking-gai}).
-By reviewing workload analyses of \gai systems, and the designs of \gai accelerators we identify that the three driving bottlenecks in \gai systems are \textit{memory, compute} and \textit{network}.
-These are the three bottlenecks that exist in any system, and the following discussion addresses each briefly in turn, before turning to the issue of \textit{accuracy tolerance}. 
+By reviewing workload analyses of \gai systems, and the designs of \gai accelerators we identify that the three driving bottlenecks in \gai systems are \textit{memory, compute} and \textit{communication}.
+These are the three bottlenecks that exist in any system, and the following discussion addresses each briefly in turn, before turning to the issue of \textit{accuracy bottlenecks} and \textit{data-dependence}. 
 
 \subsection{Memory Bottlenecks}
 Memory bottlenecks occur when a system is unable to keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
@@ -21,8 +21,30 @@ The impact is so significant that even efficient pipelined architectures can't `
 
 \subsection{Computation Bottlenecks}
 Computation bottlenecks occur when the system can serve data to the processor faster than computations can be performed on it. 
-Load-balancing in parallel computing is problematic because of the irregular computation patterns, and results a worker finishing their `work' much earlier than others, stalling the whole system until they all catch up~\cite{Aananthakrishnan2020, Ozdal2017}
+Optimizations for general-purpose architectures fail to deliver many benefits because of the irregular data-dependent executions in graph processing~\cite{Dadu2021}. 
+For example, branch misprediction is common~\cite{Aananthakrishnan2020}, but is typically eclipsed by memory latency~\cite{Beamer2015} and distributed workloads frequently become unbalanced~\cite{Aananthakrishnan2020, Ozdal2017}.
+Looking at GNNs, their hybrid computing patterns that combine irregular graph processing and regular dense neural network processing make it difficult to implement GNNs on general-purpose architectures~\cite{Yan2020}.
+The most striking computing problem however is the lack of optimized graph creation, update and delete functionality, with up to 40\% of latency in dynamic graph processing stemming from graph creation~\cite{Basak2020}.
 
+\subsection{Communication Bottlenecks}
+Communication bottlenecks occur generally only in parallel computing settings and are caused by seperation, movement and synchronization overheads.
+Parallel processing requires the data to be divided up between workers. 
+Partitioning graphs is a known $NP$-complete problem and the time taken to partition graphs for processing has a significant impact on overall efficency~\cite{Mccune2015}.
+When partitioned, the graph must then be copied to a distributed worker node (or an accelerator) and the time taken to copy the data for processing degrades efficency~\cite{Mutlu2023, Kiningham2022}.
+Synchronizing parallel worker nodes becomes challenging when the algorithm needs to access all vertices each iteration~\cite{Satish2014} or when the partitioning is suboptimal~\cite{Chen2019}.
+In either case, distributed parallel approaches incur the most severe communication overheads~\cite{Beamer2015, Dhulipala2021}.
+
+\subsection{Accuracy Bottlenecks}
+What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
+Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
+The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
+Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
+
+\subsection{Data-Dependence}
+There is an inherent dependence between the efficiency and effectiveness of \gai tasks and the size, shape, sparsity, content and velocity of the data they operate on~\cite{Fu2014, Osama2022}.
+Large datasets need to be distributed or compressed to fit in memory and the complexity of many \gai tasks requires large graph problems to be parallelized to be tractable~\cite{Hong2012}.
+Varying topologies and sparsities can impact a graph's locality properties and memory access patterns~\cite{Lenharth2016, Beamer2015}. 
+The content (attributes) of a graph can introduce memory access overheads, but also simplify some algorithms by acting as filters to reduce the size of the graph~\cite{Mccreesh2018,Hamilton2017} and the ever-increasing velocity of data drives the use of dynamic graphs in real-world situations~\cite{Regli2022a, Basak2020, Zang2012}.
 
 
 % % % % % % % % %  BELOW IS FULL-LENGTH VERSION OF THIS SECTION THAT GOES INTO MUCH MORE DETAIL % % % % % % % %
@@ -71,104 +93,110 @@ Load-balancing in parallel computing is problematic because of the irregular com
 % Computation bottlenecks occur when the system can serve data to the processor faster than computations can be performed on it. 
 % While graph processing is typically memory-bound, there are computational bottlenecks that can occur. 
 
-\textbf{Load Balancing.}
-Load-balancing is a key challenge, particularly when parallelizing graph processing and working with graphs with heavily skewed degree distributions~\cite{Aananthakrishnan2020}.
-The irregular structure of graphs makes it hard to predict what work needs to be completed before execution time.
-For example, many graph algorithms iterate until convergence, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other workers while they wait for the over-loaded worker to finish~\cite{Ozdal2017}.
+% \textbf{Load Balancing.}
+% Load-balancing is a key challenge, particularly when parallelizing graph processing and working with graphs with heavily skewed degree distributions~\cite{Aananthakrishnan2020}.
+% The irregular structure of graphs makes it hard to predict what work needs to be completed before execution time.
+% For example, many graph algorithms iterate until convergence, however, the number of iterations required to converge individual vertices or subgraphs can vary significantly, blocking other workers while they wait for the over-loaded worker to finish~\cite{Ozdal2017}.
 
-\textbf{Branching.}
-Graph processing is computationally challenging for traditional architectures~\cite{Dadu2021}.
-In addition to the pre-fetching and cache issues already discussed, graphs can make \textit{branch-prediction} and \textit{out-of-order} processing optimizations ineffective. 
-Graph applications heavily use branches because future processing depends heavily on the structure and order of the input data that cannot be known until input time.
-The branching operations are data dependent, irregular and so are hard to predict which contributes to the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
-Luckily, the impact of memory bandwidth under-utilization and memory latency is so significant that the vast majority of the time the branch misprediction rate has no meaningful impact on computation time because it is masked by stalled memory accesses~\cite{Beamer2015}.
+% \textbf{Branching.}
+% Graph processing is computationally challenging for traditional architectures~\cite{Dadu2021}.
+% In addition to the pre-fetching and cache issues already discussed, graphs can make \textit{branch-prediction} and \textit{out-of-order} processing optimizations ineffective. 
+% Graph applications heavily use branches because future processing depends heavily on the structure and order of the input data that cannot be known until input time.
+% The branching operations are data dependent, irregular and so are hard to predict which contributes to the underutilization of out-of-order processors~\cite{Aananthakrishnan2020}.
+% Luckily, the impact of memory bandwidth under-utilization and memory latency is so significant that the vast majority of the time the branch misprediction rate has no meaningful impact on computation time because it is masked by stalled memory accesses~\cite{Beamer2015}.
 
-\textbf{Graph Creation.}
-Most \gai evaluations ignore the cost of constructing a graph, considering it a one-off cost and amortizing the cost across the queries that will be conducted on that graph. 
-Ignoring the computation overheads of creating and maintaining graphs is not an option for GDBs and dynamic graphs, which are constantly updating their content.
-Up to $40\%$ of latency in dynamic graph processing comes from the graph update process~\cite{Basak2020}. 
-The impact is emphasized further by efforts to pre-process a graph for optimal execution of PageRank, with $15$ hours of pre-processing to optimize the layout of the graph in memory yielding a reduction in execution time from $12$ seconds to $5$ seconds~\cite{Balaji2018}, requiring almost $7,000$ executions of PageRank to amortize the pre-processing cost. 
+% \textbf{Graph Creation.}
+% Most \gai evaluations ignore the cost of constructing a graph, considering it a one-off cost and amortizing the cost across the queries that will be conducted on that graph. 
+% Ignoring the computation overheads of creating and maintaining graphs is not an option for GDBs and dynamic graphs, which are constantly updating their content.
+% Up to $40\%$ of latency in dynamic graph processing comes from the graph update process~\cite{Basak2020}. 
+% The impact is emphasized further by efforts to pre-process a graph for optimal execution of PageRank, with $15$ hours of pre-processing to optimize the layout of the graph in memory yielding a reduction in execution time from $12$ seconds to $5$ seconds~\cite{Balaji2018}, requiring almost $7,000$ executions of PageRank to amortize the pre-processing cost. 
 
-\textbf{Hybrid Computation.}
-GNN-driven components of \gai struggle in particular with hybrid execution patterns. 
-That is, they need to handle the sparse, irregular computations of graph processing as well as the dense, regular computations of Neural Network training and inference~\cite{Yan2020}.
-These hybrid computation patterns can be particularly difficult to accelerate as they require different hardware architectures to fully optimize each component. 
+% \textbf{Hybrid Computation.}
+% GNN-driven components of \gai struggle in particular with hybrid execution patterns. 
+% That is, they need to handle the sparse, irregular computations of graph processing as well as the dense, regular computations of Neural Network training and inference~\cite{Yan2020}.
+% These hybrid computation patterns can be particularly difficult to accelerate as they require different hardware architectures to fully optimize each component. 
 
-\subsection{Communications Bottlenecks}
-Communication bottlenecks occur generally only in parallel computing settings.
-Parallel approaches (both distributed and shared-memory) to graph processing are essential to addressing the memory and computation bottlenecks, but they introduce communication bottlenecks because of the poor \textit{Communication to Computation} ratio of graph processing, which is seen as the primary bottleneck impeding the scaling of graphs processing to exa-scale~\cite{Azad2021}.
-The two driving causes of communication bottlenecks are the needs to partition the graph graphs \nrscomment{wording}, copy graph data between worker nodes and the need to enforce synchronization throughout processing.
+% \subsection{Communications Bottlenecks}
+% Communication bottlenecks occur generally only in parallel computing settings.
+% Parallel approaches (both distributed and shared-memory) to graph processing are essential to addressing the memory and computation bottlenecks, but they introduce communication bottlenecks because of the poor \textit{Communication to Computation} ratio of graph processing, which is seen as the primary bottleneck impeding the scaling of graphs processing to exa-scale~\cite{Azad2021}.
+% The two driving causes of communication bottlenecks are the needs to partition the graph graphs \nrscomment{wording}, copy graph data between worker nodes and the need to enforce synchronization throughout processing.
 
-\textbf{Graph Partitioning.}
-To parallelize the processing of graph algorithms, protections need to be put in place to prevent different workers from operating on the same data. 
-Traditional parallel approaches will partition the input data, distribute it to workers for processing, and then combine the outputs. 
-In graph processing, an optimal partition of the graph will result in a minimal number of inter-partition dependencies and improve the processing throughput. 
-Optimal partitioning is, however, an $NP$-Complete problem, and so any partitioning must be heuristically done, and will therefore be sub-optimal. 
-The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs, and the performance of that subgraph-centric processing is closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques~\cite{Mccune2015}.
+% \textbf{Graph Partitioning.}
+% To parallelize the processing of graph algorithms, protections need to be put in place to prevent different workers from operating on the same data. 
+% Traditional parallel approaches will partition the input data, distribute it to workers for processing, and then combine the outputs. 
+% In graph processing, an optimal partition of the graph will result in a minimal number of inter-partition dependencies and improve the processing throughput. 
+% Optimal partitioning is, however, an $NP$-Complete problem, and so any partitioning must be heuristically done, and will therefore be sub-optimal. 
+% The future of practical large-scale distributed graph processing may be related to finding algorithms that process a graph as independent subgraphs, and the performance of that subgraph-centric processing is closely tied to the effectiveness of large-scale graph partitioning, including streaming and distributed partitioning techniques~\cite{Mccune2015}.
 
-\textbf{Copying graph data.}
-Once a graph is partitioned, the data must be made available to the workers. 
-In distributed systems, this involves copying data between the worker nodes, which depending on the size of the graph, the network bandwidth and network latency can incur significant costs. 
-Shared memory systems do not have the same overhead, but must enforce mechanisms to protect against race conditions. 
+% \textbf{Copying graph data.}
+% Once a graph is partitioned, the data must be made available to the workers. 
+% In distributed systems, this involves copying data between the worker nodes, which depending on the size of the graph, the network bandwidth and network latency can incur significant costs. 
+% Shared memory systems do not have the same overhead, but must enforce mechanisms to protect against race conditions. 
 
-\textbf{Synchronization.}
-Sub-optimal partitioning, irregular computations and irregular memory accesses results in significant synchronization overheads between workers. 
-The problem is particularly pronounced in algorithms that need to process the entire vertex list~\cite{Satish2014} or when the graph is sub-optimally partitioned between workers and when there is high contention for shared vertices~\cite{Chen2019}.
-Synchronization overheads manifest as a large number of main memory accesses in the shared-memory paradigm and the large volume of inter-processor messages in the distributed paradigm~\cite{Beamer2015}.
-In general, message-passing in a distributed parallel system is more expensive than memory accesses in a shared system~\cite{Beamer2015} and given that very large graphs can be processed in shared-memory parallel environments~\cite{Beamer2015, Dhulipala2021}, the conventional wisdom is to avoid distributed processing where possible. 
+% \textbf{Synchronization.}
+% Sub-optimal partitioning, irregular computations and irregular memory accesses results in significant synchronization overheads between workers. 
+% The problem is particularly pronounced in algorithms that need to process the entire vertex list~\cite{Satish2014} or when the graph is sub-optimally partitioned between workers and when there is high contention for shared vertices~\cite{Chen2019}.
+% Synchronization overheads manifest as a large number of main memory accesses in the shared-memory paradigm and the large volume of inter-processor messages in the distributed paradigm~\cite{Beamer2015}.
+% In general, message-passing in a distributed parallel system is more expensive than memory accesses in a shared system~\cite{Beamer2015} and given that very large graphs can be processed in shared-memory parallel environments~\cite{Beamer2015, Dhulipala2021}, the conventional wisdom is to avoid distributed processing where possible. 
 
 % \textbf{Architectures.}
 % Graph processing workloads have been shown to run poorly on general-purpose parallel processors because the computing patterns of graph processing do not reflect the conventional highly localized workloads they are optimized to support~\cite{Song2016, Kepner2016}.
 % Known issues involve incurring overhead when the parallel framework enforces explicit function calls to exchange data between worker nodes~\cite{Dysart2016} and that general-purpose instruction sets like $x86$ bloat the inter-processor traffic with instructions~\cite{Ham2016}. 
 % One of the common thrusts in the discussion of parallel graph processing architectures is that a domain-specific architecture is needed to achieve optimal performance. 
 
-\subsection{Accuracy Thresholds}
-\osullikomment{Something here?}
+% \subsection{Accuracy Thresholds}
+% \osullikomment{Something here?}
 
-\subsection{The impact of datasets}
+% \subsection{The impact of datasets}
 
-The \textit{efficiency} and \textit{effectiveness} of every \gai task depends on the size and shape of the input graph combined with the algorithm being executed~\cite{Fu2014, Osama2022}, and so different algorithmic approaches to the same problem may need to be used depending on if the graph is a \textit{scale-free, uniform-random, mest} or somewhere in-between~\cite{Lenharth2016}.
-The data dependence of graph algorithms is one of the driving reasons that empirical evaluations and workload analyses favor a collection of `real-world' graphs drawn from the domain of intended use.
-% While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
-The size, shape, sparsity, content and velocity of a graph all impact the memory, computation, communication and accuracy of a system.
-In the real world, we expect graphs of interest to \gai to be \textit{large, scale-free}, \textit{attributed, heterogeneous} and \textit{dynamic}~\cite{Regli2022a}.
+% The \textit{efficiency} and \textit{effectiveness} of every \gai task depends on the size and shape of the input graph combined with the algorithm being executed~\cite{Fu2014, Osama2022}, and so different algorithmic approaches to the same problem may need to be used depending on if the graph is a \textit{scale-free, uniform-random, mest} or somewhere in-between~\cite{Lenharth2016}.
+% The data dependence of graph algorithms is one of the driving reasons that empirical evaluations and workload analyses favor a collection of `real-world' graphs drawn from the domain of intended use.
+% % While the shapes of graphs exist on a spectrum, common `classes' of graphs exist. 
+% The size, shape, sparsity, content and velocity of a graph all impact the memory, computation, communication and accuracy of a system.
+% In the real world, we expect graphs of interest to \gai to be \textit{large, scale-free}, \textit{attributed, heterogeneous} and \textit{dynamic}~\cite{Regli2022a}.
 
-\textbf{Size.}
-Large graphs can be difficult to store in memory on a single machine. 
-While efficient representations can represent graphs with $3.5$ billion vertices and $128$ billion edges and execute theoretically work-efficient graph algorithms that can be used in search and community detection in a commodity system with a $1$Tb of Random Access Memory (RAM)~\cite{Dhulipala2018}, estimates of uncompressed commercial graph sizes exceed 20TB~\cite{Aananthakrishnan2020} and the largest Graph500 benchmark comes in at over $60$ terabytes, which is well beyond the capacity of any commercial system. 
-So, for larger graphs and more complicated algorithms, single-machine solutions may not be sufficient, which may drive the decision to employ a distributed computing model, introducing communication bottlenecks that may not otherwise exist. 
-Many \gai tasks have complexity scales that are linear, quadratic or worse in the number of edges and so scale poorly as inputs reach larger sizes~\cite{Hong2012}.
-Therefore, larger, denser graphs tend to mean longer computation times. 
+% \textbf{Size.}
+% Large graphs can be difficult to store in memory on a single machine. 
+% While efficient representations can represent graphs with $3.5$ billion vertices and $128$ billion edges and execute theoretically work-efficient graph algorithms that can be used in search and community detection in a commodity system with a $1$Tb of Random Access Memory (RAM)~\cite{Dhulipala2018}, estimates of uncompressed commercial graph sizes exceed 20TB~\cite{Aananthakrishnan2020} and the largest Graph500 benchmark comes in at over $60$ terabytes, which is well beyond the capacity of any commercial system. 
+% So, for larger graphs and more complicated algorithms, single-machine solutions may not be sufficient, which may drive the decision to employ a distributed computing model, introducing communication bottlenecks that may not otherwise exist. 
+% Many \gai tasks have complexity scales that are linear, quadratic or worse in the number of edges and so scale poorly as inputs reach larger sizes~\cite{Hong2012}.
+% Therefore, larger, denser graphs tend to mean longer computation times. 
 
-\textbf{Shape.}
-Graphs with regular degree distributions and large diameters have more regular processing patterns and are more easily partitioned but have poor spatial locality.
-Scale-free graphs, on the other hand, have been shown to improve temporal locality in graph processing, but are more difficult for parallel algorithms to process because they are difficult to cleanly partition and the variance in neighborhood size leads to imbalanced workload between worker nodes~\cite{Beamer2015}.
+% \textbf{Shape.}
+% Graphs with regular degree distributions and large diameters have more regular processing patterns and are more easily partitioned but have poor spatial locality.
+% Scale-free graphs, on the other hand, have been shown to improve temporal locality in graph processing, but are more difficult for parallel algorithms to process because they are difficult to cleanly partition and the variance in neighborhood size leads to imbalanced workload between worker nodes~\cite{Beamer2015}.
 
-\textbf{Sparsity.}
-% The discussion of size, degree, diameter, transitivity and community structure highlights that it is the \textit{topology} of a graph that contains much of the latent information that graph analysis algorithms try to extract. 
-A defining feature of graphs is their \textit{sparsity}.
-\textit{Sparsity} is most easily understood by looking at an adjacency matrix (figure~\ref{figure:adjacency_matrix}).
-Of the $|V|^{2}$ matrix, only $|E|$ of the values contain `information', with the remainder of the values being $0$.
-There are two impacts relevant to \gai. 
-First, if the graph is stored as an adjacency matrix, it also needs to allocate memory to represent the $0$s, greatly increasing the memory footprint. 
-Second, if the graph is stored in the canonical format, even if the $0$s are not represented, many memory management approaches will create the graphs in memory in the order that the vertexes are created, potentially leading to vertices connected by edges (neighbors) being stored in different locations in memory, and so will not be pre-fetched together when being processed. 
-More sophisticated graph database systems use the \textit{index-free adjacency principle} to colocate adjacent nodes in memory and use internal pointers to track the locations of neighbors without a separate index~\cite{Vukotic2015}.
+% \textbf{Sparsity.}
+% % The discussion of size, degree, diameter, transitivity and community structure highlights that it is the \textit{topology} of a graph that contains much of the latent information that graph analysis algorithms try to extract. 
+% A defining feature of graphs is their \textit{sparsity}.
+% \textit{Sparsity} is most easily understood by looking at an adjacency matrix (figure~\ref{figure:adjacency_matrix}).
+% Of the $|V|^{2}$ matrix, only $|E|$ of the values contain `information', with the remainder of the values being $0$.
+% There are two impacts relevant to \gai. 
+% First, if the graph is stored as an adjacency matrix, it also needs to allocate memory to represent the $0$s, greatly increasing the memory footprint. 
+% Second, if the graph is stored in the canonical format, even if the $0$s are not represented, many memory management approaches will create the graphs in memory in the order that the vertexes are created, potentially leading to vertices connected by edges (neighbors) being stored in different locations in memory, and so will not be pre-fetched together when being processed. 
+% More sophisticated graph database systems use the \textit{index-free adjacency principle} to colocate adjacent nodes in memory and use internal pointers to track the locations of neighbors without a separate index~\cite{Vukotic2015}.
 
-\textbf{Content}
-Many real-world graphs we are interested in processing are knowledge graphs that are attributed, directed, and weighted and be multigraphs with hyperedges. 
-% A knowledge graph is typically built on a constrained ontology that defines the entities and relations at an abstract level. 
-The information contained in vertex and edge labels is critical to answering search and reachability queries (what is the `name' of the target vertex), can reduce complexity in subgraph isomorphism~\cite{Mccreesh2018}, improve the \textit{effectiveness} of community detection~\cite{Zhang2020} and is critical to learning useful embeddings for GNNs~\cite{Hamilton2017}. 
-However, beyond just increasing the size of the graph, the label information is typically held separately in memory from the graph topology which can impact retrieval times, and the checking and comparison of complicated node attributes can increase the computational intensity of operations. 
+% \textbf{Content}
+% Many real-world graphs we are interested in processing are knowledge graphs that are attributed, directed, and weighted and be multigraphs with hyperedges. 
+% % A knowledge graph is typically built on a constrained ontology that defines the entities and relations at an abstract level. 
+% The information contained in vertex and edge labels is critical to answering search and reachability queries (what is the `name' of the target vertex), can reduce complexity in subgraph isomorphism~\cite{Mccreesh2018}, improve the \textit{effectiveness} of community detection~\cite{Zhang2020} and is critical to learning useful embeddings for GNNs~\cite{Hamilton2017}. 
+% However, beyond just increasing the size of the graph, the label information is typically held separately in memory from the graph topology which can impact retrieval times, and the checking and comparison of complicated node attributes can increase the computational intensity of operations. 
 
-\textbf{Velocity.}
-Much of traditional \gai work assumes a static graph that amortizes the cost of construction across the queries run over its lifetime.
-Dynamic graphs reflect most real-world applications and are in a constant state of change. 
-While the use of static graph processing algorithms in a dynamic context is treated suspiciously~\cite{Basak2020}, they are often all that is available.
-Graphs are updated in batches and performance is measured in batch latency, the time it takes from when a vertex is pushed to the graph until it appears in the result of a \gai task~\cite{Zhang2012}.
+% \textbf{Velocity.}
+% Much of traditional \gai work assumes a static graph that amortizes the cost of construction across the queries run over its lifetime.
+% Dynamic graphs reflect most real-world applications and are in a constant state of change. 
+% While the use of static graph processing algorithms in a dynamic context is treated suspiciously~\cite{Basak2020}, they are often all that is available.
+% Graphs are updated in batches and performance is measured in batch latency, the time it takes from when a vertex is pushed to the graph until it appears in the result of a \gai task~\cite{Zhang2012}.
 
 
-\subsection{Summary of \gai bottlenecks}
-\osullikomment{Summary Here}
+% \subsection{Summary of \gai bottlenecks}
+% \osullikomment{Summary Here}
+
+
+% % % % % % % % %  ABOVE IS FULL-LENGTH VERSION OF THIS SECTION THAT GOES INTO MUCH MORE DETAIL % % % % % % % %
+
+
+%%%%%%%%% OLDER MATERIAL BELOW HERE %%%%%%%%%%
 
 % The sizes of graphs have been increasing in the `big data' era, w
 % Beyond the Input/Output (I/O) problems that `big data' graphs pose in the face of no universally accepted binary exchange format~\cite{Azad2021}, large graphs quickly became unable to fit in the memory of a single machine, and some algorithms 
