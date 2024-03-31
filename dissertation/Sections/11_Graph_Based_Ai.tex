@@ -23,10 +23,10 @@ They become \gai problems when the input data is transformed into a graph to mak
 \textbf{Structural Analysis.}
 These problems extract latent information from the topology of graphs. 
 \gai problems in this category focus on pattern matching, discovering which data points are related and understanding how information flows through the graph. 
-In the real world, SA tasks try to match known behavioral or spatial patterns, discover subcommunities, partition resources and identify critical people in influence networks. 
+In the real world, SA \nrscomment{you didnt introduce the acronym} tasks try to match known behavioral or spatial patterns, discover subcommunities, partition resources and identify critical people in influence networks. 
 
 \textbf{Graph Reasoning.}
-These problems build on the idea of programs with common-sense~\cite{Mccarthy1959}, and the semantic web efforts of the $90$s and early $2000$s.
+These problems build on the idea of programs with common-sense~\cite{Mccarthy1959}, and the semantic web efforts of the $90$s and early $2000$s. \nrscomment{wording is awkward here, youre listing problems and efforts as if theyre the same type of thing}
 These \gai problems focus on information extraction, knowledge structuring, question answering and `thinking' based problems.
 They tend to generate knowledge graphs or accept a knowledge graph as input. 
 Reasoning tasks in the real world can include automated fact-checking, question-answering over knowledge graphs, and ontological inference tasks. 
@@ -37,12 +37,12 @@ Initial efforts generated embeddings from graphs so that they were described by 
 Real-world applications of graph abstraction emerge as part of processing pipelines and usually contribute to classification or prediction tasks. 
 
 \textbf{Graph Prediction.}
-The abstraction methods had inherent information loss, and so this class of AI problem aims to learn directly from graphs. 
+The abstraction methods had inherent information loss, and so this class of AI problem aims to learn directly from graphs. \nrscomment{"Graph prediction involves learning directly on graphs, which avoids the inherent information loss incurred by graph abstraction."}
 Comprised primarily of Graph Neural Networks (GNN), these \gai tasks focus on classification, prediction and transformation problems.
 Real-world applications have used GNNs for anomaly detection, missing link prediction, and forecasting traffic flow.
 
 \textbf{Trustworthy AI.}
-The transparency, explainability, interpretability and trustworthiness of AI systems remain unsolved problems in AI/ML safety~\cite{Hendrycks2021}.
+The transparency, explainability, interpretability and trustworthiness of AI systems remain unsolved \nrscomment{open instead of unsolved?} problems in AI/ML safety~\cite{Hendrycks2021}.
 \gai tasks in this category aim to improve the trustworthiness of existing systems by combining sub-symbolic generative models with symbolic graph-based representations, providing structured knowledge to generation and making reasoning processes more transparent. 
 Using \gai to enhance trustworthiness is an emerging field of research. 
 
@@ -51,7 +51,7 @@ Using \gai to enhance trustworthiness is an emerging field of research.
 % \nrscomment{may as well lean into the IandS motivation and title it IandS use cases}
 \gai is used heavily in real-world problem-solving. 
 The breadth of tasks means that the `real-world' use varies from routine use to preliminary experimental work. 
-A recent survey of the problems, datasets and challenges faced by \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows that \gai is in use and significant opportunities exist for expanding its contributions in solving real-world problems. 
+A recent survey of the problems, datasets and challenges faced by \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows that \gai is in use and significant opportunities exist for expanding its contributions in solving real-world problems. \nrscomment{This is super generic- the survey shows its in use? Can you say something more specific about its significance?}
 % %
 % \nrscomment{a recent survey of people shows how deeply graphsAI permeates... the people? reword this. and say something better than graphAI permeates. it is widely used across... or something}
 % %
@@ -96,6 +96,7 @@ Input size and shape, time, computing, and other resource constraints on \gai sy
 % \nrscomment{phrase these bunch of headers as challenges, not just one word each. the first bunch are dataset challenges and then the last one is a system challenge}
 
 \textbf{Handling large scale graphs.}
+\nrscomment{Cut out the journey you took to get to the final numbers and get rid of all the hypothetical stuff. The example can be one sentence. "To classify real-time messaging behavior as spam or not for 11 million customers, a telecomm graph would have to dynamically add 548 million (nodes?) per hour(footnote that says 'Based on 8.8B msgs per day spread over 16 waking hours - cite)"}
 While the exact details of the I\&S datasets are not available, a fictional example from an adjacent domain can illustrate how quickly \gai datasets grow. 
 Consider a telecommunications provider who services one-third of a country's population. 
 Assuming that country has a population equivalent to the USA, that's about $111$ million customers.
