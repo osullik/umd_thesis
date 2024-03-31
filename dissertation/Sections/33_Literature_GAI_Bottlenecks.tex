@@ -2,49 +2,74 @@
 \label{section:33-literature-gai-bottlenecks}
 
 A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is equal to or less than the demand placed on it~\cite{Goldratt2004}. 
-To improve the overall performance of a system under test, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, elevate the capacity of the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
-This section reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-related-gai-acceleration}.
+Understanding the common bottlenecks in \gai systems helps design the tasks and datasets that will be discriminative in judging \gai system performance. 
+This section briefly reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-literature-gai-acceleration}.
 
-Table~\ref{table:benchmark-metrics} in section~\ref{section:32-related-benchmarking-gai} shows that most benchmark suites cannot capture the detailed metrics required to identify specific bottlenecks because of limited access to the systems under test to implement code instrumentation and system profiling.
-\textit{Workload Analyses} are the more detailed, invasive investigations that have access to the environment and the implementation to gather the required data. 
-A review of existing workload analyses reveals three key \textit{efficency} bottlenecks exist for \gai applications. 
-\textit{Memory, computation} and \textit{communication} bottlenecks.
-Less explored, but important to consider is the idea of \textit{accuracy tolerances}. 
-An accuracy tolerance determines how accurate a solution needs to be to be acceptable, and is particularly important for approximate or incremental algorithms, where larger computing times may yield more accurate solutions.
+The Input/Output benchmark paradigm restricts the metrics that can be collected during the benchmarking process (see section~\ref{section:32-literature-benchmarking-gai}).
+By reviewing workload analyses of \gai systems, and the designs of \gai accelerators we identify that the three driving bottlenecks in \gai systems are \textit{memory, compute} and \textit{network}.
+These are the three bottlenecks that exist in any system, and the following discussion addresses each briefly in turn, before turning to the issue of \textit{accuracy tolerance}. 
 
 \subsection{Memory Bottlenecks}
 Memory bottlenecks occur when a system is unable to keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
-Graph algorithms are widely understood to be \textit{memory bound}~\cite{Beamer2015}. 
-They are \textit{data intensive} algorithms, rather than the \textit{compute intensive} algorithms that modern general-purpose and GPU-accelerated systems are optimized for~\cite{Dysart2016}.
+Graph algorithms are widely understood to be \textit{memory bound}~\cite{Beamer2015}.
 Memory bottlenecks manifest either because the volume of data required for processing cannot fit in the memory bandwidth of the system, or because the latency to retrieve data from memory is too long, and the processor spends cycles unoccupied, waiting for data.
-
-\textbf{Memory Bandwidth.} 
-Memory bandwidth defines how much data can be retrieved from memory in a single cycle. 
-In general, being able to load more memory in one cycle (large bandwidth) is better for dense, data-hungry operations.
-Insufficient \textit{memory bandwidth} is commonly identified as the source of memory-boundedness for graph algorithms~\cite{Satish2014} particularly when the instruction window size cannot hold enough instructions to account for cache-missing instructions~\cite{Beamer2015}. \nrscomment{that last sentence doesnt make sense}
-It is a bottleneck because the irregular memory accesses prevent the effective use of the cache hierarchy and because very little computation is performed on each vertex when loaded from memory~\cite{Ahn2015}.
-Na\"{\i}ve `flat' parallel processing implementations exacerbate memory bandwidth issues and impose a scaling limit on the number of processors as they for \nrscomment{youre missing some words here} limited memory bandwidth~\cite{Fu2014}.
-The observation is more concretely characterized by a decay factor of $P^{\frac{1}{2}}$ where $P$ is the number of processors~\cite{Buluc2012} because of the unfavorable communication-computation ratio.
-% While experiments on GPUs have shown that \textit{elevating} the memory bandwidth can increase throughput~\cite{Wu2015} through brute-force alone, it is insufficient to just increase the bandwidth, and more sophisticated methods are needed. 
-However, studies of memory bandwidth utilization in general show that around $95\%$ of production systems utilize less than one-third of their memory bandwidth~\cite{Kanev2015}.
-\gai bottlenecks are no exception with GNNs shown to utilize less than 40\% of their capacity~\cite{Wu2021a} and traditional graph processors inefficently utilizing their memory bandwidth because of inefficent memory reads~\cite{Beamer2015, Aananthakrishnan2020, Zhang2017, Song2016}.
-% with workload analyses showing that there is a plateau in performance even for GPUs with significantly larger memory bandwidths because the sparseness of graph data structures causes inefficient memory reads and wasted bandwidth~\cite{Aananthakrishnan2020, }, especially when large instruction sets further consume limited memory bandwidth~\cite{Beamer2015}.
-
-\textbf{Memory Latency.} 
-Memory latency defines how much time it takes to retrieve required data from memory. 
-General-purpose architectures alleviate memory latency constraints with the caching system in the memory hierarchy~\cite{Hennessy2019}.
-The cache hierarchy is a collection of small, fast memory modules located close to the processor, optimized to reduce the time it takes to load data from the cache to the processor. 
-The memory hierarchy predicts what data the system will likely require soon because it is proximal in memory to data currently in use (spatially local) or has been used recently and so will likely be needed again (temporally local) and places it in the cache for the processor to use.
-When the data required for the next processing step is not in the cache, the system must wait for it to be retrieved from the main memory, which incurs a much longer delay (latency) 
-
-Caches are under-utilized in graph processing systems because of irregular memory accesses, resulting in a high cache miss rate~\cite{Song2016} that has been measured as causing $60-80\%$ of cycles to stall waiting for memory accesses~\cite{Zhang2017} and negatively impacting system throughput~\cite{Beamer2015}.
-The ineffectiveness stems from only small portions of each cache line containing the data needed for the next computation step, wasting much of the memory bandwidth that is used to load data into the cache~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}. 
-The `wasted space' in the cache lines is because of a lack of \textit{spatial locality} in graph data structures, which is generally true for many graph types, but particularly \textit{mesh} graphs with large diameters and a low mean degree~\cite{Oguntebi2016, Ham2016}.
-The lack of locality combined with the data intensity of graph operations results in the latency of memory accesses overwhelming even highly optimized pipelined architectures~\cite{Dysart2016}.
+Memory bandwidth defines how much data can be retrieved from memory in a single cycle.
+When bandwidth is insufficient because of inefficient architectures~\cite{Beamer2015}, poor cache utilizastion~\cite{Ahn2015}, competing parallel processes~\cite{Fu2014, Buluc2012} or just because the irregular shape of the data leads to them being underutilized~\cite{Aananthakrishnan2020, Zhang2017, Song2016} the processor cannot get enough data to sustain maximal operations and stalls~\cite{Satish2014}.
+Memory latency defines how much time it takes to retrieve required data from memory, and exacerbates the underutilization of memory bandwidth~\cite{Kanev2015, Wu2021a}.
+Latency is problematic in \gai applications because the irregular data accesses coming from the inherent lack of spatial and temporal locality (on average)~\cite{Oguntebi2016, Ham2016} causes cache misses~\cite{Song2016, Zhang2017, Beamer2015} and inefficient cache usage even when it is hit~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}, leading to slow main memory accesses. 
+The impact is so significant that even efficient pipelined architectures can't `hide' the latency~\cite{Dysart2016}.
 
 \subsection{Computation Bottlenecks}
 Computation bottlenecks occur when the system can serve data to the processor faster than computations can be performed on it. 
-While graph processing is typically memory-bound, there are computational bottlenecks that can occur. 
+Load-balancing in parallel computing is problematic because of the irregular computation patterns, and results a worker finishing their `work' much earlier than others, stalling the whole system until they all catch up~\cite{Aananthakrishnan2020, Ozdal2017}
+
+
+
+% % % % % % % % %  BELOW IS FULL-LENGTH VERSION OF THIS SECTION THAT GOES INTO MUCH MORE DETAIL % % % % % % % %
+
+% A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is equal to or less than the demand placed on it~\cite{Goldratt2004}. 
+% To improve the overall performance of a system under test, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, elevate the capacity of the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
+% This section reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-literature-gai-acceleration}.
+
+% Table~\ref{table:benchmark-metrics} in section~\ref{section:32-literature-benchmarking-gai} shows that most benchmark suites cannot capture the detailed metrics required to identify specific bottlenecks because of limited access to the systems under test to implement code instrumentation and system profiling.
+% \textit{Workload Analyses} are the more detailed, invasive investigations that have access to the environment and the implementation to gather the required data. 
+% A review of existing workload analyses reveals three key \textit{efficency} bottlenecks exist for \gai applications. 
+% \textit{Memory, computation} and \textit{communication} bottlenecks.
+% Less explored, but important to consider is the idea of \textit{accuracy tolerances}. 
+% An accuracy tolerance determines how accurate a solution needs to be to be acceptable, and is particularly important for approximate or incremental algorithms, where larger computing times may yield more accurate solutions.
+% \subsection{Memory Bottlenecks}
+% Memory bottlenecks occur when a system is unable to keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
+% Graph algorithms are widely understood to be \textit{memory bound}~\cite{Beamer2015}. 
+% They are \textit{data intensive} algorithms, rather than the \textit{compute intensive} algorithms that modern general-purpose and GPU-accelerated systems are optimized for~\cite{Dysart2016}.
+% Memory bottlenecks manifest either because the volume of data required for processing cannot fit in the memory bandwidth of the system, or because the latency to retrieve data from memory is too long, and the processor spends cycles unoccupied, waiting for data.
+
+% \textbf{Memory Bandwidth.} 
+% Memory bandwidth defines how much data can be retrieved from memory in a single cycle. 
+% In general, being able to load more memory in one cycle (large bandwidth) is better for dense, data-hungry operations.
+% Insufficient \textit{memory bandwidth} is commonly identified as the source of memory-boundedness for graph algorithms~\cite{Satish2014} particularly when the instruction window size cannot hold enough instructions to account for cache-missing instructions~\cite{Beamer2015}. \nrscomment{that last sentence doesnt make sense}
+% It is a bottleneck because the irregular memory accesses prevent the effective use of the cache hierarchy and because very little computation is performed on each vertex when loaded from memory~\cite{Ahn2015}.
+% Na\"{\i}ve `flat' parallel processing implementations exacerbate memory bandwidth issues and impose a scaling limit on the number of processors as they for \nrscomment{youre missing some words here} limited memory bandwidth~\cite{Fu2014}.
+% The observation is more concretely characterized by a decay factor of $P^{\frac{1}{2}}$ where $P$ is the number of processors~\cite{Buluc2012} because of the unfavorable communication-computation ratio.
+% % While experiments on GPUs have shown that \textit{elevating} the memory bandwidth can increase throughput~\cite{Wu2015} through brute-force alone, it is insufficient to just increase the bandwidth, and more sophisticated methods are needed. 
+% However, studies of memory bandwidth utilization in general show that around $95\%$ of production systems utilize less than one-third of their memory bandwidth~\cite{Kanev2015}.
+% \gai bottlenecks are no exception with GNNs shown to utilize less than 40\% of their capacity~\cite{Wu2021a} and traditional graph processors inefficently utilizing their memory bandwidth because of inefficent memory reads~\cite{Beamer2015, Aananthakrishnan2020, Zhang2017, Song2016}.
+% % with workload analyses showing that there is a plateau in performance even for GPUs with significantly larger memory bandwidths because the sparseness of graph data structures causes inefficient memory reads and wasted bandwidth~\cite{Aananthakrishnan2020, }, especially when large instruction sets further consume limited memory bandwidth~\cite{Beamer2015}.
+
+% \textbf{Memory Latency.} 
+% Memory latency defines how much time it takes to retrieve required data from memory. 
+% General-purpose architectures alleviate memory latency constraints with the caching system in the memory hierarchy~\cite{Hennessy2019}.
+% The cache hierarchy is a collection of small, fast memory modules located close to the processor, optimized to reduce the time it takes to load data from the cache to the processor. 
+% The memory hierarchy predicts what data the system will likely require soon because it is proximal in memory to data currently in use (spatially local) or has been used recently and so will likely be needed again (temporally local) and places it in the cache for the processor to use.
+% When the data required for the next processing step is not in the cache, the system must wait for it to be retrieved from the main memory, which incurs a much longer delay (latency) 
+
+% Caches are under-utilized in graph processing systems because of irregular memory accesses, resulting in a high cache miss rate~\cite{Song2016} that has been measured as causing $60-80\%$ of cycles to stall waiting for memory accesses~\cite{Zhang2017} and negatively impacting system throughput~\cite{Beamer2015}.
+% The ineffectiveness stems from only small portions of each cache line containing the data needed for the next computation step, wasting much of the memory bandwidth that is used to load data into the cache~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}. 
+% The `wasted space' in the cache lines is because of a lack of \textit{spatial locality} in graph data structures, which is generally true for many graph types, but particularly \textit{mesh} graphs with large diameters and a low mean degree~\cite{Oguntebi2016, Ham2016}.
+% The lack of locality combined with the data intensity of graph operations results in the latency of memory accesses overwhelming even highly optimized pipelined architectures~\cite{Dysart2016}.
+
+% \subsection{Computation Bottlenecks}
+% Computation bottlenecks occur when the system can serve data to the processor faster than computations can be performed on it. 
+% While graph processing is typically memory-bound, there are computational bottlenecks that can occur. 
 
 \textbf{Load Balancing.}
 Load-balancing is a key challenge, particularly when parallelizing graph processing and working with graphs with heavily skewed degree distributions~\cite{Aananthakrishnan2020}.
