@@ -1,0 +1,188 @@
+\section{Benchmarking}
+\label{section:31-literature-benchmarking}
+
+\osullikomment{Having no review of benchmarking, in general, feels weird? Maybe just 1-2 paras about successful uses of benchmarking?}
+
+% % % % % % % % % % MOVED TO PROBLEM SECTION % % % % % % % % % % %
+
+% \nrscomment{this is PROBLEM section}
+
+% \nrscomment{"Benchmarking is a process by which systems or components are compared according to some criteria, which are captured in a benchmark~\cite{Kistowski2015}."}
+% Benchmarking is a process for the evaluation and comparison of systems or components according to some specific criteria or characteristics~\cite{Kistowski2015}.
+% Benchmarks provide a point of reference to measure the relative performance of systems or components. 
+% \nrscomment{combine into one sentence. Also, "the purpose of measurement" and "reduce uncertainty" are both vague... uncertainty in what? by measurement do you mean benchmarking?}
+% The purpose of measurement is to reduce uncertainty~\cite{Hubbard2014}.
+
+% \nrscomment{progress can be substantial or fast but it cant really be effective}
+% Reduction in uncertainty leads to better decision-making and more effective progress. 
+
+% Benchmarking is a process that \nrscomment{is used in} applies to many fields and there are many different tasks, \nrscomment{rest of this sentence: isnt this chunk supposed to be about benchmarking abstractly and empirical CS principles for it? why narrow to graphAI and name your metrics in this section?} but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficiency}, which will be collectively called \textit{performance}.
+
+% \nrscomment{ok, i guess efficiency and effectiveness are very generically applicable, but i still think its better to start with the higher level methodological approach}
+% Effectiveness is a measure of `how well' a problem is solved and typically uses metrics like accuracy, precision, recall, and error rate.
+% Ideally, a system should maximize its effectiveness. 
+% Efficiency is a measure of `how expensive' it is for a system to solve a problem and uses metrics reflecting execution time, throughput and resource usage statistics. 
+% Ideally, a system should maximize its efficiency (minimize its cost).
+
+% \nrscomment{not sure you need another signpost so soon after the last one}
+% This section identifies why benchmarking is useful for both users and developers identifies the core principles of benchmark design and development, and how balancing the trade-offs between effectiveness and efficiency is at the core of decision-making. 
+
+
+% \subsection{Why Benchmark}
+% \nrscomment{this also feels like problem/motivation content. I didn't read it in detail, but from the high level look at what its saying, id suggest reframing it slightly to get away from the user/developer focus and instead attach it as "the types of things a benchmark should enable are x, y decision making, which requires z information. That can be supported with examples of how someone doing procurement might use that info, but i think that can be secondary to the motivation youre trying to accomplish, rather than the primary focus of this chunk. If you do use an example to demonstrate the utility and can make it more specific to intelligence context that seven better. this whole thing is starting to stray from the IandS perspective, so i think sprinkling it in whenever you need to use examples will help keep it cohesive.}
+
+% Benchmarking has long proven its utility in assisting users to make decisions about which systems to procure or frameworks to use, and helping developers understand how to optimize their systems, abstractions and algorithms in future iterations. 
+% Here, a \textit{user} represents somebody deciding which system they should procure to meet their business need. 
+% Users can also be software engineers who are making decisions about which framework, abstraction, programming model or algorithm to implement in their system. 
+% In either case, a user wishes to measure the relative performance of candidate components to make an informed decision about the \gai components they are integrating it into a larger system to address a business problem~\cite{Carpinetti2002}.
+% A \textit{developer} represents someone working to design and build the fundamental hardware, programs, algorithms and representations that comprise the \gai stack. 
+% Developers are focused on building and optimizing the individual components of \gai systems, and benchmarks provide a starting point to target more detailed workload analyses to identify bottlenecks and inform future development~\cite{Saavedra1996, Hooker1994, Hooker1995}. 
+
+% Whether for a user or a developer, that benchmarking process relies on measuring the \textit{effectiveness} and \textit{efficiency} of systems to reduce their uncertainty about the aspects of \gai relevant to them.
+% Benchmarks for high-performance computing like the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}, for solving linear equations like the LINPACK Top500~\cite{Dongarra2003}, for satisfiability problems like SATLIB~\cite{Hoos2000}, and far more have been essential in driving acquisition decisions for users and guiding optimization efforts for developers across all these fields. 
+% Benchmarks are a useful tool, and section~\ref{section:32-related-benchmarking-gai} shows how they have been useful for \gai specifically.
+
+% % % % % % % % % % /MOVED TO PROBLEM SECTION % % % % % % % % % % %
+
+
+% % % % % % % % % % MOVED TO CHAPTER 4  % % % % % % % % % % %
+% \subsection{Design Considerations}
+% \nrscomment{this is not RW, its part of the abstract benchmark methodology section. it needs to be condensed down to only the relevant pieces, but ill read it for that when its moved down}
+% Benchmark design must consider the purpose of the benchmark, general principles of benchmark design and the granularity of the problem~\cite{Carpinetti2002}.
+
+% The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design ()\textit{relevance, fairness, reproduciblity} and \textit{verifiability}~\cite{Huppler2009, Kistowski2015}. 
+% The purpose of the benchmark also drives its level of \textit{granularity}. 
+% From most to least granular, benchmarks of \textit{atomic operations, kernels, toy programs, synthetic programs and real programs} provide different information about the systems under test and the metrics that describe them~\cite{Hennessy2019}.
+% Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
+% Synthetic programs make heavy use of stubs and other mocks to simulate a real program, which is the highest level of abstraction. 
+% In \gai, almost all existing benchmarks are at the kernel level of abstraction.
+% The decomposition into smaller, more granular components addressed the amortization of efficiency across the whole program, which was impeding the identification of bottlenecks~\cite{Saavedra1996}.
+% Examining each operation, kernel and sub-program as they compose up to the full program implementation will provide the best information on where the bottlenecks in a system are, particularly at the interface points between operations, kernels and programs, which are typically where weaknesses in systems exist. 
+% However, partly because of the lack of shared abstractions and primitives (section~\ref{section:25-graph-primitives}), benchmarks do not go through the compositional process, instead focusing on kernel-level performance as the median granularity layer.
+% Focusing on independent kernel operations is not a good benchmark because the multitude of small kernels do not give a realistic understanding of holistic system performance `in the real world'~\cite{Hennessy2019}.
+
+% An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 
+
+% \subsection{Components of a Benchmark}
+% \nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
+% \nrscomment{rephrase this as "Benchmarks contain three major components, which are outlined in fig x: datasets drawn from a domain of interest, tasks drawn from a relevant problem space, and metrics covering relevant evaluation criteria." then skip the bit about SUT for now and go into your explanation of datasets/tasks/etc.. Talk about SUT once youre done with that.}
+% There are three abstract dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{figure:benchmark_components}).
+
+% The abstract dimensions of the a benchmark define what the `challenge' is that needs to be solved, and how to differentiate performance.
+% The domain is source of the \textit{datasets} that will be used as input to the benchmark.
+% A good benchmark that adheres to the \textit{relevance} principle must use datasets that are sourced from the domain, or that are from the same distribution as the domain so that results can be interpreted in context. 
+% The problem dimension is informed jointly by the domain and the purpose of the benchmark. 
+% The problem defines the \textit{tasks} that comprise the benchmark. 
+% The tasks should be drawn from the domain \nrscomment{problem space not domain}, and decomposed to such a level that measuring their completion yields useful information. 
+% Together, a dataset and a task comprise a \textit{workload}.
+% The evaluation dimension defines, collects and computes the \textit{metrics} of interest. 
+% Metrics must be relevant to the purpose of the benchmark and fair to all of the systems under test. 
+% Careful definition and documentation of the abstract dimensions of benchmark design are essential to developing a benchmark that is \textit{verifiable} and \textit{reproducible}.
+
+% \nrscomment{Id open this with something like: "Benchmarks provide the tools to compare systems or system components. The systems under test (SUTs) by the benchmark are comprised of hardware..." then tie it together with "To gain useful insight, all but one aspect of the Benchmark-SUT framework is held constant, and the difference in performance attributable to the aspect that varied is measured. For instance, one can add or remove hardware, ..."}
+% The system under test is what is being measured by the benchmark. 
+% The environment consists of the \textit{hardware} and underlying \textit{software stack} that defines the system under test. 
+% Changes to the environment typically look like adding or removing hardware (e.g. adding DRAM, modifying cache), adding accelerators (GPUs, TPUs etc), using a distributed system or even changing the operating system or database components of the software that don't directly participate in solving tasks on a given dataset but may that may elevate existing bottlenecks in a given workload.
+% The implementations are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
+% Changes in implementations might look like trailing new data structures, abstractions, programming models, algorithms or other techniques to exploit the latent capacity of a system under test to execute a workload more efficiently or effectively. 
+
+% \nrscomment{Are there enough things that can be varied that they warrant a bulleted list or table or something?}
+
+% \input{Figures/Diagrams/01_benchmark_components.tex}
+
+% \subsection{Summary of Benchmarks}
+
+% % % % % % % % % % /MOVED TO CHAPTER 4  % % % % % % % % % % %
+
+
+
+
+% % % % % % % % % % \/ \/ \/ \/ \/ OLD MATERIAL, LARGELY DEPRECATAED \/ \/ \/ \/ \/ % % % % % % % % % % %
+
+% \subsection{Designing a \gai Benchmark}
+
+% \cite{Hennessy2019} Talk about how the EMBCC isn't a good benchmark because the multitude of small kernels don't actually give a realistic understanding of system performance `in the real world'. The Standard Performance Evaluation Corporation (SPEC) benchmark is noted as a highly successful benchmark. 
+
+% % LINPACK
+
+% Graph500
+
+% GBBS
+
+% GAP
+
+% SNAP
+
+% LFR Benchmark (CD)
+
+% Do any of these measure beyond the Kernel level? 
+
+% \cite{Hennessy2019} There are many different kinds of benchmark to measure different tasks --> hennesey etc discuss all of the desktop vs server benchmarks, but it also justifies graphs. Could go deeper to highlight community detection benchmarks vs others. 
+
+
+
+
+% %
+% \nrscomment{this section currently reads as a bunch of facts about competitive and empirical benchmarks. you bounce back and forth between the types, and its hard to follow. theres too much info- none of this belongs in the problem statement section. i would replace this entire section with a description of the problem, in very simple terms. you can do this without going into detail about any specific benchmarks. choose one or two examples of how current benchmarks dont suffice and explain that to prime us for what youre going to solve with your methodology.}
+% %
+
+
+
+
+% There are two driving reasons to develop a benchmark for Graph-Based AI systems. 
+% First, a user looking to implement a particular algorithm, install a particular accelerator, or adopt a particular programming paradigm must be able to determine which combination of components will best meet their needs~\cite{Carpinetti2002}. 
+% Second, a developer looking to \textit{exploit} latent capacity in an algorithm, accelerator or programming paradigm or \textit{elevate} the capabilities of one of these systems needs to understand where the bottlenecks exist in the current system~\cite{Saavedra1996, Hooker1994, Hooker1995}.
+% %
+% \nrscomment{users dont deal with algorithms. both are for developers, unless youre making a distinction, in which case you need another term besides user.}
+
+% \nrscomment{if youre not defining exploit and elevate dont italicize them.}
+
+% \nrscomment{youre selling me on the idea of graph AI benchmarks because i either want to choose the right components or want to exploit latent capabilities. but you dont tell me how a benchmark will let me do that. id frame the story as "benchmarks enable comprehensive comparison between hardware, software, implementions, algorithms, etc (however youre defining them), and comparing things well lets you make informed decisions about which thing to use or, if youre already using one, lets you know if you should switch to something else to get improvements}
+%
+
+% Towards informing end-user decision-making, a \textit{competitive} benchmark should validate both the \textit{effectiveness} and \textit{efficency} of a system. 
+% That is, a `high-performing' system should produce provably correct results and describe the amount of resources consumed to produce that result. 
+% Without balancing these two factors, trivial optimizations to the systems under test can produce incorrect results very quickly, or perfect results extremely inefficiently. 
+
+% To inform system developers, the results of an \textit{empirical} benchmark must be sufficiently descriptive to illuminate processing bottlenecks. 
+% Early approaches focused on the \textit{competitive} aspect to the detriment of using the benchmark measurements to guide future development. 
+% In response to uninformative benchmarks that concealed bottlenecks in amortized program execution costs, the methodology of decomposing programs to their primitive components and measuring each component's performance has become a popular method to expose system bottlenecks~\cite{Saavedra1996}. 
+% The manifestations of these decomposed programs are as \textit{Atomic Operations}, \textit{Kernels}, \textit{Toy Programs} and \textit{Synthetic Programs}~\cite{Hennessy2019}. 
+
+
+
+% So the problem that this benchmark suite seeks to solve is \\ \textit{"What is a suitable benchmarking methodology for graph-based artificial intelligence applications that reduces uncertainty in the user community and facilitates ongoing research?}
+
+% %
+% \nrscomment{is this the RQ for your thesis? suitable is weak. "How should we benchmark graph AI systems to enable comprehensive comparison across ... that reveals ..." or something like that}
+% %
+
+
+% When designing a benchmark, the needs of the \textit{customer} must remain front-of-mind~\cite{Carpinetti2002}.
+% Common design criteria include \textit{Relevance, Fairness, Reproducability, Verifiability, Usablility} and \textit{Economy}~\cite{Huppler2009, Kistowski2015}.
+% \textit{Relevance} is the focus on the needs of the customer and alignment of the benchmark to the problem under investigation. 
+% \textit{Fairness} allows the systems under test to compete without artificial constraints. 
+% \textit{Reproducability} of results is an essential characteristic of any scientific inquiry, and here means both ensuring the internal consistency of benchmark results and providing sufficient detail for the benchmark to be replicated by a separate team. 
+% \textit{Verifiability} makes the results credible and includes checking the correctness of system outputs as well as transparency of input and measurement.
+% In particular, the balance of measuring \textit{Effectiveness} and \textit{Efficency} is of critical importance. 
+% \textit{Usablility} should reduce the cost-of-entry to using the benchmark, abstracting away as much as possible to make it as accessible as possible. 
+% \textit{Economy} accounts for the cost of implementing a benchmark, and for participating in evaluation. 
+% These six principles are the framework we use to evaluate the quality of existing frameworks
+
+% \textit{Atomic Operation} benchmarking uses very specific operations to develop an understanding of system performance. 
+% Typically manifesting as \textit{microbenchmarks}, these measure operations like \textit{Floating Point Operations per Second, Traversed Edges Per Second} that provide the building blocks of practical maximal performance that the more comprehensive benchmarks are built on.
+% For example, a pointer-chasing microbenchmark reveals the practical maximal memory bandwidth of a system~\cite{Beamer2015}.
+
+% \textit{Kernel} benchmarking takes the `real' small key pieces of an application and benchmarks their performance by some applicable metric. 
+% Kernel benchmarks are extremely popular in graph benchmarking, with many systems using BFS, SSSP, PR, CF and CC as the `kernel' operations that they evaluate~\cite{Satish2014, Wang2016, Kang2009, Fu2014, Dadu2021, Beamer2017, Dhulipala2020}.
+
+% \textit{Toy Program} benchmarks are the evolution of \textit{Kernel} benchmarks and are typically small programs that one could expect to write in an introduction to programming course~\cite{Hennessy2019}.
+% They may be composed of several kernels and are representative of a `real' problem, just a very simple one. 
+% For example, a program to update labels on a graph that needs to load the graph to memory uses the BFS kernel to traverse the graph and update each label in turn before writing it back to storage.
+
+% \textit{Synthetic Program} benchmarks are `fake' programs built to simulate the behavior of real programs. 
+% The general idea is that they are less time and resource-intensive to construct as a mock-up, and so can be used to evaluate a system  `realistically' without needing to completely build the application under test. 
+
+% Despite the existence of these methods, the best choice of a benchmark to measure performance is a real application.
+% The \textit{Atomic, Kernel, Toy} and \textit{Synthetic} approaches are all easily manipulated, whether by an unscrupulous developer looking to boost their results~\cite{Hennessy2019} or by teams that can afford the time and energy to implement highly optimized hardware-specific solutions~\cite{Hooker1995}.
+

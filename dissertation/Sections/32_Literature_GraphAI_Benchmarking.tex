@@ -1,0 +1,224 @@
+\section{Benchmarking \gai}
+\label{section:32-literature-benchmarking-gai}
+
+In reviewing the existing literature on benchmarking \gai we find that a focus on evaluating small kernel-level tasks, a lack of coverage for dynamic processing, the low coverage of complex heterogeneous graphs from benchmark datasets and a metric focus on either effectiveness or efficiency, but rarely both.
+
+\input{Tables/31_kernels.tex}
+
+\subsection{Task Coverage.}
+Current graph benchmarks cover a range of tasks from the GraphAI problem space. Of the $23$ graph benchmarks we surveyed, most focus on traditional graph tasks, graph database (GDB) specific tasks, or Graph Neural Network (GNN) specific tasks.
+In table~\ref{table:benchmark-kernels} benchmarks are shown grouped according to their focus areas (traditional graph analytics, GDB and GNN).
+Columns aligned with align with the \gai problems described in Chapter~\ref{chapter:10-Introduction} group \gai task coverage.
+In addition to those columns, the `Graph manipulations' category reflects the coverage of the basic storage operations usually assumed out of scope for traditional graph and GNN benchmarking, but which are core operations for evaluating GDBs and dynamic graph operations.
+The threshold for `satisfying' coverage of a \gai problem in this survey is the inclusion of a single \gai task of that problem category in their benchmark tasks. 
+For example, supporting a BFS task would qualify the benchmark as covering the SPS \gai task.
+
+
+\textbf{The distribution of task coverage suggests that tasks are built for systems, rather than systems being built to achieve tasks.}
+In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results and public code repositories, suggesting that the required breadth of task coverage does exist, just not all in one place.  
+The benchmark with the broadest task coverage (GBBS~\cite{Dhulipala2021}) has $26$ tasks, but the median coverage is $5$ tasks, which is a very small slice of the \gai problem.
+Of note, benchmarks tend to stay in their focus area.
+No single benchmark covers more than three of the seven \gai problem areas and the coverage of `like' benchmarks in the same focus area is consistent.
+The distribution of coverage suggests that benchmarks organize around \textit{how} not \textit{what}. 
+That is, they start with a system and want to understand \textit{how} it performs, so collect tests they think are relevant and run them, resulting in clusters of tasks that are optimal for the system under test. 
+The system-agnostic approach we prefer starts with the breadth of problems and focuses on defining \textit{what} needs to be solved, so that any system can be brought in and evaluated across all of the representative problems.
+
+\textbf{Graph task coverage is too abstract for real-world \gai performance assessment.}
+The most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR).
+Each of these \gai tasks are simple kernels%
+%
+\footnote{In benchmarking, the smallest measurable `thing' is an \textit{atomic operation} (e.g. traversing an edge). 
+Multiple atomic operations compose into a \textit{kernel} (e.g. BFS), which can compose into \textit{toy, synthetic} or \textit{real} programs, which implement kernels to solve some higher level problem at varying levels of scale and realism~\cite{Saavedra1996}. See section~\ref{section:42-GAI-Methodology} for further detail.}.
+%
+The most commonly given reason for selecting these kernel tasks is that they are foundational to graph processing. 
+Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but since there is no commonly agreed primitive building blocks for graph processing (section ~\ref{section:25-graph-primitives}), a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019}.
+
+\textbf{Graph Manipulations are under-supported and their absence does not reflect real-world \gai processing.}
+Only nine of the surveyed benchmarks explicitly support graph manipulations, reflecting the static-graph processing assumption that the graph will only be built once and the time and cost will be amortized over the life of the graph.
+As the survey of \gai tasks from section~\ref{section:11-graph-based-ai} shows, the static-graph assumption is not valid in any real-world application.
+As a result, the limited coverage of graph manipulations makes it difficult to generalize their results to dynamic graph processing. 
+Furthermore, only three benchmarks (SAGA-Bench~\cite{Basak2020}, SRBench~\cite{Zhang2012} and PAGNFF~\cite{Wu2021a}) provide explicit support to streaming graph tasks. 
+Without understanding the efficiency and cost of graph manipulation operations, it is difficult to make informed judgments about the trade-offs of between \gai implementations and environments. 
+
+\textbf{Benchmarks must report effectiveness metrics to facilitate the adoption of approximate and incremental \gai approaches.}
+The current benchmark landscape only offers implicit support to incremental and approximate algorithms. 
+In the real-world setting where time and other resources may be constrained, tradeoffs between the effectiveness and the efficiency or cost of a \gai approach may need to be made. 
+The scale and velocity of graph data now and into the future require methods to process streaming graphs and support approximate or incremental approaches to solving \gai problems~\cite{Regli2022a}. 
+The lack of coverage highlights that these approaches have not been a focus, and that additional work is needed to increase their use towards creating levers to pull to trade-off effectiveness and efficency. 
+
+
+\input{Tables/32_datasets.tex}
+
+\subsection{Dataset Coverage.}
+% \nrscomment{GraphAI performance} 
+The performance of \gai performance is highly dependent on the size and shape of the input graph, and so a broad coverage of graph shapes from the domain of interest is important for measuring performance. 
+We surveyed $23$ graph benchmarks to identify the datasets that they use in their evaluation finding shows the median number of input graphs is 6 per benchmark and that there is a general focus on real-world scale-free graphs.
+The benchmarks are grouped by their focus area (graph analytics, GDB, GNNs) in table~\ref{table:benchmark-datasets}, and the columns describe the particular attributes of the datasets. 
+As for the task coverage, admission to one of the columns only requires that one dataset in the benchmark collection meets the criteria (e.g. if any graph is directed, the benchmark satisfies directed).
+
+\textbf{Datasets of diverse sizes and shapes are available, but popularity varies.}
+There is a huge variance in the sizes of available datasets. 
+The maximal size of datasets varies from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to $20$ thousand edges~\cite{Huang2021}.
+The huge Graph500 graph is over $1$ Pb uncompressed, more than capable of stressing high-end commercial and research systems, with the smallest dataset being easily able to fit in the memory of most personal computers. 
+There is also diversity in the available topologies, with the Stanford Large Network Dataset Collection providing over 120 real-world graphs from 23 different domains~\cite{Leskovec2014}, including multiple different mesh and scale-free sources.
+In general, we see that dataset popularity varies. 
+When a new `state of the art' dataset emerges, benchmarks will flock to include it for a while, and then eventually switch to the new hotness when a new dataset emerges. 
+The key problem with static real-world datasets is that they can quickly become an optimization target, rather than a measure of performance, leading to implementations and environments that are overfitted to the benchmark problems~\cite{Hooker1994,Hooker1995}.
+
+\textbf{Heterogeneous graphs are not well covered.}
+Being able to process complex heterogeneous graphs consistent of knowledge graphs is reflective of the expected input data for \gai in the real world~\cite{Regli2022a}
+Our survey shows that the only focus area that consistently uses heterogeneous graphs in their evaluations is GDB. 
+While GNNs implicitly use attributed graphs, they tend to be simple, with homogeneous node and edge types.
+Traditional graph analytics very rarely use attributes because their focus is topological. 
+As a result, there is not a widely used heterogeneous knowledge graph dataset, but the impact is somewhat mitigated by the public availability of resources like DBPedia~\cite{Auer2007}
+
+% shows that most benchmarks use several distinct datasets 
+% \nrscomment{say something about the shape variety if you can, since thats what you just said matters} and that \nrscomment{dataset size varies greatly, ... something that puts these numbers in context} t
+
+\textbf{Domain coverage is generally varied, but few pursue deliberately diverse topologies.} 
+% \nrscomment{is this because those are graph-native domains? If theres a reason everyone picks those, say it here}
+The median number of datasets used by benchmarks is $6$, with most selections being loosely justified and not explicitly tied to any domain.
+A few publicly available graph-native problems like citation networks, social media friends lists and email events dominate the source domains of benchmarks, skewing evaluations a little by their popularity.
+% \nrscomment{not clear you mean dataset until the end of the sentence when i can rule out you dont mean domain selection. just say "most choices in dataset"}  
+Only the GAP~\cite{Beamer2017} benchmark explicitly chooses its datasets to represent mesh, scale-free and uniform random topologies to changes in evaluation metrics. 
+% \nrscomment{ok, now youre talking about shape, which is what you opened with. The prelim defines those as classes of graphs though doesnt it? Normalize the naming when you open this section I know the main thing will be whether those classes/shapes are covered}
+
+\textbf{Dynamic graph datasets are very uncommon.}
+While the use of synthetic graphs is common, most benchmarks draw at least some of their datasets from the Stanford Large Network Dataset Collection of real-world graphs, providing a standardized and widely available library of accessible graphs.
+Most of the benchmarks have at least one random and one scale-free graph in their collections, but mesh graphs and dynamic graphs appear in a minority of surveyed benchmarks. 
+The lack of mesh graphs will lead to an absence of information about how \gai implementations and environments perform on graphs with large diameters and regular, low degrees. 
+No explicit support for dynamic graphs means that existing graphs either have to be artificially transformed into dynamic graphs by randomly sampling nodes and edges and injecting them in batches or need to be sourced by experimenters.
+Much like synthetic graph generation, artificially transforming a graph into a streaming graph loses information about patterns in vertex and edge creation, updates and deletion and provides a sub-optimal substitute. 
+Sourcing of data by experimenters generally leads to the creation of synthetic data, or to the use of proprietary data which then is not released for comparative studies. 
+% \nrscomment{i think i need one more sentence here to drive home the gravity of skipping those 2 types in most benchmarks. how does that limit their utility? why is it so bad?}
+
+
+% \nrscomment{Is GNN datasets shorthand for "GNN benchmark datasets"? Write it out if so} 
+\textbf{GNN Benchmark Datasets reflect scalability issues in GNNs.}
+Reviewing the sized of benchmark datasets used specifically for GNN evaluation, we see that they are typically much smaller than those used in traditional graph processing or graph databases. 
+% \nrscomment{Or are you saying the literal input into GNNs is small and therefore the benchmarks for them contain smaller graphs than the other graph benchmarks? Clarify this point a bit, its unclear what exactly youre saying}
+While not explicitly shown in the table, GNN benchmark datasets are often collections of hundreds or thousands of graphs belonging to the same distribution.
+The reason for this different profile is that the prediction tasks GNNs are trained for require numerous training, development and test examples for the GNN to evaluate.
+Pre-defining these splits is a useful contribution of the GNN benchmarks surveyed.  
+% \nrscomment{this is quite a different profile from the rest of the kinds of benchmarks then isnt it? The table numbers dont really back up this claim though. Your examples of GNN benchmarks dont have hundreds of thousands of distinct datasets, in fact they dont seem to have clearly more than any of the other categories. need to reconcile this sentence with what the table shows}
+The lack of datasets with large numbers of vertices and edges does reflects the long-noted scalability constraint of GNNs~\cite{Ahmadi2023} that typically requires sampling or some other complexity reduction methodology to make viable~\cite{Hamilton2017}.
+% \nrscomment{can you say something stronger here? it seems like youre speculating. say it with confidence and add other details to back it up}
+% Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
+% The divergence from the GDB and GNN use is because most of the traditional graph algorithms operate only on the topological data, and so the attributes are not included.
+% GDB and GNN however rely on the attributes for searching and prediction, showing how important they are. 
+
+Overall, gaps in the dataset coverage of \gai benchmarks are in applying the traditional graph algorithms to more complicated attributed multigraph graph structures, the absence of mesh graphs, and the lack of support for dynamic (streaming) graphs that a \gai benchmark needs to account for. 
+% \nrscomment{you covered the lack of mesh graphs, but i dont think you talked about applying traditional algorithms to attributed graphs here, and i wouldnt expect anything about algorithms in this section anyway. and you didnt talk about dynamic graphs here at all either. take those out of the summary statement or give them the proper discussion before this point}
+
+\input{Tables/33_metrics}
+\subsection{Metric Coverage.}
+
+% %
+% \nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
+% %
+
+The coverage of metrics by the existing benchmarks (\nrscomment{Table} ~\ref{table:benchmark-metrics}) shows a strong preference for using kernel-level execution times, generally excluding any measurement of the time taken to construct or update the graph it is operating on. \nrscomment{use your ETL acronym here so i dont have to go look it up to understand the table you just pointed me to}
+
+Throughput \nrscomment{can throughput be plural.. that just sounds wrong} are generally \textit{estimated} by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the \nrscomment{number of} iterations to get the total edge traversals, which is then divided by the execution time \nrscomment{"...to measure traversals per second" (or smthg)}.
+\nrscomment{"The drawback of this estimation strategy is that throughput becomes..."}
+Throughput becomes more difficult to estimate for algorithms that aggregate or otherwise change the structure of the graph each iteration. 
+\nrscomment{So what do they do in that case?}
+
+To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
+As a result, \nrscomment{unclear antecedent} they are only really observed in detailed workload analysis studies, instead assuming only access to the \nrscomment{inputs and outputs, drop the abbreviation} I/O from the algorithm--a graph of a given size goes in, and a verifiable answer comes out a period of time later. 
+The \nrscomment{Input/Output} I/O model for benchmarking is flexible, but \nrscomment{"... but does not facilitate discovery of bottlenecks, which is critical for understanding which parts of the system should be improved" or something to that effect} does leave opaque many of the answers about where bottlenecks occur, and what part of the system causes them. 
+
+% Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
+\nrscomment{Of the benchmarks we surveyed, many lacked effectiveness metrics.}
+The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, \nrscomment{the output must be correct} they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
+\nrscomment{On the other hand, benchmarks for newer problems like ..., often only include effectiveness metrics, ignoring time and space efficiency until the problem can be successfully solved.}
+More telling is the reverse, where newer benchmarks that are still demonstrating the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
+There is likely a need for a maturity model to describe the growth of a field \nrscomment{from} to `proving it works' to `proving it works well' to `proving it is efficient', but given recent criticisms of poorly constructed maturity models~\cite{Lahrmann2011, Sadiq2021}, the formal development of a maturity model for benchmarking is left for future work. 
+\nrscomment{that last bit reads like "lots of people criticized this and were afraid of criticism so were going to cop out and skip that" it might be better to say what the criticism is, then it will be more apparent why it makes sense not to do it at this time}
+
+\nrscomment{You went from summarizing the state of things to saying what you think the ideal state should be, without a transition}
+A graph-based AI benchmark needs to support approximate and incremental algorithms and needs to consistently report \textit{effectiveness} metrics to inform the \textit{effectiveness/efficiency} tradeoff.
+Further, as much of the known bottlenecks are in memory overheads, \nrscomment{i dont think youve said what the known bottlenecks are yet, have you?} tracking the time to load and transform the graph (or update it in a streaming context) is essential to having a robust understanding of execution time performance beyond just timing the kernels. 
+Ideally, a shared abstraction for common graph primitives will assist in implementing measurement of the compute, memory, network, and power usage across systems, reducing the need for detailed instrumentation and system profiling. 
+Alternately, a virtualized environment that equally disadvantages all programs and reflects real-world deployment (like container-based deployment) may provide an approximation mechanism. \nrscomment{approximation to..?}
+
+\subsection{System and Implementation Coverage.}
+\nrscomment{I think you need to deconflict some of your terminology. The previous 3 sections (dataset, task, metric) were surveying the 3 aspects of a benchmark. Now were switching to something different- how benchmarks are applied (what systems, hardware, etc. But youre saying things like "benchmarks have studied performance in xyz systems. The benchmarks are inanimate collections of data, data generators, task definitions, and metric calculations, arent they? Benchmarks dont actually DO anything do they? Studies that propose benchmarks apply them to things, and I think thats what this section talks about, but youre opening it like system coverage is a fourth type of thing a benchmark can contain, which doesnt make sense. I think to help differentiate maybe the first 3 sections need to be under a Benchmark Coverage header and the subsequent ones should avoid using the word coverage, and maybe be under a Benchmarking Studies header or something like that}
+\nrscomment{Ok, having now read this section in full, i dont think any of this belongs in the thesis. The exception would be if specific findings from this laundry list inform your methodology choices, or the specific CD benchmark choices (in which case put those and only those down there). The general hardware and system related findings that have been discovered through benchmarking studies that you arent discussing in specific doesnt seem like appropriate lit review given your scope. At most i could see pulling one of these findings up to motivation to show why benchmarks (when well designed) are important tools. If one of these pertains to IandS then go for it.}
+
+Existing \gai benchmarks have studied the performance of traditional graph algorithms in sequential, parallel (distributed and shared memory) and GPU-based systems. 
+Further, many of the benchmark studies compare the performance of specific programming frameworks and abstraction models in concert with variations to the hardware.
+As they were generally the targets of the benchmarking experiments rather than part of the benchmark design, we summarize the findings below rather than present a large comparison of different combinations of environments and implementations.
+Additional detail on known bottlenecks and \gai acceleration is available in sections~\ref{section:33-related-gai-bottlenecks} and~\ref{section:34-related-gai-acceleration}. 
+
+Sequential implementations struggle with fitting graphs in memory, and also with long computation times in large graphs. 
+Parallel implementations are generally faster than sequential implementations for large graphs, but the gain from parallelism must offset the cost of partitioning the graph and distributing it to the workers~\cite{Kepner2015}.
+Given the choice between a distributed and a shared memory parallel system, choose shared memory where the graph can fit in memory because of the much lower communications overhead~\cite{Beamer2015}, provided that appropriate protections against race conditions are present.
+The use of compression on graphs must balance out the encoding/decoding overhead with the speedup in processing, which is generally only realized in parallel implementations~\cite{Shun2015}.
+GPUs are great at accelerating the analysis of small graphs, and dense graphs with high mean degrees, but will quickly run out of memory on larger graphs~\cite{Sundaram2015, Zhou2024}. 
+GPUs also struggle to process scale-free graphs because of the load imbalance caused by skewed-degree graphs, and in general, are under-utilized~\cite{Wu2021a}.
+The usage of any accelerator needs to reduce the execution time of the computing phase sufficiently than the overhead of copying the graph into the memory of the accelerator is offset~\cite{Azad2021}.
+The use of Field Programmable Gate Arrays (FPGA) and Application Specific Integrated Circuits (ASIC) are emerging hardware acceleration options for \gai in the traditional and GNN subdomains~\cite{Aananthakrishnan2020, Zhang2023} 
+
+
+\subsection{Summary of \gai benchmarks}
+
+Reviewing the current \gai benchmarking landscape yields the summaries of task-coverage, dataset-coverage, metric-coverage and system-coverage presented below. 
+The key findings are:
+\begin{enumerate}
+    \item No single benchmark covers the breadth of \gai tasks. 
+    \item Very few benchmarks study \gai tasks above the isolated kernel level. 
+    \item There is no support for incremental or approximate \gai algorithms. 
+    \item Dynamic graphs are under-serviced by current benchmarks.
+    \item Few datasets are representative of the heterogeneous attributed multigraph datasets expected in real-world settings.
+    \item The size of GNN benchmark datasets hints at scalability issues.
+    \item Benchmarks focus on the effectiveness or efficiency measures, rarely both.
+    \item The use of distributed, shared memory and GPU-accelerated graph processing are well studied, with interest emerging in FPGA and ASIC acceleration.
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%% OLD TEXT AND FEEDBACK %%%%%%%%%%%%%%%%%%%
+
+
+% There are two core components to the existing graph benchmarking landscape. 
+% \textit{Datasets Collections} only provide the graphs to be used as inputs and occasionally target outputs. 
+% The variance in \textit{program} performance in graph processing is highly dependent on the shape and size of the input and so curated collections of varied graphs are critical for benchmark development.
+% \textit{Benchmark Suites} provide some or all of the \textit{Problems}, \textit{Programs}, and \textit{Systems} to evaluate relative performance, typically drawing the \textit{datasets} from the \textit{dataset collections} to generate \textit{timing} and \textit{throughput} metrics.
+
+% \nrscomment{im all for summarizing the key (broad) findings up front but this is a bit of a rough way to introduce the lit review. maybe go with something higher level to ease in "In reviewing... we find that...(high level what are the big things)", and then at the end of the RW restate the specific takeaways now that we have sufficient context to understand them.}
+
+% \nrscomment{CRUD are the basic persistent storage operations, might want to word it that way. Also saying "GDBs and dynamic graphs" reads a bit weird since they aren't 'like' objects that should be listed together. Really GDBs are used to store dynamic graphs or some other relationship like that, so i'd say whatever it is i.e. "to benchmark GDB functions used to store dynamic graphs" otherwise change it somehow so youre listing similar things}
+% \nrscomment{what constitutes "a graphAI of that problem category"? you mean a graphAI task of that problem category?}
+
+% However, in the context of missing agreement in defining primitive operations (section ~\ref{section:25-graph-primitives}) and the number of different implementations that can exist for any of these tasks it is not clear if understanding their performance as isolated kernel tasks will generalize to understanding the performance of real programs composed of many different tasks and intermediate operations. 
+
+
+% \nrscomment{how were they identified? dont say it passively. "We identified ... by ...". And you give these stats but dont say whether theyre good or bad or what, so i dont really know what to make of them. Need some context for what I should want them to be so i can evaluate what youre telling me they are.}
+% The five core \gai tasks in the benchmarks is focused on a few core kernel-level activities and artificially broadened by, coverage of three implementation libraries. 
+% The vast majority of tasks (over $50$) are contributed by the Graph-Based Benchmark Suite (GBBS)~\cite{Dhulipala2020, Dhulipala2021}, the Stanford Network Analysis Project (SNAP)~\cite{Leskovec2016} and the Comprehensive Library for Graph Deep-Learning (CogDL)~\cite{Cen2023}. 
+% These three suites are better characterized as collections of efficient parallel, sequential and GNN implementations respectively, extremely useful for developing benchmark suites but only providing the \textit{implementations} themselves.
+
+
+% \nrscomment{i think this would be more digestible if you presented it with interpretation as you give info. it currently reads like a dump of facts about the papers you read, but its missing the interpretation (which is what the prose is really for- you already can get the stats fromt he table itself).}
+
+% \nrscomment{need a clean opening like "Current graph benchmarks cover a range of tasks from the GraphAI problem space. Of the xx graph benchmarks we surveyed, most focus on traditional graph tasks, graph database-specific tasks, and GNN-specific tasks." Then introduce the table and orient us to the headers, i.e. benchmarks are shown grouped according to xx, with their corresponding task types shown across the columns.}
+
+
+% No single benchmark suite covers the breadth of graph-based AI tasks,  
+% \nrscomment{ok so now youre giving me some context, but not all of it. you said the most popular traditional tasks, then the one very popular GNN task, and then jump to say the benchamrks dont cover the breadth of tasks for graphAI. missing the bit where you remind me what the breadth of tasks looks like}
+% and all limit their scope to kernel-level implementations in evaluation. \nrscomment{is that a task thing or a metrics thing? it sounds like metrics from the wording. what do you mean by "kernel-level implementations in evaluation"?}
+% 
+% \nrscomment{at this point you go from telling me about task coverage, which i can understand and can see in the table, to primitives and kernels, which i was not expecting. you need some sort of intro to that stuff if youre going to talk about it, and i need to know how it relates to what you were just talking about.}
+
+
+% \nrscomment{this is written in a way thats hard to understand. heres what i got: Benchmarks limit themselves to kernel-level tasks. Looking at the world from the (primitive) kernel level [im now wondering if primitive kernel is the same as kernel] is good for understanding bottlenecks. There are no agreed upon primitives so a fair comparison can only be done at the kernel, not primitive kernel, level. [i now know theyre different, and have to reread it with that assumption to get what youre trying to say]. find a way to explain it more clearly.}
+
+% Further, where the copying, loading or other manipulation of data required to transition between the `primitive' kernels is the bottleneck, that information is hidden from a developer looking to compose a more complicated algorithm from the component pieces.
+% \nrscomment{i still really dont know what a primitive kernel is and how it differs from a kernel so this doesnt tell me anything useful. are you going with task or kernel as your terminology, or do you need both? in which case differentiate their meanings.}
+
+% \nrscomment{before you tell me what the lack of coverage means, tell me there is a lack of coverage}
+
+% \nrscomment{flip the order of those thoughts so its parallel to the other points "theres a lack of x and it means y"}
+
+% A graph-based AI benchmark must cover the full suite of graph-based AI tasks and measured kernels should be composable into the more complicated programs that address the \gai problem. 
+% \nrscomment{i dont think you mentioned before that the tasks should be composable. what does that even look like?}
