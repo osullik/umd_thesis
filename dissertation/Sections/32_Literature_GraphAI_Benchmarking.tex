@@ -9,22 +9,27 @@ Examining each of these facets in turn identifies the gaps that a \gai benchmark
 \subsection{Task Coverage.}
 Current graph benchmarks cover a range of tasks from the GraphAI problem space. Of the $23$ graph benchmarks we surveyed, the reported tasks cluster around traditional graph tasks, GDB-specific tasks, or GNN prediction tasks depending on the focus area of the benchmark.
 In table~\ref{table:benchmark-kernels} benchmarks are shown grouped according to their focus areas (traditional graph analytics, GDB and GNN).
-Columns aligned with align with the \gai problems described in Chapter~\ref{chapter:10-Introduction} group \gai task coverage.
+Columns align with the \gai problems described in Chapter~\ref{chapter:10-Introduction} \nrscomment{what is the rest of this supposed to say?} group \gai task coverage.
 In addition to those columns, the `Graph manipulations' category reflects the coverage of the basic storage operations usually assumed out of scope for traditional graph and GNN benchmarking, but which are core operations for evaluating GDBs and dynamic graph operations.
+\nrscomment{"We survey benchmarks that include at least one \gai task from a problem category listed above." and cut the next sentence}
 The threshold for `satisfying' coverage of a \gai problem in this survey is the inclusion of a single \gai task of that problem category in their benchmark tasks. 
+
+\nrscomment{not sure you need the example}
 For example, supporting a BFS task would qualify the benchmark as covering the SPS \gai task.
 
 \textbf{The distribution of task coverage suggests that tasks are built for systems, rather than systems being built to achieve tasks.}
-In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results and public code repositories, suggesting that the required breadth of task coverage does exist, just not all in one place.  
-The benchmark with the broadest task coverage (GBBS~\cite{Dhulipala2021}) has $26$ tasks, but the median coverage is $5$ tasks, which is a very small slice of the \gai problem.
+In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that \nrscomment{"a wide variety of task coverage exists in the literature." -- cant talk about required coverage since you ahvent given your methodology yet, jsut talk about it more abstractly} the required breadth of task coverage does exist, just not all in one place.  
+The benchmark with the broadest task coverage (GBBS~\cite{Dhulipala2021}) has $26$ tasks, but the median coverage is $5$ tasks, \nrscomment{"...meaning benchmarks tend to focus on a specific sub-area within a given \gai problem." or something like that. then cut the rest} which is a very small slice of the \gai problem.
 % Of note, benchmarks tend to stay in their focus area.
-No single benchmark covers more than three of the seven \gai problem areas and the coverage of `like' benchmarks in the same focus area is consistent.
+No single benchmark covers more than three of the seven \gai problem areas and \nrscomment{the rest of this is a bit unclear, reword it. Are you saying similar benchmarks cover similar things?} the coverage of `like' benchmarks in the same focus area is consistent.
+
+\nrscomment{the next sentence doesnt make sense. youre saying theyre testing to the system -- so say that}
 The distribution of coverage suggests that benchmarks organize around \textit{how} not \textit{what}. 
 That is, benchmark designers start with a system and want to understand \textit{how} it performs, so collect tests they think are relevant and run them, resulting in clusters of tasks that are optimal for the system under test. 
-The system-agnostic approach we prefer starts with the breadth of problems and focuses on defining \textit{what} needs to be solved so that any system can be brought in and evaluated across all of the representative problems.
+The system-agnostic approach we prefer starts with the breadth of problems and focuses on defining \textit{what} needs to be solved so that any system can be brought in and evaluated across all of the representative problems. \nrscomment{good. keep ending them like that, comparing to your approach}
 
 \textbf{Graph task coverage is too abstract for real-world \gai performance assessment.}
-The most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR).
+The most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR) \nrscomment{", which represent simple kernels." cut next sentence}.
 Each of these \gai tasks are simple kernels%
 %
 \footnote{In benchmarking, the smallest measurable `thing' is an \textit{atomic operation} (e.g. traversing an edge). 
