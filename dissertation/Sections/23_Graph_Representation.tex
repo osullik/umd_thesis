@@ -1,14 +1,26 @@
 \section{Graph Representations}
 \label{section:23-graph-representations}
+\nrscomment{dont put the defn it should be the main part of the first sentence. "The representation of a graph determines how it is abstracted and stored in memory, which fundamentally affects how it can be processed and operated on. Representation format of the input graph is a key contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs." -- and is it actually a factor in effectiveness? some representations lead to more correct results than others? that seems odd}
+
 The representation of a graph (how it is abstracted and stored in memory) is a key contributor to the cost, effectiveness and efficiency of \gai tasks operating on graphs.
-The tradeoff between memory efficiency (how much space they consume) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
+
+
+The tradeoff between memory efficiency (how much space \nrscomment{a graph consumes} they consume) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
+
+\nrscomment{i dont think you need the "Many of the attempts..." sentence its redundant to the previous and subsequent ones and without it its smoother and still gets the point across}
 Many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
 This section introduces key concepts of graph representation including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
-A graph's storage format has a direct impact on the space it consumes in memory, the set of possible operations and the speed of those operations.
+A graph's storage format has a direct impact on the space it consumes in memory, the \nrscomment{operations that can be performed on it} set of possible operations and the speed of those operations.
+
 The \textit{Adjacency Lists} have a small storage footprint, but slow lookup times, with \textit{Adjacency} and \textit{Incidence Matrices} having reciprocal properties. 
+\nrscomment{doesnt make sense to say this until the end of the section in the summary}
+
 Modern efforts show how \textit{compressed representations} can be used to balance memory and computational overheads. 
+\nrscomment{ditto}
+
+\nrscomment{In this section we discuss the common ways a graph's topological information can be stored. In most cases, attribute information is stored separately from the graph and can be accessed via pointers or index lookups.}
 Generally, attributes are stored separately to the topological information that this section discusses and are accessed by pointers or index lookups.
 The following examples will show the common ways to represent the graph in figure~\ref{figure:graph-example}. 
 
@@ -128,7 +140,7 @@ Linear-algebraic abstractions exploit the ability to represent graphs as sparse 
 The Combinatorial Basic Linear Algebra Subprograms (CombBLAS)~\cite{Buluc2011,Azad2021} and Graph Basic Linear Algebra Subprograms (GraphBLAS)~\cite{Mattson2013,Kepner2015} are the two most popular linear algebraic graph abstractions. 
 The linear algebraic abstraction exploits the latent coarse-grained parallelism within graphs and builds on advances in high-performance linear algebra processing to improve graph processing~\cite{Buluc2011}. 
 Both similarly identify that many graph operations can be composed of general and sparse matrix-vector multiplications so that actions like a single step in a BFS can be represented as a single linear-algebraic operation~\cite{Kepner2016}.
-Linear algebraic representations are powerful and they offer a promising direction but cannot support certain certain classes of algorithms (like those leveraging priority queues)~\cite{Buluc2011}, 
+Linear algebraic representations are powerful and they offer a promising direction but cannot support certain certain classes of algorithms, like those leveraging priority queues~\cite{Buluc2011}. 
 They can also be memory-intensive~\cite{Sundaram2015}, and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
 
 
