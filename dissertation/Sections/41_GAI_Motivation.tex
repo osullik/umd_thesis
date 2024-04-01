@@ -1,36 +1,46 @@
 \section{Motivation}
-\label{section:31-GAI-Motivation}
+\label{section:41-GAI-Motivation}
 
 \input{Figures/Diagrams/02_xkcd.tex}
 
-%
-\nrscomment{this feels important, but i dont think it belongs here. maybe in ch3 where you talk about the motivation for the benchmark? basically a tool to enable these 3 avenues of improvement/comparison?}
-%
-Improvements can typically come from three sources.
-First, the \textit{algorithms} used to analyze the graphs can be improved, or modified to operate in a time-constrained setting, for example by implementing early-stopping, incremental solving or sampling. 
-Second, the underlying \textit{data structure/implementation paradigm} can be modified to exploit new technologies, for example by moving to shared memory parallelism or switching from the canonical `pointer and memory-block' representation to a linear algebraic representation. 
-The third major avenue for improvement is using \textit{hardware acceleration} to operate on graphs more \textit{efficiently} and \textit{effectively}, for example by reducing network latency in distributed systems or reducing memory access latency. 
+Developing a benchmark for \gai is a response to a lack of task, dataset and metric coverage in current benchmarks, the imbalance between competitive and empirical evaluation and the absence of a formal methodology for creating a benchmark suite that will address these shortcomings.
 
-\osullikomment{Above is inserted from Ch1}
+The review of benchmarking (section~\ref{section:31-literature-benchmarking}) concludes that purely competitive benchmarks from the Input/Output paradigm lack descriptive power and that empirical benchmarks from the workload analyses paradigm are too invasive for general-purpose use. 
+Utility much balance explainability, and our hybrid approach borrows ideas from constrained benchmarks, creating external levers to reveal the internal state of the system.
 
-% Benchmarking is a process for the evaluation and comparison of systems or components according to some specific criteria or characteristics~\cite{Kistowski2015}.
+The review of \gai benchmarking (section~\ref{section:32-literature-benchmarking-gai}) concludes that the existing \gai task, dataset and metric coverage is narrow, neglects dynamic processing of heterogeneous graphs, and largely ignores approximate or incremental solutions. 
+Rather than taking a system-led approach, we focus on identifying the problem categories in our \gai taxonomy (see table~\ref{table:taxonomy}), derive relevant tasks within those problem categories from a study of I\&S domain requirements (see table:~\ref{table:problem-survey}) and design a benchmark framework that defines the tasks, datasets and metrics that are useful for evaluating across the breadth of \gai implementations and environments.
 
-%
-\nrscomment{the rest of this paragraph feels like content not signposst and probably belongs later where i can appreciate the distinction between the 2 types}
-%
+The review of \gai bottlenecks (section~\ref{section:33-literature-gai-bottlenecks}) concludes that the three methods to influence the effectiveness, efficiency or cost of a \gai system are \textit{algorithmic, implementation} and \textit{hardware} changes.
+First, the \textit{algorithms} used to analyze the graphs can be changed to approach a task differently, operate in a time-constrained setting, or approximate results. 
+Second, the underlying \textit{implementation} can be changed to better exploit existing hardware capabilities, use optimized libraries, and adjust the memory consumption (or access time) for a graph in memory. 
+The third major avenue for improvement is to modify the \textit{hardware} to increase computing resources, distribute computing or use specialized accelerators. 
+Existing Input/Output paradigm benchmarks focus tend to focus only on evaluating hardware changes, while hosted benchmarks only evaluate the algorithmic changes. 
+Workload analyses explore all three dimensions but are invasive and tend to ignore effectiveness metrics, in favor of a focus on efficiency. 
+A key goal of our benchmark is to describe the effectiveness, efficiency and cost trade-offs for choosing some combination of these acceleration methods across the breadth of the \gai tasks they need to undertake.
 
-They can be \textit{competitive}, where candidate systems, algorithms, etc are \textit{`raced'} against each other, or \textit{empirical} benchmarks for the study of performance bottlenecks~\cite{Saavedra1996}.
-In the AI era, the public evaluation sets that are projected onto leaderboards are implicit \textit{competitive} benchmarks.
-These leaderboards typically report accuracy, harmonic mean, execution time or some other custom metric that measures the \textit{effectiveness} or \textit{efficency} of the AI tasks at hand, be that object detection, machine translation, common-sense reasoning or simple classification. 
-The mono-dimensionality of these leaderboards can conceal bias, fairness and generalizability of these models, with overfitting to problem datasets a known problem~\cite{Hooker1994, Hooker1995}.
+Whenever developing a new standard, the new approach risks crowding the already busy ecosystem, without meaningful improvement (see: figure~\ref{figure:xkcd}).
+The reasons why the framework we propose here is an important contribution and not just crowding existing work are: 
+\begin{enumerate}
+    \item Our framework defines a methodology, allowing it to extend to emerging \gai problems. 
+    \item Our methodology focuses on the \gai problems, rather than the systems. 
+    \item Our benchmark compares the trade-offs between the effectiveness, efficiency and cost of a \gai system to achieve a task. 
+    \item Our benchmark balances the generality of the Input/Output benchmarking paradigm with the insights of the empirical benchmarking paradigm.
+\end{enumerate}
 
-%
-\nrscomment{you told me there are 2 things in the world, then described one and not the other. talk about what an empirical benchmark is, even if just at a high level}
-%
 
-%
-\nrscomment{before you say this section is about the need for x, tell me theres a need for x because y. i think thats what this signpost ought to be, not all the stuff about leaderboards}
+% They can be \textit{competitive}, where candidate systems, algorithms, etc are \textit{`raced'} against each other, or \textit{empirical} benchmarks for the study of performance bottlenecks~\cite{Saavedra1996}.
+% In the AI era, the public evaluation sets that are projected onto leaderboards are implicit \textit{competitive} benchmarks.
+% These leaderboards typically report accuracy, harmonic mean, execution time or some other custom metric that measures the \textit{effectiveness} or \textit{efficency} of the AI tasks at hand, be that object detection, machine translation, common-sense reasoning or simple classification. 
+% The mono-dimensionality of these leaderboards can conceal bias, fairness and generalizability of these models, with overfitting to problem datasets a known problem~\cite{Hooker1994, Hooker1995}.
 
-\nrscomment{i think this section will do more than just outline the need for it, it will give a blueprint for addressing the need. say that}
-%
-This section outlines the need for a graph-AI benchmark, the methodology, design, implementation and results. 
+% %
+% \nrscomment{you told me there are 2 things in the world, then described one and not the other. talk about what an empirical benchmark is, even if just at a high level}
+% %
+
+% %
+% \nrscomment{before you say this section is about the need for x, tell me theres a need for x because y. i think thats what this signpost ought to be, not all the stuff about leaderboards}
+
+% \nrscomment{i think this section will do more than just outline the need for it, it will give a blueprint for addressing the need. say that}
+% %
+% This section outlines the need for a graph-AI benchmark, the methodology, design, implementation and results. 
