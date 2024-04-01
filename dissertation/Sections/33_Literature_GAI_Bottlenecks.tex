@@ -1,20 +1,18 @@
 \section{\gai Bottlenecks}
 \label{section:33-literature-gai-bottlenecks}
 
-A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is \nrscomment{less than or equal to} equal to or less than the demand placed on it~\cite{Goldratt2004}. 
-Understanding the common bottlenecks in \gai systems helps design the tasks and datasets that will \nrscomment{discriminate \gai system...} be discriminative in judging \gai system performance. 
-This section briefly reviews the prior work in identifying the bottlenecks known to occur \nrscomment{in} during \gai, 
-\nrscomment{"which inform our benchmark design methodology" or something like that. skip the bit about elevate and exploit}
-setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in section~\ref{section:34-literature-gai-acceleration}.
+A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is less than or equal to the demand placed on it~\cite{Goldratt2004}. 
+Understanding the common bottlenecks in \gai systems helps design the tasks and datasets that will discriminate \gai system performance. 
+This section briefly reviews the prior work in workload analyses of \gai systems and the designs of \gai accelerators and identifies the three driving bottlenecks in \gai systems are \textit{memory, compute} and \textit{communication}.
 
-\nrscomment{this first sentence doesnt really fit, just cut it}
-The Input/Output benchmark paradigm restricts the metrics that can be collected during the benchmarking process (see section~\ref{section:32-literature-benchmarking-gai}).
+% \nrscomment{this first sentence doesnt really fit, just cut it}
+% The Input/Output benchmark paradigm restricts the metrics that can be collected during the benchmarking process (see section~\ref{section:32-literature-benchmarking-gai}).
 
-\nrscomment{this is redundant to the previous "This section reviews..." sentence. cut it and incorporate the 3 bottleneck names up in the previous "This section reviews" sentence}
-By reviewing workload analyses of \gai systems, and the designs of \gai accelerators we identify that the three driving bottlenecks in \gai systems are \textit{memory, compute} and \textit{communication}.
+% \nrscomment{this is redundant to the previous "This section reviews..." sentence. cut it and incorporate the 3 bottleneck names up in the previous "This section reviews" sentence}
+% By reviewing 
 
-\nrscomment{cut this sentence}
-These are the three bottlenecks that exist in any system, and the following discussion addresses each briefly in turn, before turning to the issue of \textit{accuracy bottlenecks} and \textit{data-dependence}. 
+% \nrscomment{cut this sentence}
+% These are the three bottlenecks that exist in any system, and the following discussion addresses each briefly in turn, before turning to the issue of \textit{accuracy bottlenecks} and \textit{data-dependence}. 
 
 \subsection{Memory Bottlenecks}
 Memory bottlenecks occur when a system is unable to keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
@@ -23,8 +21,7 @@ Memory bottlenecks manifest either because the volume of data required for proce
 Memory bandwidth defines how much data can be retrieved from memory in a single cycle.
 When bandwidth is insufficient because of inefficient architectures~\cite{Beamer2015}, poor cache utilization~\cite{Ahn2015}, competing parallel processes~\cite{Fu2014, Buluc2012} or just because the irregular shape of the data leads to them being underutilized~\cite{Aananthakrishnan2020, Zhang2017, Song2016} the processor cannot get enough data to sustain maximal operations and stalls~\cite{Satish2014}.
 Memory latency defines how much time it takes to retrieve required data from memory, and exacerbates the under-utilization of memory bandwidth~\cite{Kanev2015, Wu2021a}.
-Latency is problematic in \gai applications because the irregular data accesses coming from the inherent lack of spatial and temporal locality (on average)~\cite{Oguntebi2016, Ham2016} causes cache misses~\cite{Song2016, Zhang2017, Beamer2015} and inefficient cache usage even when it is hit~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}, leading to slow main memory accesses. 
-The impact is so significant that even efficient pipelined architectures can't `hide' the latency~\cite{Dysart2016}.
+Latency is problematic in \gai applications because the irregular data accesses coming from the inherent lack of spatial and temporal locality (on average)~\cite{Oguntebi2016, Ham2016} causes cache misses~\cite{Song2016, Zhang2017, Beamer2015} and inefficient cache usage even when it is hit~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}, leading to slow main memory accesses so inefficient that even optimized pipelined architectures can't `hide' the latency~\cite{Dysart2016}.
 
 \subsection{Computation Bottlenecks}
 Computation bottlenecks occur when the system can serve data to the processor faster than computations can be performed on it. 
@@ -41,19 +38,19 @@ When partitioned, the graph must then be copied to a distributed worker node (or
 Synchronizing parallel worker nodes becomes challenging when the algorithm needs to access all vertices each iteration~\cite{Satish2014} or when the partitioning is suboptimal~\cite{Chen2019}.
 In either case, distributed parallel approaches incur the most severe communication overheads~\cite{Beamer2015, Dhulipala2021}.
 
-\subsection{Accuracy Bottlenecks}
-\nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
-What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
-Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
-The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
-Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
+% \subsection{Accuracy Bottlenecks}
+% \nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
+% What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
+% Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
+% The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
+% Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
 
-\subsection{Data-Dependence}
-\nrscomment{this is also kind of arbitrary, and definitely doesnt belong in the bottleneck section. i think you basically covered all of this already in prelim and can just cut it. if you want to keep this as a summary of all the properties that affect efficiency, again move it to design considerations or somewhere in ch4}
-There is an inherent dependence between the efficiency and effectiveness of \gai tasks and the size, shape, sparsity, content and velocity of the data they operate on~\cite{Fu2014, Osama2022}.
-Large datasets need to be distributed or compressed to fit in memory and the complexity of many \gai tasks requires large graph problems to be parallelized to be tractable~\cite{Hong2012}.
-Varying topologies and sparsities can impact a graph's locality properties and memory access patterns~\cite{Lenharth2016, Beamer2015}. 
-The content (attributes) of a graph can introduce memory access overheads, but also simplify some algorithms by acting as filters to reduce the size of the graph~\cite{Mccreesh2018,Hamilton2017} and the ever-increasing velocity of data drives the use of dynamic graphs in real-world situations~\cite{Regli2022a, Basak2020, Zang2012}.
+% \subsection{Data-Dependence}
+% \nrscomment{this is also kind of arbitrary, and definitely doesnt belong in the bottleneck section. i think you basically covered all of this already in prelim and can just cut it. if you want to keep this as a summary of all the properties that affect efficiency, again move it to design considerations or somewhere in ch4}
+% There is an inherent dependence between the efficiency and effectiveness of \gai tasks and the size, shape, sparsity, content and velocity of the data they operate on~\cite{Fu2014, Osama2022}.
+% Large datasets need to be distributed or compressed to fit in memory and the complexity of many \gai tasks requires large graph problems to be parallelized to be tractable~\cite{Hong2012}.
+% Varying topologies and sparsities can impact a graph's locality properties and memory access patterns~\cite{Lenharth2016, Beamer2015}. 
+% The content (attributes) of a graph can introduce memory access overheads, but also simplify some algorithms by acting as filters to reduce the size of the graph~\cite{Mccreesh2018,Hamilton2017} and the ever-increasing velocity of data drives the use of dynamic graphs in real-world situations~\cite{Regli2022a, Basak2020, Zang2012}.
 
 
 % % % % % % % % %  BELOW IS FULL-LENGTH VERSION OF THIS SECTION THAT GOES INTO MUCH MORE DETAIL % % % % % % % %
