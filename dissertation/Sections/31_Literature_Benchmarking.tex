@@ -10,7 +10,7 @@ They have been used to great effect to advance research in fields like high-perf
 The two main approaches to benchmarking are \textit{competitive} and \textit{empirical} benchmarks. 
 
 \subsection{Competitive Benchmarks}
-Competitive benchmarks are extremely popular in the AI community at present. 
+Competitive benchmarks are extremely popular in the AI community. 
 They involve selecting a metric or metrics and `competing' systems as black boxes to identify which one can maximize that metric. 
 They are typically implemented using the Input/Output paradigm, where the only things known to the benchmark are the data provided, the results generated and the time elapsed between those two events. 
 For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection reports average precision as their key metric\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
@@ -18,23 +18,31 @@ Visual question answering has the Visual Question Answering Version 2 (VQAv2) an
 
 There are three important criticisms of competitive benchmarks. 
 The first is that these provide a `black box' view of the systems. 
-We can see which systems are better but get no information about why they are better, or how they can be improved~\cite{Saavedra1996, Hooker1994}.
+Competitive benchmarks show which systems are better but provide no information about why they are better, or how they can be improved~\cite{Saavedra1996, Hooker1994}.
 Second, is that leaderboard challenges like these very quickly become the targets of research, not the measure and so solutions begin to optimize to maximize the benchmark evaluation at the expense of generally progressing the knowledge of the field~\cite{Hooker1995}. 
 The third is that all of these challenges (benchmarks) focus on effectiveness measures, not efficiency. 
-Ignoring the impact of efficiency when benchmarking is an immature view and can spawn misleading results, where say, $100$ GPUs have brute forced a better result in a task than a more efficient algorithm running on an old ubuntu machine in someone's basement.
+Ignoring efficiency when benchmarking is an immature view and can spawn misleading results, where say, $100$ GPUs have brute forced a better result in a task than a more efficient algorithm running on an old ubuntu machine in someone's basement.
 
 \subsection{Empirical Benchmarks}
 The empirical benchmarking approach is an important offset to the competitive approach.
 An empirical benchmark is less interested in racing systems against each other than understanding how they work, identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
-Empirical benchmarks follow the workload analysis paradigm.
+Empirical benchmarks follow either the workload analysis or hosted benchmark paradigms.
+
 Workload analyses are invasive and require complete access to the system under test to instrument the implementation and profile the environment.
 With all of the overhead in place, the workloads are executed and telemetry collected. 
 Reports are typically generated manually and focus on a single system or a comparison of a few systems. 
 They provide a very detailed understanding of what is happening in a system, but are work-intensive and so do not scale well. 
 
+The hosted approach requires researchers to submit their implementations to a third party, who will run them on a shared environment, controlling for environmental variance between systems under test. 
+For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations, and have the results published to public leaderboards.
+The hosted approach relies on shared problem formats, common primitive operations and constrains developers to implementations that can run on the provided environment. 
+% StarExec provides a virtual machine to test that an implementation will run on the software stack for the host environment, but this model ignores the impact of hardware on the effectiveness, efficiency and cost, and so a comprehensive hosted solution will require many concurrent (interoperable) hardware configurations to study the impact of hardware changes, greatly increasing the cost. 
+To understand what happens when the hardware varies, including the use of distributed and accelerated systems, multiple concurrent hardware hosts need to be available.
+Multiple hardware hosts can be viable when the implementations share a high-level language like Python and limit themselves to CPUs and NVIDIA GPUs that have APIs for Python, but in fields like \gai where much of the research focuses on lower-level implementations like C, C++, CUDA or custom languages for hardware accelerators a general-purpose hosted benchmark becomes difficult to implement fairly, as the `same' implementation cannot be run on different hardware without optimization and recompilation (if not total reimplementation).
+
 \subsection{Other Approaches}
 One promising alternative is the idea of a \textit{constrained} benchmark, like the \textit{efficientQA} efficient open domain question answering competition~\cite{Min2020}.
-A constrained benchmark limits the time or resources available to competitors while requiring them to still try and maximize their effectiveness metric.
+A constrained benchmark limits the time or resources available to competitors while requiring them to maximize their effectiveness metric.
 In the efficientQA competition, competitors had to maximize their target metric (Question Answering Accuracy) while adhering to strict memory budgets that forced them to trade-off between the size of the models that they use and the size of the reference corpora they drew their answers from.
 A constrained benchmarking approach shows how even without explicit access to the internal state of a system required for an empirical benchmark, we can gain additional information by controlling the time or resources available to the systems under test and observing the resulting changes.
 
