@@ -1,43 +1,42 @@
 \section{System Preliminaries}
 \label{section:26-system-preliminaries}
-
-\osullikomment{Need to revisit this. Important to introduce the concepts but need to work out how to do it.}
+Several computer systems concepts are important for this thesis. 
 
 \subsection{Locality}
+Locality is a term in computer architecture that refers to the properties of data that enable it to be pre-emptively cached because it will be needed soon (spatial locality) or is important and likely to be re-used soon (temporal locality).
 
 \textbf{Spatial Locality.} 
-\textit{Spatial locality} is the idea that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon, and so proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
+is the idea that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon, and so proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
 In figure~\ref{figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
-Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the impact that poor \textit{spatial locality} is evident.
-In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found.
-
-\nrscomment{This isnt a terribly hard concept to understand,e specially if the figure is goo, i dont think you need to step through it in the prose}
-So, for the graph in figure~\ref{figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
-The first `expansion' of \textbf{A} enqueues the pointers to \textbf{B} and \textbf{F}.
-\textbf{B} is already in the cache and the `cache hit' when it is dequeued for expansion means that the vertex is quickly retrieved, exploiting the spatial locality of \textbf{A} and \textbf{B} in this instance. 
-The processor expands \textbf{B} to add the pointer to its neighbor \textbf{C} to the queue.
-When it comes time to expand \textbf{F}, however, there is a `cache miss'.
-\textbf{F} is not in the cache, so the processor must now wait for it to be loaded from main memory, incurring a penalty proportional to the latency of retrieving the vertex from main memory plus the time it takes to load the whole block given memory bandwidth constraints. 
-For simplicity, let us now assume that we have loaded another $3$ vertices starting from \textbf{F} (\textbf{F, G, H}) to replace the content of the cache and expand \textbf{F}, adding its neighbor \textbf{D} to the queue. 
-\textbf{C} is now at the front of the queue but has been bumped out of the cache by the load of (\textbf{F, G, H}) so the processor must wait again for \textbf{C} to be loaded from main memory before it can be expanded. 
-The problem continues throughout the algorithm, effectively `chasing pointers' all over the main memory, the `irregular memory accesses' that cause so much difficulty in graph processing~\cite{Beamer2015}.
-The `pointer chasing' behavior here happens because of the poor \textit{spatial locality} in this graph.
-
-\nrscomment{the below stuff is worth keeping, just make the second sentence more generic instead of referring to the example specific}
-Put simply, the vertices that are close to each other in the graph topologically are not close to each other in memory. 
-It also shows how only a small percentage of each cache line is used in each step, putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
+Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the benefit of exploiting \textit{spatial locality} is evident.
+% In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found.
+% \nrscomment{This isnt a terribly hard concept to understand,e specially if the figure is goo, i dont think you need to step through it in the prose}
+% So, for the graph in figure~\ref{figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
+% The first `expansion' of \textbf{A} enqueues the pointers to \textbf{B} and \textbf{F}.
+% \textbf{B} is already in the cache and the `cache hit' when it is dequeued for expansion means that the vertex is quickly retrieved, exploiting the spatial locality of \textbf{A} and \textbf{B} in this instance. 
+% The processor expands \textbf{B} to add the pointer to its neighbor \textbf{C} to the queue.
+% When it comes time to expand \textbf{F}, however, there is a `cache miss'.
+% \textbf{F} is not in the cache, so the processor must now wait for it to be loaded from main memory, incurring a penalty proportional to the latency of retrieving the vertex from main memory plus the time it takes to load the whole block given memory bandwidth constraints. 
+% For simplicity, let us now assume that we have loaded another $3$ vertices starting from \textbf{F} (\textbf{F, G, H}) to replace the content of the cache and expand \textbf{F}, adding its neighbor \textbf{D} to the queue. 
+% \textbf{C} is now at the front of the queue but has been bumped out of the cache by the load of (\textbf{F, G, H}) so the processor must wait again for \textbf{C} to be loaded from main memory before it can be expanded. 
+% The problem continues throughout the algorithm, effectively `chasing pointers' all over the main memory, the `irregular memory accesses' that cause so much difficulty in graph processing~\cite{Beamer2015}.
+% The `pointer chasing' behavior here happens because of the poor \textit{spatial locality} in this graph.
+% \nrscomment{the below stuff is worth keeping, just make the second sentence more generic instead of referring to the example specific}
+Put simply, vertices that are close to each other in the graph topologically are not close to each other in memory. 
+The lack of spatial locality also means that only a small percentage of each cache line is used in each step, putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
 The irregular memory access problem is exacerbated in larger graphs, where it is more likely that the vertex list does not fit in the cache and will have to access the main memory to retrieve the data~\cite{Chung2012}, reflected empirically in a decreasing \textit{instructions per miss} rate on larger graphs~\cite{Beamer2015}.
 
 \input{Figures/Locality/01_simple_locality.tex}
 
 \textbf{Temporal Locality.} 
-\nrscomment{id flip the order youre saying these things. first what is temporal locality -- the bit where high degree nodes are cached. Then talk about how this is especially useful for scale-free because xyz.}
+is the idea that when a piece of data is needed for processing, it will likely be needed for processing again soon, and so it can be retained in the cache for quick access when it is needed again.
+To \textit{exploit} the \textit{temporal locality} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm~\cite{Beamer2015}.
+% \nrscomment{id flip the order youre saying these things. first what is temporal locality -- the bit where high degree nodes are cached. Then talk about how this is especially useful for scale-free because xyz.}
 There is, however, some natural locality in \textit{scale-free} graphs that can be readily exploited. 
 Consider figure~\ref{figure:locality-simple} again. 
 While it isn't a scale-free graph in any real sense, vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
-To \textit{exploit} the \textit{temporal locality} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm.
-So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality~\cite{Beamer2015}.
-\nrscomment{is it really just based on the degree? from the name id think it would be a recency thing like with normal caching }
+So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality.
+% \nrscomment{is it really just based on the degree? from the name id think it would be a recency thing like with normal caching }
 
 \input{Figures/Locality/02_attributed_locality}
 

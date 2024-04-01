@@ -1,27 +1,25 @@
 \section{Graph Representations}
 \label{section:23-graph-representations}
-\nrscomment{dont put the defn it should be the main part of the first sentence. "The representation of a graph determines how it is abstracted and stored in memory, which fundamentally affects how it can be processed and operated on. Representation format of the input graph is a key contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs." -- and is it actually a factor in effectiveness? some representations lead to more correct results than others? that seems odd}
+The representation of a graph determines how it is abstracted and stored in memory, which fundamentally affects how it can be processed and operated on. 
+The representation format of the input graph is a key contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs.
+The tradeoff between memory efficiency (how much space a graph consumes) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
 
-The representation of a graph (how it is abstracted and stored in memory) is a key contributor to the cost, effectiveness and efficiency of \gai tasks operating on graphs.
-
-
-The tradeoff between memory efficiency (how much space \nrscomment{a graph consumes} they consume) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
-
-\nrscomment{i dont think you need the "Many of the attempts..." sentence its redundant to the previous and subsequent ones and without it its smoother and still gets the point across}
-Many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
+% \nrscomment{i dont think you need the "Many of the attempts..." sentence its redundant to the previous and subsequent ones and without it its smoother and still gets the point across}
+% Many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
 This section introduces key concepts of graph representation including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
-A graph's storage format has a direct impact on the space it consumes in memory, the \nrscomment{operations that can be performed on it} set of possible operations and the speed of those operations.
-
-The \textit{Adjacency Lists} have a small storage footprint, but slow lookup times, with \textit{Adjacency} and \textit{Incidence Matrices} having reciprocal properties. 
-\nrscomment{doesnt make sense to say this until the end of the section in the summary}
-
-Modern efforts show how \textit{compressed representations} can be used to balance memory and computational overheads. 
-\nrscomment{ditto}
-
-\nrscomment{In this section we discuss the common ways a graph's topological information can be stored. In most cases, attribute information is stored separately from the graph and can be accessed via pointers or index lookups.}
-Generally, attributes are stored separately to the topological information that this section discusses and are accessed by pointers or index lookups.
+A graph's storage format has a direct impact on the space it consumes in memory, the operations that can be performed on it and the speed of those operations.
+%
+% The \textit{Adjacency Lists} have a small storage footprint, but slow lookup times, with \textit{Adjacency} and \textit{Incidence Matrices} having reciprocal properties. 
+% \nrscomment{doesnt make sense to say this until the end of the section in the summary}
+%
+% Modern efforts show how \textit{compressed representations} can be used to balance memory and computational overheads. 
+% \nrscomment{ditto}
+%
+In this section, we discuss the common ways a graph's topological information can be stored. 
+In most cases, attribute information is stored separately from the graph and can be accessed via pointers or index lookups.
+% Generally, attributes are stored separately to the topological information that this section discusses and are accessed by pointers or index lookups.
 The following examples will show the common ways to represent the graph in figure~\ref{figure:graph-example}. 
 
 \input{Figures/Graphs/08_example_graph.tex}

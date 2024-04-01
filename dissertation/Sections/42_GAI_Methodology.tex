@@ -19,6 +19,14 @@ Focusing on independent kernel operations is not a good benchmark because the mu
 
 An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 
 
+\osullikomment{Moved from related work.}
+\subsection{Accuracy Bottlenecks}
+\nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
+What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
+Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
+The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
+Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
+
 \subsection{Components of a Benchmark}
 \nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
 \nrscomment{rephrase this as "Benchmarks contain three major components, which are outlined in fig x: datasets drawn from a domain of interest, tasks drawn from a relevant problem space, and metrics covering relevant evaluation criteria." then skip the bit about SUT for now and go into your explanation of datasets/tasks/etc.. Talk about SUT once youre done with that.}

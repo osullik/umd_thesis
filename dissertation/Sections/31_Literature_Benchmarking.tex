@@ -1,8 +1,43 @@
 \section{Benchmarking}
 \label{section:31-literature-benchmarking}
 
-\osullikomment{Having no review of benchmarking, in general, feels weird? Maybe just 1-2 paras about successful uses of benchmarking?}
-\nrscomment{yeah given youre taking an empirical approach to benchmarking, we need to know what the alternative approaches are, and why theyre inferior to yours (and about Hooker, who youre borrowing from). But not a crazy in-depth explanation of the philosophy, just a high level summary}
+% \osullikomment{Having no review of benchmarking, in general, feels weird? Maybe just 1-2 paras about successful uses of benchmarking?}
+% \nrscomment{yeah given youre taking an empirical approach to benchmarking, we need to know what the alternative approaches are, and why theyre inferior to yours (and about Hooker, who youre borrowing from). But not a crazy in-depth explanation of the philosophy, just a high level summary}
+
+Benchmarking is a process by which systems or components are compared according to some criteria, that provide a point of reference to measure the relative performance~\cite{Kistowski2015}.
+They have been used to great effect to advance research in fields like high-performance computing  (the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}), for solving linear equations like (the LINPACK Top500~\cite{Dongarra2003}), for satisfiability problems (SATLIB~\cite{Hoos2000}), and many more. 
+
+The two main approaches to benchmarking are \textit{competitive} and \textit{empirical} benchmarks. 
+
+\subsection{Competitive Benchmarks}
+Competitive benchmarks are extremely popular in the AI community at present. 
+They involve selecting a metric or metrics and `competing' systems as black boxes to identify which one can maximize that metric. 
+They are typically implemented using the Input/Output paradigm, where the only things known to the benchmark are the data provided, the results generated and the time elapsed between those two events. 
+For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection reports average precision as their key metric\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
+Visual question answering has the Visual Question Answering Version 2 (VQAv2) and compares VQA accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and finally a popular Large Language Model (LLM) challenge at the time of writing is the ChatBot Arena benchmark\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} which uses `user preference' between two options as the metric.
+
+There are three important criticisms of competitive benchmarks. 
+The first is that these provide a `black box' view of the systems. 
+We can see which systems are better but get no information about why they are better, or how they can be improved~\cite{Saavedra1996, Hooker1994}.
+Second, is that leaderboard challenges like these very quickly become the targets of research, not the measure and so solutions begin to optimize to maximize the benchmark evaluation at the expense of generally progressing the knowledge of the field~\cite{Hooker1995}. 
+The third is that all of these challenges (benchmarks) focus on effectiveness measures, not efficiency. 
+Ignoring the impact of efficiency when benchmarking is an immature view and can spawn misleading results, where say, $100$ GPUs have brute forced a better result in a task than a more efficient algorithm running on an old ubuntu machine in someone's basement.
+
+\subsection{Empirical Benchmarks}
+The empirical benchmarking approach is an important offset to the competitive approach.
+An empirical benchmark is less interested in racing systems against each other than understanding how they work, identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
+Empirical benchmarks follow the workload analysis paradigm.
+Workload analyses are invasive and require complete access to the system under test to instrument the implementation and profile the environment.
+With all of the overhead in place, the workloads are executed and telemetry collected. 
+Reports are typically generated manually and focus on a single system or a comparison of a few systems. 
+They provide a very detailed understanding of what is happening in a system, but are work-intensive and so do not scale well. 
+
+\subsection{Other Approaches}
+One promising alternative is the idea of a \textit{constrained} benchmark, like the \textit{efficientQA} efficient open domain question answering competition~\cite{Min2020}.
+A constrained benchmark limits the time or resources available to competitors while requiring them to still try and maximize their effectiveness metric.
+In the efficientQA competition, competitors had to maximize their target metric (Question Answering Accuracy) while adhering to strict memory budgets that forced them to trade-off between the size of the models that they use and the size of the reference corpora they drew their answers from.
+A constrained benchmarking approach shows how even without explicit access to the internal state of a system required for an empirical benchmark, we can gain additional information by controlling the time or resources available to the systems under test and observing the resulting changes.
+
 
 % % % % % % % % % % MOVED TO PROBLEM SECTION % % % % % % % % % % %
 

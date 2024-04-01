@@ -14,10 +14,7 @@ We begin by addressing the classes of graphs that occur in the real world, and t
 % \nrscomment{if youre gonna have a synthetics graphs header you need a corresponding real-world graph one here}
 
 \subsection{Real-World Graphs}
-\textit{Scale-Free, Mesh} and \textit{Random} are commonly identified graph classes. 
-While either real-world or synthetic graphs are capable of fitting into these classes, a graph exhibiting uniform random characteristics is unlikely to occur in the real world.
-\nrscomment{why are we talking about uniform random here? just say what all real world graphs have in common- that they represent graph native data or something}
-This section will first identify the `real world' graph classes \nrscomment{you dont need to signpost for synthetic, already did that above and will do it in the synthetic section} before covering random graphs as a component of synthetic graphs. 
+This section will first identify the `real world' graph classes which are derived from real-world phenomena like email records, chat logs, network logs, road maps, protein structures or any of a large collection of problems that can be represented as a graph.
 
 \subsubsection{Scale-Free Graphs}
 Scale-free graphs are a naturally occurring graph class characterized by a distribution of vertex degrees that follow a power-law distribution. 
@@ -39,14 +36,9 @@ They tend to have a large diameter, a small variance in neighborhood size and a 
 % Non-native graph formats are introducing new graph shapes that will likely have further unpredictable downstream impacts on the effectiveness and efficiency of graph processing. 
 
 \subsection{Synthetic Graphs}
-\nrscomment{condense it: "Real-world graphs offer realistic test inputs for graph algorithms. However, some domains lack sufficient data to support robust testing, especially regarding performance on irregular distributions. As a solution, \textit{synthetic graphs} can be mathematically or imitatively generated to provide simple graphs for testing and evaluation."}
-
-Real-world \textit{Scale-free} and \textit{Mesh} graphs are extremely useful in testing graph algorithms. 
-They provide realistic inputs to algorithms reflecting the domain they are sourced from. 
-However, there are many domains, and data is not available for all of them. 
-Further, modeling theoretical performance on irregular distributions can be difficult. 
-As a solution, \textit{synthetic graphs} can be generated to provide simplified graphs for testing and evaluation. 
-They can be \textit{mathematically generated}, or \textit{imitatively generated}.
+Real-world graphs offer realistic test inputs for graph algorithms.
+However, some domains lack sufficient data to support robust testing, especially regarding performance on irregular distributions. 
+As a solution, \textit{synthetic graphs} can be mathematically or imitatively generated to provide simple graphs for testing and evaluation.
 
 \subsubsection{Mathematically Generated Synthetic Graphs (Random Graphs)}
 Multiple mathematical functions can be used to generate synthetic graphs.
