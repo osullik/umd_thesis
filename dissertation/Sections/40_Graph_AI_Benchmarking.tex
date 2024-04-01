@@ -3,48 +3,18 @@
 \chapter{Graph Artificial Intelligence Benchmarking}
 \label{chapter:40-Graph-AI-Benchmarking}
 
+This section introduces our framework for benchmarking \gai. 
+It begins by summarizing the requirement for a general-purpose \gai benchmark, introducing key background on how benchmarks are designed and what they are comprised of. 
+Next, it summarizes the guiding design principles for the framework before presenting the framework and providing examples of its applicability across \gai problems. 
 
 
-%
-\nrscomment{this feels important, but i dont think it belongs here. maybe in ch3 where you talk about the motivation for the benchmark? basically a tool to enable these 3 avenues of improvement/comparison?}
-%
-Improvements can typically come from three sources.
-First, the \textit{algorithms} used to analyze the graphs can be improved, or modified to operate in a time-constrained setting, for example by implementing early-stopping, incremental solving or sampling. 
-Second, the underlying \textit{data structure/implementation paradigm} can be modified to exploit new technologies, for example by moving to shared memory parallelism or switching from the canonical `pointer and memory-block' representation to a linear algebraic representation. 
-The third major avenue for improvement is using \textit{hardware acceleration} to operate on graphs more \textit{efficiently} and \textit{effectively}, for example by reducing network latency in distributed systems or reducing memory access latency. 
+\include{41_GAI_Motivation.tex}
 
-\osullikomment{Above is inserted from Ch1}
-
-% Benchmarking is a process for the evaluation and comparison of systems or components according to some specific criteria or characteristics~\cite{Kistowski2015}.
-
-%
-\nrscomment{the rest of this paragraph feels like content not signposst and probably belongs later where i can appreciate the distinction between the 2 types}
-%
-
-They can be \textit{competitive}, where candidate systems, algorithms, etc are \textit{`raced'} against each other, or \textit{empirical} benchmarks for the study of performance bottlenecks~\cite{Saavedra1996}.
-In the AI era, the public evaluation sets that are projected onto leaderboards are implicit \textit{competitive} benchmarks.
-These leaderboards typically report accuracy, harmonic mean, execution time or some other custom metric that measures the \textit{effectiveness} or \textit{efficency} of the AI tasks at hand, be that object detection, machine translation, common-sense reasoning or simple classification. 
-The mono-dimensionality of these leaderboards can conceal bias, fairness and generalizability of these models, with overfitting to problem datasets a known problem~\cite{Hooker1994, Hooker1995}.
-
-%
-\nrscomment{you told me there are 2 things in the world, then described one and not the other. talk about what an empirical benchmark is, even if just at a high level}
-%
-
-%
-\nrscomment{before you say this section is about the need for x, tell me theres a need for x because y. i think thats what this signpost ought to be, not all the stuff about leaderboards}
-
-\nrscomment{i think this section will do more than just outline the need for it, it will give a blueprint for addressing the need. say that}
-%
-This section outlines the need for a graph-AI benchmark, the methodology, design, implementation and results. 
-
-
-\include{41_GAI_Problem_Statement.tex}
-
-\include{42_GAI_Methodology.tex}
+\include{42_GAI_Background.tex}
 
 \include{43_GAI_Design.tex}
 
-\include{44_GAI_Results.tex}
+\include{44_GAI_Framework.tex}
 
 \include{45_GAI_Discussion.tex}
 

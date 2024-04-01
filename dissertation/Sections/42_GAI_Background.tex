@@ -1,12 +1,9 @@
-\section{Methodology}
-\label{section:42-GAI-Methodology}
+\section{Background}
+\label{section:42-GAI-Background}
 
-\osullikomment{Moved from Related Work}
-\subsection{Design Considerations}
-\nrscomment{this is not RW, its part of the abstract benchmark methodology section. it needs to be condensed down to only the relevant pieces, but ill read it for that when its moved down}
 Benchmark design must consider the purpose of the benchmark, general principles of benchmark design and the granularity of the problem~\cite{Carpinetti2002}.
 
-The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design ()\textit{relevance, fairness, reproduciblity} and \textit{verifiability}~\cite{Huppler2009, Kistowski2015}. 
+The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
 The purpose of the benchmark also drives its level of \textit{granularity}. 
 From most to least granular, benchmarks of \textit{atomic operations, kernels, toy programs, synthetic programs and real programs} provide different information about the systems under test and the metrics that describe them~\cite{Hennessy2019}.
 Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
@@ -18,14 +15,6 @@ However, partly because of the lack of shared abstractions and primitives (secti
 Focusing on independent kernel operations is not a good benchmark because the multitude of small kernels do not give a realistic understanding of holistic system performance `in the real world'~\cite{Hennessy2019}.
 
 An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 
-
-\osullikomment{Moved from related work.}
-\subsection{Accuracy Bottlenecks}
-\nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
-What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
-Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
-The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
-Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
 
 \subsection{Components of a Benchmark}
 \nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}

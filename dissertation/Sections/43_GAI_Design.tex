@@ -1,4 +1,4 @@
-\section{Experiment Design}
+\section{Design}
 \label{section:33-GAI-Design}
 
 Datasets should be drawn from the \textit{Mesh} and \textit{Scale-Free} distributions~\cite{Beamer2015}.
@@ -8,3 +8,12 @@ Roofline Analysis is a useful evaluation tool to understand where the bottleneck
 \subsection{Collecting Metrics}
 
 google ~\cite{Ren2010,Kanev2015,Hennessy2019}
+
+
+\osullikomment{Moved from related work.}
+\subsection{Accuracy Bottlenecks}
+\nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
+What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
+Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
+The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
+Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
