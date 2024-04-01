@@ -84,7 +84,7 @@ The CSR format uses three lists to compress the rows of a sparse (adjacency) mat
 % The CSC format reverses the function of the row and column indices so that the columns are compressed.
 The CSC format reverses the format so that the columns are compressed.
 The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nonzero)+nonzero\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nonzero))$ time to check the existence of an edge where $nonzero$ is the count of non zero entries in the matrix. 
-% \nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
+\nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
 More complicated representations exist that are capable of compressing the graph representations even further but they require more computation overhead for the encoding and decoding process~\cite{Shun2015}.
 
 \input{Figures/Graphs/12_csr.tex}
