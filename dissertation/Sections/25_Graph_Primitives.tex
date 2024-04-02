@@ -1,16 +1,20 @@
 \section{Graph Primitives}
+\nrscomment{title this section Graph Primitive Operations}
+
 \label{section:25-graph-primitives}
 Primitives are the abstract building blocks that compose more complicated programs. 
 For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
 Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize to improve performance. 
-However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014}.
+However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014} \nrscomment{since graph operations tend to be dependent on the abstraction model and implementation used.}.
 
 \subsection{Overview}
 The canonical and linear algebraic abstractions each have their own sets of associated primitives. 
 Depending on whether they use the canonical or linear algebraic abstraction model, a sequential, distributed, shared-memory parallel or database graph implementation will implement different primitive operations. 
+\nrscomment{the previous 2 sentences can be wrapped into the signpost by adding to the end of it and then drop them here. see previous comment}
 % which in turn drive a broad distribution of primitives that have emerged from optimizing for distributed computing, shared-memory parallelism, hardware-accelerated computing and mathematical reformulations of the problem and the specific use-case. 
 % The primitive operations for sequential, parallel, graph Database and linear-algebraic operations all vary. 
 % \nrscomment{the first 3 of those you didnt really introduce, as they arent representation formats, but the last one is. If youre going to talk about graph operations now, put it in section 24 and give it the title so its easier to find. i think you need to do operations before you can talk about primitives, if the operations define the primitives. currently its not clear if the representation format or the operation type is what drives the primitives.}
+\nrscomment{linear algebraic is an abstraction model, graph database is a problem category, and parallel/sequential are implementations. What are you listing here? figure that out and then change the title "Overview" to whatever it is youre listing. if you follow my next comment and drop the Benefits section, then you dont need a header here at all, and can just have Sequential, Parallel, etc. as your headers. But still think about why youre listing unlike things in a list-- thats usually a sign something is wrong with the presentation. Based on the title of this section Graph Primitive Operations, I would expect the headers here to be the primitive operations themselves, like Scatter-Apply-Gather, matrix multiplication, etc. and then discuss their applicability in the text.}
 
 \textbf{Sequential.}
 Sequential graph processing implementations tend to operate directly on the data structures without using formally defined frameworks or a set of pre-defined primitives.
@@ -43,6 +47,7 @@ The CombBLAS and GraphBLAS work describes many linear algebraic primitive operat
 The primitives, use sparse and general matrix multiplications, and sparse and general vector-matrix multiplications on incidence and adjacency matrices of graphs to apply linear-algebraic transformations that compose key graph algorithms. 
 
 \subsection{Benefits}
+\nrscomment{this section should be called "Discussion". Better yet, I think you should cut this section. This is prelim, you should be defining the building blocks of your universe. i think this is beyond that scope and doesnt really add much. you already motivated the need to define primitives in the signpost.}
 Wide adoption of optimized shared primitive operations greatly simplifies algorithmic and hardware development. 
 Well-defined primitive operations can be composed into clean, accessible implementations of algorithms, abstracting away the messy detail.
 The composed blocks of primitives should be further composable and so on, creating a hierarchy of implementations that is easily understood, maintainable and portable. 
