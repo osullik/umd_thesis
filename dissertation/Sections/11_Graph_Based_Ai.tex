@@ -10,12 +10,15 @@ While graphs can express a wealth of information about the world, applying AI to
 % For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches for dynamic graphs, heterogeneous graphs, and graphs at the exa-scale. 
 % Most recently, the focus has shifted to using graphs to improve other AI models, such as with the Retrieval Augmented Generation (RAG) paradigm, where symbolic AI reasoning over graphs grounds generated content in curated, traceable facts.
 
+\nrscomment{replace this chunk with "We divide \gai into a taxonomy covering several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}), which are outlined in Table~\ref{table:taxonomy}. Each AI problem category is associated with a few key \gai problems that each involve low-level graph processing tasks. We include a few typical examples of such tasks for each \gai problem to convey the breadth of tasks that a \gai benchmarking framework must cover." and then add something like "In section xxx we discuss the challenges associated with designing a benchmark that can measure performance across all \gai tasks." or something like that to tie into why we went through all this}
+
 \gai problems can be broken down into several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in Table~\ref{table:taxonomy}. 
-Each \gai problem lists several typical tasks within the \gai problem space. 
+Each \gai problem \nrscomment{you list the tasks, the graph problems dont list them. reword.} lists several typical tasks within the \gai problem space. 
 The \gai taxonomy highlights the breadth of problems that a framework for benchmarking \gai must cover and emphasizes how difficult it is to achieve `good performance' across all \gai tasks.
 
 \input{Tables/10_graph_based_ai.tex}
 
+\nrscomment{the previous  bit wraps up nicely, its a bit unexpected to then dive into each category and explain them. and then theres really no wrap up take-away to this subsection. i almost think you dont need these, though its nice to have a reference to what these tasks mean. i think either find a way to transition into this more smoothly, and then a way to transition out at the end, or remove this from the prose altogether and add it to a new table of AI problem spaces. this is still the intro so the prose should move pretty quickly through all the key points you really need to cover to get across what your thesis is contributing-- i dont think this makes the cut}
 \textbf{Searching, Planning and Scheduling (SPS).}
 These problems are the `classical' AI problems that are common in simple agent-based systems.
 They become \gai problems when the input data is transformed into a graph to make a simplified representation of the world and support autonomous navigation, decision making and discovery tasks in the real world. 
@@ -51,8 +54,15 @@ Using \gai to enhance trustworthiness is an emerging field of research.
 % \nrscomment{may as well lean into the IandS motivation and title it IandS use cases}
 \gai is used heavily in real-world problem-solving. 
 The breadth of tasks means that the `real-world' use varies from routine use to preliminary experimental work. 
+
+\nrscomment{this sentence doesnt really follow logically. it sounds alright when you read it until you think of what its saying. the breadth of tasks that exist isnt what makes graphs used in routine/experimental settings... is it? Maybe the tasks are varied in their acceptance, from routine to experimental.}
+
+\nrscomment{flip this, its passive}
 A recent survey of the problems, datasets and challenges faced by \textit{Intelligence and Security} (I\&S) professionals by the \textit{Applied Research Laboratory for Intelligence and Security} (ARLIS)~\cite{Regli2022a} shows that most analytical problems faced by respondents are some form of network (graph) analysis.
-Further, most computational problems encountered were consistent with the irregularities of graph processing, and cannot be solved easily by distributing the computing or installing general purpose accelerators like Graphics Processing Units (GPU).
+Further, most computational \nrscomment{IandS} problems encountered were consistent with the irregularities \nrscomment{consistent with irregularities is ambiguous- consistent, with some irregularities, or consistent with the irregularity inherent to graphs. i think you mean the latter} of graph processing, and cannot be solved easily by distributing the computing or installing general purpose accelerators like Graphics Processing Units (GPU).
+
+\nrscomment{this conclusion doesnt quite follow from the evidence above as 
+ its written. Your evidence is: Most problems are graph analysis. Most problems have the irregularities of graph processing making them unsolvable with general hardware acceleration. Your conclusion is \gai is critical and \gai is the limiting factor for analytic problems. The conclusion should be that most problems suffer from the computational limits of \gai. \gai itself cant be the limiting factor, the computational challenges associated with \gai is the limiting factor. the difference is subtle but its worth saying precisely.}
 That is, \gai is essential to solving the analytic problems, and it is also the limiting computational factor to solving them.
 
 % \nrscomment{This is super generic- the survey shows its in use? Can you say something more specific about its significance?}
@@ -60,10 +70,13 @@ That is, \gai is essential to solving the analytic problems, and it is also the 
 % \nrscomment{a recent survey of people shows how deeply graphsAI permeates... the people? reword this. and say something better than graphAI permeates. it is widely used across... or something}
 % %
 
+\nrscomment{We broaden the scope of that survey by conducting a literature review of IandS problems across ... to find that many of the problems are...}
 We extend that survey with a literature review and find that I\&S problems from geospatial, targeting, cyber security, financial and incident response are either graph-native or can be represented with graphs and analyzed using \gai. 
-We summarize the results of the review in table~\ref{table:problem-survey}, finding that many the most common expected inputs are extremely large streaming knowledge graphs.
+
+\nrscomment{reword the next 2 sentences. explain what the table shows, not just that its a summary of the lit review. model it after what i wrote about the previous table.}
+We summarize the results of the review in table~\ref{table:problem-survey}, finding that many of the most common expected inputs are extremely large streaming knowledge graphs.
 The complexities of streaming and heterogeneous graph data are discussed in detail in section~\ref{section:32-related-benchmarking-gai}, but generally, they increase complexity and degrade the efficiency of \gai tasks. 
-Given the most commonly identified constraint is temporal (either because of the need to support real-time monitoring and reporting or because of limited data availability windows) there is a direct tension between the nature of the input data, the complexity of the \gai tasks and the constraints on processing those problems. 
+Given the most commonly identified \nrscomment{by who? you or the authors of the implementation?} constraint is temporal \nrscomment{dont use parens for content that should be in your sentence, its lazy and disrupts your flow, and usually hides that the logic of the sentence is off when you drop the parens and read it directly. reading it that way, i think you never link why temporal constraints imply the tension you refer to.} (either because of the need to support real-time monitoring and reporting or because of limited data availability windows) there is a direct tension between the nature of the input data, the complexity of the \gai tasks and the constraints on processing those problems. 
 
 % \nrscomment{i would introduce the table instead by saying something like "IandS problems spanning xyz are graph native or otherwise require analysis of the relationships between data and can benefit from graphAI. We review several of the major ... in table x." then maybe talk about whatever the takeaway is, im guessing its where the constraints are since you took the time to add that column in.}
 
