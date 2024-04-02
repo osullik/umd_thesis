@@ -1,22 +1,102 @@
 \section{Design}
-\label{section:33-GAI-Design}
+\label{section:43-GAI-Design}
 
-Datasets should be drawn from the \textit{Mesh} and \textit{Scale-Free} distributions~\cite{Beamer2015}.
+Our design of the \gai benchmarking framework draws jointly from the established methods of benchmark design, and methods for the empirical studies of algorithms~\cite{Hooker1994, Hooker1995}.
+The prior work in benchmark design guides \textit{what} components to include, namely the \textit{datasets, tasks, metrics} and \textit{system under test}.
+The prior work in the empirical analysis of algorithms determines \textit{how} we determine the composition of those components to maximize the informativeness of our approach. 
 
-Roofline Analysis is a useful evaluation tool to understand where the bottleneck in execution is~\cite{Williams2009,Hennessy2019}
+Benchmark design has been reviewed in detail in sections~\ref{section:31-literature-benchmarking},\ref{section:32-literature-benchmarking-gai}~and~\ref{section:42-GAI-Background}, so here we focus on the contribution of the empirical study of algorithms to our benchmark design.
 
-\subsection{Collecting Metrics}
+\subsection{Empirical Benchmark Design}
 
-google ~\cite{Ren2010,Kanev2015,Hennessy2019}
+We follow John Hooker's empirical methods for the study of algorithms. 
+His method identifies four key components, the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}
+% The \textit{phenomena} are the observable artifacts we are interested in studying, that are produced by some apparatus solving a problem.
+The \textit{problem} here is the ability to solve a task on a given dataset (run a workload).
+The \textit{approach} is how the problem is solved.
+The \textit{phenomena} are the interactions of an approach with a problem.
+The \textit{apparatus} are the tools and techniques we use to investigate, measure or otherwise study those interactions between the phenomena and the problem.
+Considering the benchmark components in figure~\ref{figure:benchmark_components} we can map the phenomena to metrics, the problem to workloads, and the approach to implementation.
+Formal consideration of the apparatus is a missing component from the existing benchmark design processes. 
+It is implicitly covered in the decision to use an Input/Output or Kit paradigm for benchmark design but adds deliberate and formal consideration of the apparatus to our framework. 
+Hooker's approach is summarized below, with the remainder of this section exploring how each step is conducted in an abstract sense:
+
+\begin{enumerate}
+    \item Identify and characterize the \textit{phenomena} and the \textit{problem},
+    \item Conduct exploratory experimentation,
+    \item Develop hypotheses,
+    \item Construct the investigation \textit{apparatus},
+    \item Analyze the results,
+    \item Develop a theoretic explanation, and 
+    \item Iterate.
+\end{enumerate}
+
+\textbf{Identifing and Characterizing a Relevant Problem.}
+The datasets and tasks should be drawn from real-world domain problems so that they are reflective of what the \gai system will be expected to do in the real world. 
+To identify the problems, a literature review of open work in the domain can suffice, but a user study that identifies the active problems, tasks and datasets is a superior mechanism. 
+The remainder of these steps are completed on a per-problem basis. 
+This step is complete when a suitable problem is selected, the common tasks are listed and typical datasets are characterized (size and shape).
+
+\textbf{Identifing and Characterizing the Phenomena of Interest.}
+The phenomena of interest must drive the design of the benchmark. 
+They are the target of observation and the reason for investigation.
+% The phenomena of interest is the trade-off between the efficiency, effectiveness and cost of systems.
+% Thus, the metrics we expect to be relevant to all \gai tasks are \textit{ETL Time, Execution Time, Batch Latency} and \textit{Cost}. 
+For each specific problem, the phenomena must be extended to articulate the specific effectiveness metrics, so that the assessed `goodness' of an output is meaningful.
+This step is complete when the specific effectiveness, efficiency and cost metrics are confirmed. 
+
+\textbf{Conduct Exploratory Experimentation.}
+Exploratory experimentation gathers the foundational understanding of the problem required to design meaningful experiments.
+A good experiment needs to be grounded in reality, and this step aims to identify interactions between the problems and phenomena that are worthy of further exploration. 
+This step can be skipped if the domain is well understood. 
+While direct experimentation is best, literature reviews of related work will suffice. 
+This step is complete once key bottlenecks, friction points or curiosities are listed. 
 
 
-\osullikomment{Moved from related work.}
-\subsection{Accuracy Bottlenecks}
-\nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
-What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
-Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
-The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
-Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
+\textbf{Deveop Hypotheses.}
+Developing hypotheses informs what questions need to be answered, and focuses data collection to support that collection. 
+Using the results of the exploratory analyses, the context of the tasks and datasets from the problem area and the identified phenomena under study, this step requires the designer to create hypotheses. 
+This section is complete when a list of hypotheses exists, in the form: 
+
+{\centering \textit{When [dataset/hardware/system] changes on  [task] on we should observe a [description of expected change] in [phenmonena]}.}
+
+\textbf{Construct the Investigation Apparatus.}
+The investigation apparatus determines how data is collected, and the degree of freedom given to the systems under test. 
+Further, it collects or generates the test data and does any requisite pre-calculation of results. 
+The designer must decide here how to implement their benchmark, whether they pursue a hosted route (to collect more information) or an Input/Output route (to increase freedom in the system under test.)
+This section is complete when the apparatus has been constructed and tested. 
+
+\textbf{Analyze the Results, Developing a Theoretic Explanation and Iterating.}
+The remaining three steps are more strongly in the domain of the person using the benchmark than the benchmark itself. 
+The benchmark should provide a report of the efficiency, effectiveness and cost scores associated with the workload(s) completed, but further work is beyond the scope of the benchmark. 
+This section is complete when the metrics have been reported to the user of the benchmark. 
+
+Once these steps have been completed, the benchmark for a specific problem is ready for use. 
+The steps must be repeated separately for any additional problem that is added to the benchmark. 
 
 
-\osullikomment{Batch Latency as the metric for all ET?}
+
+
+
+
+
+
+% Datasets should be drawn from the \textit{Mesh} and \textit{Scale-Free} distributions~\cite{Beamer2015}.
+
+% Roofline Analysis is a useful evaluation tool to understand where the bottleneck in execution is~\cite{Williams2009,Hennessy2019}
+
+% \subsection{Collecting Metrics}
+
+% google ~\cite{Ren2010,Kanev2015,Hennessy2019}
+
+
+% \osullikomment{Moved from related work.}
+% \subsection{Accuracy Bottlenecks}
+% \nrscomment{this reads like something youre inventing out of thin air. its not really a bottleneck in the sense of being the limiting reagent. I think a better place to put this (and jsut call it the law of diminishing return) is in the benchmark design considerations in ch4}
+% What we call an accuracy bottleneck occurs when the desired degree of accuracy (or some other effectiveness) metric is beyond the elbow point for diminishing returns, where the rate of improvement levels off proportional to the time and compute applied to it. 
+% Accuracy bottlenecks are not well explored in \gai benchmarking literature but are a well-known trade-off in machine learning more broadly.
+% The trade-off is recognized at the macro-level with the recognition that the amount of computing power invested into deep learning is yielding ever smaller returns~\cite{Thompson2021} and at the micro level avoiding overfitting has relevant strategies like early stopping~\cite{Ying2019} that can be employed.
+% Detecting and acting on accuracy bottlenecks is important if a \gai benchmark is going to be capable of trading off between effectiveness, efficiency and cost. 
+
+
+% \osullikomment{Batch Latency as the metric for all ET?}
