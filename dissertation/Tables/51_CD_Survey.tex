@@ -1,0 +1,65 @@
+\begin{landscape}
+    
+      \begin{table}[t]
+        {\footnotesize
+        \begin{tabular}{l|lll}
+          Family                                    & Algorithm                                         & Efficiency Bottleneck                     & Effectiveness Botleneck \\
+          \hline
+          \textbf{Graph Partitioning}               & Kernighan-Lin~\cite{Kernighan1970}                & $\mathcal{O}(n^3)$                        & Dense, small communities \\%& average (best) case assumes near-optimal partition on initialization \\
+                                                    
+                                                    & Extremal Mod. Optimization~\cite{Duch2005}        & $\mathcal{O}(n^2\log^2{n})$               & Fuzzy \\%& Avg case requires heap-based implementation \\
+                                                    
+                                                    & Spectral Partitioning$_{base}$~\cite{Newman2006}  & $\mathcal{O}((m+n)n)$                     &  Dense graph \\%& \\
+                                                    
+                                                    & Spectral Partitioning$_{kl}$~\cite{Newman2006}    & $\mathcal{O}(n^3)$                        & Dense graph \\%& \\
+                                                    
+                                                    & FEC~\cite{Yang2007}                               &$\mathcal{O}(kl(n+m))$                     & Fuzzy; Large $k$, intra-community $p_{-}$ large \\%&  \\
+                                                    
+                                                    % & Random-Walk Maps~\cite{Rosvall2008} & UNK & UNK & Undirected, Unweighted graphs. \\%& Likely simulated-annealing bound\\
+  
+                                                    & Potts-Fuzzy~\cite{Reichardt2004}                  & $\mathcal{O}(m+q)$                        & $L_{in}\gg L_{out}$ \\%&  \\
+                                                    
+                                                    % & Hamiltoninan~\cite{Reichardt2006}  & &  Need to Calc    & Distinct Communities Joined by nodes with low degree \\%& TBC \\
+                                                    
+                                                    % & Hamiltonian [Replica]~\cite{Reichardt2007}   & &  Need to Calc   \\%& Sparse Graphs \\
+                        ~                           &                         ~                         &        ~                                  & ~ \\
+          \textbf{Graph Clustering}                 & Spectral Clustering~\cite{Ng2001}                 & $\mathcal{O}(n^3)$~\cite{White2005}       & \\%& \\
+                                                    & Girvan-Newman~\cite{Girvan2002}                   & $\mathcal{O}(n^2m)$                       & Fuzzy, dense \\%& Seminal Paper in CD \\
+                                                    
+                                                    & Hierarchical Agg.~\cite{Clauset2004}              & $\mathcal{O}(md\log{n})$                  & Dense, many small communities; Fuzzy \\%& \\
+  
+                                                    & Hierarchical Div.~\cite{Newman2004a}              & $\mathcal{O}((m+n)mn^2)$                  & dense graph; fuzzy community \\%& \\
+                                                                                                        
+                                                    & Spectral~\cite{White2005}                         & $\mathcal{O}(nk^{2}e)$                    & Skewed Community Distro; Largest community divides every iteration. \\%& Bottleneck: Projection to Euclidian Space\\
+                                                    
+                                                    & DBSCAN                                            & $\mathcal{O}(n^2)$                        & \\%& TBC \\
+                                                    
+                                                    & Louvain~\cite{Blondel2008}                        & $\mathcal{O}(n^2)$                        &  \\%& Can create disconnected communities\\
+                                                    
+                                                    & Leiden~\cite{Traag2019}                           & $\mathcal{O}(n^2)$                        & When $\mu$ is high; fuzzy communities.  \\%& Guarantees no disconnected or weakly connected communities.  \\   
+                                                                                     
+                                                    
+                        ~                           &                         ~                         &        ~                                  & ~ \\          
+        \textbf{Graph Prediction}                   & DNR~\cite{Yang2016}                               & UNK   \\%& Fuzzy \\
+                                            
+                                                    & LINE                                              &$\mathcal{O}(\alpha m)$~\cite{Cavallari2017}&  \\
+                                                                                       
+                                                    & Com-E~\cite{Cavallari2017}                        & $\mathcal{O}(n + m)$                      & Dense, Fuzzy \\
+                                            
+                                                    & M-NMF~\cite{Wang2017}                             & $\mathcal{O}(n(m^2n))$                    & Dense, Fuzzy, large K \\
+                        ~                           &                         ~                         & ~                                         & ~ \\      
+        \textbf{Dynamic Graphs}                     & Instant Optimal~\cite{Rossetti2018,Ilhan2015}     &  $\mathcal{O}(T((n^2)+(k^{2})))$          & ~ \\ %Derived at T timesteps complexity is Louvain + Comparing all sims   
+                        ~                           & Temporal tradeoff~\cite{Rossetti2018}             &        ~                                  & ~ \\      
+                        ~                           & Cross-Time~\cite{Rossetti2018}                    &        ~                                  & ~ \\           
+        % \textbf{Overlapping Communities}    & & & & \\
+        %                                               & & & & \\
+        %                                               & & & & \\                                    
+        \end{tabular} 
+        \caption{Summary of Computational Approaches to Population Segmentation}
+        \label{table:cd-survey}
+        }
+      \end{table}
+    \end{landscape}
+
+
+    Dynamic Datasets outlined in \cite{Rossetti2018}
