@@ -1,3 +1,37 @@
 \section{Phenomena Identification}
 \label{section:52-CD-Phenomena}
 
+
+
+\subsection{Efficency}
+
+No change from the \gai framework
+
+\subsection{Effectiveness}
+The definitions for Graph Partitioning and Graph Clustering require an objective function to evaluate the `goodness' of the partitions/clusters. 
+The objective functions typically are \osullikomment{List here}
+
+The dominant metric for community detection is \textit{Modularity} \osullikomment{modularity definition here}
+Alternates have been proposed like CPM~\cite{Traag2019} \osullikomment{CPM definition here}
+
+When evaluating the two options are: 
+
+1. Ground truth communities are known -- Use Normalised Mutual Information \osullikomment{NMI definition} or NF1 \osullikomment{Nf1 Defintion}
+
+2. Ground truth communities are not available - use Modularity as a proxy
+
+in general, use NMI when labels are available, modularity when they are not. 
+
+
+\subsection{Cost}
+
+No change from the \gai framework
+
+\subsection*{Outputs}
+
+\textbf{Phenomena of interest.}
+\textit{NMI} or \textit{modularity} will be used as proxies for effectiveness. 
+\textit{ETL Time, Execution Time} and \textit{Batch Latency} will be used as proxies for efficency. 
+No proxy will be collected for cost at this time. 
+
+

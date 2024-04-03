@@ -1,5 +1,43 @@
 \section{Problem Identification}
 \label{section:51-CD-Problem}
 
-Helpful for identifying how nodes should be reordered in memory to optimize for graph processing~\cite{Balaji2018}
-Also helpful for identifying partion points in graphs
+\subsection{Overview}
+%Definition
+A Population Segmentation Analysis aims to divide a population into groups by geography, demography, attitude toward an issue or other thematic line.
+These groups or `segments' are a subset of the population with common attributes to which an organization can tailor its communication~\cite{Army2023}.
+They are used heavily in marketing, to optimize return on investment, but also have use in purely technical contexts, identifying how to arrange graphs in memory to reduce memory access overheads~\cite{Balaji2018}.
+
+%Intelligence Problem
+Traditionally, the use of formal studies, surveys and local consultants provide the data to segment a population.
+The modern era, however, gives analysts access to large volumes of publicly available social media and communication data.
+These datasets describe the interactions between people--a human social network. 
+
+Prior work has shown how email patterns can predict social subgroups~\cite{Zachary1977} and phone call records reflect geographic and cultural clusters in the real world~\cite{Sobolevsky2014}.
+Social networks can be understood through their communication patterns, and the patterns of communication between individuals reveal insights about the structure of subcommunities, the patterns of information flow and who the most influential entities in the network are.
+
+%Computational Problem 
+These communication networks can be represented as a graph. 
+Each individual is a vertex, and each interaction (phone call, email) is an edge. 
+Weights may reflect the volume or durations of interactions, and attributes for vertices and edges may be used to incorporate additional information.
+\gai tasks that can be used for population segmentation include \textit{Graph Partitioning}, \textit{Graph Clustering} and more broadly \textit{Community Detection}.
+
+% Graph Partitioning is
+
+\subsection{Tasks}
+Graph Partitioning is the top-down task of optimally dividing a graph into $K$ subgraphs such that each vertex belongs to exactly one partition, all partitions are disjoint and some objective function is optimized. 
+Graph Clustering is the bottom-up task of optimally clustering a set of vertices such that each vertex belongs to exactly one cluster, all clusters are disjoint and some objective function is optimized. 
+Both graph partitioning and graph clustering have been proven $NP$-complete. 
+Community Detection involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
+It is closely related to partitioning and clustering (and most approaches implement one of these two techniques), with the key distinction that communities are a more general structure that does not necessarily enforce the requirements for independence between communities. 
+
+\subsection{Datasets}
+Population segmentation focuses on human social networks, which are typically scale-free (see: section~\ref{section:22-graph-topology}).
+The community definition reinforces that graph topologies are expected to consist of smaller densely connected subgraphs within the containing graph.
+At the extremely defined end of `communities,' a graph will consist of cliques (completely connected subgraphs), connected to other cliques by single-edge `bridges'. 
+At the extremely undefined end, a fully connected graph or multigraph has no topological community structure and attributes must be included. 
+The `fuzzy' community is effectively a uniform random distribution, where each the `closeness' of an individual community is no greater than that of the graph as a whole.
+
+\subsection{Outputs}
+
+\textbf{Tasks:} Graph Partitioning, Graph Clustering and Community Detection. 
+\textbf{Datasets:} Scale-Free, Well-defined communities (cliques), poorly-defined communities (fuzzy) and topologically useless communities (fully-connected).
