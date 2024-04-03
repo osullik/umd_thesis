@@ -19,3 +19,12 @@
     \noindent\textbf{Definition \thedefinition}\ [#1]:\quad #2% Print the definition
     \stepcounter{definition}% Increment the counter
 }
+
+
+\newcounter{hypothesis} % Counter for hypotheses
+\renewcommand{\thehypothesis}{\arabic{hypothesis}} % Define the format of the counter
+
+\newcommand{\hyp}[1]{%
+    \noindent\textbf{H\thehypothesis}:\quad\parbox[t]{\dimexpr\linewidth-2em\relax}{#1\\}% Print the Hypothesis
+    \stepcounter{hypothesis}% Increment the counter
+}

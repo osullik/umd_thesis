@@ -1,3 +1,34 @@
 \section{Apparatus Design}
 \label{section:55-CD-Apparatus}
 
+\subsection{Benchmark Model}
+Considering the proliferation of graph hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2014, Wu2014, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and GNN accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} and implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018} and shared-memory shared-memory~\cite{Ghosh2019} on CPU and GPU~\cite{Wang2016}, as well as linear-algebraic approaches for CPU~\cite{Low2020} and GPU~\cite{Mattson2019} for community detection approaches we prefer an Input/Output benchmark paradigm for the population segmentation problem.
+
+\subsection{Datasets}
+
+Full dataset coverage will require tiny, small, medium and large datasets in each scale-free, uniform-random and mesh dataset (see: section~\ref{section:44-GAI-Framework}) with ground-truth communities/clusters/partitions. 
+We expect the majority of real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
+The datasets should be weighted and attributed, and partial assignments of vertices to communities should be available. 
+There should be dynamic graphs suitable for batch updating and continuous streaming.
+Graphs should be available with varying community distributions, mean degree and `fuzziness'
+Graphs with overlapping and nested communities.
+
+Full coverage of these cases will require petabytes of graphs, so we confine initial testing to the datasets in table~\ref{table:cd-datasets}.
+
+Missing from the publicly available datasets are a mesh graph, and uniform-random with ground truth. 
+
+We can generate synthetic graphs using a community-detection generator like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, GenCAT~\cite{Maekawa2023} that gives us control over how the graph is generated.
+
+\osullikomment{Insert comments here about generating road based dataset that has community labels}
+
+\input{Tables/52_CD_Datasets}
+
+\subsection{Telemetry}
+
+\subsection{Problems}
+
+\begin{enumerate}
+    \item Who is in the same group as (x) in (y) # Randomly select query and response? 
+    \item How many vertices are in group (x) in (y)
+    \item How many communities are in (y)
+\end{enumerate}

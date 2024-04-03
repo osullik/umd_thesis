@@ -1,2 +1,27 @@
 \section{Hypotheses Development}
 \label{section:54-CD-Hypotheses}
+
+\subsection{Efficiency Hypotheses}
+
+\hyp{When the number of vertices in a graph increases, the increase in execution time will be no worse than quadratic.}
+
+\subsection{Effectiveness Hypotheses}
+
+\hyp{When the mean degree of a graph increases the effectiveness will decrease.}
+
+\hyp{When the mean ratio of internal to external community edges ($\mu$) approaches 0.5 (becomes `fuzzy'), effectiveness will decrease.}
+
+\hyp{When the number of communities $c$ in the ground-truth increases, the effectiveness will decrease.}
+
+\hyp{Community size distributions following a power-law distribution will have a lower effectiveness metric than those following a uniform distribution.}
+
+\hyp{Implementations that use vertex and edge attribute information will achieve higher effectiveness than implementations that do not.}
+
+\hyp{Constraining some vertices to be members of specific groups will improve the effectiveness}
+
+\subsection{Constraint Hypotheses}
+
+\hyp{As time increases, effectiveness will increase.}
+
+\hyp{There exists an optimal time slice length $T$ for dynamic community detection that minimizes batch latency.}
+
