@@ -1,27 +1,27 @@
 \section{Phenomena Identification}
 \label{section:52-CD-Phenomena}
 
-
-
 \subsection{Efficency}
 
 No change from the \gai framework
 
 \subsection{Effectiveness}
 The definitions for Graph Partitioning and Graph Clustering require an objective function to evaluate the `goodness' of the partitions/clusters. 
-The objective functions typically are \osullikomment{List here}
+More general community detection generally also requires an objective function to determine how `good' a community is. 
 
-The dominant metric for community detection is \textit{Modularity} \osullikomment{modularity definition here}
-Alternates have been proposed like CPM~\cite{Traag2019} \osullikomment{CPM definition here}
+The `goodness' of a community is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a} or the \textit{Constant Potts Model}~\cite{Traag2011}.
+Modularity is the most widely used, and measures
+despite the optimization of the modularity metric being $\mathcal{NP}$-Complete~\cite{Brandes2006} and suffering from a resolution limit that causes small communities to be combined and absorbed by larger ones when community size distributions are skewed~\cite{Fortunato2007}, which is typically the case~\cite{Barabasi1999, Girvan2002}. 
 
-When evaluating the two options are: 
+There are two options for evaluating a population segmentation problem. 
+First, when ground truth communities are known Use Normalised Mutual Information (NMI) which measures the agreement of the ground truth and generated clusters accounting for cluster size~\cite{Strehl2002}. 
+NMI is limited in application for very large networks, with the calculation being quadratic in the number of clusters~\cite{Rossetti2018}, and so the Network-F1 (NF1) metric is an alternative with complexity linear in the number of communities~\cite{Rossetti2016,Rossetti2017} that has not yet gained widespread traction.
 
-1. Ground truth communities are known -- Use Normalised Mutual Information \osullikomment{NMI definition} or NF1 \osullikomment{Nf1 Defintion}
+Second, when ground truth communities are not available modularity, conductance or CPM can be used as a proxy, and a `good' partitioning of the network is the one that has the correct number of clusters with maximal modularity scores. 
+This unsupervised approach to evaluation is common, but problematic because of the presence of many local maxima in modularity optimization which can provide similar near-optimal partitionings with significant changes in the underlying network~\cite{Rossetti2018}.
 
-2. Ground truth communities are not available - use Modularity as a proxy
-
-in general, use NMI when labels are available, modularity when they are not. 
-
+As a result, a supervised evaluation approach like NMI is always preferred to unsupervised evaluation metrics. 
+The secondary effect is that any datasets we use to evaluate the segmentation in the \gai benchmark (whether real-world or synthetic) must have ground-truth labels.
 
 \subsection{Cost}
 
@@ -30,7 +30,7 @@ No change from the \gai framework
 \subsection*{Outputs}
 
 \textbf{Phenomena of interest.}
-\textit{NMI} or \textit{modularity} will be used as proxies for effectiveness. 
+\textit{NMI} (preferred) or \textit{modularity} (optional) will be used as proxies for effectiveness. 
 \textit{ETL Time, Execution Time} and \textit{Batch Latency} will be used as proxies for efficency. 
 No proxy will be collected for cost at this time. 
 
