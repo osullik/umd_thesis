@@ -19,16 +19,50 @@ Missing from the publicly available datasets are a mesh graph, and uniform-rando
 
 We can generate synthetic graphs using a community-detection generator like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, GenCAT~\cite{Maekawa2023} that gives us control over how the graph is generated.
 
-\osullikomment{Insert comments here about generating road based dataset that has community labels}
+\osullikomment{Insert comments here about generating road road-based dataset that has community labels}
 
 \input{Tables/52_CD_Datasets}
 
-\subsection{Telemetry}
-
 \subsection{Problems}
 
+Based on the problem survey (section~\ref{section:11-graph-based-ai}), available datasets and expected tasks, we identify the initial collection of problems:
+
 \begin{enumerate}
-    \item Who is in the same group as (x) in (y) # Randomly select query and response? 
-    \item How many vertices are in group (x) in (y)
-    \item How many communities are in (y)
+    \item Who is in the same group as (x)? Return a list of vertex IDs. %Requires them to identify a `group' and check for membership by both. Could use CD, could do BFS to some threshold, and could just make a guess. 
+    \item Is (x) likely to be affiliated with (y)? Return a tuple of the form (Yes/No, Confidence)? %Requires them figure out if they are affiliated. Might do SSSP, might do CD and see if in the same group
+    \item How many vertices are in the largest and smallest disjoint communities in the graph? Return a tuple with two ints and two lists of form (Size\_big, Size\_small, [Big\_vertices], [Small\_vertices]) %Requires communities to be detected and ranked by size. 
+    \item (x), (y) and (z) are in communities (a), (b) and (c). Who else is in the community (c)? Return a list of Vertices. %Gives extra information, they may choose to use it or not.
+    \item Who in the same group as the vertex (a) with property (1) and vertex (b) with property (2), and what is the most common value for property (3)? Return a tuple of the form ([list\_of\_vertices], property).
+    \item What are the groups in the graph? Return a list of lists of vertices. % Execute community detection and return the result. 
+    \item There are (n) communities in this graph, named from largest to smallest $C_{1} ... C_{n}$. Which vertices belong to each group? Return a list of lists of vertices. % Execute CD with known number of communities. 
 \end{enumerate}
+
+\noindent The tests are designed so that they can be randomized based on ground-truth knowledge, so the same workload can be run multiple times to get an `average' result. 
+
+\subsection{Telemetry}
+Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system and how much time elapses. 
+Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test (SUT) and Benchmark Server (BS). 
+The problem definitions above are available in advance so that systems can be prepared to solve the task presented to them. 
+The test begins when the SUT specifies which problem to solve. 
+The BS randomly selects a workload and commences the transfer to the SUT, who sends a hash of the received file as proof that the transfer has been completed. 
+When that hash is received, the specific task is sent by the Benchmark Server, filling in the variables in the problem statement with the details for the receiving server. 
+ETL and Processing are shown linearly but could be interleaved in the case a SUT chooses to take an incremental approach. 
+From the time the problem is sent, the BS will periodically poll the SUT for its current answer, and log the time and content of the response, allowing the analysis to show where approximate or incremental approaches are able to provide partial answers earlier, or the improvement of iterative algorithm results over time. 
+When the ETL is complete, the SUT sends a message and the summary statistics for the graph (vertex count, edge count, mean degree) to show that the entire graph has been constructed.
+When processing is finished, it sends a message to the BS along with the final results. 
+At each step of the process, the time is logged by the BS, and is used to generate the efficiency metrics. 
+The Effectiveness metrics are calculated using the appropriate metric for the problem.
+
+There are drawbacks to the Input/Output approach. 
+First, transfer time is highly dependent on network connectivity, and transferring all but the smallest graphs will result in heavy network traffic.
+The transferring of full static graphs between systems is not typical behavior in the real world, and so the transfer time will not be used for any calculation here.
+In cases where dynamic graphs are in use, network bottlenecks may be the bottleneck, so we retain the capability. 
+
+The second risk is the `gaming' of the benchmark, for example by making execution time look faster by waiting to send the ETL complete message.
+The risk of gaming for time is somewhat mitigated by reporting both ETL and execution time, as well as batch latency.
+
+Third, a more insidious way of gaming for time is to build up a collection of all graphs associated with the problem in memory and fake the ETL process. 
+Caching of graphs is less of a concern for medium and large-scale datasets because the cost of holding them all in memory would be great enough that it is unattractive and at the smaller level forms part of the motivation to transfer the file and receive a confirmatory hash, as well as slightly vary the problem parameters. 
+Small cosmetic changes can be made to the datasets that do not meaningfully impact processing time (e.g. incrementing each vertex ID by 1, changing attributes slightly etc) but would change the hash of the file, and could be detected in the returned results fairly trivially. 
+
+\input{Figures/Diagrams/05_cd_apparatus}
