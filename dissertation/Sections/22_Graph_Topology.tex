@@ -14,17 +14,17 @@ We begin by addressing the classes of graphs that occur in the real world, and t
 % \nrscomment{if youre gonna have a synthetics graphs header you need a corresponding real-world graph one here}
 
 \subsection{Real-World Graphs}
-This section will first identify the `real world' graph classes which are derived from real-world phenomena like email records, chat logs, network logs, road maps, protein structures or any of a large collection of problems that can be represented as a graph.
+This section will first identify the `real world' graph classes that are derived from real-world phenomena like email records, chat logs, network logs, road maps, protein structures, or any of a large collection of problems that can be represented as a graph. \nrscomment{is it really the problem being represented as a graph? or the data pertaining to the problem?}
 
 \subsubsection{Scale-Free Graphs}
 Scale-free graphs are a naturally occurring graph class characterized by a distribution of vertex degrees that follow a power-law distribution. 
-Common in social networks, they form because the number of vertices tends to increase over time, and new vertices preferentially attach to vertices that already have high degrees~\cite{Barabasi1999a}. 
+\nrscomment{"Scale-free graphs are common in social networks because as the number of vertices increases over time, new vertices preferentially..."} Common in social networks, they form because the number of vertices tends to increase over time, and new vertices preferentially attach to vertices that already have high degrees~\cite{Barabasi1999a}. 
 They tend to have a small diameter, a large variance in neighborhood size, and a `global-neighborhood' characteristic where within a few hops all vertices are in the same neighborhood.
 These characteristics are often amalgamated together and termed the `small world' property.
 
 \subsubsection{Mesh Graphs}
 Mesh graphs are a naturally occurring graph class characterized by a flat, regular degree distribution.
-Mesh graphs are often derived from physical phenomena like road networks and so new vertices tend to extend the graph outwards~\cite{Beamer2015}.
+Mesh graphs are often derived from physical phenomena like road networks, and so new vertices tend to extend the graph outwards~\cite{Beamer2015}.
 They tend to have a large diameter, a small variance in neighborhood size and a `local-neighborhood' characteristic where only a small subset of vertices are reachable within a few hops of any given vertex.
 
 % \nrscomment{what does local neighborhood characteristic mean? did yiu mention that in the graph characteristics already?}
@@ -38,19 +38,20 @@ They tend to have a large diameter, a small variance in neighborhood size and a 
 \subsection{Synthetic Graphs}
 Real-world graphs offer realistic test inputs for graph algorithms.
 However, some domains lack sufficient data to support robust testing, especially regarding performance on irregular distributions. 
-As a solution, \textit{synthetic graphs} can be mathematically or imitatively generated to provide simple graphs for testing and evaluation.
+As a solution, \textit{synthetic graphs} can be mathematically or imitatively generated to provide simple graphs for testing and evaluation. \nrscomment{the other defns are not italicized}
 
 \subsubsection{Mathematically Generated Synthetic Graphs (Random Graphs)}
-Multiple mathematical functions can be used to generate synthetic graphs.
+Multiple mathematical functions can be used to generate synthetic graphs. \nrscomment{you dont actually say how in all that. combine the previous and next sentence and add specificity "...to generate synthetic graphs, typically by ...?... to reflect a given probability distribution."}
 Most of them exploit an existing probability distribution and generate a graph that reflects that probability distribution. 
-Notable generators include the Erd\H{o}s-R\'enyi generator to create \textit{Uniform Random Graphs}~\cite{Erdhos1960}, the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} generator to generate scale-free graphs, and the \textit{Kronecker}~\cite{Leskovec2010} generator, also for scale-free graph generation. 
-Mathematically generated random graphs are useful approximations of the real world but provide a sub-optimal substitute for the irregularities of real graphs because of the structural simplifications that occur in the generation process. 
+Notable generators include the Erd\H{o}s-R\'enyi generator to create \textit{Uniform Random Graphs}~\cite{Erdhos1960}, the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} generator to generate scale-free graphs, and the \textit{Kronecker}~\cite{Leskovec2010} generator, also for scale-free graph generation. \nrscomment{your qualifiers were 'to create', 'to generate', and 'also for scale-free generation'. make the last one an infinitive form verb like the first 2}
+Mathematically generated random graphs \nrscomment{"can be used to approximate real-world graphs but provide..."} are useful approximations of the real world but provide a sub-optimal substitute for the irregularities of real graphs because of the structural simplifications that occur in the generation process. 
 % \nrscomment{in the signpost you said synthetic helps solve the difficulty modeling irregularities though}
 
 \subsubsection{Imitatively Generated Synthetic Graphs (Imitative Graphs)}
-Many graph datasets are not releasable for research and development because of privacy and confidentiality concerns. 
-Active research in privacy preservation and synthetic graph generation seeks to statistically summarize a real-world graph, and then use that summary as the input to a synthetic graph generator so that the synthetic graph will have the same topological properties as the original, without the confidential information. 
+Many graph datasets are not releasable for research and development because of privacy and confidentiality \nrscomment{reasons not concerns} concerns. 
+Active research in privacy preservation and synthetic graph generation seeks to statistically summarize a real-world graph, and then use that summary as the input to a synthetic graph generator, so that the synthetic graph \nrscomment{has} will have the same topological properties as the original, without the confidential information. 
 Input features of \textit{Triangle Histograms, K-Hop Neighbor Histograms, Random Walk Histograms} and \textit{Number of Edges} have been shown to produce topologically similar graphs~\cite{Zahirnia2024}.
+\nrscomment{are those the methods? or the properties that are summarized? the features dont produce the graph, the methods do. "Imitative graph generation methods use input features like... to produce graphs that are topologically similar to the target graph."}
 % The summarization process is inherently lossy and has only been tested on very small graphs (tens of thousands of edges), so is not yet reliable enough for wide use.
 
 

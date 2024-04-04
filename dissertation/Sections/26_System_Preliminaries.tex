@@ -7,11 +7,12 @@ Several computer systems concepts are important for this thesis.
 \nrscomment{move this put after graph representation section}
 
 \subsection{Locality}
-Locality is a term in computer architecture that refers to the properties of data that enable it to be pre-emptively cached because it will be needed soon (spatial locality) or is important and likely to be re-used soon (temporal locality).
+Locality is a term in computer architecture that refers to the properties of data that enable it to be pre-emptively cached because it will be needed soon \nrscomment{not becuase it will be needed soon, beucase its 'nearby' whatever that means, and is more likely to be needed than far away things, right? Toblers first law of geography in a way} (spatial locality) or is important and likely to be re-used soon (temporal locality).
 
-\textbf{Spatial Locality.} 
+\textbf{Spatial Locality.} \nrscomment{is the title part of the sentence or not. smae with temporal below.}
 is the idea that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon, and so proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
 In figure~\ref{figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
+\nrscomment{cut next sentence}
 Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the benefit of exploiting \textit{spatial locality} is evident.
 % In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found.
 % \nrscomment{This isnt a terribly hard concept to understand,e specially if the figure is goo, i dont think you need to step through it in the prose}
@@ -26,31 +27,33 @@ Assuming we can load a block of $3$ contiguous vertices at a time from memory to
 % The problem continues throughout the algorithm, effectively `chasing pointers' all over the main memory, the `irregular memory accesses' that cause so much difficulty in graph processing~\cite{Beamer2015}.
 % The `pointer chasing' behavior here happens because of the poor \textit{spatial locality} in this graph.
 % \nrscomment{the below stuff is worth keeping, just make the second sentence more generic instead of referring to the example specific}
-Put simply, vertices that are close to each other in the graph topologically are not close to each other in memory. 
-The lack of spatial locality also means that only a small percentage of each cache line is used in each step, putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
-The irregular memory access problem is exacerbated in larger graphs, where it is more likely that the vertex list does not fit in the cache and will have to access the main memory to retrieve the data~\cite{Chung2012}, reflected empirically in a decreasing \textit{instructions per miss} rate on larger graphs~\cite{Beamer2015}.
+\nrscomment{"This manner of storage typically leads to a situation in which the vertices that are close..." and cut 'Put simply'}
+Put simply, vertices that are close to each other in the graph topologically are not close to each other in memory. \nrscomment{, in other words they lack spatial locality,}
+The lack of spatial locality also means that only a small percentage of each cache line is used in each step, \nrscomment{reword the rest of the sentence- one word for putting pressure, simply the end. ", causing unnecessary strain on memory bandwidth." you already said little is used} putting pressure on memory bandwidth to load the entire block with very little use of what is loaded. 
+The irregular memory access problem is exacerbated in larger graphs, where it is more likely that the vertex list does not fit in the cache and \nrscomment{something -- missing subject here} will have to access the main memory to retrieve the data~\cite{Chung2012}, which is reflected empirically in a decreasing \textit{instructions per miss} rate on larger graphs~\cite{Beamer2015}.
 
 \input{Figures/Locality/01_simple_locality.tex}
 
 \textbf{Temporal Locality.} 
-is the idea that when a piece of data is needed for processing, it will likely be needed for processing again soon, and so it can be retained in the cache for quick access when it is needed again.
-To \textit{exploit} the \textit{temporal locality} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm~\cite{Beamer2015}.
+is the idea that when a piece of data is needed for processing, it will likely be needed for processing again soon, and so it can be retained in the cache for quick access.
+To \textit{exploit} the \textit{temporal locality} \nrscomment{systems can cache high degree nodes, since they are likely to be needed often.} the system should cache nodes with higher degrees, as they are the ones most likely to be required by a graph algorithm~\cite{Beamer2015}.
 % \nrscomment{id flip the order youre saying these things. first what is temporal locality -- the bit where high degree nodes are cached. Then talk about how this is especially useful for scale-free because xyz.}
-There is, however, some natural locality in \textit{scale-free} graphs that can be readily exploited. 
+There is, however, \nrscomment{'however' always as the first word not in the middle. also think however is the wrong word, youre not contrasting, youre giving a particular} some natural locality in \textit{scale-free} graphs that can be readily exploited. 
 Consider figure~\ref{figure:locality-simple} again. 
-While it isn't a scale-free graph in any real sense, vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
-So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality.
+While it isn't a scale-free graph in any real sense, \nrscomment{this is confusing- first you say scale free, then the example isn't 'in any real sense' what does that even mean?} vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
+So in a scale-free graph where most of the edges are owned by few vertices, there is latent temporal locality. \nrscomment{tighten this wording up to say what you need to say and leave it at that}
 % \nrscomment{is it really just based on the degree? from the name id think it would be a recency thing like with normal caching }
 
 \input{Figures/Locality/02_attributed_locality}
 
 \textbf{Attributed Graphs and Locality.}
-The latency problem is exacerbated by attributed graphs. 
+The latency problem is exacerbated by attributed graphs. \nrscomment{, since graph attributes are often stored sep...} 
 It is common for the topological and attribute data of a graph to be stored separately in memory~\cite{Buluc2013}. 
 Figure~\ref{figure:locality-attributed} expands on the example from figure~\ref{figure:locality-simple} by adding in vertex attributes. 
 The attributes are stored at separate memory locations, with pointers from the topological vertex (memory positions $1-9$) to their respective attributes (memory positions $10-29$). 
-Attributes consume more memory so more memory bandwidth is required to load them.
-The heterogeneous data types being loaded in attributed graphs (like knowledge graphs) have been shown to inflict significant Dynamic Random Access Memory (DRAM) accesses and hence, increase latency and memory bandwidth pressure~\cite{Basak2019}.
+Attributes consume more memory, so more memory bandwidth is required to load them.
+The heterogeneous data types being loaded in attributed graphs (like knowledge graphs) have been shown to inflict significant Dynamic Random Access Memory (DRAM) accesses \nrscomment{inflict accesses? id think inflict a cost-- can you really say inflict accesses?} and, hence, increase latency and memory bandwidth pressure~\cite{Basak2019}.
+\nrscomment{forget the example and just say either you have to check every vertex or you have to load the attributes too and fill up the cache that way}
 To illustrate why, again consider a BFS that is searching for the `\textbf{Grape}' vertex. 
 Each time a vertex is dequeued, its attribute must be retrieved from memory to see if it is the target vertex. 
 In the worst case, this is a memory access each time a vertex is checked, or, if reducing the latency of the comparison by pre-fetching the attribute along with the vertex, the cache block of $3$ quickly becomes filled with the vertex plus its attribute, exacerbating the spatial locality problem.
