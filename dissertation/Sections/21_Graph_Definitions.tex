@@ -3,18 +3,20 @@
 
 \osullikomment{I might be able to collapse these into tables to make them a bit more compact.}
 
+\nrscomment{Replace the signpost with "Graphs are the fundamental data structure common to \gai problems. Below we define the components of a graph and discuss the some of the core properties a graph can posses. "}
+
 This section will introduce key notation and definitions used throughout the thesis. 
 
-\noindent The following definitions are not exhaustive, but describe the common building blocks and descriptors of a graph in an abstract sense. 
+\noindent The following definitions \nrscomment{drop "Are not exhaustive but"} are not exhaustive, but describe the common building blocks and descriptors of a graph in an abstract sense. 
 % \nrscomment{this wording is dangerously close to saying the primitives are agreed upon. maybe reword to say the abstract components and characteristics of graphs?}
 
 \define{Graph ($G$)}{The data structure comprising of the related vertices and edges such that $G=\{V,E\}$. Also called a `network'. $|G|$ represents the size of the graph, and when used in this general sense it means the sum of the number of vertices and edges.}
 % \nrscomment{a graph is a singular data structure. size in number of nodes? edges? is it clearly defined?}
 \define{Vertex ($V$)}{Represents an `entity' or `thing'. Also called a node. $|V|$ is the number of vertices (size of the vertex set).}
 \define{Edge ($E$)}{Represents a relationship between two vertices. Also called arcs or links. $|E|$  represents the number of edges (size of the edge set).}
-\define{Attribute}{The label, property or other information that is encoded in a vertex or edge of a graph. Graphs with attributes are called attributed graphs.}
+\define{Attribute}{A label, property or other information that is encoded in a vertex or edge of a graph. Graphs with attributes are called attributed graphs.}
 % \nrscomment{make the defn singular}
-\define{Weight}{The numerical value assigned to an edge to describe some real-world value it represents, like the number of citations, length of a road, or cost of an action. Graphs with weights are called weighted graphs.}
+\define{Weight}{A numerical value assigned to an edge to describe some real-world value it represents, like the number of citations, length of a road, or cost of an action. Graphs with weights are called weighted graphs.}
 % \nrscomment{is it always importance? cant it represent some actual value in the world, like number of citations? instead of saying its optional, maybe say that graphs having edges with weights are termed weighted graphs.}
 \define{Direction}{The flow of information across an edge from the source node to the destination node. Graphs having edges with direction are called directed graphs.}
 % \nrscomment{just qualify the first sentence with '... across an edge, from source node to destination node. Graphs having edges with direction are termed directed graphs.' and then cut the second two sentences}
@@ -22,28 +24,28 @@ This section will introduce key notation and definitions used throughout the the
 \define{Hyper-Edge}{An edge that connects an arbitrary number of vertices. Graphs with hyper-edges are called hyper-graphs.}\\
 
 
-\noindent Graphs have important characteristics that define their size and shape, including their topology, degree distribution and diameter. 
+\noindent Graphs have \nrsomment{"the following" and drop important} important characteristics that define their size and shape, including their topology, degree distribution and diameter. 
 %
 % \nrscomment{id say graphs have a number of important characteristics, including... and then do the definitions}
 
-\define{Topology}{The structural characteristics of a graph that emerge when edges link vertices together regardless of attributes or edge weights. Common topologies include mesh, scale-free and uniform-random.}
+\define{Topology}{The structural characteristics of a graph that emerge when edges link vertices together, regardless of attributes or edge weights. Common topologies include mesh, scale-free and uniform-random.}
 % \nrscomment{as it stands this isnt a definition, its a collection of words without a verb. im not sure the second sentence is really relevant to the definition. if you think it is, clarify what you mean by the latent descriptive power of the topology}
-\define{Degree}{The count of edges at a given vertex. Frequently split between degree$_{out}$ and degree$_{in}$ in directed graphs.}
+\define{Degree}{The count of edges at a given vertex. Frequently \nrscomment{"separated into" instead of split between?} split between degree$_{out}$ and degree$_{in}$ in directed graphs.}
 \define{Average Degree}{The mean degree across all vertices in the graph. A higher mean degree indicates a denser graph.}
 \define{Degree Distribution}{The distribution of vertex degrees in a given graph. Can follow any statistical distribution and correlates strongly with known graph processing bottlenecks.}
-\define{Neighborhood}{The collection of vertices that have edges directly connecting them to a given vertex. The $K$-hop neighborhood is the collection of vertices within $K$ edges of a given vertex (think: friend of a friend).}
+\define{Neighborhood}{The collection of vertices that have edges directly connecting them to a given vertex. The $K$-hop neighborhood is the collection of vertices within $K$ edges of a given vertex \nrscomment{", for example 'friend of a friend'."} (think: friend of a friend).}
 \define{Diameter}{The length of the shortest path between the two most distant vertices in a graph, where distance is measured by the number of hops between vertices. Sparser graphs tend to have larger diameters because there are fewer high-degree nodes to bridge gaps between otherwise distant nodes.}\\
 % \nrscomment{why? need some explanation like there are more nodes between ... whatever. what is meant by distance? number of nodes traversed on the shortest path between?}
 
 
 %The following definitions describe the characteristics of graphs: 
-\noindent \gai commonly encounters graphs of different types.
+\noindent \gai commonly encounters graphs of different types. \nrscomment{replace with "Although graphs can have a variety of characteristics, they can be broadly categorized as simple or heterogeneous, and static or dynamic."}
 
 \define{Simple Graph}{The most basic form of a graph. It may be directed, weighted, and attributed, but the attributes are of a consistent type (e.g. all vertex labels are of type 'name').}
 \define{Heterogeneous Graph}{A graph with multiple `types' of vertex, such as a social graph that has vertices to represent `person' and vertices to represent `organization'. Heterogeneous graphs are more complicated to process than simple graphs because they require type-checking before acting on a given vertex or edge.}
 \define{Static Graph}{A graph whose vertices, edges, weights, and attributes are known apriori and do not change. Static graphs are generally simpler to process than dynamic graphs.}
 % \nrscomment{Dynamic graph- make everything a noun}
-\define{Dynamic Graph}{A graph that evolves with vertices, edges, attributes, and weights being created, updated, and deleted. Also called a streaming graph. Dynamic graphs introduce temporal constraints on graph processing that make many of the well-researched static approaches unviable.}
+\define{Dynamic Graph}{A graph that evolves with its vertices, edges, attributes, and weights being created, updated, and deleted over time. Also called a streaming graph. Dynamic graphs introduce temporal constraints on graph processing that make many of the well-researched static approaches unviable \nrscomment{in-viable? is that a word?}.}
 % \nrscomment{'Heterogeneous graph' to keep the verb tenses aligned and make everything a noun}
 
 % \nrscomment{define this as multi edge and then say a graph having multi-edges is termed a multi-graph to mimic the way we did attributed and directed, which are also grpah qualities}
