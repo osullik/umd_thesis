@@ -3,18 +3,23 @@
     \begin{table*}[t]
         \begin{center}
         {\footnotesize
-            \begin{tabular}{l|rrrrrlccccll} 
-                Dataset                                     &  Size  & Vertices& Edges    & Communities  & Med Deg      &  Topo     &       D       &          A    &       W   &  T               & Domain/Model     &  Source \\
-                \hline
-                Karate Club~\cite{Zachary1977,Rossi2015}    & $500$b  & $34$   & $78$    & $2$           & $50$         & SF        &               &               &           &                  &                  &          \\
-                Cisco Networks$_{g_{21}}$~\cite{Madani2022} & $2$Mb  & $317$   &$3025$    & $23$         &              &               &  $\checkmark$ &               &           & $\checkmark$     & Computer Network & SNAP    \\
-                Cisco Networks$_{g_{22}}$~\cite{Madani2022} &$34.9$Mb&$33,241$ &$702,361$ & $10$         &              &               &  $\checkmark$ &               &           & $\checkmark$     & Computer Network & SNAP    \\
-                Email Eu Core~\cite{Yin2017}                &$200$Kb & $1005$  &$25571$   & $42$         &              & SF    &  $\checkmark$ &               &           &                  & Emails           & SNAP     \\
-                Orkut~\cite{Yang2012}                       &$1.77$Gb&$3,072,441$&$117,185,083$&$6,288,363$&            & SF    &               &               &           &                  & Social Media     & SNAP     \\
-                Friendster\cite{Yang2012}                   &$32.36$Gb&$65,608,366$&$1,806,067,135$&$957,154$&           & SF    &               &               &           &                  & Social Media     & SNAP     \\
-                Wiki-topcats~\cite{Yin2017}                 &$46.6$Mb&$1,791,489$&$28,511,807$&$17,364$&                & SF    &               &               &           &                    & Wiki Hyperlinks  & SNAP     \\
-                                                            &        &         &          &              &              &               &               &               &           &                  &                  &          \\
-                                                            &        &         &          &              &              &               &               &               &           &                  &                  &          \\
+            \begin{tabular}{ll|rrrrrlccccll} 
+            Source      & Dataset                                     &  Size  & Vertices& Edges    & Communities  & Med Deg      &  Topo     &       D       &          A    &       W     &  T             & Domain/Model             \\
+                        \hline
+            Real-World  & Karate Club~\cite{Zachary1977,Rossi2015}    & $500$b  & $34$   & $78$    & $2$           & $50$         & SF        &               &               &             &                &                           \\
+            (SNAP)      & Cisco Networks$_{g_{21}}$~\cite{Madani2022} & $2$Mb  & $317$   &$3025$    & $23$         &              &           &  $\checkmark$ &               &             & $\checkmark$   & Computer Network      \\
+                        & Cisco Networks$_{g_{22}}$~\cite{Madani2022} &$34.9$Mb&$33,241$ &$702,361$ & $10$         &              &           &  $\checkmark$ &               &             & $\checkmark$   & Computer Network         \\
+                        & Email Eu Core~\cite{Yin2017}                &$200$Kb & $1005$  &$25571$   & $42$         &              & SF        &  $\checkmark$ &               &             &                & Emails                    \\
+                        & Orkut~\cite{Yang2012}                       &$1.77$Gb&$3,072,441$&$117,185,083$&$6,288,363$&            & SF        &               &               &             &                & Social Media              \\
+                        & Friendster\cite{Yang2012}                   &$32.36$Gb&$65,608,366$&$1,806,067,135$&$957,154$&          & SF        &               &               &             &                & Social Media             \\
+                        & Wiki-topcats~\cite{Yin2017}                 &$46.6$Mb&$1,791,489$&$28,511,807$&$17,364$&                & SF        &               &               &             &                & Wiki Hyperlinks       \\
+                        &                                             &        &         &          &              &              &           &               &               &             &                &                           \\
+            Real-World  & OSM-DC                                      &$47$Mb  &$147,599$&$163,156$ & $27$         & $2$          & mesh      &               &               &$\checkmark$ &                & Roads       \\
+            (Mine)      & OSM-DE                                      &$43$Mb  &$637,463$&$680,858$ & $63$         & $2$          & mesh      &               &               &$\checkmark$ &                & Roads       \\
+                        & OSM-RI                                      &$44$Mb  &$671,727$&$711,157$ & $63$         & $2$          & mesh      &               &               &$\checkmark$ &                & Roads       \\ 
+                        & OSM-MD                                      &$289.4$Mb&$4,513,407$&$4,745,260$&$402$     & $2$          & mesh      &               &               &$\checkmark$ &                & Roads       \\ 
+                        & OSM-WA                                      &$433.7$Mb&$6,690,579$&$6,996,063$&$430$     & $2$          & mesh      &               &               &$\checkmark$ &                & Roads       \\ 
+
 
             \end{tabular}
         \normalsize
