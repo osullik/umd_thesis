@@ -5,23 +5,27 @@
 % \nrscomment{yeah given youre taking an empirical approach to benchmarking, we need to know what the alternative approaches are, and why theyre inferior to yours (and about Hooker, who youre borrowing from). But not a crazy in-depth explanation of the philosophy, just a high level summary}
 
 Benchmarking is a process by which systems or components are compared according to some criteria, \nrscomment{which is used to determine their relative performance.} that provide a point of reference to measure the relative performance~\cite{Kistowski2015}.
+\nrscomment{Benchmarks like SPEC, LINPACK, and SATLIB have successfully been used to advance research in HPC, ..?dynamic programming?.., and satisfiability.}
 They have been used to great effect to advance research in fields like high-performance computing  (the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}), for solving linear equations like (the LINPACK Top500~\cite{Dongarra2003}), for satisfiability problems (SATLIB~\cite{Hoos2000}), and many more. 
 
-Benchmarks can be \textit{specification-based} where all that is defined are the Input/Output requirements, \textit{kit-based} where substantive components of the benchmark are provided by a central authority or a hybrid of the two approaches. 
+Benchmarks can be \textit{specification-based} \nrscomment{, meaning only input and output requirements are defined} where all that is defined are the Input/Output requirements, \textit{kit-based} \nrscomment{, meaning substantive components are provided, or hybrid, meaning somewhere in between.} where substantive components of the benchmark are provided by a central authority or a hybrid of the two approaches. 
+
+\nrscomment{you just went through the effort of explaining those 2 types, then dont say the significance of the distinction, and move onto a different categorization. need some bridge here- either foreshadow to why the specification/kit distinction matters, or drop it if it doesnt. alternatively, bridge it with "Specification-based and kit-based benchmarks can be further categorized as being either competitive or empirical."}
 Whether specification or kit-based, the two main approaches to benchmarking are \textit{competitive} and \textit{empirical} benchmarks. 
 
 \subsection{Competitive Benchmarks}
 Competitive benchmarks are extremely popular in the AI community. 
-They involve selecting a metric or metrics and `competing' systems as black boxes to identify which one can maximize that metric. 
-They are typically implemented using the Input/Output paradigm, where the only things known to the benchmark are the data provided, the results generated and the time elapsed between those two events. 
-For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection reports average precision as their key metric\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
-Visual question answering has the Visual Question Answering Version 2 (VQAv2) and compares VQA accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and finally a popular Large Language Model (LLM) challenge at the time of writing is the ChatBot Arena benchmark\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} which uses `user preference' between two options as the metric.
+They involve selecting a metric or metrics and `competing' \nrscomment{'competing' is ambiguous here- do  you mean it as a verb or an adjective? if verb i think comparing might be better suited} systems as black boxes to identify which one can maximize that metric. 
+They are typically implemented using the Input/Output paradigm \nrscomment{do you mean to say they're typically specification based? why bother defining that term then not use it?}, where the only \nrscomment{factors considered are the results generated and the time taken to generate them.} things known to the benchmark are the data provided, the results generated and the time elapsed between those two events. 
+For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection \nrscomment{the challenge reports the metric? or uses the metric?} reports average precision as their key metric\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
+\nrscomment{Its weird to have the first one as its own sentence, then the next 2 in one sentence with ", and finally" separating them. Maybe instead say "For example, computer vision benchmark COCO uses x, VQA benchmark ... uses y, and LLM benchmark ... uses ... ." and give fewr details about each}
+Visual question answering has the Visual Question Answering Version 2 (VQAv2) and compares VQA accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and finally \nrscomment{the LLM challenge ChatBot Arena uses...} a popular Large Language Model (LLM) challenge at the time of writing is the ChatBot Arena benchmark\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} which uses `user preference' between two options as the metric.
 
-There are three important criticisms of competitive benchmarks. 
-The first is that these provide a `black box' view of the systems. 
+\nrscomment{Since you promised to discuss advantages and disadvantages, maybe "Competitive bechmarks are useful for x, but they have three major drawbacks. The first..."} There are three important criticisms of competitive benchmarks. 
+The first is that these provide a `black box' view of the systems \nrscomment{, which makes it difficult to tell why one system performed better than another, or how to improve them.}. 
 Competitive benchmarks show which systems are better but provide no information about why they are better, or how they can be improved~\cite{Saavedra1996, Hooker1994}.
-Second, is that leaderboard challenges like these very quickly become the targets of research, not the measure and so solutions begin to optimize to maximize the benchmark evaluation at the expense of generally progressing the knowledge of the field~\cite{Hooker1995}. 
-The third is that all of these challenges (benchmarks) focus on effectiveness measures, not efficiency. 
+Second, is that \nrscomment{this 'leaderboard' style of challenge encourages optimizing for the benchmark, rather than generally progressing...} leaderboard challenges like these very quickly become the targets of research, not the measure and so solutions begin to optimize to maximize the benchmark evaluation at the expense of generally progressing the knowledge of the field~\cite{Hooker1995}. 
+The third \nrscomment{drawback is that competitive benchmarks tend to emphasize effectiveness measures, ignoring efficiency altogether.} is that all of these challenges (benchmarks) focus on effectiveness measures, not efficiency. 
 Ignoring efficiency when benchmarking is an immature view and can spawn misleading results, where say, $100$ GPUs have brute forced a better result in a task than a more efficient algorithm running on an old ubuntu machine in someone's basement.
 
 \subsection{Empirical Benchmarks}

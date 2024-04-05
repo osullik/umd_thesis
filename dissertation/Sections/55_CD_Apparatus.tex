@@ -66,3 +66,7 @@ Caching of graphs is less of a concern for medium and large-scale datasets becau
 Small cosmetic changes can be made to the datasets that do not meaningfully impact processing time (e.g. incrementing each vertex ID by 1, changing attributes slightly etc) but would change the hash of the file, and could be detected in the returned results fairly trivially. 
 
 \input{Figures/Diagrams/05_cd_apparatus}
+
+\nrscomment{the part in the middle where it cycles until the final response is given is confusing. the dotted lines are hard to follow so it initially looks like lines coming out of 5a and 5b going to the left, which doesnt make sense. why is 5b connected to the cycle? and why does polling period start between 4 and 5? shouldnt it start at 4? the general idea of this is good but the words and arrows sometimes lining up and sometimes not is confusing.}
+
+\nrscomment{This diagram is generic enough that it could go with the abstract design, though it's your resulting benchmark design after following the methodology you outline there, so i can see why its here, but its weird that the caption mentions CD when nothing in the diagram is specific to CD. i'll come back to this after reading ch4.}
