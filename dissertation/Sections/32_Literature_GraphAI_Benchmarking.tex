@@ -1,7 +1,7 @@
 \section{Benchmarking \gai}
 \label{section:32-literature-benchmarking-gai}
 
-To inform the design of a \gai benchmark we review the coverage of \textit{tasks, datasets} and \textit{metrics} of $23$ prior benchmarks in graph analytics, graph databases (GDB) and graph neural networks (GNN).
+To inform the design of a \gai benchmark we review the \nrscomment{cut coverage of} coverage of \textit{tasks, datasets} and \textit{metrics} \nrscomment{covered by} of $23$ prior benchmarks in graph analytics, graph databases (GDB) and graph neural networks (GNN). \nrscomment{tack on "and identify gaps that a \gai benchmark should cover."}
 Examining each of these facets in turn identifies the gaps that a \gai benchmark should cover. 
 
 \input{Tables/31_kernels.tex}
@@ -11,31 +11,33 @@ Current graph benchmarks cover a range of tasks from the GraphAI problem space. 
 In table~\ref{table:benchmark-kernels} benchmarks are shown grouped according to their focus areas (traditional graph analytics, GDB and GNN).
 The columns align with the \gai problems described in Chapter~\ref{chapter:10-Introduction}.
 In addition to those columns, the `Graph manipulations' column reflects the coverage of the basic storage operations usually assumed out of scope for traditional graph and GNN benchmarking, but which are core operations for evaluating GDBs and dynamic graph operations.
-We survey benchmarks that include at least one \gai task from a problem category listed above." and cut the next sentence
+We survey benchmarks that include at least one \gai task from a problem category listed above.
 % The threshold for `satisfying' coverage of a \gai problem in this survey is the inclusion of a single \gai task of that problem category in their benchmark tasks. 
 
 % \nrscomment{not sure you need the example}
 % For example, supporting a BFS task would qualify the benchmark as covering the SPS \gai task.
 
 \textbf{The distribution of task coverage suggests that tasks are built for systems, rather than systems being built to achieve tasks.}
-In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that a wide variety of task coverage exists in the literature, just not all in one place.  
-The benchmark with the broadest task coverage (GBBS~\cite{Dhulipala2021}) has $26$ tasks, but the median coverage is $5$ tasks, meaning benchmarks tend to focus on a specific sub-area within a given \gai problem.
+In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that a wide variety of task coverage exists in the literature, just not all in one place. \nrscomment{by place do you mean benchmark?} 
+The benchmark with the broadest task coverage \nrscomment{double commas instead of parens} (GBBS~\cite{Dhulipala2021}) has $26$ tasks, but the median coverage is $5$ tasks, meaning benchmarks tend to focus on a specific sub-area within a given \gai problem.
 % \nrscomment{the next sentence doesnt make sense. youre saying theyre testing to the system -- so say that}
 The distribution of coverage suggests that benchmarks are testing to the system, rather than the problem. 
-That is, benchmark designers start with a system and want to understand \textit{how} it performs, so collect tests they think are relevant and run them, resulting in clusters of tasks that are optimal for the system under test. 
+That is, benchmark designers start with a system and \nrscomment{and collect tests they think relevant to understanding how (or how well???) the system performs, which results in clusters... } want to understand \textit{how} it performs, so collect tests they think are relevant and run them, resulting in clusters of tasks that are optimal for the system under test. 
+\nrscomment{In contrast, we propose a system-agnostic approach that...}
 The system-agnostic approach we prefer starts with the breadth of problems and focuses on defining \textit{what} needs to be solved so that any system can be brought in and evaluated across all of the representative problems. 
+\nrscomment{youre highlighting the words how and what, but using them differently... "how the system performs" vs. "what needs to be solved". You can make it consistent by changing the second to "what the system does", or by changing the first to "how the system solves..." or something}
 
 \nrscomment{good. keep ending them like that, comparing to your approach}
 \osullikomment{Revisit these and format consistent with above feedback}
 
-\textbf{Graph task coverage is too abstract for real-world \gai performance assessment.}
+\textbf{Graph task coverage is too abstract for real-world \gai performance assessment.} \nrscomment{abstract usually means too high a level but here youre talking about too simple tasks... is there a better adjective?}
 The most commonly benchmarked \gai tasks are \textit{Breadth First Search} (BFS), \textit{Single Source Shortest Path} (SSSP), \textit{Weakly Connected Components} (WCC), \textit{Mean Local Clustering Coefficient} (MLCC) and \textit{PageRank} (PR) which represent simple kernels.
 %
 \footnote{In benchmarking, the smallest measurable `thing' is an \textit{atomic operation} (e.g. traversing an edge). 
 Multiple atomic operations compose into a \textit{kernel} (e.g. BFS), which can compose into \textit{toy, synthetic} or \textit{real} programs, which implement kernels to solve some higher level problem at varying levels of scale and realism~\cite{Saavedra1996}. See section~\ref{section:42-GAI-Methodology} for further detail.}.
 %
 The most commonly given reason for selecting these kernel tasks is that they are foundational to graph processing. 
-Decomposing a complicated program to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but since there is no commonly agreed primitive building blocks for graph processing (section~\ref{section:25-graph-primitives}), a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019} and a more comprehensive \gai assessment must compose more complicated programs.
+Decomposing a complicated program \nrscomment{into} to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but since there is no commonly agreed primitive building blocks for graph processing (section~\ref{section:25-graph-primitives}), a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019} and a more comprehensive \gai assessment must compose more complicated programs.
 
 \textbf{Graph Manipulations are under-supported and their absence does not reflect real-world \gai processing.}
 Only nine of the surveyed benchmarks explicitly support graph manipulations, reflecting the static-graph processing assumption that the graph will only be built once and the time and cost will be amortized over the life of the graph.
