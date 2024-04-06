@@ -1,0 +1,296 @@
+# Author: Kent O'Sullivan -- osullik@umd.edu
+
+#Core Python Imports
+import datetime
+import sys
+import os
+import json
+import time
+import hashlib
+import shutil
+
+#Library Imports
+from tqdm import tqdm
+import networkx as nx
+
+#User imports
+
+class Experiment():
+    def __init__(self)->None:
+        self._times = {}
+        self.set_data_directory(os.path.join("..","datasets")) #self._data_directory
+        self.set_results_directory(os.path.join("..","temp_results")) #self._results_directory
+        
+    def get_time(self, label:str)->dict:
+        now = datetime.datetime.now()
+        processor_now = time.process_time()
+        self._times[label] = now
+        self._times[f"processor_{label}"] = processor_now
+        return {label:now}
+    
+    def get_times_dict(self)->dict:
+        return self._times
+    
+    def get_data_directory(self)->os.path:
+        return self._data_directory
+    
+    def get_results_directory(self)->os.path:
+        return self._results_directory
+    
+    def set_data_directory(self, directory:os.path)->None:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        self._data_directory = directory
+        print(f"Data directory is {self._data_directory}")
+
+    def set_results_directory(self, directory:os.path)->None:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        self._results_directory = directory
+        print(f"Results directory is {self._data_directory}")
+
+    def load_file(self, file_name:str)->dict:
+        
+        #Handle filename only and 
+        if os.path.exists(os.path.join(self._data_directory,file_name)):
+            fn = os.path.abspath(os.path.join(self._data_directory,file_name))
+        elif os.path.exists(os.path.join(file_name)):
+            fn = os.path.abspath(os.path.join(file_name))
+        else:
+            exit("File not found.")
+
+        with open(fn,"r") as f:
+            try:
+                source_data = json.load(f)
+            except ValueError:
+                exit("Not a valid JSON file")
+        
+        return source_data
+    
+    def get_experiment_name(self, filename:os.path, type:str="RESULTS")->str:
+
+        base_file_name = os.path.basename(filename)
+
+        name = base_file_name.split(".")[:-1][0]
+        extension = base_file_name.split(".")[-1]
+
+        output_name = f"{name}_{type}.{extension}"
+        
+        return output_name
+    
+    def save_results(self, experiment_name:str, results:dict)->None:
+
+        output_file = os.path.join(self.get_results_directory(),experiment_name)
+
+        if os.path.exists(output_file):
+            experiment_name = self.get_experiment_name(filename=output_file)
+            save_name = os.path.join(self.get_results_directory(),experiment_name)
+
+        else:
+            save_name = output_file
+            
+
+        with open(save_name, 'w') as f:
+            json.dump(results,f,indent=2)
+            print(f"Saved results to {save_name}")
+
+    def generate_metadata(self, experiment_name):
+
+        times = self.get_times_dict()
+
+        times["total_wall"] = times['END'] - times['START']
+        times['total_wall'] =  times['total_wall'].total_seconds()
+        times['START'] = times['START'].isoformat()
+        times['END'] = times['END'].isoformat()
+
+        times["total_processor"] = times['processor_END'] - times['processor_START']
+
+        return {"metadata":{
+            "experiment_name":experiment_name,
+            "times":times
+        }}
+
+    def save_metadata(self, experiment_name:str)->None:
+
+        metadata = self.generate_metadata(experiment_name=experiment_name)
+
+        experiment_name = self.get_experiment_name(filename=experiment_name,type="METADATA")
+
+        output_file = os.path.join(self.get_results_directory(),experiment_name)
+
+        if os.path.exists(output_file):
+            experiment_name = self.get_experiment_name(filename=output_file)
+            save_name = os.path.join(self.get_results_directory(),experiment_name)
+        else:
+            save_name = output_file
+            
+        with open(save_name, 'w') as f:
+            json.dump(metadata,f,indent=2)
+            print(f"Saved metadata to {save_name}")
+
+    def run_experiment(self, data:dict, experiment_name:str)->dict:        
+        self.get_time("START")
+        # total=0        
+
+        self.get_time("END")
+
+        self.save_results(experiment_name=experiment_name, results=data)
+        self.save_metadata(experiment_name=experiment_name)
+
+    def get_hash(self, path_to_file)->hashlib.sha256:
+        
+        sha256 = hashlib.sha256()
+
+        # Open the file in binary mode and read it in chunks
+        with open(path_to_file, 'rb') as file:
+            for chunk in iter(lambda: file.read(4096), b''):
+                sha256.update(chunk)
+
+        return sha256.hexdigest()
+    
+    def copy_data(self,source:os.path, dest:os.path):
+        try:
+            # Copy the file from source to destination
+            shutil.copy(source, os.path.join(dest,os.path.basename(source)))
+            print(f"Successfully copied '{os.path.basename(dest)}' from '{os.path.realpath(source)}' to '{os.path.realpath(dest)}'")
+        except FileNotFoundError:
+            print(f"Error: File '{os.path.basename(dest)}' not found in '{os.path.realpath(source)}'")
+        except PermissionError:
+            print(f"Error: Permission denied to copy '{source}'")
+
+
+    def data_transfer(self, source:os.path, dest:os.path)->tuple:
+        file_name = os.path.basename(source)
+        original_hash = self.get_hash(os.path.join(source))
+        start_tx = self.get_time("START_TX")
+        self.copy_data(source=source,dest=dest)
+        end_tx = self.get_time("END_TX")
+        new_hash = self.get_hash(os.path.join(dest,file_name))
+        return(start_tx,end_tx,original_hash==new_hash)
+    
+    def load_weighted_graph(self,source:os.path)->nx.Graph:
+
+        G = nx.Graph()
+
+        with open(source,'r') as f:
+            data = f.readlines()
+        
+        for line in data:
+            line = line.strip()
+            v = None
+            w = None
+            if line.startswith("#"):
+                continue
+            ln = line.split(" ")
+            u = ln[0]
+            for i, x in enumerate(ln):
+                if i == 0:
+                    pass
+                if i%2 != 0:
+                    v = x 
+                else:
+                    w = x
+                if v is not None:
+                    G.add_edge(u_of_edge=u, v_of_edge=v, weight=w)
+        
+        return(G)
+    
+    def etl(self, source:os.path, weighted:bool, stats:tuple[str])->tuple:
+        graphs_match = False
+        num_nodes, num_edges = stats 
+
+        start_etl = self.get_time("START_ETL")
+        if weighted:
+
+            G = self.load_weighted_graph(source)
+
+        else:
+            G = nx.read_adjlist(path=source, comments="#")
+
+        
+        end_etl = self.get_time("END_ETL")
+
+        
+        if len(G.nodes) == num_nodes and len(G.edges) == num_edges:
+            graphs_match = True
+
+        return(start_etl,end_etl,graphs_match)
+    
+    def collect_interim_results(self):
+        interim_results = {}
+        for i, file in enumerate(os.listdir(self._results_directory)):
+            with open(os.path.join(self._results_directory,file),'r') as f:
+                result = f.read()
+            interim_results[i] = {}
+            time = os.path.basename(file).split("_")[-1].replace(".txt","")
+            time = datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f")
+            interim_results[i]['time'] = time
+            interim_results[i]['results'] = result
+        
+        print("Purging temporary results...")
+        try:
+            shutil.rmtree(self._results_directory)
+        except OSError as e:
+            print("Error: %s : %s" % (self._results_directory, e.strerror))
+        os.makedirs(self._results_directory)
+
+        return interim_results
+
+
+    
+    def run_process(self,graph:nx.Graph,task:str):
+        start_processing = self.get_time("START_PROCESS")
+        final_result = Task(graph=graph,task=task,output_dir=self._results_directory).result
+        end_processing = self.get_time("END_PROCESS")
+        interim_results = self.collect_interim_results()
+
+
+
+
+
+        return final_result, interim_results
+
+class Task():
+
+    def __init__(self, graph:nx.graph,task:str,output_dir:os.path=(os.path.join(".","temp_results"))):
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        self.output_dir = output_dir
+        self.graph = graph
+        self.task = task
+        self.result = None
+
+        if self.task == "DIAMETER":
+            self.result = self.task_get_diameter()
+            return
+        else:
+            return None
+
+    def write_interim_result(self,result):
+        now = datetime.datetime.now()
+        FILENAME = os.path.join(self.output_dir,(self.task+"_"+str(now.isoformat())+".txt"))
+        print(f"Writing Interim Result: {result} to {FILENAME}")
+
+        with open(FILENAME, 'w') as f:
+            f.write(str(result))
+
+    def task_get_diameter(self):
+        results = nx.diameter(self.graph)
+        self.write_interim_result(results)
+        return(results)
+
+
+
+        
+
+
+
+        
+
+
+    
+
+        
+
+
+    

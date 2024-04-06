@@ -1,0 +1,6 @@
+# Line Format: Source Dest1 ... DestN
+1 2
+2 3 4
+3 5
+4 5
+5
