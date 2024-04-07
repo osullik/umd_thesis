@@ -25,12 +25,15 @@ An effective benchmark has a clearly defined purpose, abides by the principles o
 Existing benchmarks have two major components, the abstract \textit{benchmark specification} and the concrete \textit{system under test}.
 % \nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
 
+\nrscomment{i think you can cut everything above this point in this file. its a lot of words to say nothing at all really.}
 \subsubsection{Benchmark Specification}
+\nrscomment{i think this can be moved to design. also, would read easier if you adjusted this a bit to be a walk through of the benchmark diagram, so its not just listing disjoint parts, but instead describing the key ways they interact, with the figure doing some of the heavy lifting}
 The benchmark specification comprises \textit{datasets} drawn from a domain of interest, \textit{tasks} drawn from a relevant problem space, and \textit{metrics} covering relevant evaluation criteria, shown as swim lanes in figure~\ref{figure:benchmark_components}.
 % then skip the bit about SUT for now and go into your explanation of datasets/tasks/etc.. Talk about SUT once youre done with that.}
 % There are three abstract dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{figure:benchmark_components}).
 % The abstract dimensions of the a benchmark define what the `challenge' is that needs to be solved, and how to differentiate performance.
 
+\nrscomment{make each of these more concise and more geared towards explaining what the components are and what the role is of each}
 \textbf{Datasets.}
 are sourced from a specific domain of interest and are the input to the benchmark.
 A good benchmark that adheres to the relevance principle must use datasets that are sourced from the domain, or that are from the same distribution as the domain so that results can be interpreted in context. 
@@ -58,12 +61,14 @@ The systems under test (SUT) by the benchmark are comprised of the \textit{envir
 refers to all the physical components of the system under test, including host machines, hardware accelerators or distributed systems.  
 Hardware is the most commonly studied component of the system under test in benchmarks and workload analyses and is a popular target for acceleration.
 Being able to identify under what circumstances the use of a hardware accelerator is justified is a useful result of this benchmarking framework.  
+\nrscomment{can cut the rest of hardware}
 For simplicity, the distinction between sequential and parallel computing is grouped under hardware, as the use of distributed computing has a definite impact on hardware, and the decision to use shared-memory parallelism implies an explicit decision to use multiple cores (if not multiple sockets).
 
 \textbf{Software Stack.}
 refers to all the software components that are not directly part of the implementation, including the operating system and enabling tools like a database where the focus of the evaluation is not on the database itself. 
 
 \textbf{Implementation.}
+\nrscomment{"Implementation consists of the abstraction model, data structures, algorithms, and programming language used to solve a given \gai problem." and thats all you really need to say. make the others similarly brief}
 covers all of the decisions a developer makes about how to achieve the specified task on the given datasets. 
 The implementation includes explicit decisions about which abstraction, data structures, algorithms, and programming language to use to solve the problem.
 The implementation could be decomposed into these components, but we have elected to leave them combined for simplicity. 
@@ -72,9 +77,10 @@ The SUT is the target of evaluation and in figure~\ref{figure:benchmark_componen
 The distinction between the specification and the SUT is often clouded in kit-based benchmarks that provide reference implementations as baselines of performance, or host-based benchmarks that expect all implementations to run on provided hardware.
 
 \subsubsection{Implications for Benchmark Design}
-
+\nrscomment{this is benchmark usage- it doesnt belong here. maybe a paragraph after you present the design}
 To gain useful insight, our approach holds all but one aspect of the Benchmark framework is constant, and the difference in performance attributable to the aspect that varied is measured.
 For instance, one can add or remove hardware, run the same implementation on the same workloads and observe the change in efficiency, effectiveness and cost between hardware configurations.
+\nrscomment{i dont understand this table. what do the check marks represent? that those performance aspects vary together? and what is 'Notes'? I really ahve no idea how to read the table or what the takeaway is, even after reading this blurb about it}
 Table~\ref{table:component-variance} summarizes the expected consequences of varying each component, based on observable metrics of effectiveness, efficiency and cost. 
 It is unfair to compare \gai tasks to each other individually, so only examine the distribution of metrics over the subset of tasks specified by the user.
 The comparison of tasks is motivated by the desire to understand which SUT configuration is likely to provide the best performance `on average' for their particular needs. 

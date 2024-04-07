@@ -5,10 +5,12 @@ Our design of the \gai benchmarking framework draws jointly from the established
 The prior work in benchmark design guides \textit{what} components to include, namely the \textit{datasets, tasks, metrics} and \textit{system under test}.
 The prior work in the empirical analysis of algorithms determines \textit{how} we determine the composition of those components to maximize the informativeness of our approach. 
 
+\nrscomment{i dont think you need this sentence}
 Benchmark design has been reviewed in detail in sections~\ref{section:31-literature-benchmarking},\ref{section:32-literature-benchmarking-gai}~and~\ref{section:42-GAI-Background}, so here we focus on the contribution of the empirical study of algorithms to our benchmark design.
 
 \subsection{Empirical Benchmark Design}
 
+\nrscomment{you havent explained what 'empirical methods' are or what his approach is, so saying youre following it comes out of left field. first introduce it for what it is, and then say why youre using it, and then say how youre using it (the mappings) to \gai}
 We follow John Hooker's empirical methods for the study of algorithms. 
 His method identifies four key components, the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}
 % The \textit{phenomena} are the observable artifacts we are interested in studying, that are produced by some apparatus solving a problem.
@@ -16,11 +18,14 @@ The \textit{problem} here is the ability to solve a task on a given dataset (run
 The \textit{approach} is how the problem is solved.
 The \textit{phenomena} are the interactions of an approach with a problem.
 The \textit{apparatus} are the tools and techniques we use to investigate, measure or otherwise study those interactions between the phenomena and the problem.
+
+\nrscomment{im not in any position to understand this yet. cut all of this}
 Considering the benchmark components in figure~\ref{figure:benchmark_components} we can map the phenomena to metrics, the problem to workloads, and the approach to implementation.
 Formal consideration of the apparatus is a missing component from the existing benchmark design processes. 
 It is implicitly covered in the decision to use an Input/Output or Kit paradigm for benchmark design but adds deliberate and formal consideration of the apparatus to our framework. 
 Hooker's approach is summarized below, with the remainder of this section exploring how each step is conducted in an abstract sense:
 
+\nrscomment{this would be nicer as a workflow diagram- similar to fig4.4 but simplified}
 \begin{enumerate}
     \item Identify and characterize the \textit{phenomena} and the \textit{problem},
     \item Conduct exploratory experimentation,
@@ -31,13 +36,15 @@ Hooker's approach is summarized below, with the remainder of this section explor
     \item Iterate.
 \end{enumerate}
 
-\textbf{Identifing and Characterizing a Relevant Problem.}
+
+\nrscomment{this is all very dry- what do i actually need to know from this? each of these can be one sentence- what is the core of each step as it pertains to \gai?}
+\textbf{Identifying and Characterizing a Relevant Problem.}
 The datasets and tasks should be drawn from real-world domain problems so that they are reflective of what the \gai system will be expected to do in the real world. 
 To identify the problems, a literature review of open work in the domain can suffice, but a user study that identifies the active problems, tasks and datasets is a superior mechanism. 
 The remainder of these steps are completed on a per-problem basis. 
 This step is complete when a suitable problem is selected, the common tasks are listed and typical datasets are characterized (size and shape).
 
-\textbf{Identifing and Characterizing the Phenomena of Interest.}
+\textbf{Identifying and Characterizing the Phenomena of Interest.}
 The phenomena of interest must drive the design of the benchmark. 
 They are the target of observation and the reason for investigation.
 % The phenomena of interest is the trade-off between the efficiency, effectiveness and cost of systems.
@@ -53,12 +60,12 @@ While direct experimentation is best, literature reviews of related work will su
 This step is complete once key bottlenecks, friction points or curiosities are listed. 
 
 
-\textbf{Deveop Hypotheses.}
+\textbf{Develop Hypotheses.}
 Developing hypotheses informs what questions need to be answered, and focuses data collection to support that collection. 
 Using the results of the exploratory analyses, the context of the tasks and datasets from the problem area and the identified phenomena under study, this step requires the designer to create hypotheses. 
 This section is complete when a list of hypotheses exists, in the form: 
 
-{\centering \textit{When [dataset/hardware/system] changes on  [task] on we should observe a [description of expected change] in [phenmonena]}.}
+{\centering \textit{When [dataset/hardware/system] changes on  [task] on we should observe a [description of expected change] in [phenomena]}.}
 
 \textbf{Construct the Investigation Apparatus.}
 The investigation apparatus determines how data is collected, and the degree of freedom given to the systems under test. 
