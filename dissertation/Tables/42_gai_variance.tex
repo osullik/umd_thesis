@@ -3,25 +3,18 @@
     \begin{table*}[t]
         \begin{center}
         \small
-            \begin{tabular}{ll|cccl} 
-                Dimension                   &   Components              & Effectiveness       & Efficiency      &  Cost         &   Notes         \\
-                \hline
-                \textbf{Specification}      &   Datasets                & $\checkmark$        & $\checkmark$    & $\checkmark$  & Size and Shape            \\
-                                            &   Tasks                   & $\checkmark$        & $\checkmark$    & $\checkmark$  & In Aggregate              \\
-                                            &   Metrics                 &                     &                 &               & Human Perception          \\
-                            ~               &           ~               &         ~           &         ~       &       ~       &                           \\
-                \textbf{System under Test}  &   Hardware                &                     & $\checkmark$    & $\checkmark$  & Capital \& Ops cost \\
-                                            &   Software                &                     & $\checkmark$    & $\checkmark$  & Capital \& Ops cost \\
-                                            &   Implementation          & $\checkmark$        & $\checkmark$    & $\checkmark$  &                           \\
-                            ~               &           ~               &         ~           &         ~       &       ~       &                           \\
-                \textbf{Constraints}        &   None                    &                     &                 &               & Baseline                  \\
-                                            &   Time                    & $\downarrow$        &                 & $\downarrow$  &                           \\
-                                            &   Accuracy                &                     & $\uparrow$      & $\downarrow$  &                           \\
-                                            &   Cost                    & $\downarrow$        & $\downarrow$    &               &                           \\
+        \begin{tabular}{l|ccc} 
+            \multicolumn{1}{c}{\textbf{Constraint}}                    & \multicolumn{3}{c}{\textbf{Dependent Metric}}           \\%&                   \\
+               Components              & Effectiveness       & Efficiency      &  Cost         \\%&   Notes         \\
+            \hline
+               None (Baseline)         &  ---                &  ---            &  ---             \\%&& Baseline                  \\
+                Time                    & $\downarrow$        &  ---            & $\downarrow$  \\%&&                           \\
+               Accuracy                & ---                 & $\uparrow$      & $\downarrow$  \\%&&                           \\
+              Cost                    & $\downarrow$        & $\downarrow$    &  ---          \\%&&                           \\
 
-            \end{tabular}
+        \end{tabular}
         \normalsize
-        \caption{Summary of general hypotheses for the \gai benchmark} 
+        \caption{Summary of expected metric behaviors ($\uparrow$ Improve, --- Stable, $\downarrow$ Degrade) when a benchmark component is constrained } 
         \label{table:gai-variance}
         \end{center}
     \end{table*}

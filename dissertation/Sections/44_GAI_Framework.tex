@@ -1,93 +1,132 @@
 \section{Abstract Framework}
 \label{section:44-GAI-Framework}
 
-The \gai benchmark framework is presented below and summarized in figure \osullikomment{TBC}. 
+The \gai benchmark framework is presented below and summarized in figure~\ref{figure:gai-framework}. 
 The framework is the overarching term given to the collection of \gai problems that comprise the benchmark. 
-Each problem is separately designed and implemented in the benchmark framework by the methodology described in section~\ref{section:44-GAI-Design}.
-This section will present each step again, highlighting the \textit{general} design choices at this framework level. 
-Chapter~\ref{chapter:50-Community-Detection-Case-Study} demonstrates a worked example of how a benchmark problem is implemented. 
+Each problem is separately designed and implemented with its own task definitions and datasets. 
+The approaches represent an implementation on a SUT that is attempting the problem.
 
+This section will present each of the steps in our proposed benchmark development methodology that is summarized in figure~\ref{figure:framework}. 
+We focus our descriptions on how the questions in the bottom quarter of each step generate the expected outputs from each step, and how the transition questions in the grey circles should inform the designer's thinking. 
+The diagram also shows which components of the benchmark framework the outputs of each step directly contribute to. 
 
-\osullikomment{Insert updated version of variance table here with the constraints added as the figure here.}
+We present the key methodological considerations at each step to develop \textit{problem} to be added to the benchmarks and make some general observations about the requirement for and design of the observation apparatus. 
+Chapter~\ref{chapter:50-Community-Detection-Case-Study} demonstrates a worked example of how the methodology is implemented for a specific problem.
+
+\input{Figures/Diagrams/07_gai_framework}
+
+\textbf{Identifying the Use Case}
+The first step in creating the benchmark step is to identify the underlying domain for the benchmark and select several problem use cases. 
+The use case may be driven by necessity, or the target of exploratory research.
+The domain should be from the real world, but provided there are open problems, and some representative datasets are available, most problems can for formalized into a use-case.
 
 \textbf{Identifying and Characterizing a Relevant Problem.}
-\nrscomment{this is an abstract methodology, i dont think you ought to be talking about the specific survey you did. people should be able to take the steps here and follow them for any \gai problem in any domain}
-The ARLIS domain study~\cite{Regli2022a} and the extended problem survey presented in table~\ref{table:problem-survey}, identifies $11$ \gai problems relevant to the domain of interest. 
-If a problem not from the list in table~\ref{table:problem-survey} is selected, evidence of its importance must also be documented. 
-Further, the problems should be defined as \textit{problems}, not specific \textit{kernels} to execute. 
-For example, a problem definition might be \textit{Given the input X, identify who the immediate associates of a person with name Y, provide the output as a list of vertex IDs}. 
-\nrscomment{the rest of these examples can be condensed way down to one sentence listing BFS then DFS, load into GDP and perform lookup, etc. you dont need a sentence for each approach to get your point across}
-Rather than saying \textit{Run BFS from node Y} the problem is reflective of the actual domain, where an analyst knows the name (a vertex attribute) of a target, but not their vertex ID and there is no specification about how to solve it.
-One implementation might load the entire graph, BFS for the target node and then BFS for their neighbors. 
-Another might be to load the entire graph, DFS for the target node and then BFS for the neighbors. 
-Another might load the entire graph into a GDB and use an index lookup and yet another might examine each vertex as it is created and take a chance on early stopping by pausing graph creation $1000$ vertices after the target is identified, hoping that the complete neighbor list is created by then. 
-The problem-based approach still allows for the comparison of like-approaches, but also offers the flexibility of solving problems in other ways, allowing someone evaluating \gai systems using the benchmark to test if using a particular approach on one problem that may be slower may be offset by an improvement to another system. 
+% \nrscomment{this is an abstract methodology, i dont think you ought to be talking about the specific survey you did. people should be able to take the steps here and follow them for any \gai problem in any domain}
+% The ARLIS domain study~\cite{Regli2022a} and the extended problem survey presented in table~\ref{table:problem-survey}, identifies $11$ \gai problems relevant to the domain of interest. 
+% If a problem not from the list in table~\ref{table:problem-survey} is selected, evidence of its importance must also be documented. 
+Figure~\ref{figure:gai-framework} shows that problems are the combination of the task and the dataset.
+Characterizing the problem is about identifying what it is that we want to test, and identifying the tasks and datasets typical of the domain with a background study. 
+Tasks should be defined as general goals and challenges rather than specific \textit{kernels}.
+The generality subtly encourages formulating real problems into tasks instead of abstracting them to a kernel lacking context and also encourages innovative approaches. 
+The intent is to shift the focus from racing optimized implementations against each other to figuring out how to best trade off time and accuracy
+For example in \gai, a problem definition might be \textit{Given the input X, identify who the immediate associates of a person with name Y, provide the output as a list of vertex IDs} rather than \textit{BFS to node X}, \textit{search for X in a GDB} etc.
+% \nrscomment{the rest of these examples can be condensed way down to one sentence listing BFS then DFS, load into GDP and perform lookup, etc. you dont need a sentence for each approach to get your point across}
+% Rather than saying \textit{Run BFS from node Y} the problem is reflective of the actual domain, where an analyst knows the name (a vertex attribute) of a target, but not their vertex ID and there is no specification about how to solve it.
+% One implementation might load the entire graph, BFS for the target node and then BFS for their neighbors. 
+% Another might be to load the entire graph, DFS for the target node and then BFS for the neighbors. 
+% Another might load the entire graph into a GDB and use an index lookup and yet another might examine each vertex as it is created and take a chance on early stopping by pausing graph creation $1000$ vertices after the target is identified, hoping that the complete neighbor list is created by then. 
+The problem-based approach still allows for the comparison of like-approaches (e.g. comparing the same BFS algorithm on two different SUTs), by freezing all other components of the benchmark and just varying the SUT hardware. 
 
 \textbf{Identifying and Characterizing the Phenomena of Interest.}
+The goal of characterizing the phenomena is to identify what it is that we want to understand about the problems, and what metrics we need to collect towards understanding it. 
 The phenomena of interest is the trade-off between the efficiency, effectiveness and cost of \gai systems.
-Thus, the metrics \nrscomment{that should be selected for the benchmark should characterize the trade-off between those aspects of performance. For example, in most \gai tasks we expect execution time, ... etc.} we expect to be relevant to all \gai tasks are \textit{ETL Time, Execution Time, Batch Latency\footnote{\textnormal{\scriptsize The time between when a vertex or edge is added to a graph and when it appears in the result of a workload~\cite{Basak2020}}}} and \textit{Cost}. 
-For each specific problem, the phenomena must be \nrscomment{by "extended to articulate the specific effectiveness metrics" do you mean "selected"?} extended to articulate the specific effectiveness metrics, so that the assessed `goodness' of an output is meaningful.
+Thus, the metrics that should be selected for the benchmark should characterize the trade-off between those aspects of performance. 
+While not shown explicitly in figure~\ref{figure:gai-framework}, the phenomena are generated by the interactions of the approaches, datasets and tasks within a given problem and collected by the observation
+For example, in most \gai tasks we expect \textit{ETL Time, Execution Time, Batch Latency\footnote{\textnormal{\scriptsize The time between when a vertex or edge is added to a graph and when it appears in the result of a workload~\cite{Basak2020}}}} and \textit{Cost}. 
+For each specific problem, the phenomena must be tailored so that the assessed `goodness' of an output is meaningful.
 
 \textbf{Conduct Exploratory Experimentation.}
-\nrscomment{again, not very abstract the way you describe this. thats what YOU did for THIS benchmark, but not the high level steps that should be done for any. in this section i expected something like "To conduct exploratory experimentation, either x experiments can be run on y data under z conditions or a literature survey of a can be done to determine b." and then you can give the example of what you found in your exploration if you want (if its too general for the CD section).}
-For the \gai Benchmark, we review the results of workload analyses to identify the bottlenecks in systems and their causes.
-We identify that for graph processing, the input data size, shape and velocity impact the efficiency and cost of benchmarks, and that the flow-on effects of memory, computational and communication bottlenecks are dependent on the input data. 
+% \nrscomment{again, not very abstract the way you describe this. thats what YOU did for THIS benchmark, but not the high level steps that should be done for any. in this section i expected something like "To conduct exploratory experimentation, either x experiments can be run on y data under z conditions or a literature survey of a can be done to determine b." and then you can give the example of what you found in your exploration if you want (if its too general for the CD section).}
 
-\nrscomment{re net sentence-- no, your exploration led to that choice- i dont think here is the place to say that all benchmarks created for \gai will need that- someone might do exploration in a specific subset of \gai and find something different to what you did. and if it really is a foudnational principle that applies across the board, its still one you found through completing this step, which is distinct from defining what this step is. keep that distinction by wording example findings as examples, not as fact} All \gai benchmarking problems must therefore have at least one input graph that is in the scale-free, uniform-random and mesh categories. 
-\nrscomment{the next sentence is especially not part of defining what it means to do exploration, thats purely a finding you have. worth moving to ch5}
-Preferably, these will be available at tiny (processing is possible entirely in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold \url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}}}), small (processing is possible in memory on a personal computer, no larger than $\sim16$Gb), medium (processing is possible on a commercial system, no larger than $\sim1$Tb) and large (processing will require multiple commercial systems (at least $\sim5$Tb)).
+% For the \gai Benchmark, we review the results of workload analyses to identify the bottlenecks in systems and their causes.
+Exploratory experimentation provides the initial clues about where the bottlenecks, friction points and curiosities are that are worthy of further study. 
+We are trying to understand how the phenomena relate to the problems and develop theories that we can explore formally later in the design process. 
+Experimentation can be direct, using the problems and datasets identified to test out some simple theories about expected performance.
+It can also be indirect, relying on a synthesis of prior experimental work to develop an understanding of the expected phenomena arising from a given approach to a particular problem.
+In \gai, reviews of workload analyses, the findings of prior benchmarks and the designs of acceleration techniques offer valuable insight into what approaches are going to interact with what data to produce interesting phenomena.
+% We identify that for graph processing, the input data size, shape and velocity impact the efficiency and cost of benchmarks, and that the flow-on effects of memory, computational and communication bottlenecks are dependent on the input data. 
+
+% \nrscomment{re net sentence-- no, your exploration led to that choice- i dont think here is the place to say that all benchmarks created for \gai will need that- someone might do exploration in a specific subset of \gai and find something different to what you did. and if it really is a foudnational principle that applies across the board, its still one you found through completing this step, which is distinct from defining what this step is. keep that distinction by wording example findings as examples, not as fact} All \gai benchmarking problems must therefore have at least one input graph that is in the scale-free, uniform-random and mesh categories. 
+\
+% nrscomment{the next sentence is especially not part of defining what it means to do exploration, thats purely a finding you have. worth moving to ch5}
+% Preferably, these will be available at tiny (processing is possible entirely in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold \url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}}}), small (processing is possible in memory on a personal computer, no larger than $\sim16$Gb), medium (processing is possible on a commercial system, no larger than $\sim1$Tb) and large (processing will require multiple commercial systems (at least $\sim5$Tb)).
 
 \textbf{Deveop Hypotheses.}
-\nrscomment{none of this tells me how to come up with a hypothesis. i was expecting something along the lines of "use the knowledge gathered during exploration to develop theories about how the aspects of \gai performance might trade-off with each other on a certain problem under some set of input conditions and formalize those theories as a set of hypotheses". the first 2 sentences you have feels like the same thing but its not explained clearly. the "For fairness" sentence doesnt feel anything like a step in the process of developing hypotheses.. are you saying you should include a hypothesis about baseline unconstrained performance?}
-For the \gai benchmark, the hypotheses should use the three constraint levers of time (efficiency), resources (cost) and accuracy (effectiveness) to design experiments. 
+% \nrscomment{none of this tells me how to come up with a hypothesis. i was expecting something along the lines of "use the knowledge gathered during exploration to develop theories about how the aspects of \gai performance might trade-off with each other on a certain problem under some set of input conditions and formalize those theories as a set of hypotheses". the first 2 sentences you have feels like the same thing but its not explained clearly. the "For fairness" sentence doesnt feel anything like a step in the process of developing hypotheses.. are you saying you should include a hypothesis about baseline unconstrained performance?}
+Developing hypotheses is a scientific approach to quantifying the behavior we expect to observe in the system and designing circumstances that will stimulate those behaviors. 
+Hypotheses are developed in this methodology by using the knowledge gathered during exploratory experimentation.
+Hypotheses can be anything, but it can be helpful to derive them by applying the three constraint levers of time (efficiency), resources (cost) and accuracy (effectiveness) to develop them. 
 These levers provide a mechanism to identify the trade-offs in \gai between efficiency, effectiveness and cost by constraining one (or more) and observing changes in the phenomena under observation.
-For fairness, each \gai problem should allow an unconstrained run before imposing constraints in subsequent iterations.
-Table~\ref{table:gai-variance} summarizes the hypotheses expected to hold across all problems in the \gai benchmark.
-\nrscomment{this table is nearly the same as the previous one, and i understand it even less. what are you trying to convey? what do the check marks vs arrows convey? the caption says its a table of hypotheses- nothing in that table is a hypothesis. if i were to make hypotheses out of that table im guessing "We expect the cost constraint to reduce effectiveness and efficiency" which makes sense, but isnt obvious enough at first glance. The header 'Components' would need to say "Constrained variable" and a meta header above the performance headers would need to say "expected behavior" for me to know what to make of the arrows easily and get hypotheses from this. i still have no clue waht the upper section with the check marks conveys. "We think datasets are effective, efficient, and costly"?? Dont use 'Notes' as a header its meaningless. for the bottom part that header being 'Trial' or 'Workload' or something would fit better. idk for the top section.}
+% For fairness, each \gai problem should allow an unconstrained run before imposing constraints in subsequent iterations.
+Table~\ref{table:gai-variance} summarizes the behavior we expect to stimulate from an SUT by constraining time, accuracy or cost across any \gai problem, and are a resource from problem designers to build on.
+% \nrscomment{this table is nearly the same as the previous one, and i understand it even less. what are you trying to convey? what do the check marks vs arrows convey? the caption says its a table of hypotheses- nothing in that table is a hypothesis. if i were to make hypotheses out of that table im guessing "We expect the cost constraint to reduce effectiveness and efficiency" which makes sense, but isnt obvious enough at first glance. The header 'Components' would need to say "Constrained variable" and a meta header above the performance headers would need to say "expected behavior" for me to know what to make of the arrows easily and get hypotheses from this. i still have no clue waht the upper section with the check marks conveys. "We think datasets are effective, efficient, and costly"?? Dont use 'Notes' as a header its meaningless. for the bottom part that header being 'Trial' or 'Workload' or something would fit better. idk for the top section.}
 
 \input{Tables/42_gai_variance}
 
 \noindent Hypotheses should be formally specified in the form:
 
-{\centering \textit{When [lever] is constrained for [task] on [dataset] we should observe a [description of expected change] in [phenomena]}.}
-\nrscomment{simplify it for readability "When [lever] is constrained for [task] on [dataset] we expect [change] in [phenomena]"}
+{\centering \textit{"When [lever] is constrained for [task] on [dataset] we expect [change] in [phenomena]"}}
 
 \textbf{Construct the Investigation Apparatus.}
-\nrscomment{not what did you construct as your apparatus-- what does it entail to construct an apparatus? how should one do it? what are the steps? then you can say what you found}
-For the \gai benchmark, we identify the need to track \textit{time} as a proxy for efficiency, \textit{accuracy} (or equivalent) as a proxy for effectiveness and \textit{power} as a proxy for cost.
-\nrscomment{none of the rest of this should be here- if you really want it condense it down into one sentence that sounds more like "and following those steps, we determined a \gai apparatus should..."}
-In a purely Input/Output paradigm with access only to the external view of the system under test, time is measured from when the input data is sent until the output is received. 
-More detailed timing data generally requires feedback from a system. 
-It can either time itself and report timings or needs to send proof of progress as execution proceeds.
-To promote the exploration of trade-offs between efficiency and effectiveness, we propose a 'polling' system that will periodically ask the system under test for a result, and continue to do so until the system has `completed' its workload.
-The results of the `polling' will reveal how accuracy covaries with time. 
+% \nrscomment{not what did you construct as your apparatus-- what does it entail to construct an apparatus? how should one do it? what are the steps? then you can say what you found}
+Constructing the investigation apparatus has three key steps.
+First is collecting or generating datasets that will stress each hypothesis to stimulate the phenomena we intend to observe. 
+The second is defining the metrics of interest and developing a mechanism to collect the data needed to generate them. 
+The third step is integrating the SUT into the apparatus
+In an Input/Output paradigm, this will just be some API configurations, but for a hosted solution may involve test compilations etc. 
+Specific to the \gai benchmark is a need to trade-off between effectiveness and efficiency that will require sampling the available answers over time, and evaluating correctness as a distance from the optimal solution, rather than a binary judgement of correctness. 
 
-\nrscomment{cut all of this}
-The accuracy is calculated by examining the provided answer against a reference answer.
-Instinctively, we see exact solutions as required for many \gai problems, particularly those in the SPS problem space, but if the problem is framed correctly, they can accept approximate solutions. 
-For example, \textit{Given the input X, identify who the immediate associates of a person with name Y, provide the output as a list of vertex IDs} will have an exact answer, $N$, but there is still utility in the real world for an answer that is $N\pm1$ or in a scale-free graph maybe even $N\pm100$.
-Accepting a distance from the exact solution here is now an interesting metric that allows us to perhaps trade off the accuracy of a solution for a faster solution, that is much quicker. 
+% For the \gai benchmark, we identify the need to track \textit{time} as a proxy for efficiency, \textit{accuracy} (or equivalent) as a proxy for effectiveness and \textit{power} as a proxy for cost.
 
-In the Input/Output paradigm, there is no easy way to measure power (cost).
-One method is to estimate it using some kind of cost model that would require the SUT owner to enter information about the system that can project power usage over time. 
-Another is to provide a hosted benchmark and use that to establish a baseline of power consumption. 
-A third is to provide a microbenchmark and instrumentation instructions so that the SUT user can generate power consumption statistics separately and report them. 
-None of these approaches are optimal, so for the \gai benchmark, we explore using a hosted instance of the benchmark to measure power consumption but focus efforts on the tradeoff between efficiency and effectiveness in the first instance. 
+% \nrscomment{none of the rest of this should be here- if you really want it condense it down into one sentence that sounds more like "and following those steps, we determined a \gai apparatus should..."}
+% In a purely Input/Output paradigm with access only to the external view of the system under test, time is measured from when the input data is sent until the output is received. 
+% More detailed timing data generally requires feedback from a system. 
+% It can either time itself and report timings or needs to send proof of progress as execution proceeds.
+% To promote the exploration of trade-offs between efficiency and effectiveness, we propose a 'polling' system that will periodically ask the system under test for a result, and continue to do so until the system has `completed' its workload.
+% The results of the `polling' will reveal how accuracy covaries with time. 
 
-\osullikomment{Fill in QUICC system details here.}
-\nrscomment{system details in the high level approach section??}
+% \nrscomment{cut all of this}
+% The accuracy is calculated by examining the provided answer against a reference answer.
+% Instinctively, we see exact solutions as required for many \gai problems, particularly those in the SPS problem space, but if the problem is framed correctly, they can accept approximate solutions. 
+% For example, \textit{Given the input X, identify who the immediate associates of a person with name Y, provide the output as a list of vertex IDs} will have an exact answer, $N$, but there is still utility in the real world for an answer that is $N\pm1$ or in a scale-free graph maybe even $N\pm100$.
+% Accepting a distance from the exact solution here is now an interesting metric that allows us to perhaps trade off the accuracy of a solution for a faster solution, that is much quicker. 
+
+% In the Input/Output paradigm, there is no easy way to measure power (cost).
+% One method is to estimate it using some kind of cost model that would require the SUT owner to enter information about the system that can project power usage over time. 
+% Another is to provide a hosted benchmark and use that to establish a baseline of power consumption. 
+% A third is to provide a microbenchmark and instrumentation instructions so that the SUT user can generate power consumption statistics separately and report them. 
+% None of these approaches are optimal, so for the \gai benchmark, we explore using a hosted instance of the benchmark to measure power consumption but focus efforts on the tradeoff between efficiency and effectiveness in the first instance. 
+
+% \osullikomment{Fill in QUICC system details here.}
+% \nrscomment{system details in the high level approach section??}
 
 \textbf{Analyze the Results, Developing a Theoretic Explanation and Iterating.}
-\nrscomment{the irony of you writing this before having results is that this chunk is the closest to sounding like a method- since it doesnt include your findings. though your explanation doesnt quite line up with the header. it says analyze results, develop a theory, and iterate. you say report performance of each system/workload combo, grouped by problem and separately grouped by system. missing how to develop a theory from that, and what iterating on it looks like. but the tone on this one is right, just keep going with it, and maybe make whats there now more concise- i.e. you can just say performance metrics instead of listing them, say analyze it from the problem dimension across systems and from the system dimension across problems.}
-The \gai benchmark should report the \textit{efficiency, effectiveness} and \textit{cost} of each workload on each system under test configuration. 
-The results should be grouped in one dimension by the system under test, showing its relative performance across all the \gai benchmark problems. 
-They should also group by problem so that the performance of different systems under test on the same problems can be compared. 
+% \nrscomment{the irony of you writing this before having results is that this chunk is the closest to sounding like a method- since it doesnt include your findings. though your explanation doesnt quite line up with the header. it says analyze results, develop a theory, and iterate. you say report performance of each system/workload combo, grouped by problem and separately grouped by system. missing how to develop a theory from that, and what iterating on it looks like. but the tone on this one is right, just keep going with it, and maybe make whats there now more concise- i.e. you can just say performance metrics instead of listing them, say analyze it from the problem dimension across systems and from the system dimension across problems.}
+These three steps are combined because they are largely beyond the scope of the benchmark itself. 
+The researcher is responsible for these, and the benchmark must support them in the next steps. 
+To that end, the benchmark should clearly report the \textit{efficiency, effectiveness} and \textit{cost} (performance metrics) of each workload on each system under test configuration. 
+It should also report the details of the datasets, implementations and SUT for posterity.
+Results should be viewable from the perspective of a SUT, (exploring each aspect of performance) and aspect (comparing across SUTs)
+% The results should be grouped in one dimension by the system under test, showing its relative performance across all the \gai benchmark problems. 
+% They should also group by problem so that the performance of different systems under test on the same problems can be compared. 
 
-\input{Figures/Diagrams/03_radar_plots}
+% \input{Figures/Diagrams/03_radar_plots}
 
-\nrscomment{is the figure related to the last step? you dont explain it anywhere}
+% \nrscomment{is the figure related to the last step? you dont explain it anywhere}
 
 
 \input{Figures/Diagrams/04_benchmark_framework}
 
-\nrscomment{you need to refer to the figure, and id use the questions in it to guide what you should be focusing on in each of the above sections. even in your descriptions you dont really talk to the 'this step influences this component' very much--- i think that might be better off as a separate diagram that looks more like an influence graph, and doesnt include as detailed a breakdown of what each step entails, just the aspects it affects. then you can use that as more of a summary of how were choosing what goes into each component of the benchmark. having a workflow diagram and an influence graph in one figure is a bit hard to digest. also, you might be able to break the steps into 2 rows, with the first 3 being the 'think about things' steps and the next 3 being the 'do things' steps. then it can be on 2 lines and would fit portrait. and if this whole thing is cyclic with 'iterate' should it be a circle not a line? also, all the step labels start with infinitive form verbs except 'exploratory study' need to prepend 'conduct' or something}
+\osullikomment{Seperate into influence and workflow graphs. }
+
+% \nrscomment{you need to refer to the figure, and id use the questions in it to guide what you should be focusing on in each of the above sections. even in your descriptions you dont really talk to the 'this step influences this component' very much--- i think that might be better off as a separate diagram that looks more like an influence graph, and doesnt include as detailed a breakdown of what each step entails, just the aspects it affects. then you can use that as more of a summary of how were choosing what goes into each component of the benchmark. having a workflow diagram and an influence graph in one figure is a bit hard to digest. also, you might be able to break the steps into 2 rows, with the first 3 being the 'think about things' steps and the next 3 being the 'do things' steps. then it can be on 2 lines and would fit portrait. and if this whole thing is cyclic with 'iterate' should it be a circle not a line? also, all the step labels start with infinitive form verbs except 'exploratory study' need to prepend 'conduct' or something}

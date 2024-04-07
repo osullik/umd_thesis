@@ -1,33 +1,35 @@
 \section{Motivation}
 \label{section:41-GAI-Motivation}
 
-\nrcsomment{stop this standards madness}
-\input{Figures/Diagrams/02_xkcd.tex}
+% \input{Figures/Diagrams/02_xkcd.tex}
 
-\nrscomment{already covered in signpost}
-Developing a benchmark for \gai is a response to a lack of task, dataset and metric coverage in current benchmarks, the imbalance between competitive and empirical evaluation and the absence of a formal methodology for creating a benchmark suite that will address these shortcomings.
+% \nrscomment{make this active- in reviewing x we conclude y}
+In reviewing prior work in competitive benchmarking and workload analysis (section~\ref{section:31-literature-benchmarking}) we conclude that purely competitive benchmarks from the Input/Output paradigm lack descriptive power and that empirical benchmarks from the workload analyses paradigm are too invasive for general-purpose use. 
+Utility must balance explainability, and our hybrid approach borrows ideas from constrained benchmarks, creating external levers to facilitate a more detailed `black-box' approach to understanding the internal state of the system.
 
-\nrscomment{make this active- in reviewing x we conclude y}
-The review of benchmarking (section\ref{section:31-literature-benchmarking}) concludes that purely competitive benchmarks from the Input/Output paradigm lack descriptive power and that empirical benchmarks from the workload analyses paradigm are too invasive for general-purpose use. 
-Utility must balance explainability, and our hybrid approach borrows ideas from constrained benchmarks, creating external levers to reveal the internal state of the system.
+The review of \gai benchmarking (section~\ref{section:32-literature-benchmarking-gai}) concludes that the existing \gai task, dataset and metric coverage is narrow, neglects dynamic processing of heterogeneous graphs, and fails to appropriately evaluate approximate or incremental solutions. 
+Rather than taking a system-led approach, we take a problem-centric approach.
+We focus on the \gai problem categories (see table~\ref{table:taxonomy}), derive relevant tasks within those categories from a study of I\&S domain requirements (see table:~\ref{table:problem-survey}), and design a benchmark framework that defines the tasks, datasets and metrics for evaluating across the breadth of \gai implementations and environments.
+The problem-centric approach offers the flexibility to vary any benchmark component from \textit{algorithms}, \textit{implementations} and the underlying \textit{hardware} within a unified framework, while monitoring the changes in efficiency and effectiveness.
 
-The review of \gai benchmarking (section~\ref{section:32-literature-benchmarking-gai}) concludes that the existing \gai task, dataset and metric coverage is narrow, neglects dynamic processing of heterogeneous graphs, and \nrscomment{fails to appropriately evaluate} largely ignores approximate or incremental solutions. 
-Rather than taking a system-led approach, we focus on identifying the problem categories in our \gai taxonomy (see table~\ref{table:taxonomy}), derive relevant tasks within those problem categories from a study of I\&S domain requirements (see table:~\ref{table:problem-survey}), and design a benchmark framework that defines the tasks, datasets and metrics that are useful for evaluating across the breadth of \gai implementations and environments.
+% \nrscomment{i think you can cut this entire chunk. much of it is about stuff you already cut from the previous section and the rest is redundant to what you just said}
+% The review of \gai bottlenecks (section~\ref{section:33-literature-gai-bottlenecks}) concludes that the three methods to influence the effectiveness, efficiency or cost of a \gai system are \textit{algorithmic, implementation} and \textit{hardware} changes.
+% First, the \textit{algorithms} used to analyze the graphs can be changed to approach a task differently, operate in a time-constrained setting, or approximate results. 
+% Second, the underlying \textit{implementation} can be changed to better exploit existing hardware capabilities, use optimized libraries, and adjust the memory consumption (or access time) for a graph in memory. 
+% The third major avenue for improvement is to modify the \textit{hardware} to increase computing resources, distribute computing or use specialized accelerators. 
+% Existing Input/Output paradigm benchmarks focus tend to focus only on evaluating hardware changes, while hosted benchmarks only evaluate the algorithmic changes. 
+% Workload analyses explore all three dimensions but are invasive and tend to ignore effectiveness metrics, in favor of a focus on efficiency. 
+% A key goal of our benchmark is to describe the effectiveness, efficiency and cost trade-offs for choosing some combination of these acceleration methods across the breadth of the \gai tasks they need to undertake.
 
-\nrscomment{i think you can cut this entire chunk. much of it is about stuff you already cut from the previous section and the rest is redundant to what you just said}
-The review of \gai bottlenecks (section~\ref{section:33-literature-gai-bottlenecks}) concludes that the three methods to influence the effectiveness, efficiency or cost of a \gai system are \textit{algorithmic, implementation} and \textit{hardware} changes.
-First, the \textit{algorithms} used to analyze the graphs can be changed to approach a task differently, operate in a time-constrained setting, or approximate results. 
-Second, the underlying \textit{implementation} can be changed to better exploit existing hardware capabilities, use optimized libraries, and adjust the memory consumption (or access time) for a graph in memory. 
-The third major avenue for improvement is to modify the \textit{hardware} to increase computing resources, distribute computing or use specialized accelerators. 
-Existing Input/Output paradigm benchmarks focus tend to focus only on evaluating hardware changes, while hosted benchmarks only evaluate the algorithmic changes. 
-Workload analyses explore all three dimensions but are invasive and tend to ignore effectiveness metrics, in favor of a focus on efficiency. 
-A key goal of our benchmark is to describe the effectiveness, efficiency and cost trade-offs for choosing some combination of these acceleration methods across the breadth of the \gai tasks they need to undertake.
+% \nrscomment{cut this, too colloquial}
+% Whenever developing a new standard, the new approach risks crowding the already busy ecosystem, without meaningful improvement (see: figure~\ref{figure:xkcd}).
+% The reasons why the framework we propose here is an important contribution and not just crowding existing work are: 
 
-\nrscomment{cut this, too colloquial}
-Whenever developing a new standard, the new approach risks crowding the already busy ecosystem, without meaningful improvement (see: figure~\ref{figure:xkcd}).
-The reasons why the framework we propose here is an important contribution and not just crowding existing work are: 
+
+\osullikomment{Move to introduction.}
 
 \nrscomment{Our \gai benchmarking methodology.... (id turn this into prose or figure out what this is a list of and call it that...goals? characteristics? guiding principles? properties?}
+
 \begin{enumerate}
     \item Our framework defines a methodology, allowing it to extend to emerging \gai problems. 
     \item Our methodology focuses on the \gai problems, rather than the systems. 

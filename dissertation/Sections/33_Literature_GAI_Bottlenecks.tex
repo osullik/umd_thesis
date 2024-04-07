@@ -35,7 +35,7 @@ Optimizations for general-purpose architectures fail to deliver many benefits be
 For example, branch misprediction is common~\cite{Aananthakrishnan2020}, but is typically eclipsed by memory latency~\cite{Beamer2015} and distributed workloads frequently become unbalanced~\cite{Aananthakrishnan2020, Ozdal2017}.
 
 Looking at GNNs, their hybrid computing patterns that combine irregular graph processing and regular dense neural network processing make it difficult to implement GNNs on general-purpose architectures~\cite{Yan2020}. \nrscomment{refer to the diagram that doesnt exist yet that you drew. make the point here that memory bottlenecks are hard, computation bottlenecks are less common on their own, but hybrid cases like GNNS that are constrained by both is the toughest.}
-\nrscopmment{dont use 'however' in mid sentence}
+\nrscomment{dont use 'however' in mid sentence}
 The most striking computing problem however is the lack of optimized graph creation, update, and delete functionality, with up to 40\% of latency in dynamic graph processing stemming from graph creation~\cite{Basak2020}. \nrscomment{you have to explain the link to this being a computation bottleneck, otherwise it sounds like a random unrelated fact}
 
 
