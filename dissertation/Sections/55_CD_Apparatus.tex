@@ -1,4 +1,4 @@
-\section{Apparatus Design}
+\section{Construct the Investigation Apparatus}
 \label{section:55-CD-Apparatus}
 
 \nrscomment{i was expecting the apparatus design to be more tied to the hypotheses you developed from exploratory analysis. at each component you describe, say how it relates to the earlier findings/enables testing the hypotheses/whatever the reason you went through all those steps was- they inform the design, otherwise there are no explicit ties and i dont know why you made these decisions, without really thinking about it and going back and forth between this and the previous sections. }
@@ -35,21 +35,7 @@ We can generate synthetic graphs using a community-detection generator like LFR~
 
 \subsection{Problems}
 
-Based on the problem survey (section~\ref{section:11-graph-based-ai}), available datasets and expected tasks, we identify the initial collection of problems:
 
-\nrscomment{make this into a table of problems and required output- 2 cols}
-\begin{enumerate}
-    \item Who is in the same group as (x)? Return a list of vertex IDs. %Requires them to identify a `group' and check for membership by both. Could use CD, could do BFS to some threshold, and could just make a guess. 
-    \item Is (x) likely to be affiliated with (y)? Return a tuple of the form (Yes/No, Confidence)? %Requires them figure out if they are affiliated. Might do SSSP, might do CD and see if in the same group
-    \item How many vertices are in the largest and smallest disjoint communities in the graph? Return a tuple with two ints and two lists of form (Size\_big, Size\_small, [Big\_vertices], [Small\_vertices]) %Requires communities to be detected and ranked by size. 
-    \nrscomment{format the variables in a font with equal kearning}
-    \item (x), (y) and (z) are in communities (a), (b) and (c). Who else is in the community (c)? Return a list of Vertices. %Gives extra information, they may choose to use it or not.
-    \item Who in the same group as the vertex (a) with property (1) and vertex (b) with property (2), and what is the most common value for property (3)? Return a tuple of the form ([list\_of\_vertices], property).
-    \item What are the groups in the graph? Return a list of lists of vertices. % Execute community detection and return the result. 
-    \item There are (n) communities in this graph, named from largest to smallest $C_{1} ... C_{n}$. Which vertices belong to each group? Return a list of lists of vertices. % Execute CD with known number of communities. 
-\end{enumerate}
-
-\noindent The tests are designed so that they can be randomized based on ground-truth knowledge,\nrscomment{what does that mean?} so the same workload can be run multiple times to get an `average' result. 
 
 \subsection{Telemetry} \nrscomment{if youve gone through datasets and problems i would expect this to be called metrics}
 Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system, and how much time elapses \nrscomment{between ...}. 

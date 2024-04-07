@@ -1,48 +1,58 @@
-\section{Problem Identification}
+\section{Identify and Characterize the Population Segmentation Problem}
 \label{section:51-CD-Problem}
 
-\nrscomment{signpost. in this section we describe the population segmentation problem as it is defined in IAndS.}
-\subsection{Overview}
-\nrscomment{i expect these headers to follow the steps you promised. make them match word for word what you have in the diagram. 'identify use case' etc.}
+In this section, we describe the population segmentation problem as it is defined in the I\&S domain to identify common tasks and the characteristics of datasets that a real-world system expects to encounter. 
+
+\subsection{Definition}
+% \nrscomment{i expect these headers to follow the steps you promised. make them match word for word what you have in the diagram. 'identify use case' etc.}
 %Definition
 A Population Segmentation Analysis aims to divide a population into groups by geography, demography, attitude toward an issue, or other thematic line.
 These groups or `segments' are a subset of the population with common attributes to which an organization can tailor its communication~\cite{Army2023}.
-\nrscomment{youre listing use cases that are not IandS- would be more convincing if you listed a few IandS use cases for it}
-They are used heavily in marketing, to optimize return on investment, but also have use in purely technical contexts, identifying how to arrange graphs in memory to reduce memory access overheads~\cite{Balaji2018}.
-\nrscomment{i think im stil lmssing proper IandS motivation for the problem. what did you write about for CD in the big long IandS intro before you swapped to graphAI?}
+% \nrscomment{youre listing use cases that are not IandS- would be more convincing if you listed a few IandS use cases for it}
+Beyond its I\&S applications to intelligence preparation of the battlespace (IPB), information operations (IO) and civil-military cooperation (CIMIC), population segmentation is used heavily in marketing and in identifying how to arrange graphs in memory to reduce memory access overheads~\cite{Balaji2018}.
+% \nrscomment{i think im stil lmssing proper IandS motivation for the problem. what did you write about for CD in the big long IandS intro before you swapped to graphAI?}
 
 %Intelligence Problem
-Traditionally, the use of formal studies, surveys, and local consultants provide the data to segment a population. \nrscomment{traditionally segmentation is done using data collected by consultants, etc.,  but more recently it is accomplished using large volumes of public social media and comms data}
-The modern era, however, gives analysts access to large volumes of publicly available social media and communication data.
-These datasets describe the interactions between people--a human social network. 
-
-Prior work has shown how email patterns can predict social subgroups~\cite{Zachary1977} and phone call records reflect geographic and cultural clusters in the real world~\cite{Sobolevsky2014}.
-Social networks can be understood through their communication patterns, and the patterns of communication between individuals reveal insights about the structure of subcommunities, the patterns of information flow, and who the most influential entities in the network are.
+% Traditionally, the use of formal studies, surveys, and local consultants provide the data to segment a population. 
+Traditionally segmentation is done using data collected by surveys or observation.
+More recently, similar results have been achieved by mining large volumes of public social media and communications data.
+% The modern era, however, gives analysts access to large volumes of publicly available social media and communication data.
+% These datasets describe the interactions between people--a human social network. 
+For example, prior work has shown how email patterns can predict social subgroups~\cite{Zachary1977} and phone call records reflect geographic and cultural clusters in the real world~\cite{Sobolevsky2014}.
+% Social networks can be understood through their communication patterns, and the patterns of communication between individuals reveal insights about the structure of subcommunities, the patterns of information flow, and who the most influential entities in the network are.
 
 %Computational Problem 
 These communication networks can be represented as a graph. 
 Each individual is a vertex, and each interaction (phone call, email) is an edge. 
 Weights may reflect the volume or durations of interactions, and attributes for vertices and edges may be used to incorporate additional information.
-\gai tasks that can be used for population segmentation include \textit{Graph Partitioning}, \textit{Graph Clustering}, and more broadly \textit{Community Detection}.
 
 % Graph Partitioning is
 
 \subsection{Tasks}
-Graph Partitioning is the top-down task of optimally dividing a graph into $K$ subgraphs such that each vertex belongs to exactly one partition, all partitions are disjoint, and some objective function is optimized. 
-Graph Clustering is the bottom-up task of optimally clustering a set of vertices such that each vertex belongs to exactly one cluster, all clusters are disjoint, and some objective function is optimized. 
-\nrscomment{those definitions are nearly identical, find a way to say it without repeating the same words again}
+\gai tasks that can be used for population segmentation include \textit{Graph Partitioning}, \textit{Graph Clustering}, and more broadly \textit{Community Detection}.
+
+Graph Partitioning takes a \textit{top-down} approach and Graph Clustering a \textit{bottom-up} approach to the task of optimally dividing a graph into $K$ subgraphs such that each vertex belongs to exactly one partition, all partitions are disjoint, and some objective function is optimized. 
+% Graph Clustering is the \textit{bottom-up} task of optimally clustering a set of vertices such that each vertex belongs to exactly one cluster, all clusters are disjoint, and some objective function is optimized. 
+% \nrscomment{those definitions are nearly identical, find a way to say it without repeating the same words again}
 Both graph partitioning and graph clustering have been proven $NP$-complete. 
-Community Detection involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
-\nrscomment{if the first 2 are techniques for solving the third, can you really call them all tasks? i thought tasks arent supposed to presuppose techniques (searching for x not BFS) maybe call the first 2 approaches to CD? and call CD the task? putting the same label on a, b, c when a and b are used to accomplish c seems weird.}
-It is closely related to partitioning and clustering (and most approaches implement one of these two techniques), with the key distinction that communities are a more general structure that does not necessarily enforce the requirements for independence between communities. \nrscomment{plural/singular disagreement}
+Community Detection is a more general form of the problem that involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
+% \nrscomment{if the first 2 are techniques for solving the third, can you really call them all tasks? i thought tasks arent supposed to presuppose techniques (searching for x not BFS) maybe call the first 2 approaches to CD? and call CD the task? putting the same label on a, b, c when a and b are used to accomplish c seems weird.}
+It is closely related to partitioning and clustering, with the key distinction that communities are a more general structure that do not necessarily enforce the requirements for independence that clusters and partitions do. 
+%\nrscomment{plural/singular disagreement}
+
+Based on the problem survey (section~\ref{section:11-graph-based-ai}), available datasets and expected tasks, we identify the initial collection of problems in table~\ref{table:cd-problem-definition}, presented in general form. 
+
+\input{Tables/53_CD_Problems.tex}
+
+% \noindent The tests are designed so that they can be randomized based on ground-truth knowledge,\nrscomment{what does that mean?} so the same workload can be run multiple times to get an `average' result. 
 
 \subsection{Datasets}
 Population segmentation focuses on human social networks, which are typically scale-free (see: section~\ref{section:22-graph-topology}).
 The community definition reinforces that graph topologies are expected to consist of smaller densely connected subgraphs within the containing graph.
-At the extremely defined end of `communities,' a graph will consist of cliques (completely connected subgraphs), connected to other cliques by single-edge `bridges'. 
-At the extremely undefined end, a fully connected graph or multigraph has no topological community structure and attributes must be included. 
-\nrscomment{defined and undefined arent great descriptors. well-defined/poorly-defined/fuzzy are better}
-The `fuzzy' community is effectively a uniform random distribution, where each the `closeness' of an individual community is no greater than that of the graph as a whole.
+At the extremely well-defined end of `communities,' a graph will consist of cliques (completely connected subgraphs), connected to other cliques by single-edge `bridges'. 
+At the extremely poorly defined end, a fully connected graph or multigraph has no topological community structure and attributes must be included to provie `clues' about community structure. 
+% \nrscomment{defined and undefined arent great descriptors. well-defined/poorly-defined/fuzzy are better}
+The `fuzzy' community is effectively a uniform random distribution, where the `closeness' of an individual community is no greater than that of the graph as a whole.
 
 \subsection{Outputs}
 

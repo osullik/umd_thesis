@@ -1,38 +1,52 @@
-\section{Phenomena Identification}
+\section{Identify and Characterize Phenomena of Interest}
 \label{section:52-CD-Phenomena}
+We identify the phenomena of interest from the results of the problem survey (table~\ref{table:problem-survey}) that indicate a growing acceptance of trading off a perfectly effective approach that takes a long time to execute with a more efficient approach that might only provide partially correct, or low-resolution solutions. 
+This section describes how we characterize the phenomena of interest as the trade-off between effectiveness, efficiency and cost. 
 
 \subsection{Efficiency}
-
-No change from the \gai framework.
-\nrscomment{by this point i dont rememebr what you said up there, so even if its the same you need to at least give it once sentence}
+Measurements of efficiency do not vary much from problem to problem in \gai. 
+We use the ubiquitous \textit{Execution Time} but add support for \textit{Extract, Transform, Load Time}. 
+Many approaches to population segmentation use iterative algorithms, and so are well suited to providing interim solutions, making the measures of \textit{batch latency} (time from data being sent until a result it generated) and batch rate (average time to produce an interim result).
 
 \subsection{Effectiveness}
-The definitions for Graph Partitioning and Graph Clustering require an objective function to evaluate the `goodness' of the partitions/clusters. 
-More general community detection generally also requires an objective function to determine how `good' a community is. 
+The effectiveness of population segmentation can be evaluated in two ways -- using ground truth labels or using structural characteristics. 
+Ground truth label-based evaluation is strongly preferred, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
+Scalability limitations in NMI are driving alternate methods like Network-F1 (NF1)~\cite{Rossetti2016,Rossetti2017,Rossetti2018} but have not gained widespread traction. 
+Without ground truth labels, the `goodness' of a segment is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
+These methods are limited in their ability to provide a reliable evaluation, as they effectively model the probability that the community is more connected than a random graph. 
+Further, optimizing the modularity metric is $NP$-Complete~\cite{Brandes2006} and heuristic approaches perform poorly on small communities and skewed community distributions~\cite{Fortunato2007}, which are typical of scale-free graphs~\cite{Barabasi1999, Girvan2002}. 
 
-The `goodness' of a community is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
-Modularity is the most widely used, and measures \nrscomment{i think you meant to say what it is here... and if not then you should anyway}
-despite the optimization of the modularity metric being $\mathcal{NP}$-Complete~\cite{Brandes2006} and suffering from a resolution limit that causes small communities to be combined and absorbed by larger ones when community size distributions are skewed~\cite{Fortunato2007}, which is typically the case~\cite{Barabasi1999, Girvan2002}. 
-\nrscomment{youve not used that script NP consistently- either do it everywhere or nowhere}
-\nrscomment{what about the other 2 metrics? and the constant potts MODEL is a metric??}
 
-There are two options for evaluating a population segmentation problem. 
-\nrscomment{tell me both up front and then concisely define each. then discuss deeper if needed}
-First, when ground truth communities are known use Normalized Mutual Information (NMI) which measures the agreement of the ground truth and generated clusters accounting for cluster size~\cite{Strehl2002}. 
-NMI is limited in application for very large networks, with the calculation being quadratic in the number of clusters~\cite{Rossetti2018}, and so the Network-F1 (NF1) metric is an alternative with complexity linear in the number of communities~\cite{Rossetti2016,Rossetti2017} that has not yet gained widespread traction.
 
-Second, when ground truth communities are not available modularity, conductance or CPM can be used as a proxy, and a `good' partitioning of the network is the one that has the correct number of clusters with maximal modularity scores. 
-This unsupervised approach to evaluation is common, but problematic because of the presence of many local maxima in modularity optimization which can provide similar near-optimal partitionings with significant changes in the underlying network~\cite{Rossetti2018}.
+% The definitions for Graph Partitioning and Graph Clustering require an objective function to evaluate the `goodness' of the partitions/clusters. 
+% More general community detection generally also requires an objective function to determine how `good' a community is. 
 
-As a result, a supervised evaluation approach like NMI is always preferred to unsupervised evaluation metrics. 
-The secondary effect is that any datasets we use to evaluate the segmentation in the \gai benchmark (whether real-world or synthetic) must have ground-truth labels.
+% The `goodness' of a community is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
+% Modularity is the most widely used, and measures \nrscomment{i think you meant to say what it is here... and if not then you should anyway}
+% despite the optimization of the modularity metric being $\mathcal{NP}$-Complete~\cite{Brandes2006} and suffering from a resolution limit that causes small communities to be combined and absorbed by larger ones when community size distributions are skewed~\cite{Fortunato2007}, which is typically the case~\cite{Barabasi1999, Girvan2002}. 
+% \nrscomment{youve not used that script NP consistently- either do it everywhere or nowhere}
+% \nrscomment{what about the other 2 metrics? and the constant potts MODEL is a metric??}
 
-\nrscomment{this was a lot of info for "identifying the effectiveness phenomenon" trim it down}
+% There are two options for evaluating a population segmentation problem. 
+% \nrscomment{tell me both up front and then concisely define each. then discuss deeper if needed}
+% First, when ground truth communities are known use Normalized Mutual Information (NMI) which measures the agreement of the ground truth and generated clusters accounting for cluster size~\cite{Strehl2002}. 
+% NMI is limited in application for very large networks, with the calculation being quadratic in the number of clusters~\cite{Rossetti2018}, and so the Network-F1 (NF1) metric is an alternative with complexity linear in the number of communities~\cite{Rossetti2016,Rossetti2017} that has not yet gained widespread traction.
+
+% Second, when ground truth communities are not available modularity, conductance or CPM can be used as a proxy, and a `good' partitioning of the network is the one that has the correct number of clusters with maximal modularity scores. 
+% This unsupervised approach to evaluation is common, but problematic because of the presence of many local maxima in modularity optimization which can provide similar near-optimal partitionings with significant changes in the underlying network~\cite{Rossetti2018}.
+
+% As a result, a supervised evaluation approach like NMI is always preferred to unsupervised evaluation metrics. 
+% The secondary effect is that any datasets we use to evaluate the segmentation in the \gai benchmark (whether real-world or synthetic) must have ground-truth labels.
+
+% \nrscomment{this was a lot of info for "identifying the effectiveness phenomenon" trim it down}
 
 \subsection{Cost}
 
-No change from the \gai framework.
-\nrscomment{same comment about needing something here}
+Cost is ideally measured as a function of power consumption or as an estimated `cost per minute' based on the specifications of the SUT. 
+The \gai benchmark framework initially focuses on an Input/Output benchmark paradigm, which means the internal states of the system (power consumption, etc) are unknown.
+Future work is deploying a hosted instance of the benchmark to the ARLIS \textit{Quantum Inspired Classical Computing} (QUICC) testbed, which we expect will provide measurements of power consumption by the controlling docker containers using \textit{Kepler}\footnote{{\scriptsize \url{https://sustainable-computing.io/design/architecture/}}}, and developing a daemon to deploy to a SUT to collect power consumption statistics using the \textit{PowerAPI Project}\footnote{{\scriptsize \url{https://powerapi.org/}}}, though this would be an optional component of the benchmark and limit it to running on compatible physical linux-based systems. 
+
+As a result, cost is excluded from the Population Segmentation benchmark problem. 
 
 \subsection{Outputs}
 \nrscomment{again collecting these in a figure that progresses would be much more effective}
