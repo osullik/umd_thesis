@@ -9,18 +9,20 @@ import sys
 import shutil
 import hashlib
 
+
 #Library Imports
 import networkx as nx
 
 #User imports
 sys.path.append(os.path.join(".."))
-from experiment import Experiment
+from experiment import Experiment, Evaluator
 
 
 class Test_experiment_framework(unittest.TestCase):
     def setUp(self) -> None:
         self.default_data_directory = os.path.join("..","..","..","data")
         self.experiment = Experiment()
+        self.evaluator = Evaluator()
         
         return super().setUp()
     
@@ -217,16 +219,112 @@ class Test_experiment_framework(unittest.TestCase):
         REF_RESULT = 3
 
         final, interim = self.experiment.run_process(graph=G,task="DIAMETER")
-
-        print("INTERIM RESULTS", interim)
-        print("FINAL RESULTS", final)
         
         self.assertEqual(final,REF_RESULT)
 
+        FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
+        stats_massapequa = (2063,2572)
+        start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+        REF_RESULT_large = 134
+        final_large, interim_large = self.experiment.run_process(graph=H,task="DIAMETER")
+        print(final_large)
+        print(interim_large)
+        self.assertEqual(final_large,REF_RESULT_large)
+
+        # FILE_WEIGHTED_HUGE = os.path.join("..","datasets","District of Columbia","District of Columbia_adj_list.txt")
+        # stats_massapequa = (147599,163156)
+        # start_time, end_time, status, HG = self.experiment.etl(source=FILE_WEIGHTED_HUGE, stats=stats_massapequa, weighted=True)
+        # REF_RESULT_HUGE = 433
+        # final_huge, interim_huge = self.experiment.run_process(graph=HG,task="DIAMETER")
+        # print(final_huge)
+        # print(interim_huge)
+        # self.assertEqual(final_huge,REF_RESULT_HUGE)
+
+    # def test_louvain(self):
+    #     FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
+    #     stats_massapequa = (2063,2572)
+    #     start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+
+    #     final, interim = self.experiment.run_process(H,task="NX_LOUVAIN")
+
+    #     FILE_WEIGHTED_HUGE = os.path.join("..","datasets","District of Columbia","District of Columbia_adj_list.txt")
+    #     stats_DC = (147599,163156)
+    #     start_time, end_time, status, HG = self.experiment.etl(source=FILE_WEIGHTED_HUGE, stats=stats_DC, weighted=True)
+
+    #     final, interim = self.experiment.run_process(HG,task="NX_LOUVAIN")
+    #     # print(len(final))
 
 
+    #     print("COMMUNITIES DETECTED",len(final))
+
+    # def test_louvain_incremental(self):
+    #     FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
+    #     stats_massapequa = (2063,2572)
+    #     start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+
+    #     final, interim = self.experiment.run_process(H,task="NX_LOUVAIN_INCREMENTAL")
+
+    #     FILE_WEIGHTED_HUGE = os.path.join("..","datasets","District of Columbia","District of Columbia_adj_list.txt")
+    #     stats_DC = (147599,163156)
+    #     start_time, end_time, status, HG = self.experiment.etl(source=FILE_WEIGHTED_HUGE, stats=stats_DC, weighted=True)
+
+    #     final, interim = self.experiment.run_process(HG,task="NX_LOUVAIN_INCREMENTAL")
+    #     # print(len(final))
+
+    #     print("COMMUNITIES DETECTED",len(final))
 
 
+    def test_prepare_community_labels(self):
+
+        communities_1 = [set(['1','3','5','7']),set(['2','4','6','8'])]
+
+        communities_2 = {"0":['1','3','5','7'],
+                         "1":['2','4','6','8']}
+        
+        output = ['0','1','0','1','0','1','0','1']
+
+        self.assertEqual(self.evaluator.prepare_community_labels(input=communities_1), output)
+        self.assertEqual(self.evaluator.prepare_community_labels(input=communities_2), output)
+
+    def test_calculate_nmi(self):
+
+        gt_1 = [0, 0, 1, 1]
+        pr_1 = [0, 0, 1, 1]
+        nmi_1 = 1.0
+        gt_2 = ["cat", "cat", 0, 0]
+        pr_2 = [0, 0, "cat", "cat"]
+        nmi_2 = 1.0
+        gt_3 = [0, 0, 0, 0]
+        pr_3 = [0, 1, 2, 3]
+        nmi_3 = 0.0
+
+        self.assertEqual(self.evaluator.calculate_nmi(gt_1,pr_1),nmi_1)
+        self.assertEqual(self.evaluator.calculate_nmi(gt_2,pr_2),nmi_2)
+        self.assertEqual(self.evaluator.calculate_nmi(gt_3,pr_3),nmi_3)
+
+    def test_load_gt_labels(self):
+        TEST_LABEL_PATH = os.path.join("..","datasets","test","test_gt_labels.txt")
+        expected_results = {
+                            "A": ["1", "2"],
+                            "B": ["4", "5", "7"],
+                            "C": ["3", "6", "8"]
+        }
+
+        self.assertDictEqual(self.evaluator.parse_gt_labels(TEST_LABEL_PATH),expected_results)
+
+    def test_evaluate_CD(self):
+
+        GT_FILE_PATH_CITY = os.path.join("..","datasets","Massapequa","Massapequa_gt_communities_city.txt")
+        GT_FILE_PATH_COUNTY = os.path.join("..","datasets","Massapequa","Massapequa_gt_communities_county.txt")
+
+        FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
+        stats_massapequa = (2063,2572)
+        start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+
+        final, interim = self.experiment.run_process(H,task="NX_LOUVAIN")
+
+        print("NMI@CITY", self.evaluator.evaluate_CD(gt_labels_path=GT_FILE_PATH_CITY,pred_labels=final))
+        print("NMI@COUNTY",self.evaluator.evaluate_CD(gt_labels_path=GT_FILE_PATH_COUNTY,pred_labels=final))
 
 
 if __name__ == "__main__":

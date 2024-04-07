@@ -8,10 +8,14 @@ import json
 import time
 import hashlib
 import shutil
+import threading
+import gc
+from operator import itemgetter
 
 #Library Imports
 from tqdm import tqdm
 import networkx as nx
+from sklearn.metrics.cluster import normalized_mutual_info_score as nmi
 
 #User imports
 
@@ -214,7 +218,7 @@ class Experiment():
         if len(G.nodes) == num_nodes and len(G.edges) == num_edges:
             graphs_match = True
 
-        return(start_etl,end_etl,graphs_match)
+        return(start_etl,end_etl,graphs_match,G)
     
     def collect_interim_results(self):
         interim_results = {}
@@ -240,46 +244,164 @@ class Experiment():
     
     def run_process(self,graph:nx.Graph,task:str):
         start_processing = self.get_time("START_PROCESS")
-        final_result = Task(graph=graph,task=task,output_dir=self._results_directory).result
+        tasker= Task(graph=graph,task=task,output_dir=self._results_directory)
+        final_result = tasker.result
+        del(tasker)
+        gc.collect
+
         end_processing = self.get_time("END_PROCESS")
         interim_results = self.collect_interim_results()
-
-
-
-
 
         return final_result, interim_results
 
 class Task():
 
-    def __init__(self, graph:nx.graph,task:str,output_dir:os.path=(os.path.join(".","temp_results"))):
+    # stop_event = threading.Event()
+
+    def __init__(self, graph:nx.graph,task:str,output_dir:os.path=(os.path.join(".","temp_results")),sample_time=10):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         self.output_dir = output_dir
         self.graph = graph
         self.task = task
-        self.result = None
+        self.result = "None"
+        self.sample_time = sample_time #How often to probe for information
 
         if self.task == "DIAMETER":
-            self.result = self.task_get_diameter()
+            self.task_get_diameter()
+            return
+        elif self.task == "NX_LOUVAIN":
+            self.task_networkx_louvain()
+        elif self.task == "NX_LOUVAIN_INCREMENTAL":
+            self.task_networkx_louvain_incremental()
             return
         else:
             return None
 
-    def write_interim_result(self,result):
+    def write_interim_result(self):
+        #Runs as a daemon periodically writing results
+        # while True:
+        # while not Task.stop_event.is_set():    #Alternate to the Daemon config, 
         now = datetime.datetime.now()
         FILENAME = os.path.join(self.output_dir,(self.task+"_"+str(now.isoformat())+".txt"))
-        print(f"Writing Interim Result: {result} to {FILENAME}")
+        print(f"Writing Interim Result: to {FILENAME}")
 
         with open(FILENAME, 'w') as f:
-            f.write(str(result))
+            try:
+                f.write(str(self.result))
+            except TypeError:
+                f.write("")
+
+        # time.sleep(self.sample_time)
+
+        return
 
     def task_get_diameter(self):
-        results = nx.diameter(self.graph)
-        self.write_interim_result(results)
-        return(results)
+        print(f"Calculating diameter")
+        # thread = threading.Thread(target=self.write_interim_result, 
+                            #   args=())
+        # thread.daemon = True
+        # thread.start()
+        self.result = nx.diameter(self.graph)
+        self.write_interim_result()
+        # Task.stop_event.set()
+        # thread.join()
+        return
+    
+    def task_networkx_louvain(self):
+        print("Calculating Communities")
+        self.result = nx.community.louvain_communities(self.graph, 
+                                                       weight=None,
+                                                       resolution=1,
+                                                       threshold=0.0000001,
+                                                       seed=123)
+        
+        self.write_interim_result()
+        return
+    
+    def task_networkx_louvain_incremental(self):
+        print("Calculating Communities Incrementally")
+        community_generator = nx.community.louvain_partitions(self.graph, 
+                                                    weight=None,
+                                                    resolution=1,
+                                                    threshold=0.0000001,
+                                                    seed=123
+                                                    )
+        
+        for iteration in community_generator:
+            self.result = iteration
+            self.write_interim_result()
+        
+        return
 
+class Evaluator():
+    def __init__(self):
+        pass 
+    
+    def calculate_nmi(self, gt_labels:list,pred_labels:list):
 
+        return (nmi(gt_labels,pred_labels))
+    
+    def parse_gt_labels(self, gt_labels_path:os.path):
+        
+        with open(gt_labels_path,'r') as f:
+            data = f.readlines()
+
+        results_dict = {}
+        
+        for line in data:
+            if line.startswith("#"):
+                continue
+            line = line.strip()
+            key_value_pair = line.split(' [', 1)
+                
+            if len(key_value_pair) != 2:
+                continue  # Skip lines that don't match expected format
+            
+            key = key_value_pair[0]
+            values_str = key_value_pair[1].rstrip(']')  # Remove trailing ']'
+            
+            # Split values string into individual values
+            values = [val.strip() for val in values_str.split(',')]
+            
+            # Store key-value pair in the dictionary
+            results_dict[key] = values
+
+        return results_dict
+
+    def prepare_community_labels(self, input)->list:
+        labels = []
+        nodes = []
+        result = []
+        if type(input) is dict:
+            for label in input.keys():
+                for node in input[label]:
+                    labels.append(str(label))
+                    nodes.append(str(node))
+        
+        elif type(input) is list:
+            for i, label in enumerate(input):
+                for node in label:
+                    labels.append(str(i))
+                    nodes.append(str(node))
+        else:
+            exit("Input problem, check that it is a dict of lists, or a list of sets")
+        
+        nodes, labels = [list(x) for x in zip(*sorted(zip(nodes, labels),
+                                         key = itemgetter(0)))]
+        
+        return(labels)
+        
+    def evaluate_CD(self, gt_labels_path:os.path, pred_labels:list):
+
+        gt = self.parse_gt_labels(gt_labels_path)
+        
+        prepared_gt = self.prepare_community_labels(gt)
+        prepared_pred = self.prepare_community_labels(pred_labels)
+
+        NMI = self.calculate_nmi(prepared_gt,prepared_pred)        
+        
+        return NMI
 
         
 
