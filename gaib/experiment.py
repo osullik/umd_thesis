@@ -362,16 +362,20 @@ class Evaluator():
             # print(line)
             if snap_format:
                 line=line.strip()
-                line = line.split(" ")
-                for i, node in enumerate(line):
-                    # print(i, node)
-                    if i == 0:
-                        val = node
-                    else:
-                        try:
-                            results_dict[node].append(val)
-                        except KeyError:
-                            results_dict[node]=[val]
+                lines = line.split(" ",1)
+                try:
+                    results_dict[lines[1]].append(lines[0])
+                except KeyError:
+                    results_dict[lines[1]] = [lines[0]]
+                # for i, node in enumerate(line):
+                #     # print(i, node)
+                #     if i == 0:
+                #         val = node
+                #     else:
+                #         try:
+                #             results_dict[node].append(val)
+                #         except KeyError:
+                #             results_dict[node]=[val]
 
 
             else:

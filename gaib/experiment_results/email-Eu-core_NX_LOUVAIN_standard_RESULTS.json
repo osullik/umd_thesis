@@ -22,12 +22,12 @@
     }
   },
   "efficiency": {
-    "Transfer": 0.000687,
-    "ETL": 0.018524,
-    "Processing": 0.074676,
-    "Probing": 0.094733,
-    "Batch_Latency": 0.093286,
-    "Batch_Rate": 0.094733,
-    "Experiment_Length": 0.09432
+    "Transfer": 0.000752,
+    "ETL": 0.018307,
+    "Processing": 0.073788,
+    "Probing": 0.093684,
+    "Batch_Latency": 0.092186,
+    "Batch_Rate": 0.093684,
+    "Experiment_Length": 0.093244
   }
 }
