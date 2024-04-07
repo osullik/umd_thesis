@@ -2,13 +2,16 @@
 \label{section:53-CD-Exploration}
 
 \subsection{Approach}
+\nrscomment{id drop this section header and condense the text down to be a signpost. and open it more positively- To explore x we conduct a survey of y, which is summarized in table xx.}
 
 Rather than conduct exploratory experimentation, we draw on prior work in benchmarking, workload analysis and design of community detection, graph partitioning and graph clustering to develop an understanding of the factors impacting effectiveness and efficiency. 
 Table~\ref{table:cd-survey} summarizes the results, grouped by the approach.
 Dynamic approaches are explicitly called out because they tend to operate on temporal graphs, and so have a different data structure to the other approaches. 
 For each approach, we identify the reported worst-case complexity for the algorithm as the efficiency bottleneck, and observations about factors that degrade the quality of communities as effectiveness bottlenecks. 
+\nrscomment{this can just be "Many approaches reported reduced complexities under the assumption that |E| approaches |V|" -- but this is an observeation and should go in the appropriate section below, not in the signpost}
 We note that most approaches do not experience their worst-case complexity, but observe a trend of assuming that the number of edges approaches the number of nodes as a justification for complexity reduction (\cite{White2005 ,Wang2017,Newman2006, Clauset2004, Newman2004a}). 
 We expect most problem datasets to derive from the scale-free domain (see: section~\ref{section:51-CD-Problem}) and so do not consider this a valid assumption.
+\nrscomment{that sentence doesnt make sense and doesnt belong in signpost once fixed}
 
 \input{Tables/51_CD_Survey.tex}
 
@@ -24,35 +27,37 @@ Further, we identify that the effectiveness of community detection approaches de
 \subsection{Implementation Observations}
 
 \textbf{Algorithmic Weaknesses.}
-Many approaches require the number of communities/clusters/partitions to be known in advance or must run an algorithm like K-Means multiple times to discover the optimal number of communities (\cite{Kernighan1970, Reichardt2004, Ng2001,White2005, Yang2016, Wang2017}), significantly increasing the computational when there are many small communities and not reflective of discovery process we expect to encounter in the real world~\cite{Regli2022a}.
-Recursive Bisection approaches fail when there are three equally sized communities, at least one of them will be mistakenly grouped with another, and will usually be split across both. 
+Many approaches require the number of communities/clusters/partitions to be known in advance or must run an algorithm like K-Means multiple times to discover the optimal number of communities (\cite{Kernighan1970, Reichardt2004, Ng2001,White2005, Yang2016, Wang2017}), significantly increasing the computational \nrscomment{cost} when there are many small communities \nrscomment{the small communities are not reflective or the computational cost is not reflective? theres subject-object disagreement or you should replace 'and' with another word} and not reflective of discovery process we expect to encounter in the real world~\cite{Regli2022a}.
+Recursive Bisection approaches fail when there are three equally sized communities, at least one of them will be mistakenly grouped with another, and will usually be split across both. \nrscomment{specifically 3?? or an amount thats not a multiple of 2?}
 Greedy Agglomerative approaches fail when two cliques are connected by nodes of low degree compared to the clique, pulling the `bridge' nodes into the cluster that they bridge to rather than their own. 
-Most approaches are not capable of assigning a vertex to multiple communities because of the underlying assumptions about clustering and partitioning, highlighting the importance of graph attributes to effective community detection on heterogeneous graph structures~\cite{Reichardt2006}.
-The most popular implementation (Louvain) has been shown to produce disconnected communities when the shape of the input graph contains hierarchical community structures that contain cliques joined by bridge nodes~\cite{Traag2019}.
+Most approaches are not capable of assigning a vertex to multiple communities because of the underlying assumptions about clustering and partitioning, \nrscomment{not clear how a highlights b. how are they related?} highlighting the importance of graph attributes to effective community detection on heterogeneous graph structures~\cite{Reichardt2006}.
+The most popular implementation (Louvain \nrscomment{cite}) has been shown to produce disconnected communities when the shape of the input graph contains hierarchical community structures that contain cliques joined by bridge nodes~\cite{Traag2019}.
 
-\textbf{Modularity Optimization.}
+\textbf{Modularity Optimization.} \nrscomment{more specific header- should sound like an observation the way algo weaknesses does}
 Modularity has several problems, despite being the dominant metric. 
 Optimizing modularity is $NP$-Complete~\cite{Brandes2006}, so algorithms using modularity as the metric must take heuristic approaches to improve it. 
 It is not scale-independent, that is, a scaling factor exists where a community with a density of internal edges of the order of the $\sqrt[]{2|E|}$ times the edges in the graph will not be resolved by modularity optimization. 
 These 'loosely connected' communities are instead mistakenly combined, with the problem most prevalent when the distribution of community sizes have long tails~\cite{Fortunato2007}.
 
-\textbf{Weights and Attributes.}
-Graph partitioning, clustering and community detection are traditionally topology-only algorithms. 
+\textbf{Weights and Attributes.} \nrscomment{more specific header- should sound like an observation the way algo weaknesses does}
+Graph partitioning, clustering, and community detection are traditionally topology-only algorithms. 
 However, access to some states, like the sentiment of an edge~\cite{Yang2007}, or the weights associated with edges~\cite{Rosvall2008} yield superior segments.  
-The same is true of utilizing attributes, and prior knowledge about group membership of some nodes greatly improves the identification of overlapping and fuzzy communities~\cite{Zhang2013}
+The same is true of utilizing attributes, and prior knowledge about group membership of some nodes greatly improves the identification of overlapping and fuzzy communities~\cite{Zhang2013}. \nrscomment{all the rest of the observations were things that degrade performance-- wasnt expecting this}
 
-\textbf{Dynamic Processing.}
+\textbf{Dynamic Processing.} \nrscomment{more specific header- should sound like an observation the way algo weaknesses does}
+\nrscomment{too much info here. by the end you get to the observation--- get there faster}
 Dynamic community detection is a known problem, and interestingly is also a task that applies to the co-traveler problem identified in the domain problem survey (see:~\ref{table:problem-survey})~\cite{Sawas2019, Tritsarolis2023, Tang2014, Wang2016a}.
 The input graphs are either a collection of related graphs describing the same problem at $T$ time slices or may just have a stream of updates to reflect when a vertex is added, deleted or updates its position in Cartesian space.
 As a result, the task is typically to identify when a community changes, or which communities persist for long periods of time (the co-traveler problem).
 Many of the dynamic processing approaches batch the updates and apply a static community detection approach at each iteration then calculate the similarity in communities between each time-step, with more efficient implementations keeping the prior state in memory to reduce computation~\cite{Rossetti2018}.
-These batching approaches fail in real-time settings where the batch latency is greater than the length of each timestep $T$, and provide a strong motivation for trading off accuracy and efficiency, or even tuning expectations about realistic sizes for $T$ for real-time systems. 
+These batching approaches fail in real-time settings where the batch latency is greater than the length of each timestep $T$, and provide a strong motivation for trading off accuracy and efficiency, or even tuning expectations about realistic sizes for $T$ for real-time systems.  \nrscomment{the start of that sentence was getting at what causes degradation, and then you went into tradeoffs and lost me}
 
-\textbf{Approximate and Incremental.}
-Clustering, Partitioning and Community Detection are typically implemented as iterative algorithms that run until convergence but can return some information at each iteration step, making them interesting and suitable tasks to support trade-offs between effectiveness and efficiency. 
+\textbf{Approximate and Incremental.} \nrscomment{more specific header- should sound like an observation the way algo weaknesses does}
+Clustering, Partitioning, and Community Detection are typically implemented as iterative algorithms that run until convergence but can return some information at each iteration step, making them interesting and suitable tasks to support trade-offs between effectiveness and efficiency.  \nrscomment{all the rest of the observations were things that degrade performance-- this one is 'this is interesting'. why bother to include it?}
 
 \subsection{Outputs}
 
+\nrscomment{are these legit outputs that map to the diagram? the headers are weird}
 \textbf{Efficiency Bottlenecks.} Increasing Node Size, Increasing Density of graphs. 
 
 \textbf{Effectiveness Bottlenecks.} Fuzzy Communities, higher mean degree of vertices, `bridges' between clique-y structures.

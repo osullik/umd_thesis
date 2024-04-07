@@ -1,8 +1,14 @@
 \section{Apparatus Design}
 \label{section:55-CD-Apparatus}
 
+\nrscomment{i was expecting the apparatus design to be more tied to the hypotheses you developed from exploratory analysis. at each component you describe, say how it relates to the earlier findings/enables testing the hypotheses/whatever the reason you went through all those steps was- they inform the design, otherwise there are no explicit ties and i dont know why you made these decisions, without really thinking about it and going back and forth between this and the previous sections. }
+
 \subsection{Benchmark Model}
+\nrscomment{drop the header, this should be the signpost- our apparatus consists of...}
+
 Considering the proliferation of graph hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2014, Wu2014, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and GNN accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} and implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018} and shared-memory shared-memory~\cite{Ghosh2019} on CPU and GPU~\cite{Wang2016}, as well as linear-algebraic approaches for CPU~\cite{Low2020} and GPU~\cite{Mattson2019} for community detection approaches we prefer an Input/Output benchmark paradigm for the population segmentation problem.
+\nrscomment{that sentence lists things of different parts of speech, and is way too long- by the time you get to the subject (we prefer) ive lost the beginning qualifiers}
+\nrscomment{you criticized input/output in the lit review and now youre using it?}
 
 \subsection{Datasets}
 
@@ -10,14 +16,15 @@ Full dataset coverage will require tiny, small, medium and large datasets in eac
 We expect the majority of real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
 The datasets should be weighted and attributed, and partial assignments of vertices to communities should be available. 
 There should be dynamic graphs suitable for batch updating and continuous streaming.
-Graphs should be available with varying community distributions, mean degree and `fuzziness'
-Graphs with overlapping and nested communities.
+Graphs should be available with varying community distributions, mean degree, and `fuzziness'
+Graphs with overlapping and nested communities. \nrscomment{missing verb}
 
 Full coverage of these cases will require petabytes of graphs, so we confine initial testing to the datasets in table~\ref{table:cd-datasets}.
 
 Missing from the publicly available datasets are a mesh graph, and uniform-random with ground truth. 
 
 We can generate synthetic graphs using a community-detection generator like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, GenCAT~\cite{Maekawa2023} that gives us control over how the graph is generated.
+\nrscomment{you criticized synthetic graphs in prelim, and now are using them? which specific type is it- mathematical, imitative?}
 
 \osullikomment{Insert comments here about generating road road-based dataset that has community labels}
 
@@ -27,20 +34,22 @@ We can generate synthetic graphs using a community-detection generator like LFR~
 
 Based on the problem survey (section~\ref{section:11-graph-based-ai}), available datasets and expected tasks, we identify the initial collection of problems:
 
+\nrscomment{make this into a table of problems and required output- 2 cols}
 \begin{enumerate}
     \item Who is in the same group as (x)? Return a list of vertex IDs. %Requires them to identify a `group' and check for membership by both. Could use CD, could do BFS to some threshold, and could just make a guess. 
     \item Is (x) likely to be affiliated with (y)? Return a tuple of the form (Yes/No, Confidence)? %Requires them figure out if they are affiliated. Might do SSSP, might do CD and see if in the same group
     \item How many vertices are in the largest and smallest disjoint communities in the graph? Return a tuple with two ints and two lists of form (Size\_big, Size\_small, [Big\_vertices], [Small\_vertices]) %Requires communities to be detected and ranked by size. 
+    \nrscomment{format the variables in a font with equal kearning}
     \item (x), (y) and (z) are in communities (a), (b) and (c). Who else is in the community (c)? Return a list of Vertices. %Gives extra information, they may choose to use it or not.
     \item Who in the same group as the vertex (a) with property (1) and vertex (b) with property (2), and what is the most common value for property (3)? Return a tuple of the form ([list\_of\_vertices], property).
     \item What are the groups in the graph? Return a list of lists of vertices. % Execute community detection and return the result. 
     \item There are (n) communities in this graph, named from largest to smallest $C_{1} ... C_{n}$. Which vertices belong to each group? Return a list of lists of vertices. % Execute CD with known number of communities. 
 \end{enumerate}
 
-\noindent The tests are designed so that they can be randomized based on ground-truth knowledge, so the same workload can be run multiple times to get an `average' result. 
+\noindent The tests are designed so that they can be randomized based on ground-truth knowledge,\nrscomment{what does that mean?} so the same workload can be run multiple times to get an `average' result. 
 
-\subsection{Telemetry}
-Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system and how much time elapses. 
+\subsection{Telemetry} \nrscomment{if youve gone through datasets and problems i would expect this to be called metrics}
+Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system, and how much time elapses \nrscomment{between ...}. 
 Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test (SUT) and Benchmark Server (BS). 
 The problem definitions above are available in advance so that systems can be prepared to solve the task presented to them. 
 The test begins when the SUT specifies which problem to solve. 
@@ -52,7 +61,9 @@ When the ETL is complete, the SUT sends a message and the summary statistics for
 When processing is finished, it sends a message to the BS along with the final results. 
 At each step of the process, the time is logged by the BS, and is used to generate the efficiency metrics. 
 The Effectiveness metrics are calculated using the appropriate metric for the problem.
+\nrscomment{you dont need to walk through it in that much detail- let the diagram do the heavy-lifting and just summarize what its showing}
 
+\nrscomment{theres a lot here- i think it is worth discussing some of the potential failure cases of your design, but do it more concisely, especially cutting down the last part about caching to a sentence or two}
 There are drawbacks to the Input/Output approach. 
 First, transfer time is highly dependent on network connectivity, and transferring all but the smallest graphs will result in heavy network traffic.
 The transferring of full static graphs between systems is not typical behavior in the real world, and so the transfer time will not be used for any calculation here.
