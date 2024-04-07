@@ -1,0 +1,65 @@
+{
+  "experiment": "Delaware_adj_list_NX_LOUVAIN_INCREMENTAL_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Delaware/Delaware_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 33.261765480041504,
+    "node_count": 637463,
+    "edge_count": 680858,
+    "weighted": true,
+    "gt_file": "datasets/Delaware/Delaware_gt_communities_city.txt",
+    "gt_community_count": 63
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.6985783282709858,
+      "num_communities": 570
+    },
+    "interim_0": {
+      "nmi": 0.4646902882844155,
+      "num_communities": 286407
+    },
+    "interim_1": {
+      "nmi": 0.6907191069836447,
+      "num_communities": 732
+    },
+    "interim_2": {
+      "nmi": 0.5565569173804397,
+      "num_communities": 18074
+    },
+    "interim_3": {
+      "nmi": 0.6004893558533817,
+      "num_communities": 6319
+    },
+    "interim_4": {
+      "nmi": 0.6985783282709858,
+      "num_communities": 570
+    },
+    "interim_5": {
+      "nmi": 0.6501418461924141,
+      "num_communities": 2092
+    },
+    "interim_6": {
+      "nmi": 0.48970493445589225,
+      "num_communities": 122738
+    },
+    "interim_7": {
+      "nmi": 0.5200890837045359,
+      "num_communities": 48727
+    },
+    "interim_8": {
+      "nmi": 0.6985062317124253,
+      "num_communities": 571
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.006357,
+    "ETL": 2.54252,
+    "Processing": 108.490131,
+    "Probing": 111.08778,
+    "Batch_Latency": 111.066628,
+    "Batch_Rate": 12.343086666666666,
+    "Experiment_Length": 111.094919
+  }
+}

@@ -1,0 +1,9 @@
+{
+    "SOURCE_DATA":"datasets/Massapequa/Massapequa_adj_list.txt",
+    "GT_FILE_PATH":"datasets/Massapequa/Massapequa_gt_communities_county.txt",
+    "GT_GRANULARITY":"county",
+    "WORKING_DIRECTORY":"temp_workspace",
+    "OUTPUT_DIRECTORY":"experiment_results",
+    "TASK":"NX_LOUVAIN",
+    "WEIGHTED":true
+}

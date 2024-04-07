@@ -32,6 +32,10 @@ class Experiment():
         self._times[f"processor_{label}"] = processor_now
         return {label:now}
     
+    def add_time(self, label:str, time:datetime.datetime):
+        self._times[label] = time
+        return {label:time}
+    
     def get_times_dict(self)->dict:
         return self._times
     
@@ -71,24 +75,26 @@ class Experiment():
         
         return source_data
     
-    def get_experiment_name(self, filename:os.path, type:str="RESULTS")->str:
+    def get_experiment_name(self, filename:os.path, task:str, gt_data:str, type:str="RESULTS")->str:
 
         base_file_name = os.path.basename(filename)
 
         name = base_file_name.split(".")[:-1][0]
         extension = base_file_name.split(".")[-1]
 
-        output_name = f"{name}_{type}.{extension}"
+        output_name = f"{name}_{task}_{gt_data}_{type}"
         
         return output_name
     
-    def save_results(self, experiment_name:str, results:dict)->None:
-
-        output_file = os.path.join(self.get_results_directory(),experiment_name)
+    def save_results(self, experiment_name:str, results:dict, filepath:os.path=None)->None:
+        print(f"SAVING EXPERIMENT REPORT TO {filepath}.{experiment_name.replace('.txt','')}.json")
+        if filepath is None:
+            output_file = os.path.join(self.get_results_directory())
+        else:
+            output_file = filepath
 
         if os.path.exists(output_file):
-            experiment_name = self.get_experiment_name(filename=output_file)
-            save_name = os.path.join(self.get_results_directory(),experiment_name)
+            save_name = os.path.join(filepath,experiment_name.replace(".txt",'')+".json")
 
         else:
             save_name = output_file
@@ -170,7 +176,7 @@ class Experiment():
         self.copy_data(source=source,dest=dest)
         end_tx = self.get_time("END_TX")
         new_hash = self.get_hash(os.path.join(dest,file_name))
-        return(start_tx,end_tx,original_hash==new_hash)
+        return(start_tx,end_tx,original_hash==new_hash,os.path.join(dest,file_name))
     
     def load_weighted_graph(self,source:os.path)->nx.Graph:
 
@@ -199,7 +205,7 @@ class Experiment():
         
         return(G)
     
-    def etl(self, source:os.path, weighted:bool, stats:tuple[str])->tuple:
+    def etl(self, source:os.path, weighted:bool, stats:tuple[str],snap_format:bool=False)->tuple:
         graphs_match = False
         num_nodes, num_edges = stats 
 
@@ -207,6 +213,10 @@ class Experiment():
         if weighted:
 
             G = self.load_weighted_graph(source)
+        
+        elif snap_format:
+            G = nx.read_edgelist(path=source, comments="#")
+            print(f"GRAPH has {len(G.nodes())} nodes and {len(G.edges())} Edges")
 
         else:
             G = nx.read_adjlist(path=source, comments="#")
@@ -218,7 +228,7 @@ class Experiment():
         if len(G.nodes) == num_nodes and len(G.edges) == num_edges:
             graphs_match = True
 
-        return(start_etl,end_etl,graphs_match,G)
+        return(start_etl,end_etl,graphs_match, len(G.nodes),len(G.edges),G)
     
     def collect_interim_results(self):
         interim_results = {}
@@ -239,8 +249,6 @@ class Experiment():
         os.makedirs(self._results_directory)
 
         return interim_results
-
-
     
     def run_process(self,graph:nx.Graph,task:str):
         start_processing = self.get_time("START_PROCESS")
@@ -342,28 +350,69 @@ class Evaluator():
 
         return (nmi(gt_labels,pred_labels))
     
-    def parse_gt_labels(self, gt_labels_path:os.path):
+    def parse_gt_labels(self, gt_labels_path:os.path,snap_format:bool):
         
         with open(gt_labels_path,'r') as f:
             data = f.readlines()
 
         results_dict = {}
-        
         for line in data:
             if line.startswith("#"):
                 continue
-            line = line.strip()
-            key_value_pair = line.split(' [', 1)
+            # print(line)
+            if snap_format:
+                line=line.strip()
+                line = line.split(" ")
+                for i, node in enumerate(line):
+                    # print(i, node)
+                    if i == 0:
+                        val = node
+                    else:
+                        try:
+                            results_dict[node].append(val)
+                        except KeyError:
+                            results_dict[node]=[val]
+
+
+            else:
+
+                line = line.strip()
+                key_value_pair = line.split(' [', 1)
+                    
+                if len(key_value_pair) != 2:
+                    continue  # Skip lines that don't match expected format
                 
-            if len(key_value_pair) != 2:
-                continue  # Skip lines that don't match expected format
-            
-            key = key_value_pair[0]
-            values_str = key_value_pair[1].rstrip(']')  # Remove trailing ']'
-            
+                key = key_value_pair[0]
+                values_str = key_value_pair[1].rstrip(']')  # Remove trailing ']'
+                
+                # Split values string into individual values
+                values = [val.strip() for val in values_str.split(',')]
+                
+                # Store key-value pair in the dictionary
+                results_dict[key] = values
+        # print("RESULTS",results_dict)
+        return results_dict
+    
+    def parse_interim_labels(self, interim_labels:str):
+        
+        results_dict = {}
+        labs = interim_labels
+        labs = labs.strip()
+        labs = labs.replace('[','')
+        labs = labs.replace(']','')
+        labs = labs.replace("\'", '')
+        
+        sets = labs.split('{')
+        for i, this_set in enumerate(sets):
+            key = str(i)
+            this_set = this_set.replace("\'",'')
+            this_set = this_set.replace("},",'')
+            this_set = this_set.replace("}",'')
+
             # Split values string into individual values
-            values = [val.strip() for val in values_str.split(',')]
-            
+            values = [val.strip() for val in this_set.split(',')]
+            if values == ['']:
+                continue
             # Store key-value pair in the dictionary
             results_dict[key] = values
 
@@ -384,7 +433,11 @@ class Evaluator():
                 for node in label:
                     labels.append(str(i))
                     nodes.append(str(node))
+        elif type(input) is str:
+            dict_labels = self.prepare_community_labels(input)
         else:
+            print("INPUT TYPE IS", type(input))
+            # print("INPUT IS", input)
             exit("Input problem, check that it is a dict of lists, or a list of sets")
         
         nodes, labels = [list(x) for x in zip(*sorted(zip(nodes, labels),
@@ -392,9 +445,8 @@ class Evaluator():
         
         return(labels)
         
-    def evaluate_CD(self, gt_labels_path:os.path, pred_labels:list):
-
-        gt = self.parse_gt_labels(gt_labels_path)
+    def evaluate_CD(self, gt_labels_path:os.path, pred_labels:list, snap_format:bool=False):
+        gt = self.parse_gt_labels(gt_labels_path,snap_format=snap_format)
         
         prepared_gt = self.prepare_community_labels(gt)
         prepared_pred = self.prepare_community_labels(pred_labels)
@@ -402,6 +454,9 @@ class Evaluator():
         NMI = self.calculate_nmi(prepared_gt,prepared_pred)        
         
         return NMI
+    
+
+    
 
         
 
