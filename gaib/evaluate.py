@@ -274,6 +274,7 @@ def plot_bl_against_exp_time(experiments_df:pd.DataFrame):
     # Proportion of time in experiment phase
 
     subset_df = experiments_df[experiments_df['alg_type'] == 'incremental']
+    subset_df['exp_num'] = subset_df['exp_num'].astype(str)
 
     subset_df['prop_ef_bl'] = subset_df['ef_bl'] / subset_df['ef_total']
     subset_df['prop_ef_rest'] = 1-subset_df['prop_ef_bl']
