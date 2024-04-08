@@ -2,8 +2,8 @@ import os
 import json
 import pandas as pd
 from plotnine import ggplot, aes,  scale_x_log10, scale_y_log10, labs, scale_color_gradient, element_text
-from plotnine import geom_boxplot, geom_point, geom_smooth, geom_text, geom_line #Geoms
-from plotnine import theme,  theme_classic #Themes
+from plotnine import geom_boxplot, geom_point, geom_smooth, geom_bar, geom_line #Geoms
+from plotnine import theme,  theme_classic, scale_fill_manual #Themes
 
 def load_experiments_to_dict(data_source:os.path)->dict:
     experiment_results = {}
@@ -31,6 +31,7 @@ def extract_experiments_to_dataframe(experiment_results:dict)->pd.DataFrame:
     ef_et = []
     ef_bl = []
     ef_br = []
+    ef_total = []
     shapes = []
     alg_type = []
     for i, exp in enumerate(experiment_results.keys()):
@@ -49,6 +50,7 @@ def extract_experiments_to_dataframe(experiment_results:dict)->pd.DataFrame:
             ef_et.append(experiment_results[exp]['efficiency']['Processing'])
             ef_bl.append(experiment_results[exp]['efficiency']['Batch_Latency'])
             ef_br.append(experiment_results[exp]['efficiency']['Batch_Rate'])
+            ef_total.append(experiment_results[exp]['efficiency']['Experiment_Length'])
 
             #Dataset Detail
             datasets.append(os.path.basename(experiment_results[exp]["datasets"]['dataset']).replace(".txt",""))
@@ -70,6 +72,7 @@ def extract_experiments_to_dataframe(experiment_results:dict)->pd.DataFrame:
             experiments.append(exp.replace("_RESULTS",""))
             exp_no.append(i)
 
+
     flat_results_dict = {}
     flat_results_dict['exp_num'] = exp_no
     flat_results_dict['experiment'] = experiments
@@ -88,6 +91,9 @@ def extract_experiments_to_dataframe(experiment_results:dict)->pd.DataFrame:
     flat_results_dict['ef_et'] = ef_et
     flat_results_dict['ef_bl'] = ef_bl
     flat_results_dict['ef_br'] = ef_br
+    flat_results_dict['ef_total'] = ef_total
+
+    
 
     experiments_df = pd.DataFrame.from_dict(flat_results_dict)
 
@@ -235,6 +241,72 @@ def plot_nc_against_iterations(experiment_df:pd.DataFrame):
     )
     return(line_plot)
 
+def plot_proportion_of_et(experiments_df:pd.DataFrame):
+    # Proportion of time in experiment phase
+
+    experiments_df['prop_ef_tx'] = experiments_df['ef_tx'] / experiments_df['ef_total']
+    experiments_df['prop_ef_etl'] = experiments_df['ef_etl'] / experiments_df['ef_total']
+    experiments_df['prop_ef_et'] = experiments_df['ef_et'] / experiments_df['ef_total']
+
+    df_melted = experiments_df.melt(id_vars=['exp_num', 'ef_total'],
+                        value_vars=['prop_ef_tx', 'prop_ef_etl', 'prop_ef_et'],
+                        var_name='component', value_name='proportion')
+
+    prop_plot = (
+        ggplot(df_melted, 
+            aes(x='exp_num', 
+                y='proportion', 
+                fill='component')) +
+        geom_bar(stat='identity', 
+                position='fill', 
+                width=0.5) +
+        labs(x='Experiment Number', 
+            y='Proportion of total experiment time')+ 
+        scale_fill_manual(values=['#1f77b4', '#ff7f0e', '#2ca02c'], 
+                        labels=['ef_tx', 'ef_etl', 'ef_et']) +
+        theme_classic() +
+        theme(axis_text_x=element_text(rotation=45, hjust=1))
+    )
+
+    return(prop_plot)
+
+def plot_bl_against_exp_time(experiments_df:pd.DataFrame):
+    # Proportion of time in experiment phase
+
+    subset_df = experiments_df[experiments_df['alg_type'] == 'incremental']
+
+    subset_df['prop_ef_bl'] = subset_df['ef_bl'] / subset_df['ef_total']
+    subset_df['prop_ef_rest'] = 1-subset_df['prop_ef_bl']
+
+    df_melted = subset_df.melt(id_vars=['exp_num', 'ef_total'],
+                        value_vars=['prop_ef_rest','prop_ef_bl'],
+                        var_name='component', value_name='proportion')
+
+    df_melted['component'] = pd.Categorical(df_melted['component'], 
+                                            categories=['prop_ef_rest','prop_ef_bl'], 
+                                            ordered=True)
+
+    # Plotting with plotnine
+    prop_plot = (
+        ggplot(df_melted, 
+            aes(x='exp_num', 
+                y='proportion', 
+                fill='component')) +
+        geom_bar(stat='identity', 
+                position='fill', 
+                width=0.5) +
+        labs(x='Experiment Number', 
+            y='Proportion of total experiment time')+ 
+            #  title='Proportions of ef components in ef_total') +
+        scale_fill_manual(values=['#e0c013','#399a0b'], 
+                        labels=['Remainder of ET', 'Batch Latency @1']) +
+        theme_classic() +
+        theme(axis_text_x=element_text(rotation=45, hjust=1))
+    )
+    return prop_plot
+
+
+
 def save_plots_as_svg(plots:list, output_dir:os.path):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -260,6 +332,8 @@ if __name__ == "__main__":
     plots.append(('bl_vs_sod.svg', plot_data_size_against_batch_latency(experiments_df)))
     plots.append(('nmi_vs_iter.svg', plot_nmi_against_iterations(experiments_df)))
     plots.append(('communities_vs_iter.svg', plot_nc_against_iterations(experiments_df)))
+    plots.append(('et_vs_exp_total.svg', plot_proportion_of_et(experiments_df)))
+    plots.append(('bl_vs_exp_total.svg', plot_bl_against_exp_time(experiments_df)))
 
     save_plots_as_svg(plots=plots, output_dir=OUTPUT_DIR)
 
