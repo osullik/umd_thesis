@@ -1,9 +1,9 @@
 import os
 import json
 import pandas as pd
-from plotnine import ggplot, aes,  scale_x_log10, scale_y_log10, labs, scale_color_gradient, element_text, position_nudge
-from plotnine import geom_boxplot, geom_point, geom_smooth, geom_text #Geoms
-from plotnine import theme, theme_xkcd, theme_minimal, theme_void, theme_classic #Themes
+from plotnine import ggplot, aes,  scale_x_log10, scale_y_log10, labs, scale_color_gradient, element_text
+from plotnine import geom_boxplot, geom_point, geom_smooth, geom_text, geom_line #Geoms
+from plotnine import theme,  theme_classic #Themes
 
 def load_experiments_to_dict(data_source:os.path)->dict:
     experiment_results = {}
@@ -198,6 +198,43 @@ def plot_data_size_against_batch_latency(experiment_df:pd.DataFrame):
     # Display the plot
     return(scatter_plot)
 
+def plot_nmi_against_iterations(experiment_df:pd.DataFrame):
+    # Experiment subset (only incremental algo's)
+    subset_df = experiments_df[experiments_df['alg_type'] == 'incremental']
+
+
+    line_plot =(
+        ggplot(subset_df, 
+            mapping = aes(x='iteration', 
+                            y='results_nmi', 
+                            group="exp_num", 
+                            color="exp_num")) + 
+        geom_line(stat="identity") + 
+        labs(y="NMI",
+            x="Iteration")+
+        theme_classic()+
+        theme(axis_text_x=element_text(angle=45, ha='right'))
+    )
+    return(line_plot)
+
+def plot_nc_against_iterations(experiment_df:pd.DataFrame):
+    # Experiment subset (only incremental algo's)
+    subset_df = experiments_df[experiments_df['alg_type'] == 'incremental']
+
+    line_plot=(
+        ggplot(subset_df, 
+            mapping = aes(x='iteration', 
+                            y='results_nc', 
+                            group="exp_num", 
+                            color="exp_num")) + 
+        geom_line(stat="identity") + 
+        labs(y="Predicted Community Count",
+            x="Iteration")+
+        theme_classic()+
+        theme(axis_text_x=element_text(angle=45, ha='right'))
+    )
+    return(line_plot)
+
 def save_plots_as_svg(plots:list, output_dir:os.path):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -221,6 +258,8 @@ if __name__ == "__main__":
     plots.append(('gt_vs_predicted_communities.svg', plot_gt_against_predicted_communities(experiments_df)))
     plots.append(('nmi_vs_et.svg', plot_nmi_against_et(experiments_df)))
     plots.append(('bl_vs_sod.svg', plot_data_size_against_batch_latency(experiments_df)))
+    plots.append(('nmi_vs_iter.svg', plot_nmi_against_iterations(experiments_df)))
+    plots.append(('communities_vs_iter.svg', plot_nc_against_iterations(experiments_df)))
 
     save_plots_as_svg(plots=plots, output_dir=OUTPUT_DIR)
 
