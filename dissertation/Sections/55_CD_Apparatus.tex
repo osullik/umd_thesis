@@ -38,13 +38,12 @@ To stress across these parameters, we first look for datasets in the \textit{Tin
 We define Tiny datasets as those that fit in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold \url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}}}).
 Small can be processed in memory on a personal computer, no larger than $\sim16$Gb, the medium should fit in the memory of a commercial system, no larger than $\sim1$Tb and large should be bigger than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
 
-Full dataset coverage will further require datasets in each of the scale-free, uniform-random and mesh shapes so that expected and worst-case shapes can be explored.
-All datasets will require ground-truth communities/clusters/partitions so that NMI can be calculated.
-We expect most real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
-The datasets should be weighted and attributed, and partial assignments of vertices to communities should be available. 
-There should be dynamic graphs suitable for batch updating and continuous streaming.
-Graphs should be available with varying community distributions, mean degree, and `fuzziness'
-Graphs should be available with overlapping and nested communities.
+Building on the review of dataset coverage in table~\ref{table:cd-datasets}, we should aim for full coverage of scale-free, uniform-random and mesh shapes.
+To enable evaluation, all datasets require ground-truth communities/clusters/partitions for NMI calculation.
+% We expect most real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
+To test the extra stress on memory, and provide the opportunity for approaches to leverage the information in their solutions, some datasets should be weighted and attributed, and partial assignments of vertices to communities should be available. 
+There should be dynamic graphs suitable for batch updating and continuous streaming so that dynamic processing algorithms can be evaluated alongside static solutions.
+Finally, to stress effectiveness, graphs should be available with varying community distributions, mean degree, `fuzziness' and overlapping and nested communities.
 
 Our datasets are summarized in table~\ref{table:cd-datasets}.
 We identify seven suitable datasets from the SNAP repository ranging from tiny to medium in size are scale-free in shape and cover the distribution of community sizes from small to large. 
