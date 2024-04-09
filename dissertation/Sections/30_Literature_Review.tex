@@ -2,25 +2,10 @@
 \chapter{Literature Review}
 \label{chapter:30-Literature-Review}
 
-% An important step in benchmark design, and in empirical study design is to understand the existing work and identify opportunities for reuse, extension and what the gaps are. 
-
-% \nrscomment{thats pretty generic and obvious, i dont think you need to state it. no one will be surprised you have a related work section}
-
-% \nrscomment{make you, not the review, the subject of the sentence. "In this section we motivate our methodological approach by reviewing benchmark design principles from an empirical point of view."}
-% First, a quick review of benchmarking and empirical computer science study methodologies identifies the motivation for benchmarks and broad principles. 
-
-% \nrscomment{rephrase as "We then survey the current state of GraphAI benchmarks and identify the types of datasets and tasks that lack broad coverage." And what do you mean by "and examining prior workload analyses reveals known bottlenecks in \gai processing."? are you saying you examine them to find the common bottlenecks? if so, to what end?}
-% A deeper dive into \gai benchmarks identifies gaps in coverage for dynamic graphs and complicated graph structures like knowledge graphs, and examining prior workload analyses reveals known bottlenecks in \gai processing. 
-
-% \nrscomment{So far we have 'how we approach benchmark design' and 'what are the gaps in current graphAI benchmarks' and we follow that up with ... 'how people are presently improving graphAI, which indicates there is still performance to be gained'? that doesnt really logically follow. If that aspect of the survey is going to influence your benchmark design in some way, or tell you some metrics or tasks or something that needs to be included, id address it from that angle, since that builds on the previous 2 RW sections, which are getting increasingly more specific from benchmarks to graphAI benchmarks to (presumably) YOUR grpahAI benchmark. If not, then what are you getting at with that last section?}
-% Finally, a summary of the abstractions, representations, algorithms and accelerators used to exploit and elevate bottlenecks shows how there is still latent performance improvement in current \gai approaches. 
-
 In this section, we motivate our methodological approach by reviewing benchmark design from an empirical point of view.
-First, we \nrscomment{discuss the benefits and drawbacks of the two main types of benchmarks.} identify the types of benchmark and what they offer to a researcher.
-\nrscomment{Then, we review the \gai benchmark landscape to demonstrate critical gaps in the coverage of \gai tasks, datasets, and metrics.}
-Next, reviewing the \gai benchmark landscape reveals gaps in coverage of critical \gai in tasks, datasets and metrics.
-\nrscomment{Finally, we survey workload analyses and summarize known \gai processing bottlenecks to emphasize that current benchmark approaches lack support for evaluating improvements on these bottlenecks.}
-We survey workload analyses and identify known \gai bottlenecks to emphasize how current benchmark approaches lack support for evaluating acceleration methods on these bottlenecks.
+First, we discuss the benefits and drawbacks of the two main types of benchmarks.
+Then, we review the \gai benchmark landscape to demonstrate critical gaps in the coverage of \gai tasks, datasets, and metrics.
+Finally, we survey workload analyses and summarize known \gai processing bottlenecks to emphasize that current benchmark approaches lack support for evaluating improvements on these bottlenecks.
 The result of the literature review is the design of our benchmark, which is described in chapter~\ref{chapter:40-Graph-AI-Benchmarking}.
 
 % Extending to workload analyses, we identify the known bottlenecks of \gai and the current methods being employed to exploit latent capacity and elevate system capacity into the future, showing how current benchmarking approaches are sub-optimal for evaluating acceleration methods on the known bottlenecks. 

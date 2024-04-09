@@ -4,66 +4,59 @@
 % \osullikomment{Having no review of benchmarking, in general, feels weird? Maybe just 1-2 paras about successful uses of benchmarking?}
 % \nrscomment{yeah given youre taking an empirical approach to benchmarking, we need to know what the alternative approaches are, and why theyre inferior to yours (and about Hooker, who youre borrowing from). But not a crazy in-depth explanation of the philosophy, just a high level summary}
 
-Benchmarking is a process by which systems or components are compared according to some criteria, \nrscomment{which is used to determine their relative performance.} that provide a point of reference to measure the relative performance~\cite{Kistowski2015}.
-\nrscomment{Benchmarks like SPEC, LINPACK, and SATLIB have successfully been used to advance research in HPC, ..?dynamic programming?.., and satisfiability.}
-They have been used to great effect to advance research in fields like high-performance computing  (the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}), for solving linear equations like (the LINPACK Top500~\cite{Dongarra2003}), for satisfiability problems (SATLIB~\cite{Hoos2000}), and many more. 
+Benchmarking is a process by which systems or components are compared according to some criteria, which is used to determine their relative performance~\cite{Kistowski2015}.
+Benchmarks like SPEC, LINPACK, and SATLIB have successfully been used to advance research in HPC, dynamic programming and satisfiability.~\cite{Hennessy2019, Dongarra2003 ,Hoos2000}.
 
-Benchmarks can be \textit{specification-based} \nrscomment{, meaning only input and output requirements are defined} where all that is defined are the Input/Output requirements, \textit{kit-based} \nrscomment{, meaning substantive components are provided, or hybrid, meaning somewhere in between.} where substantive components of the benchmark are provided by a central authority or a hybrid of the two approaches. 
-
-\nrscomment{you just went through the effort of explaining those 2 types, then dont say the significance of the distinction, and move onto a different categorization. need some bridge here- either foreshadow to why the specification/kit distinction matters, or drop it if it doesnt. alternatively, bridge it with "Specification-based and kit-based benchmarks can be further categorized as being either competitive or empirical."}
+Benchmarks can be \textit{specification-based} meaning only input and output requirements are defined, \textit{kit-based}, meaning substantive components are provided, or hybrid, meaning somewhere in between.
+Specification-based benchmarks provide formal definitions of tasks and users report their results back to them, whereas kit-based approaches often have some kind of instrumentation to measure the performance of a system.
+Because of their flexibility, specification-based approaches like Graph500 tend to be more popular.
 Whether specification or kit-based, the two main approaches to benchmarking are \textit{competitive} and \textit{empirical} benchmarks. 
 
 \subsection{Competitive Benchmarks}
 Competitive benchmarks are extremely popular in the AI community. 
-They involve selecting a metric or metrics and `competing' \nrscomment{'competing' is ambiguous here- do  you mean it as a verb or an adjective? if verb i think comparing might be better suited} systems as black boxes to identify which one can maximize that metric. 
-They are typically implemented using the Input/Output paradigm \nrscomment{do you mean to say they're typically specification based? why bother defining that term then not use it?}, where the only \nrscomment{factors considered are the results generated and the time taken to generate them.} things known to the benchmark are the data provided, the results generated and the time elapsed between those two events. 
-For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection \nrscomment{the challenge reports the metric? or uses the metric?} reports average precision as their key metric\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
-\nrscomment{Its weird to have the first one as its own sentence, then the next 2 in one sentence with ", and finally" separating them. Maybe instead say "For example, computer vision benchmark COCO uses x, VQA benchmark ... uses y, and LLM benchmark ... uses ... ." and give fewer details about each}
-Visual question answering has the Visual Question Answering Version 2 (VQAv2) and compares VQA accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and finally \nrscomment{the LLM challenge ChatBot Arena uses...} a popular Large Language Model (LLM) challenge at the time of writing is the ChatBot Arena benchmark\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} which uses `user preference' between two options as the metric.
+They involve selecting a metric or metrics and `racing' systems as black boxes to identify which one can maximize that metric. 
+They are typically specification-based, and the only factors considered are the results generated and the time taken to generate them.
+For example, in computer vision, the Common Objects in Context (COCO) challenge for object detection uses average precision\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
+Visual question answering (VQAv2) uses VQA accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and the LLM challenge ChatBot Arena\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} uses `user preference' as the metric.
 
-\nrscomment{Since you promised to discuss advantages and disadvantages, maybe "Competitive benchmarks are useful for x, but they have three major drawbacks. The first..."} There are three important criticisms of competitive benchmarks. 
-The first is that these provide a `black box' view of the systems \nrscomment{, which makes it difficult to tell why one system performed better than another, or how to improve them.}. 
+Competitive benchmarks are useful for getting a quick overview of the current State of the art, but they have three major drawbacks. 
+The first is that these provide a `black box' view of the systems which makes it difficult to tell why one system performed better than another, or how to improve them. 
 Competitive benchmarks show which systems are better but provide no information about why they are better, or how they can be improved~\cite{Saavedra1996, Hooker1994}.
-Second, is that \nrscomment{this 'leaderboard' style of challenge encourages optimizing for the benchmark, rather than generally progressing...} leader board challenges like these very quickly become the targets of research, not the measure and so solutions begin to optimize to maximize the benchmark evaluation at the expense of generally progressing the knowledge of the field~\cite{Hooker1995}. 
-The third \nrscomment{drawback is that competitive benchmarks tend to emphasize effectiveness measures, ignoring efficiency altogether.} is that all of these challenges (benchmarks) focus on effectiveness measures, not efficiency. 
-\nrscomment{"The problem with over-emphasizing effectiveness is that it is possible to miss the broader picture and reward a result that uses more resources to achieve a slightly better result than an efficient algorithm that uses fewer resources."}
-Ignoring efficiency when benchmarking is an immature view and can spawn misleading results, where say, $100$ GPUs have brute forced a better result in a task than a more efficient algorithm running on an old ubuntu machine in someone's basement.
+Second, is that this 'leaderboard' style of challenge encourages optimizing for the benchmark, rather than generally progressing the knowledge of the field~\cite{Hooker1995}. 
+The third drawback is that competitive benchmarks tend to emphasize effectiveness measures, ignoring efficiency altogether.
+The problem with over-emphasizing effectiveness is that it is possible to miss the broader picture and reward a result that uses more resources to achieve a slightly better result than an efficient algorithm that uses fewer resources.
 
 \subsection{Empirical Benchmarks}
-The empirical benchmarking approach is an important offset to the competitive approach.
-An empirical benchmark is less interested in racing systems against each other than understanding how they work, \nrscomment{cut everything prio and say "Empirical benchmarks take the opposite approach to competitive benchmarks, instead focusing on"} identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
+Empirical benchmarks take the opposite approach to competitive benchmarks, instead focusing on identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
 Empirical benchmarks follow either the workload analysis or hosted benchmark paradigms.
 
-\nrscomment{bold}
-\nrscomment{before the why theyre annoying bit tell me what they are}
-Workload analyses are invasive and require complete access to the system under test to instrument the implementation and profile the environment.
-\nrscomment{just add " during execution." to the previous sentence and you can drop the next one}
-With all of the overhead in place, the workloads are executed and telemetry collected. 
+\textbf{Workload Analyses.}
+Workload Analyses are detailed white-box studies of the internal states of a system while undertaking a series of tasks on a collection of datasets.
+They focus on more detailed measurements of memory usage, network bandwidth usage and processor utilization.
+Workload analyses are invasive and require complete access to the system under test to instrument the implementation and profile the environment during execution.
 Reports are typically generated manually and focus on a single system or a comparison of a few systems. 
-\nrscomment{Although workload analyses provide a very..., they are work-intensive and...}
-They provide a very detailed understanding of what is happening in a system, but are work-intensive and so do not scale well. 
+Although workload analyses provide a very detailed understanding of what is happening in a system they are work-intensive and do not scale well
 
-\nrscomment{bold}
-\nrscomment{again not really defining what it is, just that it requires x - though i think you have the right content this time. rephrase it a bit. "Hosted benchmarks work by providing a shared environment in which implementations can be tested under fixed conditions. To insure fairness hosted benchmarks are typically hosted by third party entities who..."}
-The hosted approach requires researchers to submit their implementations to a third party, who will run them on a shared environment, controlling for environmental variance between systems under test. 
-For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations, and have the results published to public leaderboards. \nrscomment{do the example after youve finished defining what they are and how they work-- swap the previous and next sentences}
-The hosted approach relies on shared problem formats, \nrscomment{you need to replace the comma with "and" here if you want relies to apply to the first 2 clauses but not the 3rd. i.e. relies on x and y and constrains z} common primitive operations and constrains developers to implementations that can run on the provided environment. 
-% StarExec provides a virtual machine to test that an implementation will run on the software stack for the host environment, but this model ignores the impact of hardware on the effectiveness, efficiency and cost, and so a comprehensive hosted solution will require many concurrent (interoperable) hardware configurations to study the impact of hardware changes, greatly increasing the cost. 
-\nrscomment{Hosted benchmarks can accommodate comparisons across hardware, including across distributed and accelerated systems, but doing so requires maintaining multiple concurrent hardware hosts.}
-To understand what happens when the hardware varies, including the use of distributed and accelerated systems, multiple concurrent hardware hosts need to be available.
 
-Multiple hardware hosts can be \nrscomment{a viable approach} viable when the implementations share a high-level language \nrscomment{cut like PYthon unless you really ahve a reason for it} like Python and \nrscomment{are limited to using CPUs and GPUs} limit themselves to CPUs and NVIDIA GPUs \nrscomment{reads a bit weird to have the qualifier on GPUs (NVIDIA) but nothing on CPUs. do you need to say NVIDIA?} that have \nrscomment{high level programming language APIs? instead of specifically Python?} APIs for Python, \nrscomment{new sentence} but \nrscomment{However, in } in fields like \gai where much of the research \nrscomment{is implemented in low-level languages, including custom languages for hardware accelerators, it is difficult to create a general purpose benchmark that can fairly assess implementations that may not be able to run on the same hardware without optimization and recompilation, if not complete re-implementation.} focuses on  lower-level implementations like C, C++, CUDA, or custom languages for hardware accelerators a general-purpose hosted benchmark becomes difficult to implement fairly, as the `same' implementation cannot be run on different hardware without optimization and recompilation (if not total reimplementation).
+\textbf{Hosted Benchmarks}
+Hosted benchmarks work by providing a shared environment in which implementations can be tested under fixed conditions.
+To ensure fairness, hosted benchmarks are typically maintained by third-party entities that accept submissions, run them and report the results. 
+The hosted approach relies on shared problem formats and common primitive operations and constrains developers to implementations that can run on the provided environment. 
+For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations, and have the results published to public leaderboards.
+Hosted benchmarks can accommodate comparisons across hardware, including across distributed and accelerated systems, but doing so requires maintaining multiple concurrent hardware hosts, increasing cost while limiting participation.
 
-\subsection{Other Approaches}
-\nrscomment{if youre calling this Other ApproacheS it needs to have more than 1. else call it what it is-- constrained benchmarks}
-
-\nrscomment{"Constrained benchmarks are a promising alternative to competitive and hosted benchmarks." then do the defn (Currently sentence 3, then do the example (currently sentence 2). otherwise you go example, defn, back to example}
-One promising alternative is the idea of a \textit{constrained} benchmark, like the \textit{efficientQA} efficient open domain question answering competition~\cite{Min2020}.
+\subsection{Constrained Benchmarks}
+Constrained benchmarks are a promising alternative to competitive and hosted benchmarks.
 A constrained benchmark limits the time or resources available to competitors while requiring them to maximize their effectiveness metric.
-In the efficientQA competition, competitors had to maximize their target metric (Question Answering Accuracy) while adhering to strict memory budgets that forced them to trade-off between the size of the models that they use and the size of the reference corpora they drew their answers from. \nrscomment{reword with fewer theys and competitors. More formally "competing approaches were evaluated on xxx with strict constraints on yyy"}
-A constrained benchmarking approach shows how even without explicit access to the internal state of a system required for an empirical benchmark, we can \nrscomment{do we really get more info or is it jsut a more thorough comparison that also accounts for efficiency?} gain additional information by controlling the time or resources available to the systems under test and observing the resulting changes.
+For example, the \textit{efficientQA} efficient open domain question answering competition required competitors to maximize Question Answering Accuracy while adhering to strict memory budgets forcing trade-offs between the size of the models size of the reference corpora~\cite{Min2020}. 
+A constrained benchmarking approach shows how even without explicit access to the internal state of a system required for an empirical benchmark, we can still achieve a more thorough comparison than a simple competitive `race' for effectiveness.
 
-\nrscomment{im taking away from this section that there are 3 paradigms for benchmarking- competitive which doesnt have efficiency testing, hosted which doesnt work for complex hardware comparison which graphs need, and constraint which is a happy medium. but i dont know explicitly which paradigm your benchmark will be, so i dont leave here with confidence that what i just read was worth the time and that it will help me when you explain your approach. assuming yours is constraint-based given the language in this section, add a sentence to the end of the constraint section basically wrapping up and saying how it fixes the issue of hosted and competitive paradigms and that yours will follow this. if not then explain what yours follows and why.}
+\subsection{Summary}
+Current benchmarking approaches give us 3 paradigms.
+Competitive benchmarks are flexible, accessible computational footraces that tell us which system is the fastest or the most accurate, but not why. 
+Empirical benchmarks are labor intensive and impose constraints on the systems being studied and while competitive benchmarks take a creative approach, they tend to focus on only one dimension during evaluation. 
+The approach we propose in chapter~\ref{chapter:40-Graph-AI-Benchmarking} proposes combining the accessibility of competitive benchmarks with the informativeness of a formal empirical benchmark by leveraging the ideas from constraint-based benchmarks about how to stimulate interesting behavior in the system under test. 
+The next section examines \gai specific approaches to benchmarking, identifying how these paradigms are used and what their limitations are in practice. 
 
 
 % % % % % % % % % % MOVED TO PROBLEM SECTION % % % % % % % % % % %

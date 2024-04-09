@@ -299,6 +299,12 @@ class Task():
                 f.write(str(self.result))
             except TypeError:
                 f.write("")
+        #Cache the results in case of failure
+        with open(os.path.join(".","cache",(self.task+"_"+str(now.isoformat())+".txt")), 'w') as f:
+            try:
+                f.write(str(self.result))
+            except TypeError:
+                f.write("")
 
         # time.sleep(self.sample_time)
 
@@ -351,22 +357,30 @@ class Evaluator():
         return (nmi(gt_labels,pred_labels))
     
     def parse_gt_labels(self, gt_labels_path:os.path,snap_format:bool):
-        
+        delimiters = [" ", "\t"]
+
         with open(gt_labels_path,'r') as f:
             data = f.readlines()
 
         results_dict = {}
+        results_dict["<UNK>"] = []
         for line in data:
             if line.startswith("#"):
                 continue
             # print(line)
             if snap_format:
                 line=line.strip()
+                for delimiter in delimiters:
+                    line = " ".join(line.split(delimiter))
                 lines = line.split(" ",1)
+
                 try:
                     results_dict[lines[1]].append(lines[0])
                 except KeyError:
                     results_dict[lines[1]] = [lines[0]]
+                except IndexError:
+                    results_dict["<UNK>"].append(lines[0])
+
                 # for i, node in enumerate(line):
                 #     # print(i, node)
                 #     if i == 0:

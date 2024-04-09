@@ -65,14 +65,19 @@ The same is true of attributes, and prior knowledge about group membership of so
 % \nrscomment{all the rest of the observations were things that degrade performance-- wasnt expecting this}
 
 \subsection{Outputs}
+% \osullikomment{Change to diagram}
+% \nrscomment{are these legit outputs that map to the diagram? the headers are weird}
+Completing the exploratory analysis by proxy of a literature review reveals the bottlenecks that impact population segmentation approaches that will guide hypothesis development in the next step. 
 
-\osullikomment{Change to diagram}
+\textbf{Efficiency Bottlenecks.} I
+We expect that increasing the number of vertices and the number of edges will both degrade the efficiency of the approaches, given the worst-case complexity estimates in table~\ref{table:cd-survey}
 
-\nrscomment{are these legit outputs that map to the diagram? the headers are weird}
-\textbf{Efficiency Bottlenecks.} Increasing Node Size, Increasing Density of graphs. 
+\textbf{Effectiveness Bottlenecks.} 
+The effectiveness of community detection approaches is vulnerable to fuzzy and overlapping communities, denser graphs and when `bridges' exist between clique-y structures.
 
-\textbf{Effectiveness Bottlenecks.} Fuzzy Communities, higher mean degree of vertices, `bridges' between clique-y structures.
+\textbf{Friction Points.} 
+Further friction points we identify is the requirement for apriori knowledge of the number of communities by many of the approaches, the lack of support for overlapping communities, and the lack of work in dynamic CD benchmarks.
 
-\textbf{Friction Points.} Requirement for apriori knowledge of the number of communities, support for overlapping communities, and support for dynamic CD.
-
-\textbf{Curiosities and opportunities.} Heavy use of iterative algorithms gives the opportunity to trade off efficiency and effectiveness, constraint-based problem to find optimal Timestep $T$ length for dynamic CD.
+\textbf{Curiosities and opportunities.} 
+The salient opportunity is to explore the efficiency-effectiveness tradeoff by using an iterative approach to community detection that outputs interim results as they are generated and offers the opportunity to experiment with trading off efficiency and effectiveness. 
+There is also an interesting constraint-based problem to find the optimal Timestep $T$ length for dynamic CD to determine how long it should wait when receiving a stream before commencing a batch update. 

@@ -102,12 +102,12 @@ def extract_experiments_to_dataframe(experiment_results:dict)->pd.DataFrame:
 def plot_et_against_vertices(experiment_df:pd.DataFrame):
     scatter_plot = (
         ggplot(experiments_df, aes(x='vertices', y='ef_et')) + 
-        geom_point(aes(color='shape')) + 
+        geom_point(aes(shape='shape')) + 
         geom_smooth(se=False) +
         scale_x_log10() + 
-        scale_y_log10() +
+        #scale_y_log10() +
         labs(x='Vertex Count (log scale)', 
-            y='Execution time in Seconds (log Scale)') + # Custom axis labels
+            y='Execution time in Seconds') + # Custom axis labels
         theme_classic()
     )
 
@@ -116,12 +116,12 @@ def plot_et_against_vertices(experiment_df:pd.DataFrame):
 def plot_et_against_edges(experiment_df:pd.DataFrame):
     scatter_plot = (
         ggplot(experiments_df, aes(x='edges', y='ef_et')) +  
-        geom_point(aes(color='shape')) +  
+        geom_point(aes(shape='shape')) +  
         geom_smooth(se=False) +
         scale_x_log10() +  
-        scale_y_log10() +
+        #scale_y_log10() +
         labs(x='Edge Count (log scale)', 
-            y='Execution time in Seconds (log Scale)') +
+            y='Execution time in Seconds') +
         theme_classic()
     )
 
@@ -169,8 +169,26 @@ def plot_gt_against_predicted_communities(experiment_df:pd.DataFrame):
         theme_classic()
     )
 
+    return(scatter_plot)
+
+def plot_gt_against_predicted_communities_size_difference(experiment_df:pd.DataFrame):
+    experiments_df['Size Delta'] = experiments_df['results_nc']-experiments_df['gt_comms']
+    filtered_df = experiments_df[(experiments_df['gt_comms'] <= 1000000) & (experiments_df['iteration'] == 'termination')] #Exclude outlier
+
+    scatter_plot = (
+        ggplot(filtered_df, aes(x='results_nc', y='gt_comms')) +  
+        geom_point(aes(shape='shape',color='Size Delta')) +  
+        # scale_x_log10() +  
+        # scale_y_log10() +
+        labs(x='Number of Communities Detected', 
+            y='Ground Truth number of Communities') + 
+        scale_color_gradient(low="blue", high="red") +
+        theme_classic()
+    )
 
     return(scatter_plot)
+
+
 
 def plot_nmi_against_et(experiment_df:pd.DataFrame):
     # NMI against Total Execution Time
@@ -234,7 +252,8 @@ def plot_nc_against_iterations(experiment_df:pd.DataFrame):
                             group="exp_num", 
                             color="exp_num")) + 
         geom_line(stat="identity") + 
-        labs(y="Predicted Community Count",
+        scale_y_log10() +
+        labs(y="Predicted Community Count (Log Scale)",
             x="Iteration")+
         theme_classic()+
         theme(axis_text_x=element_text(angle=45, ha='right'))
@@ -247,6 +266,8 @@ def plot_proportion_of_et(experiments_df:pd.DataFrame):
     experiments_df['prop_ef_tx'] = experiments_df['ef_tx'] / experiments_df['ef_total']
     experiments_df['prop_ef_etl'] = experiments_df['ef_etl'] / experiments_df['ef_total']
     experiments_df['prop_ef_et'] = experiments_df['ef_et'] / experiments_df['ef_total']
+
+    experiments_df.to_csv(os.path.join(".","experiment_results","summary_dataframe.csv"))
 
     df_melted = experiments_df.melt(id_vars=['exp_num', 'ef_total'],
                         value_vars=['prop_ef_tx', 'prop_ef_etl', 'prop_ef_et'],
@@ -263,7 +284,7 @@ def plot_proportion_of_et(experiments_df:pd.DataFrame):
         labs(x='Experiment Number', 
             y='Proportion of total experiment time')+ 
         scale_fill_manual(values=['#1f77b4', '#ff7f0e', '#2ca02c'], 
-                        labels=['ef_tx', 'ef_etl', 'ef_et']) +
+                        labels=['Execution Time', 'ETL Time', 'Transfer Time']) +
         theme_classic() +
         theme(axis_text_x=element_text(rotation=45, hjust=1))
     )
@@ -329,6 +350,7 @@ if __name__ == "__main__":
     plots.append(('vertices_vs_edges.svg', plot_vertices_against_edges(experiments_df)))
     plots.append(('iterations_boxplot.svg', plot_iterations_boxplot(experiments_df)))
     plots.append(('gt_vs_predicted_communities.svg', plot_gt_against_predicted_communities(experiments_df)))
+    plots.append(('gt_vs_predicted_communities_sizes.svg', plot_gt_against_predicted_communities_size_difference(experiments_df)))
     plots.append(('nmi_vs_et.svg', plot_nmi_against_et(experiments_df)))
     plots.append(('bl_vs_sod.svg', plot_data_size_against_batch_latency(experiments_df)))
     plots.append(('nmi_vs_iter.svg', plot_nmi_against_iterations(experiments_df)))

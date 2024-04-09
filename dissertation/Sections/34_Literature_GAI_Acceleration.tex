@@ -13,24 +13,22 @@ Parallelism, Cache blocking, graph-reordering, traversal scheduling, compression
 
 Parallelizing processing in a single-machine environment can bring more computation power to solve problems. 
 Almost all personal computers are multi-core, and most commercial machines are multi-socket, leaving ample latent capacity for parallelism to be exploited. 
-Parallel approaches to graph processing are essential to \textit{efficient} and \textit{effective} \nrscomment{why would parallelism be key to effectiveness?} graph processing, but are hampered by problems with load imbalance, synchronization overheads and non-uniform memory accesses (NUMA)~\cite{Beamer2015}. \nrscomment{do you really need the acronym}
+Parallel approaches to graph processing are essential to \textit{efficient} graph processing but are hampered by problems with load imbalance, synchronization overheads and non-uniform memory accesses~\cite{Beamer2015}.
 
 Cache blocking aims to divide a graph into a collection of subgraphs that are no larger than the available cache block size. 
 The general idea is that by decomposing everything to be small enough to fit in the cache, there should be a significant reduction in irregular memory accesses. 
-The effectent and effective \nrscomment{efficient and effective decomposition? it feels like youre using those terms just to use them} decomposition remains a challenge~\cite{Balaji2018,Beamer2017, Ham2016, Zhang2020, Sundaram2015}.
+The efficient and effective decomposition remains a challenge~\cite{Balaji2018, Beamer2017, Ham2016, Zhang2020, Sundaram2015}.
 
-Graph reordering is a preprocessing technique that aims to optimize the order in which vertices are stored in memory to improve spatial locality. 
-It can be done statically or dynamically, but in general, is computationally expensive and generally outweighs the benefits when amortized over queries~\cite{Balaji2018}.
+Manipulating how the graph is arranged in memory can yield more efficient execution. 
+Graph reordering is a preprocessing technique that aims to optimize the order in which vertices are stored in memory to improve spatial locality\cite{Balaji2018}.
+Traversal scheduling is an execution-time activity that aims to pick the optimal order to traverse edges to maximize temporal locality in graph processing~\cite{Mukkara2018}.. 
+Both are computationally demanding and can outweigh any benefits gained from a well-ordered graph, particularly in dynamic settings. 
 
-Traversal scheduling aims to pick the optimal order to traverse edges to maximize temporal locality in graph processing. 
-It can be done in an offline or an online mode but typically has a high computational overhead that can overshadow the gains in graph processing speed~\cite{Mukkara2018}.
-\nrscomment{collapse this with graph reordering, youre saying nearly the same thing once you say what each is}
-
-\nrscomment{cut this section about compression. you already covered compressed formats in the graph representation section earlier}
-Compression is useful for balancing the size of a graph in memory with the speed of computation. 
-An adjacency list is more compact than an adjacency matrix is more compact than an incidence matrix~\cite{Kepner2015}, but each level of expansion here has additional information.
-The CSR/CSC format is much more compact than a regular adjacency matrix and is the de facto standard representation for graphs~\cite{Saad2003}.
-Compression beyond the CSR/CSC level has shown to be highly effective in parallel graph processing~\cite{Dhulipala2021}, but the encoding/decoding overheads must be offset by computation gains, and so is generally infeasible for sequential implementations~\cite{Shun2015}.
+% \nrscomment{cut this section about compression. you already covered compressed formats in the graph representation section earlier}
+% Compression is useful for balancing the size of a graph in memory with the speed of computation. 
+% An adjacency list is more compact than an adjacency matrix is more compact than an incidence matrix~\cite{Kepner2015}, but each level of expansion here has additional information.
+% The CSR/CSC format is much more compact than a regular adjacency matrix and is the de facto standard representation for graphs~\cite{Saad2003}.
+% Compression beyond the CSR/CSC level has shown to be highly effective in parallel graph processing~\cite{Dhulipala2021}, but the encoding/decoding overheads must be offset by computation gains, and so is generally infeasible for sequential implementations~\cite{Shun2015}.
 
 \nrscomment{this is interesting and does feel like its worth mentioning that GNN stuff uses a very different approach than traditional graph tasks. But i dont think you should have a section on exploit/elevate techniques at all, so im not sure where this would go. Maybe earlier when discussing the problem categories? it seems like it belongs with explaining the GraphAI problems when you get to GNNs "Oh btw they dont ever operate on the full graph b/c it would be intractable, they do sampling". it gets lost buried down here, and i want to have known this before i hear about datasets and tasks in benchmarks so i can really understand how to interpret the fact that, for instance, GNN benchmark OGB has graphs with 1.6B edges. Thats way less impressive once you know how GNNs sample. hence i think this bit of info belongs much earlier with explaining GNNs, and maybe giving some similar context to some of the tasks might be worthwhile as well.}
 Many machine learning models make aggressive use of sampling to reduce the complexity of computation. 

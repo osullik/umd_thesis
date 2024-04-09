@@ -1,24 +1,14 @@
 \section{Graph Topology}
 \label{section:22-graph-topology}
-% \nrscomment{Id just call the section "Graph Topology"}
-
 Graphs fit into core classes (scale-free, mesh, random) based on their size, shape, topological structure, and construction method. 
 We begin by addressing the classes of graphs that occur in the real world, and then discuss synthetically generated graphs, which can be constructed randomly or using a prior distribution.
 
-% For simplicity, the spectrum of possible graph sizes and shapes (topologies) can be distilled into core classes that represent the breadth of graph processing problems. 
-% Many graphs come from real data, but they can also be constructed synthetically using mathematical models or by imitating some prior distribution.
-% Understanding the core graph classes and their properties is important because their varying size and topology directly impact the effectiveness and efficiency of graph processing. 
-% While the structure of graphs exists on a spectrum and is influenced by several factors, it is useful to identify key categories and their characteristics. 
-
-
-% \nrscomment{if youre gonna have a synthetics graphs header you need a corresponding real-world graph one here}
-
 \subsection{Real-World Graphs}
-This section will first identify the `real world' graph classes that are derived from real-world phenomena like email records, chat logs, network logs, road maps, protein structures, or any of a large collection of problems that can be represented as a graph. \nrscomment{is it really the problem being represented as a graph? or the data pertaining to the problem?}
+This section will first identify the `real world' graph classes that are derived from real-world phenomena like email records, chat logs, network logs, road maps, protein structures, or any of a large collection of problems that can be represented as a graph.
 
 \subsubsection{Scale-Free Graphs}
 Scale-free graphs are a naturally occurring graph class characterized by a distribution of vertex degrees that follow a power-law distribution. 
-\nrscomment{"Scale-free graphs are common in social networks because as the number of vertices increases over time, new vertices preferentially..."} Common in social networks, they form because the number of vertices tends to increase over time, and new vertices preferentially attach to vertices that already have high degrees~\cite{Barabasi1999a}. 
+Scale-free graphs are common in social networks because as the number of vertices increases over time, new vertices preferentially attach to vertices that already have high degrees~\cite{Barabasi1999a}. 
 They tend to have a small diameter, a large variance in neighborhood size, and a `global-neighborhood' characteristic where within a few hops all vertices are in the same neighborhood.
 These characteristics are often amalgamated together and termed the `small world' property.
 
@@ -27,62 +17,25 @@ Mesh graphs are a naturally occurring graph class characterized by a flat, regul
 Mesh graphs are often derived from physical phenomena like road networks, and so new vertices tend to extend the graph outwards~\cite{Beamer2015}.
 They tend to have a large diameter, a small variance in neighborhood size and a `local-neighborhood' characteristic where only a small subset of vertices are reachable within a few hops of any given vertex.
 
-% \nrscomment{what does local neighborhood characteristic mean? did yiu mention that in the graph characteristics already?}
-
-% \nrscomment{this feels very random here. nothing in this section is about graph problems, then all of a sudden we have this, then it ends. move this elsewhere and instead summarize the main types again in one sentence now that we know what they mean}
-% \textit{Graph-Native Problems} are problems that have an intrinsic graph structure. For example, a social media friends graph.
-% \textit{Non-Native Graph Problems} are problems that have been transformed into graph problems for processing. 
-% For example, aggregating pixels by color to vertices and drawing edges between the vertices to represent an image in lower dimensional space~\cite{Cen2023}.
-% Non-native graph formats are introducing new graph shapes that will likely have further unpredictable downstream impacts on the effectiveness and efficiency of graph processing. 
-
 \subsection{Synthetic Graphs}
 Real-world graphs offer realistic test inputs for graph algorithms.
 However, some domains lack sufficient data to support robust testing, especially regarding performance on irregular distributions. 
-As a solution, \textit{synthetic graphs} can be mathematically or imitatively generated to provide simple graphs for testing and evaluation. \nrscomment{the other defns are not italicized}
+As a solution, synthetic graphs can be mathematically or imitatively generated to provide simple graphs for testing and evaluation. 
 
 \subsubsection{Mathematically Generated Synthetic Graphs (Random Graphs)}
-Multiple mathematical functions can be used to generate synthetic graphs. \nrscomment{you dont actually say how in all that. combine the previous and next sentence and add specificity "...to generate synthetic graphs, typically by ...?... to reflect a given probability distribution."}
-Most of them exploit an existing probability distribution and generate a graph that reflects that probability distribution. 
-Notable generators include the Erd\H{o}s-R\'enyi generator to create \textit{Uniform Random Graphs}~\cite{Erdhos1960}, the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} generator to generate scale-free graphs, and the \textit{Kronecker}~\cite{Leskovec2010} generator, also for scale-free graph generation. \nrscomment{your qualifiers were 'to create', 'to generate', and 'also for scale-free generation'. make the last one an infinitive form verb like the first 2}
-Mathematically generated random graphs \nrscomment{"can be used to approximate real-world graphs but provide..."} are useful approximations of the real world but provide a sub-optimal substitute for the irregularities of real graphs because of the structural simplifications that occur in the generation process. 
-% \nrscomment{in the signpost you said synthetic helps solve the difficulty modeling irregularities though}
+Multiple mathematical functions can be used to generate synthetic graphs, typically by adding vertices and edges following some set of heuristics to reflect a given probability distribution.
+Notable generators include the Erd\H{o}s-R\'enyi generator to create \textit{Uniform Random Graphs}~\cite{Erdhos1960}, the \textit{Random Matrix} (RMAT)~\cite{Chakrabarti2004} and \textit{Kronecker}~\cite{Leskovec2010} generator to generate scale-free graphs.
+Mathematically generated random graphs can be used to approximate real-world graphs but provide a sub-optimal substitute for the irregularities of real graphs because of the structural simplifications that occur in the generation process. 
 
 \subsubsection{Imitatively Generated Synthetic Graphs (Imitative Graphs)}
-Many graph datasets are not releasable for research and development because of privacy and confidentiality \nrscomment{reasons not concerns} concerns. 
-Active research in privacy preservation and synthetic graph generation seeks to statistically summarize a real-world graph, and then use that summary as the input to a synthetic graph generator, so that the synthetic graph \nrscomment{has} will have the same topological properties as the original, without the confidential information. 
-Input features of \textit{Triangle Histograms, K-Hop Neighbor Histograms, Random Walk Histograms} and \textit{Number of Edges} have been shown to produce topologically similar graphs~\cite{Zahirnia2024}.
-\nrscomment{are those the methods? or the properties that are summarized? the features dont produce the graph, the methods do. "Imitative graph generation methods use input features like... to produce graphs that are topologically similar to the target graph."}
-% The summarization process is inherently lossy and has only been tested on very small graphs (tens of thousands of edges), so is not yet reliable enough for wide use.
+Many graph datasets are not releasable for research and development because of privacy and confidentiality reasons. 
+Active research in privacy preservation and synthetic graph generation seeks to statistically summarize a real-world graph, and then use that summary as the input to a synthetic graph generator, so that the synthetic graph has will have the same topological properties as the original, without the confidential information. 
+Imitative graph generation methods use input features like \textit{Triangle Histograms, K-Hop Neighbor Histograms, Random Walk Histograms} and \textit{Number of Edges} to produce topologically similar graphs~\cite{Zahirnia2024}.
+ process is inherently lossy and has only been tested on very small graphs (tens of thousands of edges), so is not yet reliable enough for wide use.
 
 
 \subsection{Summary}
-% There is a wide distribution of graphs, and thinking of them belonging to `classes' is a useful simplifying tool.
-% Scale-free, mesh, mathematically generated and imitatively generated graphs are important examples of graph classes drawn from a wider spectrum of graphs. 
-% Each category has inherent drawbacks for graph processing, and these categories will be discussed throughout the remainder of this thesis as representatives of the `datasets' that \gai will operate on.
-% A good benchmark for \gai should at a minimum explore the efficiency, effectiveness and cost of \gai tasks on a scale-free, mesh and uniform random graph to get a longitudinal view of expected performance. 
 
 The core graph topology classes discussed above (scale-free, mesh, mathematically generated, imitatively generated) each have inherent benefits and drawbacks for graph processing. 
 We view these classes as representatives of the kinds of `datasets' that are relevant to \gai. 
 As such, a good \gai benchmark should cover each of these classes to enable a longitudinal view of expected performance.
-
-% While the RMAT and Kronecker generators simulate graphs with a skewed degree distribution, they, along with the Erd\H{o}s-R\'enyi graphs are limited in their utility for evaluating the effectiveness of algorithms in `real-world' scenarios.
-% \nrscomment{why? why do they give an avergae but not typical case? if thersa a distinciton you need to explain what you mean by typical case and why it doesnt capture that well}
-% They give an `average case' or an `expected case' for the runtime, but not necessarily a `typical case'.
-% Graph processing is so dependent on the topology of the input that unless the test graphs are drawn from the same distribution as the graphs that will be encountered in the real world, the results are of limited value.
-% \nrscomment{so random isnt just the issue, literally anythong out of dimain? and i thought you just said we can do the drawing from a prior distribution ranom? why doesnt that work? need more specifics to explain what the problem is}
-
-
-
-
-
-% \define{Erd\H{o}s-R\'enyi Random Graph}{given $G(n,p)$ where $n$ is the number of vertices to create and $p$ is the probability of any two vertices being connected by an edge, the generator creates $n$ vertices $\{v \in V\}$, and the set of edges $E = \{(u,v)|u,v \in V, u \neq v$ with probability $P$\} yielding the random graph $G=\{V, E\}$.}\\
-% \nrscomment{build on your prior definitions. "A random graph created by..."}
-
-%\nrscomment{idk where theyre used, tell me what the heck skewed graph means}
-
-% An \textit{RMAT Random Graph} uses four probability parameters $a,b,c$ and $d$ that add to $1.0$. 
-% The RMAT generation process recursively subdivides an adjacency matrix into quadrants and creates an edge in each quadrant with probabilities $a,b,c$ and $d$ until there are approximately $2^{n}$ vertices in the graph, where $n$ is a scaling factor. 
-% \nrscomment{we dont yet know what adjacency matrices are... can you describet he algorithm at an even higher level of abstraction that doesnt use the term adjacency matrix?}
-% The \textit{Kronecker Random Graph} begins with a seed graph $G$, of size $n$ and a defined number of iterations $i$, the generation process recursively takes the Kronecker product of $G$ with itself, increasing the size of the graph by $n^{2}$ for $i$ iterations.
-% \nrscomment{youre defining a kronecker grpah using the term kronecker product..... can you do it without that at a higher level?}
-

@@ -20,7 +20,7 @@ from experiment import Experiment, Evaluator
 
 class Test_experiment_framework(unittest.TestCase):
     def setUp(self) -> None:
-        self.default_data_directory = os.path.join("..","..","..","data")
+        self.default_data_directory = os.path.join("..","datasets")
         self.experiment = Experiment()
         self.evaluator = Evaluator()
         

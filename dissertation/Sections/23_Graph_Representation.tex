@@ -1,33 +1,22 @@
 \section{Graph Representations}
 \label{section:23-graph-representations}
-The representation of a graph determines how it is abstracted and stored in memory, which fundamentally affects how it can be processed and operated on. \nrscomment{the representation determines the abstraction? or the abstraction determines the representation?}
+The representation and abstraction model of a graph fundamentally affect how it can be processed and operated on. 
 The representation format of the input graph is a key contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs.
 The tradeoff between memory efficiency (how much space a graph consumes) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
-
-% \nrscomment{i dont think you need the "Many of the attempts..." sentence its redundant to the previous and subsequent ones and without it its smoother and still gets the point across}
-% Many of the attempts to accelerate the efficiency of graph algorithms focus on balancing these two dimensions.
 This section introduces key concepts of graph representation, including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
 A graph's storage format has a direct impact on the space it consumes in memory, the operations that can be performed on it, and the speed of those operations.
-%
-% The \textit{Adjacency Lists} have a small storage footprint, but slow lookup times, with \textit{Adjacency} and \textit{Incidence Matrices} having reciprocal properties. 
-% \nrscomment{doesnt make sense to say this until the end of the section in the summary}
-%
-% Modern efforts show how \textit{compressed representations} can be used to balance memory and computational overheads. 
-% \nrscomment{ditto}
-%
 In this section, we discuss the common ways a graph's topological information can be stored. 
 In most cases, attribute information is stored separately from the graph and can be accessed via pointers or index lookups.
-% Generally, attributes are stored separately to the topological information that this section discusses and are accessed by pointers or index lookups.
-The following examples show the common \nrscomment{"representations used to store the graph in.."} ways to represent the graph in figure~\ref{figure:graph-example}. 
+The following examples show the common representations used to store the graph in figure~\ref{figure:graph-example}. 
 
 \input{Figures/Graphs/08_example_graph.tex}
 
 \subsubsection{Adjacency Lists}
 The adjacency list representation (Figure~\ref{figure:graph-adj-list}) uses a linked list or array.
 The first entry in each line is the source vertex and each subsequent entry indicates an edge to the listed vertex.
-Adjacency lists can represent \nrscomment{"directed or undirected graphs, and can represent weights using lists of tuples."} a directed or undirected graph. 
+Adjacency lists can represent directed or undirected graphs, and can represent weights using lists of tuples. a directed or undirected graph. 
 Representing weights is possible using a list of tuples.
 Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive -- linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
 
@@ -35,35 +24,22 @@ Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but find
 
 \subsubsection{Adjacency Matrices}
 An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix ($M$) to represent the graph.
-A $1$ at location $M_{i,j}$ indicates \nrscomment{the existence of an} there is an edge from vertex $i$ to vertex $j$. 
-%
-% \nrscomment{replace $V_{i},V_{j}$ with $V_{i,j}$. why are we using V as the matrix and not M? like M of size VxV -- $M_{i...V,i...V}$?}
-%
-They \nrscomment{Adjacency matrices} can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent \nrscomment{a weighted edge} the weight of the edge. 
-% Attributes are stored separately from the matrix. 
+A $1$ at location $M_{i,j}$ indicates the existence of an edge from vertex $i$ to vertex $j$. 
+Adjacency matrices can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent a weighted edge. 
 Adjacency matrices have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
-%
-% \nrscomment{you already introduced adjacency matrix term, dont italicize down here}
-%
-One of their major drawbacks is the requirement to store all the $0$s where edges do not exist, \nrscomment{which wastes} wasting space.
+One of their major drawbacks is the requirement to store all the $0$s where edges do not exist, which wastes space.
 
 \input{Figures/Graphs/10_adjacency.tex}
 
 \subsubsection{Incidence Matrices}
-\nrscomment{different name from title}
-Edge Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
+Incidence Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
 An edge is represented with two values, namely a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
 Here, $i$ represents the index of the edge, and $j$ and $k$ represent the vertices that the edge connects.
-Incidence matrices are the most expressive representation \nrscomment{of those listed here since they can encode} and can encode \textit{multi-graphs} and \textit{hyper-graphs}. 
+Incidence matrices are the most expressive representation of those listed here since they can encode \textit{multi-graphs} and \textit{hyper-graphs}.
+Weights can be expressed by modifying the numbers in the matrix. 
 A multi-graph encoding requires inserting source values at $M_{a,j}$ and $M_{a,k}$ and destination values at $M_{b,j}$ and $M_{b,k}$, describing two directed edges going from vertex $j$ to $k$. 
-% \nrscomment{if j and k are the vertices, shouldnt you say Maj and Mbj (the first edge) and then say Mbj and bk (the second edge)? i guess youre saving on having to list -1 and 1 twice, but its a bit confusing this way. maybe make it more generic and say "values at" instead of explicitly putting 1s and -1s? "values at $M_{a,j}$ and $M_{a,k}$ and $M_{b,j}$ and $M_{b,k}$ encoding two directed edges, $a$ and $b$, between vertices $j$ and $k$."}
-A hyper-edge encoding requires placing source value \nrscomment{"a" source value?} at $M_{a,j}$ and destination values at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
-Weights can be expressed by modifying the numbers in the matrix. \nrscomment{this is jarring here can you put it before all the index talk}
-% \nrscomment{the attributes being stored separately seems true across all of them, can you just put that in the intro summary bit and take it out of each subsequent explanation?}
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$, and so for sparse graphs the incidence matrix format may be more space-efficient than an adjacency matrix, but in general it will consume significantly more memory in the typical case where $|E|\gg|V|$. 
-% %
-% \nrscomment{use the real math symbol $\gg$}
-% %
+A hyper-edge encoding requires placing a source value at $M_{a,j}$ and destination values at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$, and so for sparse graphs the incidence matrix format may be more space-efficient than an adjacency matrix, but in general, it will consume significantly more memory in the typical case where $|E|\gg|V|$. 
 Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$, since it requires scanning the entire edge list for each vertex of interest, which is more expensive than the $\mathcal{O}(|V|)$ edge lookup using adjacency lists.
 
 \input{Figures/Graphs/11_incidence.tex}
@@ -72,31 +48,11 @@ Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$, since it requires s
 To balance expressiveness, memory consumption, and computability, numerous compressed representations have been developed. 
 The dominant choices are the Compressed Sparse Row (CSR) and Compressed Sparse Column (CSC) formats (Figure~\ref{figure:csr}).
 The CSR format uses three lists to compress the rows of a sparse (adjacency) matrix~\cite{Bulucc2009}. 
-%
-% \nrscomment{from here down this is too much and its impossible to follow without going back and forth to the figure. i'll try making a figure for this that explains itself, with a caption to do the rest of the work. nearly a full page to get across how these representations work is too much and is painful to read}
-%
-% First, the \textit{value list} contains every nonzero value of the matrix (the existence of an edge), and so has a length of $|E|$ in a directed adjacency matrix. 
-% The \textit{Row Pointer} list contains the index of each position in the \textit{value list} that is associated with a new row.
-% The \textit{Column Indices} list contains the column index of each value in the \textit{value list} from the original sparse matrix.
-% So in figure~\ref{figure:csr}, the values associated with the \textbf{A} vertex (row $0$ of the adjacency matrix) are at positions $[0,1]$ in the value list in figure~\ref{figure:csr}. 
-% We derive this by looking at the row index in figure~\ref{figure:csr} and seeing that the second row begins from index $2$.
-% Knowing that the first two values in the value list are the sources of our edges, we know that the first two values in the column index in figure~\ref{figure:csr} are the destinations $[1,2]$.
-% In the adjacency matrix (figure~\ref{figure:adjacency_matrix}), column $1$ is for vertex \textbf{B} and column $2$ is for vertex \textbf{C}. 
-% The CSC format reverses the function of the row and column indices so that the columns are compressed.
 The CSC format reverses the format so that the columns are compressed.
-The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(nonzero)+nonzero\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(nonzero))$ time to check the existence of an edge where $nonzero$ is the count of non zero entries in the matrix. 
-\nrscomment{using nnz as a variable is horrendous use $|M_{nonzero}|$ if you really have to. can it be written in terms of V, or is the number of nonzero entries dependent on graph structure? it must be... . yeah just go with $|M_{nonzero}|$}
+The space efficiency for CSR/CSC format is $\mathcal{O}(|V|\log(|M_{nonzero}|)+|M_{nonzero}|\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(|M_{nonzero}|))$ time to check the existence of an edge where $|M_{nonzero}|$ is the count of non zero entries in the matrix. 
 More complicated representations exist that are capable of compressing the graph representations even further but they require more computational overhead for the encoding and decoding process~\cite{Shun2015}.
 
 \input{Figures/Graphs/12_csr.tex}
-
-% %
-% \nrscomment{what is your convention for bold/italics/emph? seems like italics for defns, bold for node variable names? Ive usually seen bold for definitions and italics for variable names}
-% %
-
-% \osullikomment{Fix Formatting of figures}
-
-% \input{Figures/Graphs/13_combined_representations.tex}
 
 \subsection{Graph Abstractions}
 The abstract model of a graph refers to how its representation is simplified for storage and operations. 
@@ -106,26 +62,27 @@ There are two dominant graph abstraction paradigms, the \textit{Canonical} and t
 The canonical representation explicitly represents vertices and edges in memory.
 Operations on canonical graphs need to explicitly `follow' the edges of a graph, traversing them in turn until target vertices are found. 
 The canonical paradigm is more easily interpretable by humans and is generally used when explaining representations and operations. 
-% The most basic of these representations are the ones everyone encounters in their introduction to computer science courses, and reflect most of the descriptions in sections~\ref{section:21-graph-definitions}~and~\ref{section:23-graph-representations} that are used in simple, sequential graph processing.
-%
-% \nrscomment{you said things without saying anything and i still dont know what canonical means. dont refer to intro CS courses, it doesnt help explain anything. need a better way of defining canonical reporesentation}
-%
 
-To enable more powerful parallel processing methods and \nrscomment{leverage} leveraging hardware accelerators \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric}, and \textit{data-centric} abstractions have been developed within the canonical domain, all of which use a \textit{Message-Passing Model} (MPM) of computing designed to enable \textit{Bulk-Synchronous Parallelism} (BSP). 
-\nrscomment{you dont need to list hem in the sentence, and you dont need to say in the canonical domain, as youre in the section header anyway.}
+To enable more powerful parallel processing methods and leverage hardware accelerators \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric}, and \textit{data-centric} abstractions have been developed.
 
-% \nrscomment{can we get rid of TLAV/TLAE/TLAG and just say vertex-centric, edge-centric, graph-centri? fewer acronyms better and these dont seem necessary when the more descriptive term is just as good}
-
-\textbf{Vertex-Centric.} The vertex is the focus of attention \nrscomment{focus of attention is vague-- central unit of data? same comment for the rest of them} and breaks algorithms up \nrscomment{the vertex is the subject currently-- the vertex doesnt break up algorithms. reword it} into iterative operations on vertices, updating their states based on the properties of \nrscomment{neighboring} vertices in their neighborhood~\cite{Mccune2015}.
+\textbf{Vertex-Centric.} 
+The vertex is the central unit of data in this abstraction. 
+The abstraction uses iterative operations on vertices, updating their states based on the properties of neighboring vertices~\cite{Mccune2015}.
 Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach.
 
-\textbf{Edge-Centric.} Edges are the focus of attention. Edges are updated \nrscomment{cut them} them based on the properties of the vertices incident to them~\cite{Liu2019}.
+\textbf{Edge-Centric.} T
+The edge is the central unit of data in this abstraction.  
+Edges are updated based on the properties of the incident vertices~\cite{Liu2019}.
 The X-Stream~\cite{Roy2013} and GraphX~\cite{Gonzalez2014} implement the edge-centric approach. 
 
-\textbf{Graph-Centric.} The graph itself is the focus. This paradigm explicitly partitions the input graphs into subgraphs for processing~\cite{Coimbra2021}.
+\textbf{Graph-Centric.} 
+The graph itself is the central unit of data in this abstraction. 
+This paradigm explicitly partitions the input graphs into subgraphs for processing~\cite{Coimbra2021}.
 ApacheGiraffe++ is a noted adopter of the graph-centric abstraction~\cite{Kalavri2017}.
 
-\textbf{Data-Centric.} The graph itself is the focus. It is distinct from the graph-centric model in that rather than explicitly partitioning the graph, it implicitly segments the graph into `active' and `inactive' parts.
+\textbf{Data-Centric.} 
+The graph is the central unit of data in this abstraction.   
+It is distinct from the graph-centric model in that rather than explicitly partitioning the graph, it implicitly segments the graph into `active' and `inactive' parts.
 That is, there is a single graph, but most of it is ignored at any given time. 
 `Active' nodes are added to a `\textit{frontier}' that allows for more efficient computing by limiting the number of edges or vertices being processed at any time. 
 The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}
