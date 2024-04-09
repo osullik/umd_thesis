@@ -1,4 +1,22 @@
 \section{Future Work}
 \label{section:61-Future-Work}
 
-There is likely a need for a maturity model to describe the growth of a field to `proving it works' to `proving it works well' to `proving it is efficient', but given recent criticisms of poorly constructed maturity models~\cite{Lahrmann2011, Sadiq2021}, the formal development of a maturity model for benchmarking is left for future work. 
+The \gai benchmark framework is in its infancy and has many avenues for future work. 
+Many are engineering and data collection problems to build out the benchmark system, including rectifying the deficiencies in the dataset coverage, choice of metric and breadth of implementations the Population Segmentation experiments found.
+Specific engineering challenges of immediate interest are adding a linear algebraic approach to community detection, and testing the benchmark on distributed, shared-memory parallel and GPU-accelerated systems. 
+
+\textbf{A benchmarking Maturity Model.}
+In reviewing many benchmark approaches suggests an implicit maturity model in benchmark development. 
+For a given field, early benchmarks focus on proving functionality.
+Over time, the focus shifts to improving the effectiveness of the solutions of others, and then finally focus shifts to making solutions more efficient. 
+Poorly constructed maturity models have gained negative attention recently~\cite{Lahrmann2011, Sadiq2021} and so the formal development of a maturity model for benchmarking was scoped out of this thesis but is useful for future work to investigate the correlation between benchmark availability and field maturity. 
+
+\textbf{Monotonically Improving Incremental Algorithms.}
+The Population Segmentation benchmark problems reveal that trading off effectiveness and efficiency has an implicit requirement of monotonically improving solutions for incremental and approximate algorithms. 
+Further work must identify existing algorithms with these guarantees, and for problems where none exist, the real-world drivers identified in this thesis provide a strong incentive to develop them.
+
+\textbf{Automated hypothesis Evaluation.}
+Our design process involves the development of hypotheses to guide the design of the investigation apparatus and collection of data. 
+There is merit in exploring how to encode the hypotheses so that they alert when an approach violates the hypothesis.
+Violating the `conventional wisdom' they represent likely indicates an innovative approach at best or a manipulation of the system at worst. 
+Improving the automated evaluation will boost the utility of the benchmark, and move it away from being a tool for `racing systems' towards a platform for meaningful research.

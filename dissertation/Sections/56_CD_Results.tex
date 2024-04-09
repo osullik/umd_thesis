@@ -1,10 +1,47 @@
 \section{Analyze Results, Develop Theoretic Explanation and Iterate}
 \label{section:56-CD-Results}
-To illustrate the utility of the benchmark, we conduct a small-scale demonstration, comparing a few sample problems on a few sample datasets. 
+To illustrate the utility of the benchmark, we conduct a small-scale demonstration, comparing a single sample problem on eight real-world datasets.
 First, we describe the specifics of the experiment setup and second, we describe the results. 
 
 \subsection{Demonstration Setup}
+We implement the \gai population segmentation benchmark in Python 3.11.5 and make the environment\footnote{\scriptsize \url{https://github.com/osullik/umd_thesis/tree/main}} details available.
+The implementation follows the design from figure~\ref{figure:cd-apparatus}, with the exception that the benchmark server is located on the system under test and that the polling is done passively by checking the timestamps of an interim-results folder after the experiment. 
+To run the benchmark, the researcher just specifies the problem and dataset. 
+
+We provide experiment specifications for the $28$ experiments listed in table~\ref{table:cd-experiments} as \texttt{json} files\footnote{\scriptsize available at: \url{https://github.com/osullik/umd_thesis/tree/main/gaib/experiment_definitions}} that the \texttt{benchmark server} uses to create the experiments.
+To maximize usability, the process is completely automated from requesting a benchmark problem from the server until the server provides the data and figures in the return report. 
+The experiments are run on a single configuration of hardware and supporting software\footnote{\scriptsize 2023 Apple Macbook Pro; $12$ Core M2 Max Processor, 32GB Hynix LPDDR5 RAM; MacOS 14.1-Darwin-23.4.0}, with only the implementation varying in the approach to the problem.
+We limit our choice of implementations to the NetworkX library to standardize the representation and ETL processes between implementations. 
+The static approach uses the NetworkX \textit{Louvain Communities}\footnote{\scriptsize \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html}} implementation and the incremental use the NetworkX \textit{Louvain Partitions}\footnote{\scriptsize \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_partitions.html}} library, which iteratively yields communities at decreasing granularity. 
+
+\input{Tables/54_experiments}
 
 \subsection{Demonstration Results}
 
-\osullikomment{Results here.}
+We tie the evaluation closely to the Hypotheses from section~\ref{section:54-CD-Hypotheses} and so group the results by efficiency, effectiveness and 
+Hypotheses are used as a guide for investigation rather than a formal testing mechanism, so we abstain from statistical analysis of results at this time, but intend to automate evaluation against the hypotheses as part of future work. 
+
+\subsubsection{Efficency Results}
+The total experiment time across all experiments is dominated by the execution time (figure~\ref{fig:cd-results-efficency-proportions}) which scales quadratically in the number of vertices (figure~\ref{fig:cd-results-efficency}). 
+The batch latencies are equivalent for both the static and incremental approaches. 
+
+\input{Figures/Diagrams/08_results_efficiency.tex}
+
+\input{Figures/Diagrams/09_results_efficiency_proportions}
+
+\subsubsection{Effectiveness Results}
+Examining the number of predicted versus ground truth communities shows that NMI increases as the number of predicted communities increases, but that there is a concurrently increasing delta between the number of predicted and ground truth communities~(figure~\ref{fig:cd-results-effectiveness-communities}). 
+Both of these covary with the size of the graph. 
+Examining the effectiveness of the iterative algorithm over each increment in Figure~\ref{fig:cd-results-effectiveness-community-lines} shows that while the NMI converges to a higher value and the number of communities decreases as iterations continue they do not `improve' monotonically over time.
+
+\input{Figures/Diagrams/10_results_effectiveness_communities}
+
+\input{Figures/Diagrams/11_results_effectiveness_lines}
+
+\subsubsection{Constraint Results}
+In addition to the observations about the relationship between efficiency and effectiveness of the incremental approach about figure~\ref{fig:cd-results-effectiveness-community-lines}, there is no statistically significant difference between the distribution of NMI at each iteration (figure~\ref{figure:results-constraint}).
+
+\input{Figures/Diagrams/12_results_constraints.tex}
+
+
+

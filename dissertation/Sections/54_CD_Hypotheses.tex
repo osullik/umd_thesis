@@ -1,29 +1,33 @@
 \section{Develop Hypotheses}
 \label{section:54-CD-Hypotheses}
 
-\nrscomment{for a development step you say nothing of how you came up with these given your observations}
+To construct the hypotheses, we review the context of the use case, the problem and the exploratory analysis to identify the likely interactions that will yield the phenomena we wish to investigate. 
+For the Population Segmentation problem of the \gai benchmark, we are particularly interested in the phenomena surrounding the trade-off between effectiveness and efficiency.
+We combine the specific observations from the previous sections in this chapter with the constraint levers identified in table~\ref{table:gai-variance} to develop the hypotheses, presenting them grouped by efficiency and effectiveness and constraint-specific tests. 
+
+% \nrscomment{for a development step you say nothing of how you came up with these given youx/r observations}
 
 \subsection{Efficiency Hypotheses}
 
-\hyp{When the number of vertices in a graph increases, the increase in execution time will be no worse than quadratic.}
+\hyp{When the number of vertices in a graph increases, the increase in execution time will be no worse than quadratic.}\label{H1}
 
 \subsection{Effectiveness Hypotheses}
 
-\hyp{When the mean degree of a graph increases the effectiveness will decrease.}
+\hyp{When the mean degree of a graph increases the NMI will decrease.}
 
 \hyp{When the mean ratio of internal to external community edges ($\mu$) approaches 0.5 (becomes `fuzzy'), effectiveness will decrease.}
 
-\hyp{When the number of communities $c$ in the ground-truth increases, the effectiveness will decrease.}
+\hyp{When the number of communities $c$ in the ground-truth increases, the NMI will decrease.}
 
-\hyp{Community size distributions following a power-law distribution will have a lower effectiveness metric than those following a uniform distribution.}
+\hyp{Community size distributions following a power-law distribution will have a lower NMI than those following a uniform distribution.}
 
-\hyp{Implementations that use vertex and edge attribute information will achieve higher effectiveness than implementations that do not.}
+\hyp{Implementations that use vertex and edge attribute information will have higher NMI than implementations that do not.}
 
-\hyp{Constraining some vertices to be members of specific groups will improve the effectiveness}
+\hyp{Constraining some vertices to be members of specific groups will improve the NMI of attribute-aware approaches}
 
 \subsection{Constraint Hypotheses}
 
 \hyp{As time increases, effectiveness will increase.}
 
-\hyp{There exists an optimal time slice length $T$ for dynamic community detection that minimizes batch latency.}
+\hyp{There is an optimal time slice length $T$ for dynamic community detection to minimize batch latency.}
 

@@ -1,72 +1,126 @@
 \section{Construct the Investigation Apparatus}
 \label{section:55-CD-Apparatus}
 
-\nrscomment{i was expecting the apparatus design to be more tied to the hypotheses you developed from exploratory analysis. at each component you describe, say how it relates to the earlier findings/enables testing the hypotheses/whatever the reason you went through all those steps was- they inform the design, otherwise there are no explicit ties and i dont know why you made these decisions, without really thinking about it and going back and forth between this and the previous sections. }
+% \nrscomment{i was expecting the apparatus design to be more tied to the hypotheses you developed from exploratory analysis. at each component you describe, say how it relates to the earlier findings/enables testing the hypotheses/whatever the reason you went through all those steps was- they inform the design, otherwise there are no explicit ties and i dont know why you made these decisions, without really thinking about it and going back and forth between this and the previous sections.}
 
-\subsection{Benchmark Model}
-\nrscomment{drop the header, this should be the signpost- our apparatus consists of...}
+The apparatus is the physical instantiation of the problem benchmark.
+Figure~\ref{figure:framework} shows how the apparatus is derived from each step of the process. 
+Three of the components (Datasets, Tasks and Metrics) are consistent with the approach of traditional benchmarking approaches (see figure~\ref{figure:benchmark_components}) and we add the explicit definition of the observation apparatus. 
+These four components are the concrete implementation of the benchmark. 
+Combined, they have two key roles. 
+First, they must interact with the SUT, problems and datasets go in, and solutions for evaluation come out.
+Second, they must monitor the phenomena emerging from the SUT throughout the process.
+Figure~\ref{figure:cd-apparatus} is the envisaged workflow for the Population Segmentation problem benchmark, showing how the physical components of the observation apparatus are implemented and how they interact between the benchmark and the SUT.
+It is representative of the expected workflow for most Problems in the \gai Benchmark Framework.
 
-Considering the proliferation of graph hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2014, Wu2014, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and GNN accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} and implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018} and shared-memory shared-memory~\cite{Ghosh2019} on CPU and GPU~\cite{Wang2016}, as well as linear-algebraic approaches for CPU~\cite{Low2020} and GPU~\cite{Mattson2019} for community detection approaches we prefer an Input/Output benchmark paradigm for the population segmentation problem.
-\nrscomment{that sentence lists things of different parts of speech, and is way too long- by the time you get to the subject (we prefer) ive lost the beginning qualifiers}
-\nrscomment{you criticized input/output in the lit review and now youre using it?}
+In the remainder of this section, we summarize the concrete components of the apparatus, showing how they were created and identifying expansion opportunities.  
+
+\subsection{Observation Apparatus}
+The observation apparatus is a component we add to our benchmark design to explicitly represent the decisions about how the benchmark will interact with the SUT.
+We choose to implement an Input/Output benchmark, augmented with constraint-based hypotheses testing.
+While the Input/Output approach prevents us from monitoring the internal state of the system, it is maximally accommodating of researchers altering the hardware, software stack and implementation.
+System variance reflects the real-world implications of the benchmark, if someone can afford to buy and run expensive hardware to achieve better results, they are free to do so.
+
+More specifically we choose the Input/Output model to accommodate the huge variety in \gai acceleration approaches. 
+Hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2019, Wu2015, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016}, GNN accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} are proliferating rapidly. 
+Implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on CPU and GPU~\cite{Wang2016}, as well as linear-algebraic approaches for CPU~\cite{Low2020} and GPU~\cite{Mattson2019} for community detection approaches.
+Configuring instrumentation for all of these systems is infeasible, and a hosted benchmark would exclude too many of the approaches, leading us to an enhanced Input/Output model for the benchmark. 
+
+% \nrscomment{that sentence lists things of different parts of speech, and is way too long- by the time you get to the subject (we prefer) ive lost the beginning qualifiers}
+% \nrscomment{you criticized input/output in the lit review and now youre using it?}
 
 \subsection{Datasets}
+Datasets in the \gai population segmentation problem are expected to be large, scale-free and heterogeneous, attributed graphs.
+The hypotheses identify the requirement to scale the number of vertices, the density of the graphs, the distribution of degrees, the distribution of communities and optionally include weights and attributes. 
+The review of Community Detection problems also shows that community detection can be applied to dynamic graphs.
 
-\nrscomment{Moved from ch4}
-Preferably, these will be available at tiny (processing is possible entirely in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold \url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}}}), small (processing is possible in memory on a personal computer, no larger than $\sim16$Gb), medium (processing is possible on a commercial system, no larger than $\sim1$Tb) and large (processing will require multiple commercial systems (at least $\sim5$Tb)).
+To stress across these parameters, we first look for datasets in the \textit{Tiny, Small, Medium} and \textit{Large} range. 
+We define Tiny datasets as those that fit in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold \url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}}}).
+Small can be processed in memory on a personal computer, no larger than $\sim16$Gb, the medium should fit in the memory of a commercial system, no larger than $\sim1$Tb and large should be bigger than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
 
-Full dataset coverage will require tiny, small, medium and large datasets in each scale-free, uniform-random and mesh dataset (see: section~\ref{section:44-GAI-Framework}) with ground-truth communities/clusters/partitions. 
-We expect the majority of real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
+Full dataset coverage will further require datasets in each of the scale-free, uniform-random and mesh shapes so that expected and worst-case shapes can be explored.
+All datasets will require ground-truth communities/clusters/partitions so that NMI can be calculated.
+We expect most real-world datasets to be medium to large-scale-free graphs so focus effort here accordingly (see section~\ref{section:51-CD-Problem}).
 The datasets should be weighted and attributed, and partial assignments of vertices to communities should be available. 
 There should be dynamic graphs suitable for batch updating and continuous streaming.
 Graphs should be available with varying community distributions, mean degree, and `fuzziness'
-Graphs with overlapping and nested communities. \nrscomment{missing verb}
+Graphs should be available with overlapping and nested communities.
 
-Full coverage of these cases will require petabytes of graphs, so we confine initial testing to the datasets in table~\ref{table:cd-datasets}.
+Our datasets are summarized in table~\ref{table:cd-datasets}.
+We identify seven suitable datasets from the SNAP repository ranging from tiny to medium in size are scale-free in shape and cover the distribution of community sizes from small to large. 
+Noting the lack of mesh and random graphs, we generate our own.
 
-Missing from the publicly available datasets are a mesh graph, and uniform-random with ground truth. 
+\subsubsection{Mesh Graph Generation}
+There were no publicly available mesh graphs with ground truth community labels. 
+We develop a tool to generate directed, weighted, attributed graphs with hierarchical and overlapping communities from OpenStreetMap (OSM) road network data\footnote{\scriptsize Tool available at \url{https://github.com/osullik/umd_thesis/blob/main/md_roads/osmg.py}}. 
+Our tool queries the OSM API for a given city, county or state, extracts the road segments (ways) and creates a vertex where the ends of two segments meet or where two segments intersect. 
+We construct the graph using Python's NetworkX~\cite{Hagberg2008} and assign each vertex the attributes of its latitude, longitude and the name of the street it comes from. 
+We group the vertices by subordinate communities. 
+For example, a state has community groups at the county and city levels.
+Where a road crosses a border, it is assigned to a special group that is a member of both communities. 
+We use the tool to create six tiny and small datasets with very low density, wide diameters, and a broad distribution of community counts across multiple resolutions. 
 
-We can generate synthetic graphs using a community-detection generator like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, GenCAT~\cite{Maekawa2023} that gives us control over how the graph is generated.
-\nrscomment{you criticized synthetic graphs in prelim, and now are using them? which specific type is it- mathematical, imitative?}
+\subsubsection{Random Graph Generation}
 
-\osullikomment{Insert comments here about generating road road-based dataset that has community labels}
+While random graphs are not an effective substitute for real-world graphs from the target domain, they are a useful supplemental tool to cover gaps in real-world data and to develop datasets to stress specific system components.
+We lack coverage of the spectrum of graph shapes between mesh and scale-free.  
+Imitative generators are not yet at the maturity to generate the medium and large datasets we require, nor are suitable statistical summaries of graphs available to seed imitative generators.
+Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, GenCAT~\cite{Maekawa2023} can generate graphs with ground-truth communities following mathematical distributions.
+% We elect not to include 
+
+% We use the LFR benchmark generator to ... \osullikomment{Fill out with Random Graph Details}
+
+% \nrscomment{you criticized synthetic graphs in prelim, and now are using them? which specific type is it- mathematical, imitative?}
+
+% \osullikomment{Insert comments here about generating road road-based dataset that has community labels}
 
 \input{Tables/52_CD_Datasets}
 
-\subsection{Problems}
+\subsection{Tasks}
+We draw on the problems identified in table~\ref{table:cd-problem-definition} for our specific tasks. 
+To enhance the benchmark, we intend for the tasks the be publicly, and generically specified, with specific values provided only at experiment time, in an attempt to reduce researchers `gaming' the system.
+Figure~\ref{figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$.
 
-
-
-\subsection{Telemetry} \nrscomment{if youve gone through datasets and problems i would expect this to be called metrics}
-Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system, and how much time elapses \nrscomment{between ...}. 
-Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test (SUT) and Benchmark Server (BS). 
-The problem definitions above are available in advance so that systems can be prepared to solve the task presented to them. 
-The test begins when the SUT specifies which problem to solve. 
-The BS randomly selects a workload and commences the transfer to the SUT, who sends a hash of the received file as proof that the transfer has been completed. 
-When that hash is received, the specific task is sent by the Benchmark Server, filling in the variables in the problem statement with the details for the receiving server. 
+\subsection{Metrics} 
+% \nrscomment{if youve gone through datasets and problems i would expect this to be called metrics}
+Using the Input/Output paradigm, telemetry can only be gathered by observing what data is passed into a system, what data comes out of a system, and how much time elapses between. 
+Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test and Benchmark Server (BS). 
+% The problem definitions above are available in advance so that systems can be prepared to solve the task presented to them. 
+% The test begins when the SUT specifies which problem to solve. 
+% The BS randomly selects a workload and commences the transfer to the SUT, who sends a hash of the received file as proof that the transfer has been completed. 
+% When that hash is received, the specific task is sent by the Benchmark Server, filling in the variables in the problem statement with the details for the receiving server. 
 ETL and Processing are shown linearly but could be interleaved in the case a SUT chooses to take an incremental approach. 
-From the time the problem is sent, the BS will periodically poll the SUT for its current answer, and log the time and content of the response, allowing the analysis to show where approximate or incremental approaches are able to provide partial answers earlier, or the improvement of iterative algorithm results over time. 
-When the ETL is complete, the SUT sends a message and the summary statistics for the graph (vertex count, edge count, mean degree) to show that the entire graph has been constructed.
-When processing is finished, it sends a message to the BS along with the final results. 
-At each step of the process, the time is logged by the BS, and is used to generate the efficiency metrics. 
-The Effectiveness metrics are calculated using the appropriate metric for the problem.
-\nrscomment{you dont need to walk through it in that much detail- let the diagram do the heavy-lifting and just summarize what its showing}
+The shaded region denotes the polling period.
+During the polling period, the BS will periodically poll the SUT for its current answer, and log the time and content of the response, identifying where partial or approximate answers are available ahead of the algorithm officially `completing'. 
+% When the ETL is complete, the SUT sends a message and the summary statistics for the graph (vertex count, edge count, mean degree) to show that the entire graph has been constructed.
+% When processing is finished, it sends a message to the BS along with the final results. 
+At each step of the process, the time is logged by the BS for generating the efficiency metrics \textit{Transfer Time, ETL Time, Execution Time, Batch Latency} and \textit{Batch Rate}. 
+The Effectiveness metric for all problems requiring the comparison of communities in ground truth and predicted nodes is \textit{NMI}.
+% \nrscomment{you dont need to walk through it in that much detail- let the diagram do the heavy-lifting and just summarize what its showing}
 
-\nrscomment{theres a lot here- i think it is worth discussing some of the potential failure cases of your design, but do it more concisely, especially cutting down the last part about caching to a sentence or two}
-There are drawbacks to the Input/Output approach. 
-First, transfer time is highly dependent on network connectivity, and transferring all but the smallest graphs will result in heavy network traffic.
-The transferring of full static graphs between systems is not typical behavior in the real world, and so the transfer time will not be used for any calculation here.
-In cases where dynamic graphs are in use, network bottlenecks may be the bottleneck, so we retain the capability. 
-
-The second risk is the `gaming' of the benchmark, for example by making execution time look faster by waiting to send the ETL complete message.
-The risk of gaming for time is somewhat mitigated by reporting both ETL and execution time, as well as batch latency.
-
-Third, a more insidious way of gaming for time is to build up a collection of all graphs associated with the problem in memory and fake the ETL process. 
-Caching of graphs is less of a concern for medium and large-scale datasets because the cost of holding them all in memory would be great enough that it is unattractive and at the smaller level forms part of the motivation to transfer the file and receive a confirmatory hash, as well as slightly vary the problem parameters. 
-Small cosmetic changes can be made to the datasets that do not meaningfully impact processing time (e.g. incrementing each vertex ID by 1, changing attributes slightly etc) but would change the hash of the file, and could be detected in the returned results fairly trivially. 
+\subsection{Limitations}
+% \nrscomment{theres a lot here- i think it is worth discussing some of the potential failure cases of your design, but do it more concisely, especially cutting down the last part about caching to a sentence or two}
+Several limitations exist in the current design of the population segmentation problem benchmark. 
+First, transferring the data is highly sensitive to network bandwidth and latency, disadvantaging remote researchers. 
+Using static datasets can lead to gaming the system, which is why we implement the randomized problem parameters, hash checks and network data summaries to verify that the benchmark process is being followed. 
+It is still possible to game it, but it requires a more deliberate effort. 
 
 \input{Figures/Diagrams/05_cd_apparatus}
 
-\nrscomment{the part in the middle where it cycles until the final response is given is confusing. the dotted lines are hard to follow so it initially looks like lines coming out of 5a and 5b going to the left, which doesnt make sense. why is 5b connected to the cycle? and why does polling period start between 4 and 5? shouldnt it start at 4? the general idea of this is good but the words and arrows sometimes lining up and sometimes not is confusing.}
+% The Input/Output approach is limited
+% First, transfer time is highly dependent on network connectivity, and transferring all but the smallest graphs will result in heavy network traffic.
+% The transferring of full static graphs between systems is not typical behavior in the real world, and so the transfer time will not be used for any calculation here.
+% In cases where dynamic graphs are in use, network bottlenecks may be the bottleneck, so we retain the capability. 
 
-\nrscomment{This diagram is generic enough that it could go with the abstract design, though it's your resulting benchmark design after following the methodology you outline there, so i can see why its here, but its weird that the caption mentions CD when nothing in the diagram is specific to CD. i'll come back to this after reading ch4.}
+% The second risk is the `gaming' of the benchmark, for example by making execution time look faster by waiting to send the ETL complete message.
+% The risk of gaming for time is somewhat mitigated by reporting both ETL and execution time, as well as batch latency.
+
+% Third, a more insidious way of gaming for time is to build up a collection of all graphs associated with the problem in memory and fake the ETL process. 
+% Caching of graphs is less of a concern for medium and large-scale datasets because the cost of holding them all in memory would be great enough that it is unattractive and at the smaller level forms part of the motivation to transfer the file and receive a confirmatory hash, as well as slightly vary the problem parameters. 
+% Small cosmetic changes can be made to the datasets that do not meaningfully impact processing time (e.g. incrementing each vertex ID by 1, changing attributes slightly etc) but would change the hash of the file, and could be detected in the returned results fairly trivially. 
+
+
+
+% \nrscomment{the part in the middle where it cycles until the final response is given is confusing. the dotted lines are hard to follow so it initially looks like lines coming out of 5a and 5b going to the left, which doesnt make sense. why is 5b connected to the cycle? and why does polling period start between 4 and 5? shouldnt it start at 4? the general idea of this is good but the words and arrows sometimes lining up and sometimes not is confusing.}
+
+% \nrscomment{This diagram is generic enough that it could go with the abstract design, though it's your resulting benchmark design after following the methodology you outline there, so i can see why its here, but its weird that the caption mentions CD when nothing in the diagram is specific to CD. i'll come back to this after reading ch4.}

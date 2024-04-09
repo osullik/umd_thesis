@@ -1,4 +1,35 @@
 \section{Discussion}
 \label{section:56-CD-Discussion}
+Based on the results described in section~\ref{section:56-CD-Results} and the context of the hypotheses stated in section~\ref{section:54-CD-Hypotheses} we make the following observations.
 
-\osullikomment{Examine each hypothesis in turn and compare to the collected data}
+\textbf{The NetworkX implementation of the Louvain algorithm has quadratic complexity in practice.}
+Execution time increases quadratically in both the number of vertices and the number of edges. 
+Our datasets are weighted towards mesh graphs where the number of $|E|\rightarrow|V|$.
+While this is not representative of real-world community structures, it does show that the assertion that the Louvain algorithm and its derivatives are `near linear in practice~\cite{Blondel2008, Traag2019} is misleading.
+
+\textbf{Execution time dominates, but ETL time is non-trivial for small graphs.}
+Benchmarks focus on execution time because it is the bottleneck of a system.
+For small graphs, ETL can take up to $20\%$ of total experiment time.
+As we implement support for dynamic graphs which involve many small ETL activities over time, we expect to see ETL taking larger proportions of the total experiment runtime. 
+
+\textbf{The Louvain Partitions implementation does not yield incremental solutions.}
+Reviewing the batch latency (figure~\ref{fig:bl-propotrion}) shows that the NetworkX implementation of Louvain Partitions does not yield an answer after each partition.
+Instead, it completes the entire algorithm and then returns a generator that contains all of the partitions.
+To effectively measure the `benefit' of an incremental solution through batch latency, an incremental algorithm must return results in real-time, or at least in batches smaller than $99\%$ of the total runtime.
+
+\textbf{NMI is an unreliable metric for evaluating population segmentation.}
+NMI uniformly increases as the number of predicted communities increases, skewing the `goodness' evaluation. 
+The issue is apparent when comparing the number of predicted communities (figure~\ref{fig:gt-community-sizes}) to the NMI (figure~\ref{fig:gt-community-nmi}) for the same experiment. 
+High NMI scores correlate with large deltas between the predicted number of communities and the actual number of communities, indicating that they cannot be the `good' result NMI suggests. 
+
+\textbf{The Louvain Partition implementation does not improve monotonically over time.}
+One of the assumptions about the benefit of an incremental or approximate approach for trading off between effectiveness and efficiency is that it should improve monotonically. 
+That is, the longer it runs, the better the solution gets. 
+Figures~\ref{fig:cd-results-effectiveness-community-lines},~\ref{fig:cd-results-effectiveness-communities} and~\ref{figure:results-constraint} show erratic variation in the size of communities and the NMI at each step, suggesting that we cannot make predictable tradeoffs of efficiency and effectiveness. 
+Adding more datasets and different incremental implementations will assist in understanding this behavior, which we believe is the biggest impediment to trading off between efficiency and effectiveness. 
+
+\textbf{Summary.}
+Based on our small experiment, we draw preliminary conclusions that these approaches are not suitable for trading off effectiveness for efficiency. 
+We identify the need to improve the balance in our datasets between mesh, scale-free and random; find incremental implementations that periodically output solutions; identify a better metric than NMI for evaluating effectiveness and find methods that monotonically improve community quality over time. 
+The first three are benchmark design considerations, but the last one is an algorithmic design question---does a community detection algorithm exist that improves monotonically, and if not, how could we construct one?
+

@@ -1,0 +1,18 @@
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}  % Width of first subfigure
+        \centering
+        \includesvg[width=\textwidth]{Experiment_Results/et_vs_exp_total.svg}  % Include first image
+        \caption{Execution time dominates total experiment time}
+        \label{fig:et-proportion}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}  % Width of second subfigure
+        \centering
+        \includesvg[width=\textwidth]{Experiment_Results/bl_vs_exp_total}  % Include second image
+        \caption{The incremental approach does not yield incrementally. The first batch completes at 99\% of Experiment Time}
+        \label{fig:bl-propotrion}
+    \end{subfigure}
+    \caption{Execution time dominates the Louvain approaches.}
+    \label{fig:cd-results-efficency-proportions}
+\end{figure}
