@@ -1,9 +1,7 @@
 \section{Thesis Outline}
 \label{section:15-Thesis-Outline}
-\osullikomment{Update this}
-The remainder of this document begins with a review of related work in evaluating hardware, evaluating graph algorithms and creating benchmarks in Chapter \ref{chapter:20-Related-Work}. 
-The main body of the Thesis is broken into two related, but self-contained parts. 
-Chapter \ref{chapter:30-Graph-Hardware-Benchmarking} details the problem, research methodology, experiment design and results for developing a benchmark for graph hardware accelerators.
-It anchors on the question \textit{`How can we decide when graph hardware acceleration is appropriate?'}
-Building on the results of chapter \ref{chapter:30-Graph-Hardware-Benchmarking}, chapter\ref{chapter:40-Community-Detection-Case-Study} uses the benchmark to conduct an empirical investigation of \textit{Community Detection} problems, focusing on answering the question \textit{`Are the typical characteristics of a community detection problem suitable for Graph Hardware Acceleration?'}.
-Finally, Chapter \ref{chapter:50-Conclusion} will discuss the results, identify future directions for research and conclude.\\
+The thesis continues with a review of key graph and computer architecture concepts in Chapter~\ref{chapter:20-Preliminaries} to identify what it is that makes optimizing \gai approaches hard and why measuring relative performance is difficult. 
+Then, Chapter~\ref{chapter:30-Literature-Review} is a detailed review of current \gai benchmarking and workload analysis efforts to characterize the current gaps in benchmark coverage of \gai tasks, datasets and metrics and identify what causes performance to degrade in \gai systems. 
+Chapter~\ref{chapter:40-Graph-AI-Benchmarking} introduces the \gai benchmark frameworks and outlines our methodology for developing \gai problems to constitute the benchmark framework. 
+We use the population segmentation problem from the Intelligence and Security domain to demonstrate how our development methodology is applied, describe the implementation of the \gai benchmark prototype and outline the findings of our initial experiments in chapter~\ref{chapter:50-Community-Detection-Case-Study}.
+Finally, chapter~\ref{chapter:60-Conclusion} concludes after identifying some specific directions for future work.

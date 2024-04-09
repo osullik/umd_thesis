@@ -40,32 +40,13 @@ However, current approaches are not sufficient to capture the breadth of complex
 %
 Datasets are sorely lacking in coverage of weighted, directed, attributed multigraphs characteristic of knowledge graphs that form the basis of most modern GraphAI inputs.
 There is almost no coverage of dynamic (streaming) graph tasks, and no work approaching GraphAI problems within size, weight and power constraints. 
-% 
-% %
-% \nrscomment{"approaching GraphAI problems within size, weight and power constraints" doesnt immediately convey what you want it to. Youve also got a zeugma using support to mean support for a graph type and support for operating under constraints. What do you mean by there is no support? algorithmically? Dataset wise? you were just talking datasets so id assume that, unless you specify otherwise. Id reword this to be more specific and explicitly state what the gaps are.}
-% %
+
 Metrics are limited to efficiency measures like execution time, largely ignore graph extraction, transformation and load times, and either ignore the correctness of the output or cost cost of generating it. 
-% %
-% \nrscomment{id say "often ignoring the correctness of the output" - you havent defined efficiency and effectiveness yet so using the terms sounds kind of forced}
-% %
 
-% %
 Using an empirical approach, we define a framework for constructing a comprehensive \gai benchmark that addresses the shortcomings outlined above. We propose a taxonomy of \gai problems and describe how to select appropriate tasks, datasets, and metrics given a use case or problem under study.
-%
-% \nrscomment{id move this down as a selling point of your particular CD benchmark that you achieved following the proscribed methodology}
-%
-% The approach balances the evaluation of a \gai solution's fitness-for-purpose with characterizing the bottlenecks constraining progress.
-% \nrscomment{"To demonstrate the suitability of our approach" otherwise you have to re-specify what the problem is}
-To demonstrate the suitability of our approach, we select the problem of \textit{Demographic Segmentation} using the \textit{structural analysis} \gai task of \textit{Community Detection} from our survey of national security problems as a case study, and develop a benchmark that provides a researcher the information they need to trade-off between efficiency, effectiveness and cost.
-% %
-% \nrscomment{Just "extends current work with broader coverage" doesnt sound like much. Can you move the balancing fitness vs bottleneck point down here?}
-% %
+
+To demonstrate the suitability of our approach, we select the problem of \textit{Population Segmentation} using the \textit{structural analysis} \gai task of \textit{Community Detection} from our survey of national security problems as a case study, and develop a benchmark that provides a researcher the information they need to trade-off between efficiency, effectiveness and cost.
+
 The case study shows how the methodical construction of the benchmark using empirical methods yields an effective benchmark for \textit{Community Detection} and a viable template for implementing other \gai benchmarks as part of the suite in the future.
-\osullikomment{Add more here on impact.}
-
-% %
-% \nrscomment{the takeaway impact needs to be stronger. How will the CD benchmark allow people to improve CD for the use case problem we care about? Youve already said it proves the methodology is useful and works, but that hinges on the benchmark being good, so you have to sell that here. If thats not viable then maybe circle back to the initial "enabling clear comparison of performance" gaps and explain how it fills one or more of the issues you identified earlier.}
-% %
-
 
 \newpage
