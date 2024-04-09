@@ -1,2 +1,27 @@
 \section{Conclusion}
 \label{section:62-Conclusion}
+
+This thesis develops a benchmarking framework for \gai. 
+Chapter One identifies \gai as a field of growing importance with the emergence of concepts like neuro-symbolic artificial intelligence and retrieval augmented generation. 
+It characterizes a taxonomy spanning from classical AI problems in searching and planning, through structural analysis, reasoning and the development of Graph Neural Networks. 
+We show how for the Intelligence and Security domain, \gai approaches can address many of their problems, and that deploying them to the real world imposes temporal, financial, SWaP and accuracy constraints. 
+Frequently one system will be expected to solve many \gai problems, and so determining which system provides the best balance of efficiency, effectiveness and cost across its problem sets is an important question in procurement. 
+The go-to tool for understanding the relative performance of systems is benchmarking. 
+
+Chapter Two explains how the proliferation of distinct graph abstraction models, representations, storage formats, primitive operations, and programming frameworks, together with the heavily data-dependent character of \gai tasks and the ineffectiveness of modern general-purpose architectural optimizations for graph data structures makes them very difficult to evaluate. 
+
+From Chapter Three we identify that a useful benchmark needs to do more than just `race' systems against each other on a leaderboard and introduce empirical and constraint-based benchmarking as alternate approaches that produce more meaningful results. 
+Reviewing existing benchmarks shows a lack of coverage for dynamic graph processing, a focus on kernel-level tasks at the expense of a holistic `problem-centric' view and a focus on either efficiency or effectiveness but never both. 
+We show how prior workload analyses and efforts to accelerate \gai hardware provide detailed insights into the internal states of \gai systems, and conclude that while the instrumentation and profiling required make these approaches infeasible for a large-scale benchmark, the data dependence of \gai tasks means we can manipulate the input to stimulate some of the same behaviors. 
+
+The findings from these three chapters yield the \gai benchmark framework in Chapter Four.
+The framework is problem-centric.
+The general framework provides a common interface for problems to be developed and integrated.
+The framework design and abstract development methodology we develop is applied to the Population Segmentation problem from the Intelligence and Security domain as an exemplar use-case in Chapter Five. 
+By stepping through the process, we develop the Population Segmentation Benchmark for the \gai benchmark framework.
+In addition to the methodological contribution, we describe the development of a tool to convert geospatial data from OpenStreetMaps to directed, weighted, attributed graphs with ground-truth community labels to fill a gap in publicly available mesh graphs for community detection.
+We also provide a prototype implementation of the observation apparatus and run $28$ discrete experiments to demonstrate the functionality of the Population Segmentation Benchmark Problem as a component of the \gai benchmark. 
+Analyzing the results of those experiments shows that the ability to trade off the effectiveness of a solution for a more efficient one is dependent on the existence of incremental or approximate algorithms that improve effectiveness monotonically over time, and shows that Normalized Mutual Information is an unreliable metric for evaluating the effectiveness of a community detection approach to solving the population segmentation problem. 
+
+Overall, this thesis shows that a clear methodology, grounded in prior work, provides a mechanism to develop a benchmark that goes beyond `racing' systems against each other towards developing a deeper understanding of a system under test without needing to advance beyond the Input/Output boundary. 
+The formal methodology gives a clear path for other problems to be added to the benchmark and promotes a transparent, reproducible approach to the scientific inquiry that needs to happen to continue advancing \gai.

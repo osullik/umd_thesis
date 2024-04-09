@@ -17,6 +17,12 @@ Further work must identify existing algorithms with these guarantees, and for pr
 
 \textbf{Automated hypothesis Evaluation.}
 Our design process involves the development of hypotheses to guide the design of the investigation apparatus and collection of data. 
-There is merit in exploring how to encode the hypotheses so that they alert when an approach violates the hypothesis.
+Encoding the hypotheses so that they alert when a benchmark submission violates their assumptions is a useful augmentation to the current approach.
 Violating the `conventional wisdom' they represent likely indicates an innovative approach at best or a manipulation of the system at worst. 
 Improving the automated evaluation will boost the utility of the benchmark, and move it away from being a tool for `racing systems' towards a platform for meaningful research.
+
+\textbf{Non-invasive measurement of Cost.}
+The major limitation of the \gai benchmark framework is the inability to accurately measure the cost of a system.
+Current approaches focus on estimation using a cost model, or selecting a proxy metric like power consumption as the basis of cost estimates. 
+To add the third crucial dimension to the efficiency and effectiveness metrics already collected, we need to develop a method to measure cost from the Input/Output interface. 
+Alternatively, developing a method to characterize a remote system so that the benchmark framework can estimate costs for the system under test may be feasible, but is limited by the use of bespoke hardware accelerators that may not support a general-purpose tool running on their system to collect that information.
