@@ -1,0 +1,65 @@
+{
+  "experiment": "Rhode Island_adj_list_NX_LOUVAIN_INCREMENTAL_city_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Rhode Island/Rhode Island_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 34.20336151123047,
+    "node_count": 671745,
+    "edge_count": 711177,
+    "weighted": true,
+    "gt_file": "datasets/Rhode Island/Rhode Island_gt_communities_city.txt",
+    "gt_community_count": 63
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.7001071207228762,
+      "num_communities": 618
+    },
+    "interim_0": {
+      "nmi": 0.5574761173918938,
+      "num_communities": 19175
+    },
+    "interim_1": {
+      "nmi": 0.6998840749433957,
+      "num_communities": 620
+    },
+    "interim_2": {
+      "nmi": 0.5992483346869767,
+      "num_communities": 6924
+    },
+    "interim_3": {
+      "nmi": 0.46618746265103284,
+      "num_communities": 299642
+    },
+    "interim_4": {
+      "nmi": 0.7001071207228762,
+      "num_communities": 618
+    },
+    "interim_5": {
+      "nmi": 0.521442971161045,
+      "num_communities": 51080
+    },
+    "interim_6": {
+      "nmi": 0.6883406889121692,
+      "num_communities": 872
+    },
+    "interim_7": {
+      "nmi": 0.6462115123142861,
+      "num_communities": 2407
+    },
+    "interim_8": {
+      "nmi": 0.4911468206181192,
+      "num_communities": 128541
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.006291,
+    "ETL": 2.788806,
+    "Processing": 34.616911,
+    "Probing": 37.46852,
+    "Batch_Latency": 37.444081,
+    "Batch_Rate": 4.1631688888888885,
+    "Experiment_Length": 37.470667
+  }
+}

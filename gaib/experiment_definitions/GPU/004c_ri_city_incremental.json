@@ -1,0 +1,11 @@
+{
+    "SOURCE_DATA":"datasets/Rhode Island/Rhode Island_adj_list.txt",
+    "GT_FILE_PATH":"datasets/Rhode Island/Rhode Island_gt_communities_city.txt",
+    "GT_GRANULARITY":"city",
+    "WORKING_DIRECTORY":"temp_workspace",
+    "OUTPUT_DIRECTORY":"experiment_results",
+    "TASK":"NX_LOUVAIN_INCREMENTAL",
+    "WEIGHTED":true,
+    "SNAP":false,
+    "GPU":true
+}

@@ -9,57 +9,57 @@
     "edge_count": 680858,
     "weighted": true,
     "gt_file": "datasets/Delaware/Delaware_gt_communities_city.txt",
-    "gt_community_count": 63
+    "gt_community_count": 64
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.6985783282709858,
+      "nmi": 0.6985783282709859,
       "num_communities": 570
     },
     "interim_0": {
-      "nmi": 0.6985062317124253,
-      "num_communities": 571
-    },
-    "interim_1": {
-      "nmi": 0.6907191069836447,
-      "num_communities": 732
-    },
-    "interim_2": {
-      "nmi": 0.4646902882844155,
+      "nmi": 0.46469028828441555,
       "num_communities": 286407
     },
-    "interim_3": {
-      "nmi": 0.6004893558533817,
-      "num_communities": 6319
+    "interim_1": {
+      "nmi": 0.48970493445589236,
+      "num_communities": 122738
     },
-    "interim_4": {
-      "nmi": 0.6985783282709858,
-      "num_communities": 570
-    },
-    "interim_5": {
+    "interim_2": {
       "nmi": 0.5200890837045359,
       "num_communities": 48727
     },
-    "interim_6": {
+    "interim_3": {
+      "nmi": 0.5565569173804397,
+      "num_communities": 18074
+    },
+    "interim_4": {
+      "nmi": 0.6004893558533818,
+      "num_communities": 6319
+    },
+    "interim_5": {
       "nmi": 0.6501418461924141,
       "num_communities": 2092
     },
+    "interim_6": {
+      "nmi": 0.6907191069836448,
+      "num_communities": 732
+    },
     "interim_7": {
-      "nmi": 0.48970493445589225,
-      "num_communities": 122738
+      "nmi": 0.6985062317124254,
+      "num_communities": 571
     },
     "interim_8": {
-      "nmi": 0.5565569173804397,
-      "num_communities": 18074
+      "nmi": 0.6985783282709859,
+      "num_communities": 570
     }
   },
   "efficiency": {
-    "Transfer": 0.010927,
-    "ETL": 2.514335,
-    "Processing": 113.342702,
-    "Probing": 115.91618,
-    "Batch_Latency": 115.890846,
-    "Batch_Rate": 12.879575555555554,
-    "Experiment_Length": 115.924783
+    "Transfer": 0.066927,
+    "ETL": 6.474667,
+    "Processing": 226.81043,
+    "Probing": 233.559908,
+    "Batch_Latency": 233.40437,
+    "Batch_Rate": 25.951100888888888,
+    "Experiment_Length": 233.622992
   }
 }

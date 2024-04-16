@@ -283,6 +283,11 @@ class Task():
         elif self.task == "NX_LOUVAIN_INCREMENTAL":
             self.task_networkx_louvain_incremental()
             return
+        elif self.task == "NX_LOUVAIN_GPU":
+            self.task_networkx_louvain_GPU()
+            return 
+        elif self.task == "NX_LOUVAIN_INCREMENTAL_GPU":
+            self.task_networkx_louvain_GPU()
         else:
             return None
 
@@ -340,6 +345,34 @@ class Task():
                                                     resolution=1,
                                                     threshold=0.0000001,
                                                     seed=123
+                                                    )
+        
+        for iteration in community_generator:
+            self.result = iteration
+            self.write_interim_result()
+        
+        return
+    
+    def task_networkx_louvain_GPU(self):
+        print("Calculating Communities with GPU")
+        self.result = nx.community.louvain_communities(self.graph, 
+                                                       weight=None,
+                                                       resolution=1,
+                                                       threshold=0.0000001,
+                                                       seed=123,
+                                                       backend='cugraph')
+        
+        self.write_interim_result()
+        return
+    
+    def task_networkx_louvain_incremental_GPU(self):
+        print("Calculating Communities Incrementally with GPU")
+        community_generator = nx.community.louvain_partitions(self.graph, 
+                                                    weight=None,
+                                                    resolution=1,
+                                                    threshold=0.0000001,
+                                                    seed=123,
+                                                    backend='cugraph'
                                                     )
         
         for iteration in community_generator:

@@ -9,25 +9,25 @@
     "edge_count": 680858,
     "weighted": true,
     "gt_file": "datasets/Delaware/Delaware_gt_communities_city.txt",
-    "gt_community_count": 63
+    "gt_community_count": 64
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.6985783282709858,
+      "nmi": 0.6985783282709859,
       "num_communities": 570
     },
     "interim_0": {
-      "nmi": 0.6985783282709858,
+      "nmi": 0.6985783282709859,
       "num_communities": 570
     }
   },
   "efficiency": {
-    "Transfer": 0.005941,
-    "ETL": 2.245018,
-    "Processing": 112.359471,
-    "Probing": 114.646193,
-    "Batch_Latency": 114.639721,
-    "Batch_Rate": 114.646193,
-    "Experiment_Length": 114.666068
+    "Transfer": 0.070698,
+    "ETL": 6.339909,
+    "Processing": 237.860534,
+    "Probing": 244.335963,
+    "Batch_Latency": 244.323567,
+    "Batch_Rate": 30.541995375,
+    "Experiment_Length": 244.497821
   }
 }

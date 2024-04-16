@@ -5,5 +5,7 @@
     "WORKING_DIRECTORY":"temp_workspace",
     "OUTPUT_DIRECTORY":"experiment_results",
     "TASK":"NX_LOUVAIN",
-    "WEIGHTED":true
+    "WEIGHTED":true,
+    "SNAP":false,
+    "GPU":false
 }

@@ -13,37 +13,37 @@
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.10928837258531841,
+      "nmi": 0.1092883725853185,
       "num_communities": 33
     },
     "interim_0": {
-      "nmi": 0.10928837258531839,
-      "num_communities": 33
-    },
-    "interim_1": {
-      "nmi": 0.12440482347029766,
-      "num_communities": 116
-    },
-    "interim_2": {
       "nmi": 0.14744092661091535,
       "num_communities": 923
     },
-    "interim_3": {
-      "nmi": 0.1347686542267716,
+    "interim_1": {
+      "nmi": 0.13476865422677176,
       "num_communities": 357
     },
-    "interim_4": {
-      "nmi": 0.10853580317258218,
+    "interim_2": {
+      "nmi": 0.12440482347029777,
+      "num_communities": 116
+    },
+    "interim_3": {
+      "nmi": 0.10853580317258224,
       "num_communities": 42
+    },
+    "interim_4": {
+      "nmi": 0.1092883725853185,
+      "num_communities": 33
     }
   },
   "efficiency": {
-    "Transfer": 0.000539,
-    "ETL": 0.004927,
-    "Processing": 0.061969,
-    "Probing": 0.06851,
-    "Batch_Latency": 0.067014,
-    "Batch_Rate": 0.013702,
-    "Experiment_Length": 0.067709
+    "Transfer": 0.0044,
+    "ETL": 0.015046,
+    "Processing": 0.175725,
+    "Probing": 0.20832,
+    "Batch_Latency": 0.191065,
+    "Batch_Rate": 0.041664,
+    "Experiment_Length": 0.196309
   }
 }

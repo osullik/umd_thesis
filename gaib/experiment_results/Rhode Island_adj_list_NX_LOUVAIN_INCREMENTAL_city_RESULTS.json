@@ -9,57 +9,57 @@
     "edge_count": 711177,
     "weighted": true,
     "gt_file": "datasets/Rhode Island/Rhode Island_gt_communities_city.txt",
-    "gt_community_count": 63
+    "gt_community_count": 64
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.7001071207228762,
+      "nmi": 0.7001071207228761,
       "num_communities": 618
     },
     "interim_0": {
+      "nmi": 0.4661874626510329,
+      "num_communities": 299642
+    },
+    "interim_1": {
+      "nmi": 0.4911468206181192,
+      "num_communities": 128541
+    },
+    "interim_2": {
+      "nmi": 0.5214429711610449,
+      "num_communities": 51080
+    },
+    "interim_3": {
       "nmi": 0.5574761173918938,
       "num_communities": 19175
     },
-    "interim_1": {
-      "nmi": 0.6998840749433957,
-      "num_communities": 620
-    },
-    "interim_2": {
-      "nmi": 0.5992483346869767,
+    "interim_4": {
+      "nmi": 0.5992483346869766,
       "num_communities": 6924
     },
-    "interim_3": {
-      "nmi": 0.46618746265103284,
-      "num_communities": 299642
-    },
-    "interim_4": {
-      "nmi": 0.7001071207228762,
-      "num_communities": 618
-    },
     "interim_5": {
-      "nmi": 0.521442971161045,
-      "num_communities": 51080
+      "nmi": 0.6462115123142861,
+      "num_communities": 2407
     },
     "interim_6": {
       "nmi": 0.6883406889121692,
       "num_communities": 872
     },
     "interim_7": {
-      "nmi": 0.6462115123142861,
-      "num_communities": 2407
+      "nmi": 0.6998840749433956,
+      "num_communities": 620
     },
     "interim_8": {
-      "nmi": 0.4911468206181192,
-      "num_communities": 128541
+      "nmi": 0.7001071207228761,
+      "num_communities": 618
     }
   },
   "efficiency": {
-    "Transfer": 0.006291,
-    "ETL": 2.788806,
-    "Processing": 34.616911,
-    "Probing": 37.46852,
-    "Batch_Latency": 37.444081,
-    "Batch_Rate": 4.1631688888888885,
-    "Experiment_Length": 37.470667
+    "Transfer": 0.066604,
+    "ETL": 6.645083,
+    "Processing": 82.175623,
+    "Probing": 89.111391,
+    "Batch_Latency": 88.953007,
+    "Batch_Rate": 9.901265666666667,
+    "Experiment_Length": 89.124001
   }
 }

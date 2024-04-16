@@ -9,7 +9,7 @@
     "edge_count": 163156,
     "weighted": true,
     "gt_file": "datasets/District of Columbia/District of Columbia_gt_communities_city.txt",
-    "gt_community_count": 27
+    "gt_community_count": 28
   },
   "effectiveness": {
     "final": {
@@ -22,12 +22,12 @@
     }
   },
   "efficiency": {
-    "Transfer": 0.002069,
-    "ETL": 0.467887,
-    "Processing": 6.44096,
-    "Probing": 6.920467,
-    "Batch_Latency": 6.917643,
-    "Batch_Rate": 6.920467,
-    "Experiment_Length": 6.924388
+    "Transfer": 0.020936,
+    "ETL": 1.384039,
+    "Processing": 16.595127,
+    "Probing": 18.01647,
+    "Batch_Latency": 18.00921,
+    "Batch_Rate": 3.6032940000000004,
+    "Experiment_Length": 18.053525
   }
 }

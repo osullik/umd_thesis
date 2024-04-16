@@ -6,5 +6,6 @@
     "OUTPUT_DIRECTORY":"experiment_results",
     "TASK":"NX_LOUVAIN_INCREMENTAL",
     "WEIGHTED":false,
-    "SNAP":true
+    "SNAP":true,
+    "GPU":false
 }

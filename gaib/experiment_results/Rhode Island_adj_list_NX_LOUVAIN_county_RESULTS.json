@@ -9,25 +9,25 @@
     "edge_count": 711177,
     "weighted": true,
     "gt_file": "datasets/Rhode Island/Rhode Island_gt_communities_city.txt",
-    "gt_community_count": 63
+    "gt_community_count": 64
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.7001071207228762,
+      "nmi": 0.7001071207228761,
       "num_communities": 618
     },
     "interim_0": {
-      "nmi": 0.7001071207228762,
+      "nmi": 0.7001071207228761,
       "num_communities": 618
     }
   },
   "efficiency": {
-    "Transfer": 0.006317,
-    "ETL": 3.02144,
-    "Processing": 34.045941,
-    "Probing": 37.107165,
-    "Batch_Latency": 37.10385,
-    "Batch_Rate": 4.1230183333333335,
-    "Experiment_Length": 37.130809
+    "Transfer": 0.06765,
+    "ETL": 6.861097,
+    "Processing": 78.99545,
+    "Probing": 86.014655,
+    "Batch_Latency": 85.985403,
+    "Batch_Rate": 9.55718388888889,
+    "Experiment_Length": 86.157658
   }
 }

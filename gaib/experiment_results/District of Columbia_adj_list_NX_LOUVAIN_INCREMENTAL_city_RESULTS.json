@@ -9,7 +9,7 @@
     "edge_count": 163156,
     "weighted": true,
     "gt_file": "datasets/District of Columbia/District of Columbia_gt_communities_city.txt",
-    "gt_community_count": 27
+    "gt_community_count": 28
   },
   "effectiveness": {
     "final": {
@@ -17,45 +17,45 @@
       "num_communities": 211
     },
     "interim_0": {
-      "nmi": 0.4540698342214471,
-      "num_communities": 10957
-    },
-    "interim_1": {
-      "nmi": 0.494055005785405,
-      "num_communities": 3758
-    },
-    "interim_2": {
-      "nmi": 0.4228222977203699,
-      "num_communities": 28336
-    },
-    "interim_3": {
       "nmi": 0.3982055849474403,
       "num_communities": 66047
     },
-    "interim_4": {
-      "nmi": 0.5977827408845806,
-      "num_communities": 326
+    "interim_1": {
+      "nmi": 0.42282229772036994,
+      "num_communities": 28336
     },
-    "interim_5": {
+    "interim_2": {
+      "nmi": 0.4540698342214471,
+      "num_communities": 10957
+    },
+    "interim_3": {
+      "nmi": 0.494055005785405,
+      "num_communities": 3758
+    },
+    "interim_4": {
       "nmi": 0.5469486425635691,
       "num_communities": 1104
     },
+    "interim_5": {
+      "nmi": 0.5977827408845806,
+      "num_communities": 326
+    },
     "interim_6": {
-      "nmi": 0.6103690381489384,
-      "num_communities": 211
+      "nmi": 0.6097441522235513,
+      "num_communities": 213
     },
     "interim_7": {
-      "nmi": 0.6097441522235514,
-      "num_communities": 213
+      "nmi": 0.6103690381489384,
+      "num_communities": 211
     }
   },
   "efficiency": {
-    "Transfer": 0.001881,
-    "ETL": 0.509336,
-    "Processing": 6.529258,
-    "Probing": 7.054524,
-    "Batch_Latency": 7.048582,
-    "Batch_Rate": 0.8818155,
-    "Experiment_Length": 7.0551
+    "Transfer": 0.022835,
+    "ETL": 1.550127,
+    "Processing": 16.549896,
+    "Probing": 18.1745,
+    "Batch_Latency": 18.130997,
+    "Batch_Rate": 2.2718125,
+    "Experiment_Length": 18.177344
   }
 }

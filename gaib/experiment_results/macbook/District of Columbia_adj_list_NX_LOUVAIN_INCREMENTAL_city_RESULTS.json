@@ -1,0 +1,61 @@
+{
+  "experiment": "District of Columbia_adj_list_NX_LOUVAIN_INCREMENTAL_city_RESULTS",
+  "datasets": {
+    "dataset": "datasets/District of Columbia/District of Columbia_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 7.675304412841797,
+    "node_count": 147599,
+    "edge_count": 163156,
+    "weighted": true,
+    "gt_file": "datasets/District of Columbia/District of Columbia_gt_communities_city.txt",
+    "gt_community_count": 27
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.6103690381489384,
+      "num_communities": 211
+    },
+    "interim_0": {
+      "nmi": 0.4540698342214471,
+      "num_communities": 10957
+    },
+    "interim_1": {
+      "nmi": 0.494055005785405,
+      "num_communities": 3758
+    },
+    "interim_2": {
+      "nmi": 0.4228222977203699,
+      "num_communities": 28336
+    },
+    "interim_3": {
+      "nmi": 0.3982055849474403,
+      "num_communities": 66047
+    },
+    "interim_4": {
+      "nmi": 0.5977827408845806,
+      "num_communities": 326
+    },
+    "interim_5": {
+      "nmi": 0.5469486425635691,
+      "num_communities": 1104
+    },
+    "interim_6": {
+      "nmi": 0.6103690381489384,
+      "num_communities": 211
+    },
+    "interim_7": {
+      "nmi": 0.6097441522235514,
+      "num_communities": 213
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.001881,
+    "ETL": 0.509336,
+    "Processing": 6.529258,
+    "Probing": 7.054524,
+    "Batch_Latency": 7.048582,
+    "Batch_Rate": 0.8818155,
+    "Experiment_Length": 7.0551
+  }
+}

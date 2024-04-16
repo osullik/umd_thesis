@@ -9,11 +9,11 @@
     "edge_count": 4746000,
     "weighted": true,
     "gt_file": "datasets/Maryland/Maryland_gt_communities_city.txt",
-    "gt_community_count": 402
+    "gt_community_count": 403
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.7988179784755658,
+      "nmi": 0.7988179784755657,
       "num_communities": 1509
     },
     "interim_0": {
@@ -22,12 +22,12 @@
     }
   },
   "efficiency": {
-    "Transfer": 0.039266,
-    "ETL": 20.983484,
-    "Processing": 1193.452049,
-    "Probing": 1214.711654,
-    "Batch_Latency": 1214.693859,
-    "Batch_Rate": 134.96796155555555,
-    "Experiment_Length": 1214.872526
+    "Transfer": 0.399428,
+    "ETL": 46.182508,
+    "Processing": 2212.450557,
+    "Probing": 2259.603592,
+    "Batch_Latency": 2259.471989,
+    "Batch_Rate": 251.06706577777777,
+    "Experiment_Length": 2260.920425
   }
 }

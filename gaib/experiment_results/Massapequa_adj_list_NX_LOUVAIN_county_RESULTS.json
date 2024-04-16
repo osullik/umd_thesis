@@ -13,21 +13,21 @@
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.10928837258531841,
+      "nmi": 0.1092883725853185,
       "num_communities": 33
     },
     "interim_0": {
-      "nmi": 0.10928837258531839,
+      "nmi": 0.1092883725853185,
       "num_communities": 33
     }
   },
   "efficiency": {
-    "Transfer": 0.000951,
-    "ETL": 0.005458,
-    "Processing": 0.04823,
-    "Probing": 0.055887,
-    "Batch_Latency": 0.05381,
-    "Batch_Rate": 0.055887,
-    "Experiment_Length": 0.054904
+    "Transfer": 0.004701,
+    "ETL": 0.015297,
+    "Processing": 0.136313,
+    "Probing": 0.158512,
+    "Batch_Latency": 0.151929,
+    "Batch_Rate": 0.158512,
+    "Experiment_Length": 0.157477
   }
 }

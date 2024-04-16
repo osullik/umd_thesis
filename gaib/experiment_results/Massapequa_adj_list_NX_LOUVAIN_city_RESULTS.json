@@ -9,11 +9,11 @@
     "edge_count": 2572,
     "weighted": true,
     "gt_file": "datasets/Massapequa/Massapequa_gt_communities_city.txt",
-    "gt_community_count": 4
+    "gt_community_count": 5
   },
   "effectiveness": {
     "final": {
-      "nmi": 0.38575051659888415,
+      "nmi": 0.3857505165988841,
       "num_communities": 33
     },
     "interim_0": {
@@ -22,12 +22,12 @@
     }
   },
   "efficiency": {
-    "Transfer": 0.001965,
-    "ETL": 0.005398,
-    "Processing": 0.048454,
-    "Probing": 0.055635,
-    "Batch_Latency": 0.053967,
-    "Batch_Rate": 0.055635,
-    "Experiment_Length": 0.05612
+    "Transfer": 0.007553,
+    "ETL": 0.015867,
+    "Processing": 0.14137,
+    "Probing": 0.170308,
+    "Batch_Latency": 0.157521,
+    "Batch_Rate": 0.170308,
+    "Experiment_Length": 0.166038
   }
 }
