@@ -159,12 +159,21 @@ class Runner():
                 experiment_name = f
                 with open(os.path.join(experiment_definition_directory,f),"r") as infile:
                     spec = json.load(infile)
-                    experiment_name = experiment_name_generator.get_experiment_name(spec["SOURCE_DATA"],spec['TASK'],spec['GT_GRANULARITY'])+".json"
+                
+                    if spec['GPU']:
+                        task=spec["TASK"]+"_GPU"
+
+                    else:
+                        task=spec["TASK"]
+
+                    experiment_name = experiment_name_generator.get_experiment_name(spec["SOURCE_DATA"],task,spec['GT_GRANULARITY'])+".json"
 
                 if experiment_name not in os.listdir(spec["OUTPUT_DIRECTORY"]):
+                    
                     print(f"RUNNING EXPERIMENT {experiment_name}")
                     # try:
-                    self.run_experiment(task=spec["TASK"],
+                    
+                    self.run_experiment(task=task,
                                         source_data=spec['SOURCE_DATA'],
                                         gt_results=spec['GT_FILE_PATH'],
                                         gt_granularity=spec["GT_GRANULARITY"],
@@ -178,8 +187,8 @@ class Runner():
 
 if __name__ == "__main__":
     OUTPUT_DIRECTORY = os.path.join(".","experiment_results")
-    EXPERIMENT_DEFINITION_DIRECTORY = os.path.join(".","experiment_definitions")
+    EXPERIMENT_DEFINITION_DIRECTORY = os.path.join(".","experiment_definitions","GPU")
 
     runner = Runner(output_directory=OUTPUT_DIRECTORY)
 
-    runner.run_all_experiments()
+    runner.run_all_experiments(experiment_definition_directory=EXPERIMENT_DEFINITION_DIRECTORY)
