@@ -287,7 +287,7 @@ class Task():
             self.task_networkx_louvain_GPU()
             return 
         elif self.task == "NX_LOUVAIN_INCREMENTAL_GPU":
-            self.task_networkx_louvain_GPU()
+            self.task_networkx_louvain_incremental_GPU()
         else:
             return None
 
