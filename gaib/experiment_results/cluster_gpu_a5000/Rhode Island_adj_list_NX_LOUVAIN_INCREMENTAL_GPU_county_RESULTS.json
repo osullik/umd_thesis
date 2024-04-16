@@ -1,0 +1,33 @@
+{
+  "experiment": "Rhode Island_adj_list_NX_LOUVAIN_INCREMENTAL_GPU_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Rhode Island/Rhode Island_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 34.20336151123047,
+    "node_count": 671745,
+    "edge_count": 711177,
+    "weighted": true,
+    "gt_file": "datasets/Rhode Island/Rhode Island_gt_communities_city.txt",
+    "gt_community_count": 64
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.6985120603792918,
+      "num_communities": 690
+    },
+    "interim_0": {
+      "nmi": 0.6985120603792918,
+      "num_communities": 690
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.070108,
+    "ETL": 7.635685,
+    "Processing": 1.994603,
+    "Probing": 9.776499,
+    "Batch_Latency": 9.763521,
+    "Batch_Rate": 9.776499,
+    "Experiment_Length": 9.919814
+  }
+}
