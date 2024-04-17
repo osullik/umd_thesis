@@ -1,0 +1,33 @@
+{
+  "experiment": "Maryland_adj_list_NX_LOUVAIN_city_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Maryland/Maryland_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 226.80198860168457,
+    "node_count": 4514124,
+    "edge_count": 4746000,
+    "weighted": true,
+    "gt_file": "datasets/Maryland/Maryland_gt_communities_city.txt",
+    "gt_community_count": 403
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.7988179784755658,
+      "num_communities": 1509
+    },
+    "interim_0": {
+      "nmi": 0.7988179784755658,
+      "num_communities": 1509
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.036579,
+    "ETL": 20.334209,
+    "Processing": 1320.658251,
+    "Probing": 1341.27151,
+    "Batch_Latency": 1341.251009,
+    "Batch_Rate": 149.0301677777778,
+    "Experiment_Length": 1341.430502
+  }
+}

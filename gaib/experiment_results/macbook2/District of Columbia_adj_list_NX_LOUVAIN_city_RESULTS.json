@@ -1,0 +1,33 @@
+{
+  "experiment": "District of Columbia_adj_list_NX_LOUVAIN_city_RESULTS",
+  "datasets": {
+    "dataset": "datasets/District of Columbia/District of Columbia_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 7.675304412841797,
+    "node_count": 147599,
+    "edge_count": 163156,
+    "weighted": true,
+    "gt_file": "datasets/District of Columbia/District of Columbia_gt_communities_city.txt",
+    "gt_community_count": 28
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.6103690381489384,
+      "num_communities": 211
+    },
+    "interim_0": {
+      "nmi": 0.6103690381489384,
+      "num_communities": 211
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.001639,
+    "ETL": 0.472949,
+    "Processing": 6.326259,
+    "Probing": 6.809154,
+    "Batch_Latency": 6.807824,
+    "Batch_Rate": 1.3618308000000001,
+    "Experiment_Length": 6.814371
+  }
+}

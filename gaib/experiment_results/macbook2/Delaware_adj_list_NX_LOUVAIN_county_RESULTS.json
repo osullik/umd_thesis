@@ -1,0 +1,33 @@
+{
+  "experiment": "Delaware_adj_list_NX_LOUVAIN_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Delaware/Delaware_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 33.261765480041504,
+    "node_count": 637463,
+    "edge_count": 680858,
+    "weighted": true,
+    "gt_file": "datasets/Delaware/Delaware_gt_communities_city.txt",
+    "gt_community_count": 64
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.6985783282709858,
+      "num_communities": 570
+    },
+    "interim_0": {
+      "nmi": 0.6985783282709858,
+      "num_communities": 570
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.006404,
+    "ETL": 2.877226,
+    "Processing": 120.261435,
+    "Probing": 123.178311,
+    "Batch_Latency": 123.174836,
+    "Batch_Rate": 15.397288875,
+    "Experiment_Length": 123.201595
+  }
+}

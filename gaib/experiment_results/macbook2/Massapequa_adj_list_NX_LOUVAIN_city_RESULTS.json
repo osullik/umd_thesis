@@ -1,0 +1,33 @@
+{
+  "experiment": "Massapequa_adj_list_NX_LOUVAIN_city_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Massapequa/Massapequa_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 0.12126350402832031,
+    "node_count": 2063,
+    "edge_count": 2572,
+    "weighted": true,
+    "gt_file": "datasets/Massapequa/Massapequa_gt_communities_city.txt",
+    "gt_community_count": 5
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.38575051659888415,
+      "num_communities": 33
+    },
+    "interim_0": {
+      "nmi": 0.3857505165988841,
+      "num_communities": 33
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.000718,
+    "ETL": 0.005834,
+    "Processing": 0.048348,
+    "Probing": 0.056079,
+    "Batch_Latency": 0.054298,
+    "Batch_Rate": 0.056079,
+    "Experiment_Length": 0.055159
+  }
+}

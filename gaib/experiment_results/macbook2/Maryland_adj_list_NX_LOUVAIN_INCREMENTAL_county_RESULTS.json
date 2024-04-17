@@ -1,0 +1,69 @@
+{
+  "experiment": "Maryland_adj_list_NX_LOUVAIN_INCREMENTAL_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Maryland/Maryland_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 226.80198860168457,
+    "node_count": 4514124,
+    "edge_count": 4746000,
+    "weighted": true,
+    "gt_file": "datasets/Maryland/Maryland_gt_communities_city.txt",
+    "gt_community_count": 403
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.7988179784755658,
+      "num_communities": 1509
+    },
+    "interim_0": {
+      "nmi": 0.6814767438668153,
+      "num_communities": 47276
+    },
+    "interim_1": {
+      "nmi": 0.7986764890512291,
+      "num_communities": 1514
+    },
+    "interim_2": {
+      "nmi": 0.7908805600032272,
+      "num_communities": 2032
+    },
+    "interim_3": {
+      "nmi": 0.7988179784755658,
+      "num_communities": 1509
+    },
+    "interim_4": {
+      "nmi": 0.7211696642783867,
+      "num_communities": 16732
+    },
+    "interim_5": {
+      "nmi": 0.7604963284988308,
+      "num_communities": 5709
+    },
+    "interim_6": {
+      "nmi": 0.5587173576173828,
+      "num_communities": 2024057
+    },
+    "interim_7": {
+      "nmi": 0.6445819449452025,
+      "num_communities": 130402
+    },
+    "interim_8": {
+      "nmi": 0.5829609135992175,
+      "num_communities": 867459
+    },
+    "interim_9": {
+      "nmi": 0.6115769014955379,
+      "num_communities": 345664
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.040826,
+    "ETL": 24.097882,
+    "Processing": 1337.911366,
+    "Probing": 1362.574438,
+    "Batch_Latency": 1362.261838,
+    "Batch_Rate": 136.2574438,
+    "Experiment_Length": 1362.447423
+  }
+}

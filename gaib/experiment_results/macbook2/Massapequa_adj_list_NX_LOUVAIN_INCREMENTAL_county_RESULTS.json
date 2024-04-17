@@ -1,0 +1,49 @@
+{
+  "experiment": "Massapequa_adj_list_NX_LOUVAIN_INCREMENTAL_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Massapequa/Massapequa_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 0.12126350402832031,
+    "node_count": 2063,
+    "edge_count": 2572,
+    "weighted": true,
+    "gt_file": "datasets/Massapequa/Massapequa_gt_communities_county.txt",
+    "gt_community_count": 2
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.10928837258531841,
+      "num_communities": 33
+    },
+    "interim_0": {
+      "nmi": 0.1347686542267716,
+      "num_communities": 357
+    },
+    "interim_1": {
+      "nmi": 0.14744092661091535,
+      "num_communities": 923
+    },
+    "interim_2": {
+      "nmi": 0.12440482347029766,
+      "num_communities": 116
+    },
+    "interim_3": {
+      "nmi": 0.10853580317258218,
+      "num_communities": 42
+    },
+    "interim_4": {
+      "nmi": 0.10928837258531839,
+      "num_communities": 33
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.000457,
+    "ETL": 0.004859,
+    "Processing": 0.053693,
+    "Probing": 0.059694,
+    "Batch_Latency": 0.058665,
+    "Batch_Rate": 0.0119388,
+    "Experiment_Length": 0.059272
+  }
+}
