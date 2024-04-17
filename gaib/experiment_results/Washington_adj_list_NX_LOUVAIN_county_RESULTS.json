@@ -1,0 +1,33 @@
+{
+  "experiment": "Washington_adj_list_NX_LOUVAIN_county_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Washington/Washington_adj_list.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 339.4730634689331,
+    "node_count": 6690822,
+    "edge_count": 6996309,
+    "weighted": true,
+    "gt_file": "datasets/Washington/Washington_gt_communities_city.txt",
+    "gt_community_count": 431
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.8011010815544554,
+      "num_communities": 1778
+    },
+    "interim_0": {
+      "nmi": 0.8011010815544554,
+      "num_communities": 1778
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.591022,
+    "ETL": 72.428438,
+    "Processing": 1626.219027,
+    "Probing": 1700.085121,
+    "Batch_Latency": 1699.87537,
+    "Batch_Rate": 170.00851210000002,
+    "Experiment_Length": 1702.00405
+  }
+}

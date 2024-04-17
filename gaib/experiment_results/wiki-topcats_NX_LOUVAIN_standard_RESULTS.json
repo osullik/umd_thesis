@@ -1,0 +1,33 @@
+{
+  "experiment": "wiki-topcats_NX_LOUVAIN_standard_RESULTS",
+  "datasets": {
+    "dataset": "datasets/Wiki-Topcats/wiki-topcats.txt",
+    "hash_match": true,
+    "graph_match": false,
+    "size_on_disk": 402.4722728729248,
+    "node_count": 1791489,
+    "edge_count": 25447873,
+    "weighted": false,
+    "gt_file": "datasets/Wiki-Topcats/wiki-topcats-page-names.txt",
+    "gt_community_count": 1790514
+  },
+  "effectiveness": {
+    "final": {
+      "nmi": 0.33721839386917823,
+      "num_communities": 35
+    },
+    "interim_0": {
+      "nmi": 0.33721839386917823,
+      "num_communities": 35
+    }
+  },
+  "efficiency": {
+    "Transfer": 0.711224,
+    "ETL": 88.481356,
+    "Processing": 1850.919953,
+    "Probing": 1940.571339,
+    "Batch_Latency": 1940.233117,
+    "Batch_Rate": 1940.571339,
+    "Experiment_Length": 1942.774041
+  }
+}
