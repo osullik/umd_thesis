@@ -1,10 +1,13 @@
 \section{Background}
 \label{section:42-GAI-Background}
 
+\nrscomment{cut the first sentence, its just fluff}
 When designing a benchmark, careful consideration must be given to the underlying design principles and which components to include. 
 This section briefly extends the literature review from chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction, to identify guiding principles for the construction of our benchmark.
 
 \subsection{Benchmark Design Principles}
+
+\nrscomment{can you replace this entire paragraph with a sentence that says "Benchmarks typically only include granular, independent, kernel-level tasks, which limits their ability to provide insight into the real-world performance of the system under test. To provide a more holistic picture, we select tasks that...."? And now its clear that all this background is really about task selection, so i dont think it belongs up here. Instead maybe after you introduce the task component below? Are there similar sentences you can write for datasets and metrics that concisely address the main issue with current ones and how you intend to fix it? its a bit imbalanced you only do it for tasks}
 
 Benchmark design must consider the purpose of the benchmark, general principles of benchmark design and the granularity of the problem~\cite{Carpinetti2002}.
 The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
