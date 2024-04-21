@@ -67,9 +67,9 @@
 
 %hyperref
 \usepackage[colorlinks=true,urlcolor=black,linkcolor=blue,citecolor=blue]{hyperref}
-
 \usepackage{tocloft,calc}
 \usepackage{acronym}
+\usepackage{etoolbox}
 
 %%%%%%%%%%%%%%%%%%%%%%
 % Template Custom Commands:
@@ -99,10 +99,23 @@
 \setlength{\parindent}{.4in}
 \pagestyle{empty}
 
+
+
 %%%%%%%%%%%%%%%%%%%%%%
 % Document Content:
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+
+  %%%%%%%%%%%%%%%%%%%%%%
+  % COMMENTS SWITCH:
+  %%%%%%%%%%%%%%%%%%%%%%
+  \newbool{showcomments}
+
+  % Show comments (Uncomment next line to show)
+  % \booltrue{showcomments}
+
+  % Hide comments (Uncomment next line to hide)
+  \boolfalse{showcomments}
 
 \graphicspath{ {Figures/}{auto_commit_fig/}{auto_fig/} } %Kent custom, allow images to be in own directory.
 
