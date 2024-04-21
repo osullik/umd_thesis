@@ -4,16 +4,24 @@
 \input{Figures/Diagrams/14_gai_challenges}
 
 A hierarchy of challenges affects \gai (Figure~\ref{figure:gai-challenges}).
-The data dependence of graph processing is a core challenge. Graphs of different shapes and sizes vary the algorithmic complexity and exacerbate the irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
-Graphs have no standard accepted method to represent them, abstract operations, or develop primitives, meaning there have been no coherent development efforts to accelerate graph processing generally. 
+The data dependence of graph processing is a core challenge. \nrscomment{too simple a sentence, doesnt stand alone}
+Graphs of different shapes and sizes vary the algorithmic complexity and exacerbate the irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
+Graphs have no standard accepted \nrscomment{"representation method"} method to represent them, abstract operations, or \nrscomment{what is the word 'develop' doing here} develop primitives, meaning there have been no coherent \nrscomment{whats a development effort? you mean research effort?} development efforts to accelerate graph processing generally. 
 
+\nrscomment{this reads a little like a collection of sentences with no clear point until the last one}
 \gai problems are intrinsically linked to graph problems. 
 Each \gai problem in the taxonomy has different computational characteristics and behaves differently on the same data. 
 Graph processing is the bottleneck in \gai, meaning that improving \gai performance is directly dependent on elevating the graph processing bottlenecks. 
 
+\nrscomment{reword this sentence}
 The real world adds further constraints to \gai. 
+
+\nrscomment{here down is broken up into paragraphs weirdly and theres a lot of dependence of each sentence on the previous one, so it reads choppily}
+\nrscomment{doesnt stand alone}
 Solutions need to be delivered within the efficiency, effectiveness and cost constraints. 
+\nrscomment{colloquial, doesnt stand alone}
 So, where a real-world problem requires hourly solutions but the \gai task requires ninety minutes to run, compromises must be made to the effectiveness or cost to meet the efficiency constraint. 
+\nrscomment{how does this next stuff connect to the top part of the paragraph?}
 Hardware accelerators for graph processing are specialized \ac{ASIC} optimized for the specific algorithm, representation, abstraction and programming model.
 Because one system may need to support many \gai tasks, an accelerator will need to improve the performance of all those tasks to be a wise investment. 
 
