@@ -1,0 +1,40 @@
+\section{Introduction to the Problem}
+\label{section:11-introduction-to-problem}
+The \gai Benchmarking Framework provides a mechanism to determine \textit{if}, \textit{how} and \textit{when} to speed up problem-solving on linked data given a set of operating constraints. 
+It builds on prior work in benchmarking and workload analyses to create a balanced benchmark that is problem-centric and accelerator-agnostic and evaluates both the \textit{efficency} and \textit{effectiveness} of a system under test, bringing immediate benefit to analysts, engineers and researchers. 
+
+\subsection{Problem Definition}
+This thesis aims to determine \textit{if}, \textit{how} and \textit{when} to speed up problem-solving on linked data given a set of operating \textit{constraints}.
+The \textit{how} dimension explores how to effectively combine the representations, hardware accelerators and algorithms to speed up \gai.
+The \textit{if} and \textit{when} dimensions answer when it is appropriate to exploit acceleration to speed up the time to solution. In the real world, \textit{constraints} on the efficiency, effectiveness and cost of a solution force a user of \gai directly impact the if, how and when dimensions, and so are explicitly considered here.
+
+\subsection{Prior Work}
+Prior approaches to identifying if, how and when to accelerate a \gai system do not balance the general utility and depth of analysis to use for benchmarking of \gai at scale. 
+\textit{Benchmarking} is a process by which systems or components are compared according to some criteria, which is used to determine their relative performance~\cite{Kistowski2015}.
+Most benchmarks for \gai take a `black-box' approach to competing systems based on metrics of \textit{efficiency} or \textit{effectiveness} but rarely both, and never their interactions.
+They have typically focused on evaluating isolated \textit{kernel} level tasks rather than more complicated problems consistent with the real world. 
+They typically use a small selection of datasets that do not necessarily represent the real world and do not cover the breadth of expected input sizes and shapes. 
+More support is needed for dynamic graph processing, and no work has been done comparing dynamic and static approaches under the same evaluation framework. 
+
+Workload Analyses are `white-box' approaches that analyze the internal state of a system while completing a workload to identify bottlenecks. 
+While they yield detailed information, they require access to the system under test for profiling and access to the code to add instrumentation. 
+The invasive configuration requirements mean that the workload analyses cannot be scaled for general-purpose comparisons and are unsuitable for the broad coverage the \gai benchmark framework pursues. 
+
+\subsection{The \gai Benchmark Framework}
+We introduce the \gai Benchmark Framework as a solution that balances the generality of competitive benchmarks and the detail of workload analyses without requiring invasive system access. 
+We leverage constraint theory in conjunction with an empirical approach to algorithmic analysis to develop inputs that specifically trigger bottleneck behavior. We then use our observations of those behaviors to develop a `grey-box' understanding of the system's internal state. 
+Our approach is \textit{problem-centric}, meaning that the benchmark tasks are real-world problem statements rather than simplified kernels. 
+The problem-centric view encourages innovative approaches by not constraining the benchmark to specific approaches. It also better captures the deployment of a system in the real world. 
+The framework adopts an Input/Output that maximizes the degree of freedom of a benchmark user who can vary their hardware, software stack and implementation without having to change how their code interfaces with the benchmark, allowing for easy experimentation about different combinations of acceleration techniques to determine what works best for their use case. 
+Finally, our evaluation approach explores the interaction between efficiency and effectiveness, recognizing that sometimes a fifty percent solution on time is better than a hundred percent solution too late. 
+The evaluation approach also makes it possible to evaluate dynamic and static approaches using the same framework.
+
+\osullikomment{Add example here for problem vs kernel}
+
+\subsection{Impact}
+The \gai Benchmark Framework is a flexible tool for experimentation and exploratory analysis for analysts, engineers and researchers.
+Analysts who routinely work with graph data and apply \gai to solve problems can better understand the sizes and shapes of inputs that will impact their work performance and use prior results to build estimates for \gai execution time. 
+Engineers can use the \gai benchmark to evaluate which systems they should procure and make architectural decisions about how their system implements \gai to maximize the efficiency and effectiveness across the breadth of tasks the system must support.
+Researchers building \gai can use the \gai Benchmark Framework to experimentally vary the hardware and implementation details to find the bottlenecks in \gai as a function of the input datasets and real-world problems it solves. 
+The ability to satisfy the needs of these three distinct user groups is a crucial feature of the \gai benchmark framework. 
+
