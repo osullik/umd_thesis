@@ -3,31 +3,39 @@
 \label{chapter:10-Introduction}
 
 %Graph Problem Definition 
+\nrscomment{cut this chunk, it's vague and confusing as the entry point}
 When solving problems, it is wise to consider the context of the evidence. 
 At the micro-level, relationships between pieces of evidence can indicate similarity, dependence or some other link worthy of exploration. 
 At the macro level, the evidence might be part of a particular cluster or some other structural feature that provides important context.
 
-Graphs are powerful data structures for representing contextual information and solving problems.   They explicitly encode the evidence as vertices (nodes) and the relationships as edges (arcs, links).
+Graphs are powerful data structures for representing contextual information and solving problems. 
+They explicitly encode the evidence as vertices (nodes) and the relationships as edges (arcs, links).
 Intelligent algorithms can solve many problems on graphs but are limited in the size of the graphs they can process. 
-In the real world, graphs quickly reach billions or trillions of vertices, and the complexity of intelligent algorithms that operate on graphs (Graph-Based Artificial Intelligence, or \gai) is frequently quadratic or worse. 
+In the real world, graphs quickly reach billions or trillions of vertices, \nrscomment{"and Graph-Based Artificial Intelligence, or \gai algorithms are frequently quadratic or worse in complexity."} and the complexity of intelligent algorithms that operate on graphs (Graph-Based Artificial Intelligence, or \gai) is frequently quadratic or worse. 
 In addition to the algorithmic complexity, as graphs become larger and take on more complicated shapes, modern general-purpose processors become memory-bound.
+\nrscomment{The transition of the sentence gives the expectation that what will follow will be of the form "there is also memory complexity" but you have it flipped with "processors become memory bound". Can you change either the beginning or the end of the sentence to make them cohesive? Something like "Further, modern general purpose processors become memory bound as graphs become larger and take on more complicated shapes." would even do.}
 
+\nrscomment{the content here is good but it reads like a collection of sentences and i have to work hard to track them all and figure out what youre trying to say. try rewriting it}
 \gai slows down as graphs get large and complex because of how graphs are stored in memory. 
 Most algorithms exploit the graph's structure, and the processing follows the graph's edges. 
 Graphs are typically stored in memory in the order vertices were created, so topologically close vertices are not necessarily proximal in memory. 
 As a result, prefetching and caching techniques that exploit locality in general-purpose computing are ineffective in graph processing.
 \gai must retrieve data required for the next step of the algorithm from the main memory rather than the cache, so the latency and bandwidth of those reads become the bottleneck. 
+\nrscomment{this next sentence doesnt really connect directly to the previous paragraph in an obvious way- make it more explicit how this has to do with what you just said}
 Real-world application of \gai requires alleviating the bottlenecks in large, complicated graphs. 
 
 Most competing approaches to speed up graph processing focus on generating improvement for a subset of problems and do not necessarily yield general improvement in all \gai performance. 
+\nrscomment{next 2-3 sentences sound like speech, they depend on each other to make sense grammatically (i.e. sentence 2 cant stand alone). clean them up}
 Accelerator-based approaches like distributed processing, upgrading hardware and adding specialized accelerators provide one path. 
 Representation-based approaches like compression, custom data structures and alternate abstraction models are a second.
 Algorithmic approaches provide a third path that seeks to exploit parallelism or develop approximation methods to reduce computation time. 
 These approaches are interdependent, and decisions about optimizing hardware can limit choices about parallelism or programming models, making it difficult to determine the optimal configuration for a given collection of problems. 
 
+\nrscomment{change the first person ref to the engineers/etc. that are your users}
 This thesis explores how to compare each improvement technique's impact on a system that solves real-world problems with \gai so that we can consistently improve \gai performance while justifying our design decisions empirically. 
-For example, determining whether adding hardware accelerators like \ac{GPU} or distributing computing across the existing infrastructure is more cost-effective to reduce the processing time. 
-Further, developing a repeatable process to collect the data needed to make these decisions yields an extensible framework to evaluate the full range of \gai problems. 
+For example, determining whether adding hardware accelerators like \ac{GPU} or distributing computing across the existing infrastructure is more cost-effective to reduce the processing time. \nrscomment{that wasnt a sentence, theres no subject}
+Further, developing a repeatable process to collect the data needed to make these decisions yields an extensible framework to evaluate the full range of \gai problems.
+\nrscomment{that last chunk was your contributions summary, need to make it stronger. Use words like 'contributes', 'develops', 'proposes', 'provides' instead of 'explores'. Second and third sentences should be stronger too- "Our framework enables..." and that sort of wording, not "developing x yields y"-- that doesnt neccessarily imply that this thesis develops it.}
 
 \include{11a_Heilmeier}
 
