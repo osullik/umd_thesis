@@ -1,114 +1,41 @@
 \section{Design}
 \label{section:43-GAI-Design}
 
-Our design of the \gai benchmarking framework draws jointly from the established methods of benchmark design, and methods for the empirical studies of algorithms~\cite{Hooker1994, Hooker1995}.
-The prior work in benchmark design guides \textit{what} components to include, namely the \textit{datasets, tasks, metrics} and \textit{system under test}.
-The prior work in the empirical analysis of algorithms determines \textit{how} we determine the composition of those components to maximize information gain. 
-\nrscomment{information gain is a real metric, that you aren't using- can you use a different phrase here than 'maximize information gain'?}
-
-% \nrscomment{i dont think you need this sentence}
-% Benchmark design has been reviewed in detail in sections~\ref{section:31-literature-benchmarking},\ref{section:32-literature-benchmarking-gai}~and~\ref{section:42-GAI-Background}, so here we focus on the contribution of the empirical study of algorithms to our benchmark design.
+Our design of the \gai benchmarking framework draws jointly from the established methods of benchmark design and methods for the empirical studies of algorithms~\cite{Hooker1994, Hooker1995}.
+The prior work in benchmark design guides \textit{what} components to include in the \gai benchmark, namely the \textit{datasets, tasks, metrics} and \textit{system under test}.
+The prior work in the empirical analysis of algorithms determines \textit{how} we determine the composition of those components to maximize the effectiveness and efficiency of a \ac{SUT} for a specific workload. 
 
 \subsection{Empirical Benchmark Design}
 
-\nrscomment{condense to "We elect to design our \gai benchmark empirically, which involves applying the scientific method to drive the selection of datasets, tasks, and metrics that are included in the benchmark. The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this section." and then separately describe the process in more detail in the next paragraph (See comments there). You can address the committee's request 4. either here or explain the problem with ad-hoc approaches in the motivation section above and then refer to that here when saying the empirical process is formal/transparent/etc.}
+We elect to design our \gai benchmark empirically, which involves applying the scientific method to drive the selection of datasets, tasks, and metrics that are included in the benchmark. 
+The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this section.
+The empirical benchmark design process is marked by the iterative development and testing of hypotheses that characterize the typical class of problems that a system or algorithm will face, many of which are informed by real-world data distributions. 
 
-The empirical approach to computer science applies the scientific method to design and execute controlled experiments on systems~\cite{Hooker1995}.
-% \nrscomment{you havent explained what 'empirical methods' are or what his approach is, so saying youre following it comes out of left field. first introduce it for what it is, and then say why youre using it, and then say how youre using it (the mappings) to \gai}
-We use the empirical approach as part of the \gai benchmark design for balance, grounding and formality. 
-Our empirically inspired approach balances the utility of competitive benchmarks with the detail of a formal workload analysis. 
-Empirical studies tend to focus on typical problems, and real-world distributions of data to characterize what a typical class of problems that a system or algorithm must face are~\cite{Hooker1995}, so it supports us grounding the benchmark in the problems we identified in section~\ref{section:11-graph-based-ai} that are not covered by the current suite of available benchmarks (see: section~\ref{section:32-literature-benchmarking-gai}).
-Most importantly, it provides a formal structure that improves the transparency and reproducibility of the benchmark development process. 
-
-\nrscomment{"The empirical benchmark design process is marked by the iterative development and testing of hypotheses that characterize the typical class of problems that a system or algorithm will face, many of which are informed by real-world data distributions. We employ the empirical method from Hooker (fig 4.2) to identify the \gai problem under study and phenomena of interest, determine an appropriate approach through exploration, and construct a test apparatus to capture that approach."}
-
-\nrscomment{the text you have just below here describing what the problem, approach, phenomena, and apparatus are does not match with the bold headers and content you have below that, which doesnt match with the diagram in fig 4.2. The diagram says id and characterize problem and phenomena first, then determine approach and construct apparatus. the bold text doesnt use the word approach at all (though i think Conduct Expl Exp is it), and the paragraph text right below here lists them in a different order, problem then approach then phenomena then apparatus, and describes phenomena as capturing the interaction of approach and problem, which is contrary to the order of the diagram. At the least, reconcile these 3 descriptions of the same thing to all be consistent. Better yet, reduce them to diagram and one sentence that introduce the 4 components, then one sentence on each box of the diagram explaining it for \gai (i.e. drop the bold headers and reduce the content on each). I tried for the intro sentence above, but am not sure if i captured it accurately since i dont know which is correct, the prose or the diagram.}
-
-The methodology we build from is John Hooker's framework for the empirical analysis of algorithms, summarized in figure~\ref{figure:gai-empirical-method}. 
-His method identifies four key components, the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}.
-% The \textit{phenomena} are the observable artifacts we are interested in studying, that are produced by some apparatus solving a problem.
-The \textit{problem} here studies what it actually is that we are trying to do (achieve some outcome in the domain and problem space).
+Our approach draws from John Hooker's framework for the empirical analysis of algorithms, summarized in figure~\ref{figure:gai-empirical-method}. 
+His method identifies four key components: the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}.
+Before explaining the method, we define these four components:
+The \textit{problem} here studies what we are trying to do (achieve some outcome in the domain and problem space).
 The \textit{approach} here studies the dataset and task features we can use to stimulate the problem (identify datasets, tasks).
 The \textit{phenomena} studies the interactions of an approach with a problem (identify suitable metrics and where to find them).
-The \textit{apparatus} are the tools and techniques we use to investigate, measure or otherwise study those interactions between the phenomena and the problem(get datasets, implement tasks, instrument system, monitor execution etc).
-
-% \nrscomment{im not in any position to understand this yet. cut all of this}
-% Considering the benchmark components in figure~\ref{figure:benchmark_components} we can map the phenomena to metrics, the problem to workloads, and the approach to implementation.
-% Formal consideration of the apparatus is a missing component from the existing benchmark design processes. 
-% It is implicitly covered in the decision to use an Input/Output or Kit paradigm for benchmark design but adds deliberate and formal consideration of the apparatus to our framework. 
-% Hooker's approach is summarized below, with the remainder of this section exploring how each step is conducted in an abstract sense:
-
-% \nrscomment{this would be nicer as a workflow diagram- similar to fig4.4 but simplified}
-% \begin{enumerate}
-%     \item Identify and characterize the \textit{phenomena} and the \textit{problem},
-%     \item Conduct exploratory experimentation,
-%     \item Develop hypotheses,
-%     \item Construct the investigation \textit{apparatus},
-%     \item Analyze the results,
-%     \item Develop a theoretic explanation, and 
-%     \item Iterate.
-% \end{enumerate}
+The \textit{apparatus} are the tools and techniques we use to investigate, measure, or otherwise study those interactions between the phenomena and the problem(get datasets, implement tasks, instrument system, monitor execution, etc).
 
 \input{Figures/Diagrams/06_empirical_method}
 
-
-% \nrscomment{this is all very dry- what do i actually need to know from this? each of these can be one sentence- what is the core of each step as it pertains to \gai?}
-\nrscomment{It's useful to have the bold headers to orient, but this section needs to walk us through the diagram more naturally. it still reads a bit like a textbook defining each step. try it as more of a walk-through i.e. "The process starts with \textbf{Identifying and Characterizing a Relevant Problem}, which entails collecting the typical tasks and datasets relevant to the problem and identifying the common challenges associated with them, as we did in the problem survey in section 1.2. Once the problem is well defined, the next step is to \textbf{Characterize the Phenomena of Interest} by determining what..." and so on. Then you can work in the cyclic nature of the whole thing and the end states you have on some of the steps without it sounding as textbook-y.}
-\textbf{Identifying and Characterizing a Relevant Problem.}
-Understand the problem that you are trying to solve, including typical tasks, datasets and common challenges. 
-For \gai it is a scoping phase, selecting on of the problems identified in the problem survey (see: section~\ref{table:problem-survey})
-% The datasets and tasks should be drawn from real-world domain problems so that they are reflective of what the \gai system will be expected to do in the real world. 
-% To identify the problems, a literature review of open work in the domain can suffice, but a user study that identifies the active problems, tasks and datasets is a superior mechanism. 
-% The remainder of these steps are completed on a per-problem basis. 
-% This step is complete when a suitable problem is selected, the common tasks are listed and typical datasets are characterized (size and shape).
-
-\textbf{Identifying and Characterizing the Phenomena of Interest.}
-What `interesting things' are we expecting to observe, and why will measuring that help us understand the underlying problem?
-For \gai interesting things could be interactions between datasets and execution time, or general curiosities about how a system will respond in a given circumstance.
-% The phenomena of interest is the trade-off between the efficiency, effectiveness and cost of systems.
-% Thus, the metrics we expect to be relevant to all \gai tasks are \textit{ETL Time, Execution Time, Batch Latency} and \textit{Cost}. 
-% For each specific problem, the phenomena must be extended to articulate the specific effectiveness metrics, so that the assessed `goodness' of an output is meaningful.
-% This step is complete when the specific effectiveness, efficiency and cost metrics are confirmed. 
-
-\textbf{Conduct Exploratory Experimentation.}
-Exploratory experimentation gathers the foundational understanding of the bottlenecks, friction points and curiosities of the problem required to design meaningful experiments, and how to stimulate them.
-% A good experiment needs to be grounded in reality, and this step aims to identify interactions between the problems and phenomena that are worthy of further exploration. 
-% This step can be skipped if the domain is well understood. 
-% While direct experimentation is best, literature reviews of related work will suffice. 
-% This step is complete once key bottlenecks, friction points or curiosities are listed. 
-
-
-\textbf{Develop Hypotheses.}
-% Developing hypotheses informs what questions need to be answered, and focuses data collection to support that collection. 
+The process begins by \textbf{Identifying and Characterizing a Relevant Problem}, selects a use case to study, and identifies the typical tasks, datasets, and challenges. 
+\textbf{Identifying and Characterizing the Phenomena of Interest} then investigates the `interesting things' we expect to observe and why measuring them helps us understand the underlying problem.
+After characterizing the problem and phenomena \textbf{Exploratory Experimentation} gathers the foundational understanding of the bottlenecks, friction points, curiosities, and insights about how to stimulate them.
+These insights are used to design meaningful experiments and valid \textbf{Hypotheses}.
 The hypotheses focus the analysis and inform data collection by specifying what phenomena we expect to observe given a problem and an approach under study.
-% For a system with only Input/Output access to the SUT, well thought-out hypotheses can allow for 
-% Using the results of the exploratory analyses, the context of the tasks and datasets from the problem area and the identified phenomena under study, this step requires the designer to create hypotheses. 
-% This section is complete when a list of hypotheses exists, in the form: 
+With the hypotheses established and the phenomena identified, the next step is to \textbf{Construct the Investigation Apparatus} that will coordinate interactions between the benchmark and the system, generate tasks and datasets, and collect the observable behaviors to produce the metrics of interest.
+Finally, the experimenter must \textbf{Analyze the Results, Develop a Theoretic Explanation and Iterate} to move closer to understanding the foundational truths of the problem being studied.
 
-% {\centering \textit{When [dataset/hardware/system] changes on  [task] on we should observe a [description of expected change] in [phenomena]}.}
-
-\textbf{Construct the Investigation Apparatus.}
-The investigation apparatus determines how data is collected, and the degree of freedom given to the systems under test. 
-Importantly, this step collects or generates the test data. 
-Hooker prefers synthetic data generation because generators can be parameterized to test specific data-dependent hypotheses, generating problems from `easy' to `hard'.
-% The designer must decide here how to implement their benchmark, whether they pursue a hosted route (to collect more information) or an Input/Output route (to increase freedom in the system under test.)
-% This section is complete when the apparatus has been constructed and tested. 
-
-\textbf{Analyze the Results, Developing a Theoretic Explanation and Iterating.}
-The remaining three steps are more strongly in the domain of the person using the benchmark than the benchmark itself. 
-The benchmark should provide a report of the efficiency, effectiveness and cost scores associated with the workload(s) completed, but further work is beyond the scope of the benchmark. 
-This section is complete when the metrics have been reported to the user of the benchmark. 
-
-\nrscomment{this sounds robotic and i think is fairly obvious. you can drop it and at most work into the above description the fact this has to be done on a per-problem basis.}
-Once these steps have been completed, the benchmark for a specific problem is ready for use. 
-The steps must be repeated separately for any additional problem that is added to the benchmark. 
-
-
-
-
-
-
-
+The design of the \gai framework fuses Hooker's empirical approach with Goldratt's constraint theory~\cite{Goldratt1990, Goldratt2004}.
+Constraint theory uses `five focusing steps' to identify and remediate system bottlenecks. 
+First, \textbf{identify} the bottleneck, then \textbf{exlploit} it by improving the system's efficiency surrounding the bottleneck.
+Next, \textbf{subordinating} the rest of the system to the bottleneck sets the system's throughput equal to that of the bottleneck to prevent a buildup of work-in-progress.
+Eventually, we aim to \textbf{elevate} the bottleneck by expanding its capacity until it is no longer the bottleneck before \textbf{iterating} to find the new constraint. 
+We use these steps in reverse, using exploratory analysis to identify the bottlenecks and then designing tasks and datasets that will promote the bottleneck to constrain the system's performance. 
+It is then up to the \ac{SUT} to identify how to use the acceleration techniques to exploit or elevate the constraints that the adversarially shaped input data causes for the problem-centric tasks.
 
 % Datasets should be drawn from the \textit{Mesh} and \textit{Scale-Free} distributions~\cite{Beamer2015}.
 

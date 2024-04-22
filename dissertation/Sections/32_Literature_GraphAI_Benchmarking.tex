@@ -1,35 +1,121 @@
 \section{Benchmarking \gai}
 \label{section:32-literature-benchmarking-gai}
-Most of the influential \gai benchmarks are specification-based competitive benchmarks, however, it is common practice to provide specific real-world datasets, and reference implementations typical of kit-based benchmarks. 
+Most of the influential \gai benchmarks are specification-based competitive benchmarks. 
+However, providing specific real-world datasets and reference implementations typical of kit-based benchmarks is standard practice. 
 From section~\ref{section:31-literature-benchmarking} and the benchmarks this section surveys, we identify three core abstract components of a benchmark.
 
 The three abstract components that form the benchmark specification are \textit{Datasests}, \textit{Tasks} and \textit{Metrics}.
-We use these components as the focal points for the literature review of $23$ prior benchmarks in graph analytics, graph databases (GDB) and graph neural networks (GNN) to identify gaps that a \gai benchmark should cover.
+We use these components as the focal points for the literature review of $23$ prior benchmarks in graph analytics, \ac{GDB}, and graph neural networks \ac{GNN} to identify gaps that a \gai benchmark should cover.
 
 \input{Tables/31_kernels.tex}
 
 \subsection{Task Coverage.}
-A benchmark task is a specific action that needs to be taken or a problem that needs to be solved, it specifies what the system must do for the benchmark run.
-We identify $23$ graph benchmarks that satisfy at least one category from our \gai taxonomy .
-The reported tasks cluster around traditional graph tasks, GDB-specific tasks, or GNN prediction tasks depending on the focus area of the benchmark.
+A benchmark task is a specific action that needs to be taken or a problem that needs to be solved; it specifies what the system must do for the benchmark run.
+We identify $23$ graph benchmarks that satisfy at least one category from our \gai taxonomy.
+The reported tasks cluster around traditional graph tasks, GDB-specific tasks, or \ac{GNN} prediction tasks, depending on the focus area of the benchmark.
 
-In table~\ref{table:benchmark-kernels} benchmarks are shown grouped according to their focus area-- traditional graph analytics (Graphs), Graph Databases (GDBs), or Graph Neural Networks (GNNs).
-For each benchmark surveyed, we list the total number of tasks it contains and whether at least one task covers each of the major problems in our \gai taxonomy.
-In addition to those categorizations, we add a column called ETL to reflect whether the benchmark measures the basic ETL operations that are critical for GDBs and dynamic graph processing. 
-From the coverage of this column, it is clear that graph manipulations are often scoped out of traditional graph and GNN benchmarks.
+In table~\ref{table:benchmark-kernels}, benchmarks are shown grouped according to their focus area-- traditional graph analytics (Graphs), \ac{GDB}, or \ac{GNN}s.
+For each benchmark surveyed, we list the total number of tasks and whether at least one task covers each problem area in our \gai taxonomy.
+In addition to those categorizations, we add a column called \ac{ETL} to reflect whether the benchmark measures the critical \ac{ETL} operations for \ac{GDB}s and dynamic graph processing. 
+The coverage of the \ac{ETL} column suggests graph manipulations are often scoped out of traditional graph and \ac{GNN} benchmarks because of their focus on static graph processing and the associated assumption of \ac{ETL} cost amortization.
 
 We identify two key takeaways about the task coverage of current \gai benchmarks based on the information collected in table~\ref{table:benchmark-kernels}.
 
-\textbf{Tasks focus on specific operations, rather than general problems.}
-In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that a wide variety of task coverage exists in the literature, just not all in one benchmark.
-The benchmark with the broadest task coverage, GBBS~\cite{Dhulipala2021}, has $26$ tasks, but the median coverage is $5$ tasks, meaning most of the benchmarks tend to focus on a specific sub-area within a given \gai problem.
+\textbf{Tasks focus on specific operations rather than general problems.}
+In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that a wide variety of task coverage is in the literature, just not all in one benchmark.
+The benchmark with the broadest task coverage, the \ac{GBBS}~\cite{Dhulipala2021}, has $26$ tasks, but the median coverage is $5$ tasks, meaning most of the benchmarks tend to focus on a specific sub-area within a given \gai problem.
 Few benchmarks cover more than two of the seven \gai problem areas, and the areas cluster around `like' problems.
-The focus on comparing specific tasks drives the development of those tasks, which in turn drives the development of benchmarks to compare those tasks. 
-Reviewing hardware accelerator designs emphasizes that systems are being built to focus on accelerating these `narrow' benchmark kernel-tasks\footnote{In benchmarking, the smallest measurable `thing' is an \textit{atomic operation} (e.g. traversing an edge). 
-Multiple atomic operations compose into a \textit{kernel} (e.g. BFS), which can compose into \textit{toy, synthetic} or \textit{real} programs, which implement kernels to solve some higher level problem at varying levels of scale and realism~\cite{Saavedra1996}. See section~\ref{section:42-GAI-Methodology} for further detail.}., not broader real-world problems. 
+The focus on comparing specific tasks drives the development of those tasks, which drives the development of benchmarks to compare those tasks. 
+Reviewing hardware accelerator designs emphasizes that systems are being built to focus on accelerating these `narrow' benchmark kernel-tasks\footnote{In benchmarking, the most minor measurable `thing' is an \textit{atomic operation} (e.g., traversing an edge). 
+Multiple atomic operations compose into a \textit{kernel} (e.g., \ac{BFS}), which can compose into \textit{toy, synthetic} or \textit{real} programs, which implement kernels to solve some higher level problem at varying levels of scale and realism~\cite{Saavedra1996}}, rather than providing a more holistic real-world view of the problem. 
 
-In contrast, we propose a system-agnostic with a problem-centric approach so that systems completing the benchmark will need to solve the problem, rather than just complete a narrowly specified kernel task in a shallow facsimile of the real world~\cite{Hennessy2019}.
-Part of the reason for this choice is to compose more complicated problems out of a collection of simple problems to better reflect the composite processing requirements expected in real-world settings~\cite{Regli2022a}.
+In contrast, we propose a system-agnostic, problem-centric approach so that systems completing the benchmark must solve the problem rather than complete a narrowly specified kernel task in a shallow facsimile of the real world~\cite{Hennessy2019}.
+Part of this choice is to compose more complicated problems out of a collection of simple problems to reflect better the composite processing requirements expected in real-world settings~\cite{Regli2022a}.
+
+\textbf{ETL is under-represented in benchmarks given their importance in real-world \gai processing.}
+Only nine of the surveyed benchmarks explicitly include tasks that require ETL, reflecting the problematic assumption that graphs are static, meaning the construction cost can be amortized over the life of the graph. 
+As our overview of \gai problems in the real world from section~\ref{section:11-graph-based-ai} emphasizes, many problems are temporally constrained by the dynamic nature of real-world data.
+As a result, the limited coverage of graph manipulations makes it difficult to generalize their results to dynamic graph processing. 
+Furthermore, only three benchmarks (SAGA-Bench~\cite{Basak2020}, SRBench~\cite{Zhang2012}, and PAGNFF~\cite{Wu2021a}) provide explicit support to dynamic graph tasks. 
+The benchmarking framework we propose in chapter~\ref{chapter:40-Graph-AI-Benchmarking} explicitly includes ETL time in every benchmark problem to permit comparison between dynamic and static approaches to the same problem and to better reflect the requirements of the natural world where shared infrastructure may need to load different graphs at different times for different \gai tasks. 
+We create a benchmark that can accommodate static or dynamic processing approaches by tracking the \textit{batch latency}, the time between when ETL begins on a datum and when it shows up in the results of a query of operation. 
+
+\input{Tables/32_datasets.tex}
+
+\subsection{Dataset Coverage.}
+Datasets are a core component of benchmarks. 
+They are the `thing' or `problem' on which a system must conduct a task. 
+A collection of standard datasets makes the results between different systems comparable. 
+Since \gai performance is dependent on the size and shape of the input graph, good performance measurements require broad coverage of graph shapes from the domain of interest.
+We surveyed the datasets used in $23$ graph benchmarks, finding that the median number of input graphs is $6$ per benchmark and that there is a general focus on real-world scale-free graphs.
+The benchmarks are grouped by their focus area (graph analytics, \ac{GDB}, \ac{GNN}s) in table~\ref{table:benchmark-datasets}, and the column entries indicate whether each benchmark satisfies a given graph property with at least one of the datasets it contains.
+We identify three areas of concern in dataset coverage for \gai benchmarks. 
+
+
+\textbf{Heterogeneous graphs are underrepresented.}
+Real-world \gai problems require processing heterogeneous graphs consistent with knowledge graphs~\cite{Regli2022a}.
+Heterogeneous graphs were sparsely covered in all focus areas except \ac{GDB}s among the benchmarks surveyed.
+Traditional Graph Analysis and GNNs both focus on topological features, leading to a scarcity of complex attributed graphs for benchmark datasets.
+Sourcing and, if necessary, creating complex heterogeneous attributed graphs is an essential focus for developing a \gai benchmark.
+
+\textbf{Benchmarks datasets vary in domain coverage rather than graph topology.} 
+The median number of datasets benchmarks use is $6$, with most selections being loosely justified and not explicitly tied to any domain.
+The benchmarks we surveyed tend to contain publicly available graphs about graph-native problems like mapping citation networks, analyzing friend networks on social media, and email events. 
+However, from health, physical sciences, geospatial, and many other domains, numerous graphs are available between \ac{SNAP}'s \ac{SLNDC}~\cite{Leskovec2014} and the \ac{NDR}~\cite{Rossi2015}. 
+Only the \ac{GAP}~\cite{Beamer2017} benchmark explicitly chooses its datasets to represent mesh, scale-free, uniform random topologies to enable performance measurement across varied input shapes.
+For our approach, we will build on the \ac{GAP} methodology and aim for datasets from at least the scale-free, random, and mesh structures for every problem in the framework to stress \ac{SUT}s across all input shapes. 
+
+\textbf{Dynamic graph datasets are very uncommon.}
+Dynamic graphs have spatio-temporal characteristics that are not common in static graphs. 
+Edges and vertices can be added or removed at any point, and the graph must conduct ETL concurrently with completing \gai tasks.
+These dynamic approaches focus attention on providing results within a limited timeframe.
+The lack of dynamic graph datasets means there is no clear drive to build and evaluate dynamic \gai systems, so the development of time and resource-constrained \gai approaches is slow.
+Because of the lack of available datasets, research on dynamic graphs needs to transform static graphs into dynamic ones through random sampling.
+However, many of the same drawbacks of synthetic graph generation apply to an artificial sampling of static graphs. 
+For example, random sampling does not replace the natural pattern of vertex and edge creation, modification, and deletion inherent to dynamic graphs.
+Randomly selecting vertices and edges to add to the graph is unlikely to reflect how they would occur in the real world. 
+The \gai benchmark framework is actively searching for dynamic graph datasets and intends to integrate them into every \gai problem.
+
+\input{Tables/33_metrics}
+\subsection{Metric Coverage.}
+Metrics are the summaries of a system's efficiency, effectiveness, and cost, which we generate by observing how a system solves a task on a given dataset.
+The metrics generated by \gai benchmarks enable comparison of the relative effectiveness, efficiency, and cost of \gai systems.
+We survey the coverage metrics of $23$ graph benchmarks from published results and public leaderboards in table~\ref{table:benchmark-metrics}.
+We group benchmarks by their focus areas (graph analytics, \ac{GDB}s and \ac{GNN}s) and indicate whether each benchmark reports a given metric in at least one of its workloads.
+We identify four areas of concern in the coverage of metrics by existing benchmarks.
+
+\textbf{Collecting detailed metrics is invasive and impractical.}
+To collect interesting and useful metrics about the internal state of the \gai system (compute, memory, network, and power), the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
+As a result, these `internal' metrics are only observed in detailed workload analysis studies where the researcher has access to the system. 
+In the remainder of cases, execution time is typically the only viable metric.
+The Input/Output model for benchmarking is flexible but does not have access to the system's internal state, necessitating creative methods to estimate the system's internal state.
+In the \gai benchmark framework, we fuse an empirical approach to algorithm analysis with constraint theory to balance the benefit of a detailed workload analysis with the flexibility offered by a simple Input/Output design. 
+
+\textbf{Throughput measures can be misleading.}
+Throughput metrics are generally estimates of traversals per second, which are computed by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm, and multiplying that by the number of iterations to get the total edge traversals, which is then divided by the execution time to measure traversals per second~\cite{Bader2009, Intel2020}.
+The drawback of this estimation strategy is that it performs poorly when algorithms aggregate or otherwise change the graph's structure at each iteration.
+In the \gai benchmarking framework, we focus on execution time as a downstream indicator of throughput and the interaction of throughput with the other aspects of the system. 
+
+\textbf{Effectiveness is neglected.}
+Benchmarks measure performance by efficiency metrics or effectiveness metrics, but not both.
+Few of the surveyed benchmarks reported effectiveness metrics, likely because many `traditional' graph problems are deterministic with a single `correct' solution.
+On the other hand, benchmarks for newer problems like Long Range Graph Learning~\cite{Dwivedi2022} often only include effectiveness metrics, ignoring time and space efficiency until the problem can be effectively solved.
+The \gai framework takes a more nuanced view of correctness, linked to defining problems generally rather than as specific tasks and constraint-based benchmarking.
+We intend to develop problems with degrees of correctness to encourage work on iterative, incremental, and approximate solutions that may offer a trade-off between effectiveness and efficiency. 
+The ability to trade-off gives a benchmark user options to experiment with their constraints to find the best solution.
+
+\textbf{Cost measurement requires system access.}
+Cost measurements estimate a particular solution's cost and form the third dimension of metrics. 
+However, none of the surveyed benchmarks estimate cost, and few acknowledge its proxies like power consumption. 
+A complete system constraints model must balance efficiency, effectiveness, and cost. 
+For now, the \gai benchmark framework focuses on effectiveness and efficiency because the lack of methods for non-invasive cost estimation prevents accurate cost calculations.
+Adding support for cost calculations is a high-priority area of future work.
+
+
+% While the use of synthetic graphs is common, most benchmarks draw at least some of their datasets from the Stanford Large Network Dataset Collection of real-world graphs, providing a standardized and widely available library of accessible graphs.
+% Most of the benchmarks have at least one random and one scale-free graph in their collections, but mesh graphs and dynamic graphs appear in a minority of surveyed benchmarks. 
+% The lack of mesh graphs will lead to an absence of information about how \gai implementations and environments behave on graphs with large diameters and regular, low degrees. 
+% \nrscomment{everything above here is about topology aside from the "and dynamic graphs" 2 sentences up. All of it belongs in the previous section about how they dont vary topology.}
 
 % \nrscomment{the topic sentence promises to explain how the distribution suggests testing to the system. you go through the stats of coverage to tell me benchmarks are focused on small areas, and then abruptly switch to the distribution thing, basically repeating the topic sentence. its not clear how the stats above connect to whats below here, if at all.}
 
@@ -56,13 +142,7 @@ Part of the reason for this choice is to compose more complicated problems out o
 % \nrscomment{Although} Decomposing a complicated program \nrscomment{into} to primitive kernels is useful for characterizing which specific program components are bottlenecks~\cite{Saavedra1996}, but since there is no commonly agreed primitive building blocks for graph processing (section~\ref{section:25-graph-primitives}), a fair comparison between approaches is difficult at the kernel level only~\cite{Hennessy2019} and a more comprehensive \gai assessment must compose more complicated programs.
 % \nrscomment{this doesnt quite match with the topic sentence- "a more comprehensive \gai assessment must compose more complicated programs" vs. "graph task coverage is too low-level for real-world \gai performance assessment". can you re-word it to include the real-world aspect and make it sound more like a criticism of the current state of things rather than "a more comprehensive assessment must..."?}
 
-\textbf{ETL is under-represented in benchmarks given their importance in real-world \gai processing.}
-Only nine of the surveyed benchmarks explicitly include tasks that require ETL, reflecting the problematic assumption that graphs are static, meaning the construction cost can be amortized over the life of the graph. 
-As our overview of \gai problems in the real world from section from section~\ref{section:11-graph-based-ai} emphasizes, many problems are constrained by the dynamic nature of the graph.
-As a result, the limited coverage of graph manipulations makes it difficult to generalize their results to dynamic graph processing. 
-Furthermore, only three benchmarks (SAGA-Bench~\cite{Basak2020}, SRBench~\cite{Zhang2012} and PAGNFF~\cite{Wu2021a}) provide explicit support to dynamic graph tasks. 
-The benchmarking framework we propose in chapter~\ref{chapter:40-Graph-AI-Benchmarking} explicitly includes ETL time in every benchmark problem. 
-We create a benchmark that can accommodate static or dynamic processing approaches by tracking the \textit{batch latency}, the length of time between when ETL begins on a datum and when it shows up in the results of a query of operation. 
+
 
 % \textbf{Approximate and incremental \gai approaches are not well covered.}
 % \nrscomment{This paragraph doesnt explain this claim at all. you mention dynamic again, which belongs in the one above not here. what does implicit support mean? how does the claim incremental approaches arent covered follow from your table? if not from there then you need to give some evidence for the claim. say that they dont probe for intermediate solutions or something like that}
@@ -73,16 +153,7 @@ We create a benchmark that can accommodate static or dynamic processing approach
 % \nrscomment{this is a critical advantage of your approach- you need to make that point here}
 
 
-\input{Tables/32_datasets.tex}
 
-\subsection{Dataset Coverage.}
-Datasets are a core component of benchmarks. 
-They are the `thing', or `problem' that a system must conduct a task on. 
-A collection of standard datasets makes the results between different systems comparable. 
-Since\gai performance is highly dependent on the size and shape of the input graph, good performance measurements require broad coverage of graph shapes from the domain of interest.
-We surveyed the datasets used in $23$ graph benchmarks finding that the median number of input graphs is 6 per benchmark and that there is a general focus on real-world scale-free graphs.
-The benchmarks are grouped by their focus area (graph analytics, GDB, GNNs) in table~\ref{table:benchmark-datasets}, and the column entries indicate whether each benchmark satisfies a given graph property with at least one of the datasets it contains.
-We identify three areas of concern in dataset coverage for \gai benchmarks. 
 
 % \textbf{Datasets of diverse sizes and shapes are available, but popularity varies.}
 % \nrscomment{the topic sentence doesnt make sense "x and y are diverse but z varies". either change 'but' to 'and' or find adjectives that are actually contrasting (diverse and varies are synonymous). i think the takeaway isnt about popularity so much as it is the tendency to adopt new datasets as a strategy to (unsuccessfully) prevent overfitting to stale ones- based on reading what you have below.}
@@ -99,46 +170,22 @@ We identify three areas of concern in dataset coverage for \gai benchmarks.
 % When a new `state of the art' dataset emerges, benchmarks will flock to include it for a while, and then eventually switch to the new hotness when a new dataset emerges. 
 % The key problem with static real-world datasets is that they can quickly become an optimization target, rather than a measure of performance, leading to implementations and environments that are overfitted to the benchmark problems~\cite{Hooker1994,Hooker1995}.
 
-\textbf{Heterogeneous graphs are not well covered.}
-Real-world \gai problems require processing heterogeneous graphs consistent with knowledge graphs~\cite{Regli2022a}.
-Of the benchmarks surveyed, heterogeneous graphs were sparsely covered in all focus areas except GDBs.
-Traditional Graph Analysis and GNNs both focus on topological features, leading to a scarcity of complex attributed graphs for benchmark datasets.
-Sourcing and if necessary, creating complex heterogeneous attributed graphs is an important focus for developing a \gai benchmark.
+
 % \nrscomment{need a takeaway here explaining how your benchmark covers what others dont}
 
 % shows that most benchmarks use several distinct datasets 
 % \nrscomment{say something about the shape variety if you can, since thats what you just said matters} and that \nrscomment{dataset size varies greatly, ... something that puts these numbers in context} t
 
-\textbf{Benchmarks datasets vary in domain coverage rather than graph topology.} 
 % \nrscomment{reword this topic sentence "Benchmarks datasets vary in domain coverage rather than graph topology."}
 % \nrscomment{is this because those are graph-native domains? If theres a reason everyone picks those, say it here}
-The median number of datasets used by benchmarks is $6$, with most selections being loosely justified and not explicitly tied to any domain.
-The benchmarks we surveyed tend to contain publicly available graphs about graph-native problems like mapping citation networks, analyzing friend networks on social media, and email events, though between SNAP~\cite{Leskovec2014} and the Network Data Repository~\cite{Rossi2015} there are numerous graphs available from health, physical sciences, geospatial, and many other domains. 
-% \nrscomment{not clear you mean dataset until the end of the sentence when i can rule out you dont mean domain selection. just say "most choices in dataset"}  
-Only the GAP~\cite{Beamer2017} benchmark explicitly chooses its datasets to represent mesh, scale-free and uniform random topologies to enable performance measurement across varied input shapes.
-% \nrscomment{ok, now youre talking about shape, which is what you opened with. The prelim defines those as classes of graphs though doesnt it? Normalize the naming when you open this section I know the main thing will be whether those classes/shapes are covered}
-% \nrscomment{need to tie this back to your work. you vary topology, so you need to say that and also differentiate from GAP- what do you do that they dont on this front?}
-For our approach, we will build on the GAP methodology and aim for datasets from at least the scale-free, random and mesh structures for every problem in the framework to generate data about the impact of varying data shapes on tasks. 
 
 
-\textbf{Dynamic graph datasets are very uncommon.}
-% While the use of synthetic graphs is common, most benchmarks draw at least some of their datasets from the Stanford Large Network Dataset Collection of real-world graphs, providing a standardized and widely available library of accessible graphs.
-% Most of the benchmarks have at least one random and one scale-free graph in their collections, but mesh graphs and dynamic graphs appear in a minority of surveyed benchmarks. 
-% The lack of mesh graphs will lead to an absence of information about how \gai implementations and environments behave on graphs with large diameters and regular, low degrees. 
-% \nrscomment{everything above here is about topology aside from the "and dynamic graphs" 2 sentences up. All of it belongs in the previous section about how they dont vary topology.}
-Dynamic graphs have spatio-temporal characteristics that are not common in static graphs. 
-Edges and vertices can be added or removed at any point, and the graph must conduct ETL concurrently with completing \gai tasks.
-These dynamic approaches focus attention on providing results within a limited timeframe.
-The lack of dynamic graph datasets means that there is no clear drive to build and evaluate dynamic \gai systems, and so the development of time and resource-constrained \gai approaches slows.
-Because of the lack of available datasets, research on dynamic graphs needs to artificially transform static graphs into dynamic ones through random sampling
-However, many of the same drawbacks of synthetic graph generation apply to an artificial sampling of static graphs. 
-For example, random sampling does not replace the natural pattern of vertex and edge creation, modification, and deletion that is inherent to dynamic graphs.
-Randomly selecting vertices and edges to add to the graph is unlikely to reflect how they would occur in the real world. 
+
 % Much like synthetic graph generation, artificially transforming a graph into a dynamic graph loses information about patterns in vertex and edge creation, updates and deletion and provides a sub-optimal substitute. 
 % Sourcing of data by experimenters generally leads to the creation of synthetic data, or to the use of proprietary data which then is not released for comparative studies. \nrscomment{still dont understand the sourcing from experimenters thing}
 % % \nrscomment{i think i need one more sentence here to drive home the gravity of skipping those 2 types in most benchmarks. how does that limit their utility? why is it so bad?}
 % \nrscomment{how does your benchmark solve all this i.e. say if you provide dynamic graphs and why theyre better than any existing ones that do have dynamic graphs}
-The \gai benchmark framework is actively searching for dynamic graph datasets and intends to integrate them into every \gai problem.
+
 
 % \nrscomment{all the rest of your topic sentences are problems. this one is the datasets reflect problems in GNNs. its different from the others. in other words, youre not really identifying a problem here that your benchmark can address. its more of an observation. maybe thats fine and you can argue more work needs to be done on the algorithms side to address the issue, but it also seems a bit tangential to your thesis given its not so much a benchmark issue as it is an architecture/model issue. consider dropping this section. if not, then reword the topic sentence as "GNN benchmark datasets have a different profile from other focus areas, reflecting architecture scalability issues."}
 % \textbf{GNN Benchmark Datasets reflect scalability issues in GNNs.}
@@ -160,21 +207,7 @@ The \gai benchmark framework is actively searching for dynamic graph datasets an
 % Overall, gaps in the dataset coverage of \gai benchmarks are in applying the traditional graph algorithms to more complicated attributed multigraph graph structures, the absence of mesh graphs, and the lack of support for dynamic (streaming) graphs that a \gai benchmark needs to account for. 
 % % \nrscomment{you covered the lack of mesh graphs, but i dont think you talked about applying traditional algorithms to attributed graphs here, and i wouldnt expect anything about algorithms in this section anyway. and you didnt talk about dynamic graphs here at all either. take those out of the summary statement or give them the proper discussion before this point}
 
-\input{Tables/33_metrics}
-\subsection{Metric Coverage.}
-Metrics are the summaries of a system's efficiency, effectiveness and cost that we generate by observing how a system solves a task on a given dataset.
-The metrics generated by \gai benchmarks enable comparison of the relative effectiveness, efficiency and cost of \gai systems.
-We survey the coverage metrics of $23$ graph benchmarks from published results and public leaderboards in table~\ref{table:benchmark-metrics}.
-We group benchmarks by their focus areas (graph analytics, GDBs and GNNs), and indicate whether each benchmark reports a given metric in at least one of its workloads.
 
-We identify four areas of concern in the coverage of metrics by existing benchmarks.
-
-\textbf{Collecting detailed metrics is invasive and impractical.}
-To collect interesting and useful metrics about the internal state of the \gai system (compute, memory, network and power), the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
-As a result, these `internal' metrics are only observed in detailed workload analysis studies where the researcher has access beyond the inputs and outputs to the system and what can be externally observed. 
-In the remainder of cases, execution time is typically the only viable metric.
-The Input/Output model for benchmarking is flexible but does not facilitate the discovery of bottlenecks, which is critical for understanding which parts of the system should be improved.
-In the \gai benchmark framework, we use an empirical approach design with constraint theory to balance the benefit of a detailed workload analysis with the flexibility offered by a simple Input/Output design. 
 
 % \textbf{Extract, Transform and Load timings are neglected.}
 % \nrscomment{you already said graph manipulations are not covered in Tasks. now you say in metrics that ETL time isnt counted... but thats the same reason you gave for the task issue- that CRUD costs were ignored and amortized. either stick with it in whichever category fits better (task or metric) and remove from the other, or differentiate them better. i tend towards it being a task scope issue more than a metrics issue- metrics coverage to me is what resource (time, memory etc.) is used as the ruler for comparing things- and which resources are better rulers or are important but not covered}
@@ -188,10 +221,7 @@ In the \gai benchmark framework, we use an empirical approach design with constr
 
 % The coverage of metrics by the existing benchmarks (\nrscomment{Table} ~\ref{table:benchmark-metrics}) shows a strong preference for using kernel-level execution times, generally excluding any measurement of the time taken to construct or update the graph it is operating on. \nrscomment{use your ETL acronym here so i dont have to go look it up to understand the table you just pointed me to}
 
-\textbf{Throughput measures can be misleading.}
-Throughput metrics are generally estimates of traversals per second, which is computed by counting the edges in the input graph, estimating the traversals required by a single iteration of the algorithm and multiplying that by the number of iterations to get the total edge traversals, which is then divided by the execution time to measure traversals per second~\cite{Bader2009, Intel2020}.
-The drawback of this estimation strategy is that it does a poor job of algorithms that aggregate or otherwise change the structure of the graph at each iteration.
-In the \gai benchmarking framework we focus on execution time as a downstream indicator of throughput and the interaction of throughput with the other aspects of the system. 
+
 % To better estimate traversals per second, traversal or operation counters can be implemented in code to track x or y.
 % One option is to implement traversal counters in code to track how often a traversal occurs, or operation counting can be implemented with a more invasive profiling approach. 
 % \nrscomment{"However, counters must be implemented correctly to give accurate measurements and operation profiling can degrade execution time and require internal system access."}
@@ -207,19 +237,9 @@ In the \gai benchmarking framework we focus on execution time as a downstream in
 
 % Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
 % \nrscomment{Of the benchmarks we surveyed, many lacked effectiveness metrics.}
-\textbf{Effectiveness is neglected}
-Benchmarks measure performance by efficiency metrics or effectiveness metrics, but not both.
-Few of the surveyed benchmarks reported effectiveness metrics, likely because many `traditional' graph problems are deterministic and were either correct or not.
-On the other hand, benchmarks for newer problems like Long Range Graph Learning~\cite{Dwivedi2022} often only include effectiveness metrics, ignoring time and space efficiency until the problem can be effectively solved.
-The \gai framework takes a more nuanced view of correctness, linked to defining problems in general terms rather than as specific tasks and to constraint-based benchmarking.
-We intend to develop problems with degrees of correctness to encourage work on iterative, incremental and approximate solutions that may offer a trade-off between effectiveness for efficiency, giving a benchmark user options to experiment with their constraints to find the solution that is best for them.
+
 % More telling is the reverse, where newer benchmarks that are still demonstrating the feasibility of approaches like \textit{Long Range Graph Learning} report \textit{effectiveness} metrics exclusively, ignoring time or space efficiency until the basic problem is solved. 
 
-\textbf{Cost measurement requires system access. }
-Cost measurements estimate how expensive a particular solution is and form the third dimension of metrics. 
-However, none of the surveyed benchmarks make estimates of cost, and few acknowledge its proxies like power consumption. 
-A complete model of system constraints needs to trade off efficiency, effectiveness and cost. 
-For the time being the \gai benchmark framework is focusing on effectiveness and efficiency because of the lack of methods for non-invasive cost estimation.
 
 % \textbf{There is a need for an Algorithmic Development Maturity Model}
 % \nrscomment{this is irrelevant to metrics coverage drop it}
