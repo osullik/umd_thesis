@@ -1,0 +1,50 @@
+\section{Graph Hardware Acceleration}
+\label{section:13-Graph-Hardware-Acceleration}
+
+GPUs perform well with large and uniformly sized vertex frontiers and when graph diameter is low. 
+Dense scale-free graphs perform better on GPU.
+GPU struggles with small frontier sizes, small vertex degrees and load imbalances within the frontier and with more synchronizations caused by large diameters. 
+Mesh networks are not well suited for GPU because they do not expose enough work to saturate the GPU.
+Traversal-based primitives are more impacted by graph topology than computation-based primitives because they operate on smaller subsets of the graph and have less parallel work to do per operation~\cite{Wu2015}
+
+Graph Algorithms have a high communication-to-computation ratio. Their parallelism is constricted to gains of $P^{\frac{1}{2}}$ where $P=$ the number of workers. Communication-avoiding algorithms are promising but can't eliminate the problem on their own. Hardware optimization must be the way forward, and GraphBLAS gives us composable primitives to identify where to optimize hardware.~\cite{Kepner2016}
+
+ND-Miner~\cite{Talati2022}
+
+EXPLOIT Methods
+
+Five Methods exist: Graph Reordering, Cache Blocking, Vertex Scheduling, Graph Partitioning, In-Memory Graph Processing
+
+SIMD-X~\cite{Liu2019} exploits latent potential in GPUs with a new programming model.
+
+HATS exploits temoporal locality in graphs with online traversal scheduling strategies.~\cite{Mukkara2018}
+
+PreProcessing of vertices to improve the traversal schedule (Graphicionado, PathGraph, GridGraph)~\cite{Mukkara2018}; which is in improvement over frameworks like Ligra and GraphMAT that use default vertex order scheduling (i.e. find it in memory). Pre processing is expensive and so only really works for static graphs. 
+
+Ligra ~\cite{Shun2013}. The implementation are work-inefficent~\cite{Dhulipala2017}
+
+Ligra+ ~\cite{Shun2015} uses compression to halve the amount of required memory to store graphs and execute graph algorithns. Given a lot of power consumption comes from memory usage, this could be a good way to reduce power consumption and so cost \osullikomment{Need cite for memory as dominant consumer of memory.}
+
+Lightweight Graph Reordering ~\cite{Balaji2018}
+
+Cache Blocking: 
+
+GridGraph - 2D Edge Partitioning
+X-Stream - Streaming partitions to keep random reads in fast storage. Requires additional sequential memory traffic for streaming the updates and extra random accessess for the shuffle and gather phases. 
+
+Polymer - A NUMA-Optimized framework that minimizes remote random access and cross NUMA node access. It has slow remote write performance. 
+
+Cagra~\cite{Zhang2017} Uses CSR segmenting to divide the graph into subgraph no larger than LLC and limits `random accesses' to LLC.
+
+GraphChi - Uses shards with parallel sliding windows to keep random accesses low. But needs to read edges twice \& has random writes to slow storage. 
+
+GraphMAT - Sparse Matrix Operations
+
+ELEVATE Methods
+
+TESSERACT~\cite{Ahn2015} ->Processing in Memory to ELEVATE memory bandwidth utilization.
+
+FPGA Accelerators: FPGP; GraphGen; GraphOPS
+
+AISC Accelerators: Graphicionado, GraphPIM, Ozdal2017, Tesseract
+
