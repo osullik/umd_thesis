@@ -6,18 +6,14 @@ The \gai Benchmark Framework defines Graph-Based Artificial intelligence (\gai) 
 
 Prior efforts to define a taxonomy of \gai focus primarily on \textit{Graph Neural Network}~\cite{Smith2021, Zhou2020a}, \textit{Graph Mining}~\cite{Chen2022a} or specific problems like signal processing~\cite{Xia2021}.
 We extend these taxonomies to include:
-\nrscomment{make them all of the same grammatical form "(noun) that ..." or "(infinitive verb) ..." "(third person verb) ..." -- youre swapping back and forth}
 \begin{itemize}
-    \item \textbf{Graph Problem Solving \ac{GPS}.} Classic AI tasks that formulate the world as a graph, including navigation and critical path analysis. 
-    \item \textbf{Graph Mining (\ac{GM}).} Analyze the structural characteristics of a graph, including spatial pattern matching and community detection. 
-    \item \textbf{Graph Reasoning (\ac{GR}).} AI tasks that use graphs for inference, like common sense reasoning and knowledge-graph question answering. 
-    \item \textbf{Graph Abstraction (\ac{GA}).} \nrscomment{dont start with a gerund} Transforming graphs into other structures for downstream tasks, for example, generating embeddings with Node2Vec~\cite{Grover2016} or DeepWalk~\cite{Perozzi2014}.
-    \item \textbf{Graph Prediction (\ac{GP}).} \nrscomment{dont start with a gerund} Learning directly on graphs typically using \ac{GNN}s, including knowledge graph completion and anomaly detection. 
-    \item \textbf{Graph Transparency (\ac{GT}).} Uses graphs to improve generative models' transparency, explainability and interpretability. 
+    \item \textbf{\ac{GPS}.} Are classic AI tasks formulating the world as a graph, including navigation and critical path analysis.
+    \item \textbf{\ac{GM}.} Are tasks that analyze the structural characteristics of a graph, including spatial pattern matching and community detection. 
+    \item \textbf{\ac{GR}.} Are \ac{AI} tasks that use graphs for inference, like common sense reasoning and knowledge-graph question answering. 
+    \item \textbf{\ac{GA}.} Are tasks that transform graphs into other structures for downstream tasks, such as generating embeddings or graphs from statistical properties.
+    \item \textbf{\ac{GP}.} Are tasks that learn directly on graphs typically using \ac{GNN}s, including knowledge graph completion and anomaly detection. 
+    \item \textbf{\ac{GT}.} Are tasks that use graphs to improve generative models' transparency, explainability, and interpretability. 
 \end{itemize}
 
 The taxonomy contextualizes \gai as part of the existing AI landscape and provides a few examples \gai tasks that sit within each \gai category. 
-The \gai taxonomy anchors the \gai Benchmark Framework. \nrscomment{too simple a sentence, combine with something else}
-The \gai problem areas guide the development of the benchmark problems within the framework and emphasize the diversity of tasks that the hardware and software systems that run \gai need to support. 
-
-\osullikomment{Add table into Preliminaries}
+The \gai problem areas anchor the development of the \gai benchmark problems within the framework and emphasize the diversity of tasks that the hardware and software systems that run \gai need to support. 

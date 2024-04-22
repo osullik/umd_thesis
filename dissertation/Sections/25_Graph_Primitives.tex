@@ -1,19 +1,16 @@
 \section{Graph Primitive Operations}
-
 \label{section:25-graph-primitives}
+
 Primitives are the abstract building blocks that compose more complicated programs. 
 For example, the \textit{Select, Project} and \textit{Join} primitives from relational database processing abstraction are combined in various orders to compose complicated queries and operations on databases. 
 Having a set of common primitive operations is extremely helpful in building hardware-agnostic applications and gives hardware designers a set of operations to optimize to improve performance. 
-However, there is no real agreement on what the building blocks of graph processing should be~\cite{Satish2014} since graph operations tend to be dependent on the abstraction model and implementation used.
+However, there has yet to be an agreement on exactly what the building blocks of graph processing should be~\cite{Satish2014} since graph operations tend to depend on the abstraction model and implementation used.
 
-% \nrscomment{linear algebraic is an abstraction model, graph database is a problem category, and parallel/sequential are implementations. What are you listing here? figure that out and then change the title "Overview" to whatever it is youre listing. if you follow my next comment and drop the Benefits section, then you dont need a header here at all, and can just have Sequential, Parallel, etc. as your headers. But still think about why youre listing unlike things in a list-- thats usually a sign something is wrong with the presentation. Based on the title of this section Graph Primitive Operations, I would expect the headers here to be the primitive operations themselves, like Scatter-Apply-Gather, matrix multiplication, etc. and then discuss their applicability in the text.}
-
-The simplicity of sequential graph operations has not driven the creation of any core primitive operations.
-The complexity of parallel operations on graphs has driven the development of several primitive families including the \textit{Gather-Apply-Scatter} family derived from Map-Reduce~\cite{Malewicz2010} and the hierarchical collections of graph primitives built on work-efficient atomic and parallel processing primitives~\cite{Shun2013, Shun2015, Dhulipala2017, Dhulipala2021}.
-Graph Manipulation Operation Primitives have inherited the \textit{Create, Read, Update, Delete} primitives because of their proximity to databases~\cite{Vukotic2015}, but are not utilized in most graph processing approaches. 
+The complexity of parallel operations on graphs has driven the development of several primitive families, including the \ac{GAS} family derived from Map-Reduce~\cite{Malewicz2010} and the hierarchical collections of graph primitives built on work-efficient atomic and parallel processing primitives~\cite{Shun2013, Shun2015, Dhulipala2017, Dhulipala2021}.
+Graph Manipulation Primitives have inherited the \ac{CRUD} primitives because of their proximity to databases~\cite{Vukotic2015}, but are not used in most graph processing approaches. 
 One of the most promising primitive families is Matrix Operations. 
-Suites like the Combinatorial Basic Linear Algebra Subprograms (CombBLAS) and GraphBLAS use a linear-algebraic abstraction of the graph and matrix manipulations to carry out graph operations~\cite{Buluc2011, Azad2021, Mattson2013, Kepner2015, Kepner2016}.
-Matrix-based abstractions are particularly interesting because of their close relationship to other linear algebraic operations which have been the focus of years of hardware acceleration and performance optimization.
+Suites like the \ac{CombBLAS} and \ac{GraphBLAS} use a linear-algebraic abstraction of the graph and matrix manipulations to carry out graph operations~\cite{Buluc2011, Azad2021, Mattson2013, Kepner2015, Kepner2016}.
+Matrix-based abstractions are fascinating because of their close relationship to other linear algebraic operations, which have been the focus of years of hardware acceleration and performance optimization.
 
 % \textbf{Sequential Primitives.}
 % Sequential graph processing implementations tend to operate directly on the data structures without using formally defined frameworks or a set of pre-defined primitives.
