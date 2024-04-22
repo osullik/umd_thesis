@@ -5,7 +5,7 @@
         \begin{tabular}{l|lll}
           Family                                    & Algorithm                                         & Efficiency Bottleneck                     & Effectiveness Botleneck \\
           \hline
-          \textbf{Graph Partitioning}               & Kernighan-Lin~\cite{Kernighan1970}                & $\mathcal{O}(n^3)$                        & Dense; Small communities; Unknown $K$ \\%& average (best) case assumes near-optimal partition on initialization \\
+          \textbf{Graph Partitioning}               & Kernighan-Lin~\cite{Kernighan1970}                & $\mathcal{O}(n^3)$                        & Dense; Small communities; Unknown $C$ \\%& average (best) case assumes near-optimal partition on initialization \\
                                                     
                                                     & Extremal Mod. Optimization~\cite{Duch2005}        & $\mathcal{O}(n^2\log^2{n})$               & Fuzzy \\%& Avg case requires heap-based implementation \\
                                                     
@@ -51,7 +51,7 @@
                         ~                           &                         ~                         & ~                                         & ~ \\      
         \textbf{Dynamic Graphs}                     & Instant Optimal~\cite{Rossetti2018,Ilhan2015}     &  $\mathcal{O}(T((n^2)+(c^{2})))$          & Fuzzy; Many $C$ \\ %Derived at T timesteps complexity is Louvain + Comparing all sims   
                         ~                           & Temporal tradeoff~\cite{Rossetti2018,Bansal2011}  &  $\mathcal{O}(T(md\log{n}))$              & Many changes per $T$ \\ %Derived from worst case where every community changes each timestep   
-                        ~                           & Cross-Time~\cite{Rossetti2018,Himmel2016}         &  $\mathcal{O}(3^{\frac{d}{3}}2^{2}mnt)$   & Dense \\ %Given complexity. d is degenearcy T is timesteps   
+                        ~                           & Cross-Time~\cite{Rossetti2018,Himmel2016}         &  $\mathcal{O}(3^{\frac{d}{3}}2^{2}mnt)$   & Dense \\ %Given complexity. d is degeneracy, T is timesteps   
         % \textbf{Overlapping Communities}    & & & & \\
         %                                               & & & & \\
         %                                               & & & & \\                                    
@@ -63,13 +63,16 @@
       \noindent
       {\footnotesize
       Where:
-      $n$ is number of vertices, 
-      $m$ is number of edges,
-      $c$ is number of communities/clusters/partitions, 
-      $k$ is degree,
-      $t$ is number of time slices,
-      $d$ is degeneracy of graph,
-      $h$ is number of hidden layers, and
-      $i$ is number of iterations.
+      $n$ is the number of vertices, 
+      $m$ is the number of edges,
+      $c$ is the number of communities/clusters/partitions, 
+      $k$ is a degree,
+      $t$ is the number of time slices,
+      $d$ is the degeneracy of the graph,
+      $h$ is the number of hidden layers, and
+      $i$ is the number of iterations.
+      $l$ is the number of steps in a random walk
+      $q$ is the number of permitted values in a potts-hamiltonian spin state
+      $e$ is the number of iterations for the K-Means algorithm to converge
 }
     \end{landscape}
