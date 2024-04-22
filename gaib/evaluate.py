@@ -164,6 +164,52 @@ def plot_exec_time_by_experiment(experiments_df:pd.DataFrame)->ggplot:
     )
     return(bar_chart)
 
+def plot_batch_latency_by_experiment(experiments_df:pd.DataFrame)->ggplot:
+
+    custom_legend_labels = {
+        'CPU': '12 Core M2 Max (Baseline)',
+        'CLUSTER': '16 Core Intel Xeon Silver',
+        'GPU': 'NVIDIA RTXA5000'
+    }
+
+    custom_dataset_labels = {
+        "Delaware_adj_list":"OSM-DE",
+        "District of Columbia_adj_list":"OSM-DC",
+        "Maryland_adj_list":"OSM-MD",
+        "Massapequa_adj_list":"OSM-M",
+        "Rhode Island_adj_list":"OSM-RI",
+        "Washington_adj_list":"OSM-WA",
+        "wiki-topcats":"Wiki-Topcats",
+        "email-Eu-core":"Email-EU-Core"
+    }
+
+    filtered_df = experiments_df[experiments_df['alg_type'] == 'static']
+    filtered_df = filtered_df[experiments_df['hw_type'] != 'GPU'] #Exclude GPU as it has no iterative implementation. 
+    filtered_df['custom_datasets'] = filtered_df['datasets'].map(custom_dataset_labels)
+
+    bar_chart = (
+        ggplot(filtered_df, 
+               aes(x='custom_datasets', 
+                   y='ef_bl', 
+                   fill='hw_type')) +
+        geom_bar(stat='identity', 
+                 position='dodge') +
+        # scale_y_log10() +
+        labs(x='Dataset', 
+             y='Batch Latency @1 (Seconds)') +
+        theme_classic() +
+        theme(axis_text_x=element_text(angle=45, ha='right'), 
+              legend_position='bottom') +
+        scale_fill_manual(values=['blue', 'orange', 'green'], 
+                          labels=custom_legend_labels) +
+        guides(fill=guide_legend(title="SUT", 
+                                 nrow=1, 
+                                 byrow=True))
+
+
+    )
+    return(bar_chart)
+
 def plot_proportion_of_time_in_exp_phase(experiments_df:pd.DataFrame)->ggplot:
 
     custom_labels = {
@@ -624,6 +670,8 @@ if __name__ == "__main__":
     #NEW EXPERIMENTS:
     plots.append(('et_vs_exp_by_hardware.svg', 
                   plot_exec_time_by_experiment(experiments_df)))
+    plots.append(('batch_latency_by_experiment.svg', 
+                  plot_batch_latency_by_experiment(experiments_df)))
     plots.append(('proportion_of_time_in_exp_phase.svg', 
                  plot_proportion_of_time_in_exp_phase(experiments_df)))
     plots.append(('GPU_proportion_of_time_in_exp_phase_by_dataset.svg', 
