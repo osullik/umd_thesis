@@ -3,16 +3,16 @@
 \label{chapter:10-Introduction}
 
 Graphs are powerful data structures for representing contextual information and solving problems. 
-They explicitly encode the evidence as vertices (nodes) and the relationships as edges (arcs, links).
+They explicitly encode the \nrscomment{drop definite article} evidence as vertices (nodes) and the relationships as edges (arcs, links).
 Intelligent algorithms can solve many problems on graphs but are limited in the size of the graphs they can process. 
-In the real world, graphs quickly reach billions or trillions of vertices, and Graph-Based Artificial Intelligence or \gai algorithms are frequently quadratic or worse in complexity.
+In the real world, graphs \nrscomment{contain billions} quickly reach billions or trillions of vertices, and Graph-Based Artificial Intelligence or \gai algorithms are frequently quadratic or worse in complexity.
 Further, modern general-purpose processors become memory-bound as graphs become larger and take on more complicated shapes.
 
-The slow-down in \gai performance as graphs get large and complex is because of how graphs are stored in memory. 
-Graphs are typically stored in memory in the order vertices were created, so topologically close vertices are not necessarily proximal in memory. 
-Most algorithms exploit the graph's structure in processing, so computation needs to access the data in topological order. 
-The disconnect between the algorithmic requirements for topological accesses and how they are stored in memory makes prefetching and caching techniques that exploit locality in general-purpose computing ineffective in graph processing.
-\gai must retrieve data required for the next step of the algorithm from the main memory rather than the cache, so the latency and bandwidth of those reads become the bottleneck. 
+The slow-down in \gai performance as graphs get large and complex is \nrscomment{due to the way graphs are stored in memory} because of how graphs are stored in memory. 
+Graphs are typically stored \nrscomment{drop 'in memory'} in memory in the order vertices were created, so topologically close vertices are not necessarily proximal in memory. 
+Most \nrscomment{\gai} algorithms exploit the graph's structure in processing, so \nrscomment{they require access to the data in topological order.} computation needs to access the data in topological order. 
+\nrscomment{The requirement for topological access to the data and the lack of storage locality limit the benefits of techniques like caching and prefetching that are common in general-purpose computing.} The disconnect between the algorithmic requirements for topological accesses and how they are stored in memory makes prefetching and caching techniques that exploit locality in general-purpose computing ineffective in graph processing.
+\nrscomment{Without caching, \gai algorithms rely on data retrieved from main memory, which causes memory latency and bandwidth bottlenecks.} \gai must retrieve data required for the next step of the algorithm from the main memory rather than the cache, so the latency and bandwidth of those reads become the bottleneck. 
 The memory-boundedness of graph processing is well understood and carries forward into the application of \gai, where it is the primary scaling limit preventing deployment of \gai to real-world problems. 
 
 Most competing approaches to speed up graph processing focus on generating improvement for a subset of problems and do not necessarily yield general improvement in all \gai performance. 
@@ -21,7 +21,9 @@ A second path leverages representation-based approaches like compression, custom
 Finally, a third path uses algorithmic approaches to exploit parallelism or develop approximation methods to reduce computation time. 
 These approaches are interdependent, and decisions about optimizing hardware can limit choices about parallelism or programming models, making it difficult to determine the optimal configuration for a given collection of problems. 
 
-This thesis contributes a framework and methodology for comparing each improvement technique's impact on a system that solves real-world problems with \gai to consistently improve \gai performance while providing a mechanism for benchmark users to justify design decisions empirically. 
+\nrscomment{this sentence should stand independent of the previous paragraph since people look for the contribution line and just read that}
+This thesis contributes a \nrscomment{benchmarking} framework and methodology for comparing \nrscomment{the impact of \gai improvement techniques on real-world systems, enabling users to justify \gai design decisions empirically.} each improvement technique's impact on a system that solves real-world problems with \gai to consistently improve \gai performance while providing a mechanism for benchmark users to justify design decisions empirically.
+\nrscomment{Our \gai benchmark framework empowers engineers to make data-driven decisions about the cost-effectiveness of hardware accelerators like \ac{GPU}, and other system architecture components.}
 For example, the \gai benchmark framework empowers an engineer tasked to determine whether adding hardware accelerators like a \ac{GPU} or distributing computing across the existing infrastructure is more cost-effective to reduce the processing time can use the benchmark framework to collect the data they need to make their assessments. 
 Further, by developing a repeatable process to collect the data needed to make these decisions, we produce an extensible framework that can be improved over time to evaluate new \gai problems as they emerge.
 
