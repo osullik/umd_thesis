@@ -3,24 +3,26 @@
 \label{chapter:10-Introduction}
 
 Graphs are powerful data structures for representing contextual information and solving problems. 
-They explicitly encode evidence as vertices (nodes) and the relationships as edges (arcs, links).
+They explicitly encode evidence as vertices (nodes) and relationships as edges (arcs, links).
 Intelligent algorithms can solve many problems on graphs but are limited in the size of the graphs they can process. 
 In the real world, graphs contain billions or trillions of vertices, and Graph-Based Artificial Intelligence or \gai algorithms are frequently quadratic or worse in complexity.
 Further, modern general-purpose processors become memory-bound as graphs become larger and take on more complicated shapes.
 
-The slow-down in \gai performance, as graphs get large and complex, is due to how graphs are stored in memory. 
-Graphs are typically stored in the order that vertices were created, so topologically close vertices are not necessarily proximal in memory. 
+The slow-down in \gai performance as graphs get large and complex, is due to how graphs are stored in memory. 
+Graphs are typically stored in the order that vertices are created, so topologically close vertices are not necessarily proximal in memory. 
 Most \gai algorithms exploit the graph's structure in processing, requiring access to the data in topological order.
 The requirement for topological access to the data and the lack of storage locality limit the benefits of common general-purpose computing techniques like caching and prefetching.
 Without caching, \gai algorithms rely on data retrieved from main memory, which causes memory latency and bandwidth bottlenecks. 
 The memory-boundedness of graph processing is well understood and carries forward into the application of \gai, where it is the primary scaling limit preventing deployment of \gai to real-world problems. 
 
+\nrscomment{can you replace the next 4 sentences with: "Common approaches to speeding up \gai processing are narrow, and typically involve hardware, like specialized accelerators or distributed processing, representation, like custom data structures or abstraction models, or algorithms, like parallel or approximate methods."}
 Most competing approaches to speed up graph processing focus on generating improvement for a subset of problems and do not necessarily yield general improvement in all \gai performance. 
 Accelerator-based approaches like distributed processing, upgrading hardware, and adding specialized accelerators provide one path to speed up processing. 
 A second path uses representation-based approaches, such as compression, custom data structures, and alternate abstraction models, to improve computation speeds.
 Finally, a third path uses algorithmic approaches to exploit parallelism or develop approximation methods to reduce computation time. 
 These approaches are interdependent, and decisions about optimizing hardware can limit choices about parallelism or programming models, making it difficult to determine the optimal configuration for a given collection of problems. 
 
+\nrscomment{youre missing something here. the prev and sub paragraphs dont directly relate to each other. whats the tie?}
 This thesis contributes a benchmarking framework, a methodology for developing `grey-box' \gai problem-centric benchmarks, a tool for converting \ac{OSM} data to directed, weighted, attributed graphs with ground-truth communities, a benchmark for the \gai problem of population segmentation and a collection of experiments to demonstrate how the \gai benchmarking framework supports engineers and procurement officers in identifying if, when and how to accelerate systems for \gai.
 Further, our repeatable process delivers an extensible framework that can be continually improved to evaluate new \gai problems as they emerge.
 
