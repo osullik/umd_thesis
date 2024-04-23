@@ -1,0 +1,69 @@
+\begin{landscape}
+    \begin{figure}[htbp]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \includesvg[width=\textwidth]{Experiment_Results/Baseline_nmi_per_iteration_per_hardware}
+                \caption{Baseline NMI improves non-monotonically}
+                \label{fig:bl-nmi}
+            \end{subfigure}
+            % \vfill
+            \vspace{\baselineskip} % Adjust vertical space as needed
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \includesvg[width=\textwidth]{Experiment_Results/Baseline_communities_per_iteration_per_hardware}
+                \caption{Baseline community count shrinks non-monotonically}
+                \label{fig:bl-nc}
+            \end{subfigure}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \includesvg[width=\textwidth]{Experiment_Results/Xeon_nmi_per_iteration_per_hardware}
+                \caption{Xeon SUT NMI improves monotonically}
+                \label{fig:cpu-nmi}
+            \end{subfigure}
+            % \vfill
+            \vspace{\baselineskip} % Adjust vertical space as needed
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \includesvg[width=\textwidth]{Experiment_Results/Xeon_communities_per_iteration_per_hardware}
+                \caption{Xeon SUT community count decreases monotonically}
+                \label{fig:cpu-nc}
+            \end{subfigure}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+            \centering
+            \vspace{1em}
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \includesvg[width=\textwidth]{Experiment_Results/no_incremental_gpu}
+                \vspace{.25em}
+                \caption{The GPU SUT does not support iterative implementation}
+                \vspace{.25em}
+                \label{fig:gpu-nmi}
+            \end{subfigure}
+            % \vfill
+            % \vspace{4em} % Adjust vertical space as needed
+            \begin{subfigure}[b]{\textwidth}
+                \centering
+                \vspace{2em}
+                \includesvg[width=\textwidth]{Experiment_Results/no_incremental_gpu}
+                \vspace{.25em}
+                \caption{The GPU SUT does not support iterative implementation}
+                \label{fig:gpu-nc}
+            \end{subfigure}
+            \vspace{.25em}
+        \end{minipage}
+
+        \caption{The underlying hardware impacts the performance of iterative algorithms, with only the Xeon CPU SUT showing monotonic improvement that allows trading effectiveness for efficiency}
+        \label{fig:monotonics}
+    
+    \end{figure}
+
+\end{landscape}

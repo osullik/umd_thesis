@@ -1,21 +1,21 @@
 \begin{landscape}
     
-    \begin{table*}[t]
+    \begin{table}[t]
         \begin{center}
-        \small
+        {\footnotesize
             \begin{tabular}{lll} 
                 AI Problem              &  \gai Problem              &       Example Tasks      \\%&       \textbf{Citation(s)}    \\
                 \hline
                 & & \\
-                \textbf{Graph Problem Solving} & Search                   & BFS, DFS, UCS, A*, MinMax              \\%& \cite{Russell2021}            \\
+                \textbf{Graph Problem Solving} & Search                   & \acs{BFS}, \acs{DFS}, \acs{UCS}, \acs{A*}, MinMax              \\%& \cite{Russell2021}            \\
                 \textit{Formulate as graph problem}~\cite{Russell2021} & Constraint Satisfaction  & Forward Checking, Backtracking        \\%& \cite{Russell2021}            \\
-                                            & Planning                 & GraphPlan, SSSP, MST                  \\%& \cite{Russell2021}            \\
+                                            & Planning                 & GraphPlan, \acs{SSSP}, \acs{MST}                  \\%& \cite{Russell2021}            \\
                                             & Scheduling               & CriticalPath                          \\%& \cite{Russell2021}            \\
                                             & Inference                & Variable Elimination (Bayes Net)      \\% & \cite{Russell2021}            \\
                                             & Reinforcement Learning   & Q-Learning                            \\% & \cite{Russell2021}            \\
                 & & \\
                 \textbf{Graph Mining}        & Pattern Matching         & Subgraph Matching, Spatial Pattern Matching\\%\cite{Zeng2020,Osullivan2023} \\%& \cite{Osullivan2023}          \\
-                \textit{Operate on graph topology}~\cite{Zeng2020,Osullivan2023,Girvan2002,Brandes2006,Page1998,Brandes2001,Leskovec2014,DeRaedt2016,Blagec2022} & Characterization         & WCC, SCC, LCC, GCC, TC  \\
+                \textit{Operate on graph topology}~\cite{Zeng2020,Osullivan2023,Girvan2002,Brandes2006,Page1998,Brandes2001,Leskovec2014,DeRaedt2016,Blagec2022} & Characterization         & \acs{WCC}, \acs{SCC}, \acs{LCC}, \acs{GCC}, \acs{TC}  \\
                 & Graph Clustering         & Community Detection\\%~\cite{Girvan2002}             \\
                                                     & Graph Partitioning       & Modularity Optimization\\%~\cite{Brandes2006}            \\
                                                     & Influence Mapping        & PageRank, Belief Propogation, Max Flow\\%~\cite{Page1998, Brandes2001}  \\
@@ -47,10 +47,10 @@
 
                                                 
             \end{tabular}
-        \normalsize
         \caption{A brief taxonomy of \gai Problems} 
         \label{table:taxonomy}
+        }
         \end{center}
-    \end{table*}
+    \end{table}
 
 \end{landscape}

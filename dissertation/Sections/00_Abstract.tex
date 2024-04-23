@@ -26,27 +26,40 @@ Thesis Directed by: & {\large  Professor William Regli} \\
 
 \renewcommand{\baselinestretch}{2}
 \large \normalsize
-\osullikomment{Rewrite once all other edits are finished}
-Graph-based Artificial intelligence (\gai) encompasses all the AI problems that we formulate as graphs, that operate on graphs, or that rely on the structural characteristics of graphs for learning. 
-\gai is becoming increasingly important with the emergence of generative AI as a mechanism for grounding generation in curated, traceable knowledge and improving transparency, explainability and performance.
-\gai is important in many real-world applications beyond abstract generative use cases, with a cursory survey of national security problems highlighting the ubiquitous need to convert unstructured data to graphs, analyze their content and structure and build predictive models from them.
 
-Since \gai requires combining different representations, algorithms, and systems, it is particularly hard to characterize good \gai performance whether in development or when deployed to solve problems in the real world.
-Clear comparison of performance is hard because as graphs vary in size and shape, they trigger unpredictable changes in computing, memory, and network usage.
-The unpredictable results of combining different representations, algorithms and systems for \gai are exacerbated by a broad diffusion of abstractions and programming models further obfuscating what characterizes `good' performance in \gai.
 
-Existing Benchmarks address some of these issues by providing collections of shared datasets, identifying the most fundamental tasks for comparison and enabling the comparison of relative execution time.
-However, current approaches are not sufficient to capture the breadth of complexity needed to characterize \gai.
-%
-Datasets are sorely lacking in coverage of weighted, directed, attributed multigraphs characteristic of knowledge graphs that form the basis of most modern GraphAI inputs.
-There is almost no coverage of dynamic (streaming) graph tasks, and no work approaching GraphAI problems within size, weight and power constraints. 
+Graph-based Artificial Intelligence (GraphAI) encompasses AI problems formulated using graphs, operating on graphs, or relying on graph structures for learning. 
+Contemporary artificial intelligence research explores how structured knowledge from graphs can enhance existing approaches to meet the real world's demands for transparency, explainability, and performance.
 
-Metrics are limited to efficiency measures like execution time, largely ignore graph extraction, transformation and load times, and either ignore the correctness of the output or cost cost of generating it. 
+Characterizing GraphAI performance is challenging because different combinations of graph abstractions, representations, algorithms, and hardware acceleration techniques can trigger unpredictable changes in efficiency. 
+Although benchmarks enable testing different GraphAI implementations, most cannot currently capture the interaction between effectiveness and efficiency, especially across dynamic and structured knowledge graphs.
 
-Using an empirical approach, we define a framework for constructing a comprehensive \gai benchmark that addresses the shortcomings outlined above. We propose a taxonomy of \gai problems and describe how to select appropriate tasks, datasets, and metrics given a use case or problem under study.
+This work proposes an empirical `grey-box' approach to GraphAI benchmarking, providing a method that enables experimentally trading between effectiveness and efficiency across different combinations of graph abstractions, representations, algorithms, and hardware accelerators. 
+It specifies a taxonomy of GraphAI tasks and a collection of intelligence and security problems that interact with GraphAI, created with a systematic literature review that guides the development of a framework that fuses empirical computer science with constraint theory in a `grey-box' approach to benchmarking that does not require invasive workload analyses or code instrumentation.
+To populate that framework, we formalize a methodology for developing problem-centric GraphAI Benchmark Problems and develop a tool to create directed, weighted, attributed mesh graphs with ground truth communities from OpenStreetMaps data to fill a gap in real-world mesh graph datasets for community detection. 
+Finally, this work provides a completed benchmark for the Population Segmentation Intelligence and Security problem developed using the GraphAI benchmark problem development methodology and provides experimental results that validate using the GraphAI benchmark framework to evaluate if, how, and when GraphAI acceleration should be applied to the population segmentation problem, showing that for small graphs Graphics Processing Units achieve up to a $127\times$ speed-up.
 
-To demonstrate the suitability of our approach, we select the problem of \textit{Population Segmentation} using the \textit{structural analysis} \gai task of \textit{Community Detection} from our survey of national security problems as a case study, and develop a benchmark that provides a researcher the information they need to trade-off between efficiency, effectiveness and cost.
 
-The case study shows how the methodical construction of the benchmark using empirical methods yields an effective benchmark for \textit{Community Detection} and a viable template for implementing other \gai benchmarks as part of the suite in the future.
+% Graph-based Artificial intelligence (\gai) encompasses all the AI problems we formulate as graphs, operating on graphs, or relying on graphs' structural characteristics for learning. 
+% \gai is becoming increasingly important with the emergence of generative AI as a mechanism for grounding generation in curated, traceable knowledge and improving transparency, explainability, and performance.
+% \gai is essential in many real-world applications beyond abstract generative use cases, with a cursory survey of national security problems highlighting the ubiquitous need to convert unstructured data to graphs, analyze their content and structure, and build predictive models from them.
+
+% Since \gai requires combining different representations, algorithms, and systems, it is tough to characterize good \gai performance whether in development or when deployed to solve problems in the real world.
+% Clear comparison of performance is problematic because as graphs vary in size and shape, they trigger unpredictable changes in computing, memory, and network usage.
+% The unpredictable results of combining different representations, algorithms, and systems for \gai are exacerbated by a broad diffusion of abstractions and programming models, further obfuscating what characterizes `good' performance in \gai.
+
+% Existing Benchmarks address some of these issues by providing collections of shared datasets, identifying the most fundamental tasks for comparison, and enabling the comparison of relative execution time.
+% However, current approaches are insufficient to capture the breadth of complexity needed to characterize \gai.
+% %
+% Datasets are sorely lacking in coverage of weighted, directed, attributed multigraphs characteristic of knowledge graphs that form the basis of most modern GraphAI inputs.
+% There is almost no coverage of dynamic (streaming) graph tasks and no work approaching GraphAI problems within size, weight, and power constraints. 
+
+% Metrics are limited to efficiency measures like execution time, largely ignore graph extraction, transformation, and load times, and either ignore the correctness of the output or the cost of generating it. 
+
+% Using an empirical approach, we define a framework for constructing a comprehensive \gai benchmark that addresses the abovementioned shortcomings. We propose a taxonomy of \gai problems and describe how to select appropriate tasks, datasets, and metrics given a use case or problem under study.
+
+% To demonstrate the suitability of our approach, we select the problem of \textit{Population Segmentation} using the \textit{structural analysis} \gai task of \textit{Community Detection} from our survey of national security problems as a case study, and develop a benchmark that provides a researcher the information they need to trade-off between efficiency, effectiveness, and cost.
+
+% The case study shows how the methodical construction of the benchmark using empirical methods yields an effective benchmark for \textit{Community Detection} and a viable template for implementing other \gai benchmarks as part of the suite in the future.
 
 \newpage
