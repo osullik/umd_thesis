@@ -1,0 +1,161 @@
+\renewcommand{\thechapter}{1}
+\chapter{Introduction}
+\label{chapter:10-Introduction}
+
+\section{Motivation}
+Graphs are powerful data structures capable of encoding evidence as vertices (nodes) and contextual relationships as edges (arcs, links). 
+The downside to the expressive power of graphs is that Graph-Based Artificial Intelligence or \gai algorithms operating on them are frequently quadratic or worse in complexity, limiting their use on real-world graphs that contain billions or trillions of vertices. 
+In most other applications, modern general-purpose processors use techniques like caching and prefetching to speed up computation on large inputs.
+However, most \gai algorithms exploit the graph's structure in processing, which requires access to the data in topological order.
+That requirement conflicts with typical graph storage, which is chronological in the order that vertices are created, meaning topologically close vertices are not necessarily proximal in memory. 
+Without caching benefits, \gai algorithms rely on data retrieved from main memory, which causes memory latency and bandwidth bottlenecks, which are the primary scaling limits preventing deployment of \gai to real-world problems. 
+
+Common approaches to speeding up \gai processing are narrow, and typically involve hardware, like specialized accelerators or distributed processing, representation, like custom data structures or abstraction models, or algorithms, like parallel or approximate methods.
+These approaches are interdependent, meaning decisions about optimizing hardware can limit choices about parallelism or programming models, which makes it difficult to determine the optimal configuration for a given collection of problems. 
+
+
+\section{Problem}
+\label{section:11-introduction-to-problem}
+ 
+This thesis aims to determine \textit{if}, \textit{how}, and \textit{when} to speed up problem-solving on graph data given a set of operating \textit{constraints}.
+\textit{How} refers to effectively combining the representations, hardware accelerators, and algorithms to speed up \gai, while \textit{if} and \textit{when} answer when a specific combination is appropriate for the use case. 
+In the real world, \textit{constraints} on a solution's efficiency, effectiveness, and cost can limit a user's freedom in designing a system, directly impacting the if, how, and when dimensions of the problem, and so we explicitly consider them.
+
+Prior approaches to identifying if, how, and when to accelerate a \gai system rely on generic competitive benchmarks or invasive workload analysis, which are both problematic. 
+
+\textit{Benchmarking} is a process by which systems or components are compared according to some criteria, which is used to determine their relative performance~\cite{Kistowski2015}.
+Most benchmarks for \gai take a `black-box' approach to competing systems based on \textit{efficiency} or \textit{effectiveness} metrics but rarely both, and never their interactions.
+They have typically focused on evaluating isolated \textit{kernel} level tasks rather than more complicated problems consistent with the real world and typically use a small selection of datasets that do not cover the breadth of expected input sizes and shapes.
+Existing benchmarks also lack support for dynamic graph processing approaches, especially comparing dynamic and static approaches under the same evaluation framework.
+
+Alternatively, workload analyses are `white-box' approaches that analyze the internal state of a system while completing a workload to identify bottlenecks. 
+Although workload analyses yield detailed information, they require access to the system under test for profiling and access to the code to add instrumentation. 
+The invasive configuration requirements mean workload analyses cannot be scaled for general-purpose comparisons, making them unsuitable for achieving the broad coverage the \gai benchmark framework pursues.
+
+
+
+\nrscomment{havent edited below here yet}
+
+\section{The \gai Benchmark Framework}
+% We address these \gai issues by contributing a framework that enables problem-centric `grey-box' \gai benchmarking, 
+% a tool for converting \ac{OSM} data to directed, weighted, attributed graphs with ground-truth communities, a benchmark for the \gai problem of population segmentation and a collection of experiments to demonstrate how the \gai benchmarking framework supports engineers and procurement officers in identifying if, when and how to accelerate systems for \gai.
+% Further, our repeatable process delivers an extensible framework that can be continually improved to evaluate new \gai problems as they emerge.\
+
+% Our \gai Benchmarking Framework provides a mechanism to determine \textit{if}, \textit{how}, and \textit{when} graph-based data problem-solving can improve given a set of operating constraints.
+% We build on prior work in benchmarking and workload analyses to create a balanced benchmark that is problem-centric, accelerator-agnostic and evaluates both the \textit{efficiency} and \textit{effectiveness} of a system under test, offering immediate benefit to analysts, engineers, and researchers.
+We introduce the \gai Benchmark Framework as a solution that balances the generality of competitive benchmarks and the detail of workload analyses without requiring invasive system access. 
+We leverage constraint theory with an empirical approach to algorithmic analysis to develop inputs that specifically trigger bottleneck behavior. 
+We then use our observations of those behaviors to develop a `grey-box' understanding of the system's internal state. 
+Our approach is \textit{problem-centric}, meaning that the benchmark tasks are real-world problem statements rather than simplified kernels. 
+For example, the \textit{kernel} task `\textit{run \ac{BFS}}' could be presented in problem-centric form as `\textit{Find the neighbors of vertex X}.'
+The problem-centric view better captures the deployment of a system in the real world and encourages innovative approaches by not constraining the benchmark to specific approaches. 
+
+The framework adopts an Input/Output that maximizes the degree of freedom of a benchmark user. 
+Users can vary their hardware, software stack, and implementation without changing how their code interfaces with the benchmark. 
+This flexibility allows for easy experimentation with different combinations of acceleration techniques to determine what works best for their use case. 
+Finally, our evaluation approach explores the interaction between efficiency and effectiveness, recognizing that a fast partial solution can be more beneficial than a slow complete one.
+Our more nuanced view of effectiveness makes it possible to evaluate dynamic and static approaches using the same framework.
+
+\section{Impact}
+The \gai Benchmark Framework is a flexible tool for experimentation and exploratory analysis for analysts, engineers, and researchers.
+Analysts who routinely work with graph data and apply \gai to solve problems can use the \gai benchmark to understand better the sizes and shapes of inputs that will impact their work performance and use prior results to build estimates for \gai execution time. 
+Engineers can use the \gai benchmark to evaluate which systems they should procure and to make architectural decisions about how their system implements \gai to maximize the efficiency and effectiveness across the breadth of tasks the system must support.
+Researchers building \gai can use the \gai Benchmark Framework to experimentally vary the hardware and implementation details to find the bottlenecks in \gai as a function of the input datasets and real-world problems it solves. 
+The ability to satisfy the needs of these three distinct user groups is a valuable feature of the \gai benchmark framework.
+
+
+\section{Our Graph-Based Artificial Intelligence Taxonomy}
+\label{section:12-graph-based-ai}
+The \gai Benchmark Framework defines Graph-Based Artificial intelligence (\gai) as a taxonomy of intelligence algorithms and machine learning models that learn and reason over information represented in graph data structures.
+
+\input{Figures/Diagrams/13_gai_taxonomy}
+
+Prior efforts to define a taxonomy of \gai focus primarily on \textit{Graph Neural Network}~\cite{Smith2021, Zhou2020a}, \textit{Graph Mining}~\cite{Chen2022a} or specific problems like signal processing~\cite{Xia2021}.
+We extend these taxonomies to include:
+\begin{itemize}
+    \item \textbf{\ac{GPS}.} Are classic AI tasks formulating the world as a graph, including navigation and critical path analysis
+    \item \textbf{\ac{GM}.} Are tasks that analyze the structural characteristics of a graph, including spatial pattern matching and community detection. 
+    \item \textbf{\ac{GR}.} Are \ac{AI} tasks that use graphs for inference, like common sense reasoning and knowledge-graph question answering. 
+    \item \textbf{\ac{GA}.} Are tasks that transform graphs into other structures for downstream tasks, such as generating embeddings or graphs from statistical properties.
+    \item \textbf{\ac{GP}.} Are tasks that learn directly on graphs typically using \ac{GNN}s, including knowledge graph completion and anomaly detection. 
+    \item \textbf{\ac{GT}.} Are tasks that use graphs to improve generative models' transparency, explainability, and interpretability. 
+\end{itemize}
+
+The taxonomy contextualizes \gai as part of the existing AI landscape and provides a few examples \gai tasks that sit within each \gai category. 
+The \gai problem areas anchor the development of the \gai benchmark problems within the framework and emphasize the diversity of tasks that the hardware and software systems that run \gai need to support. 
+
+
+\section{Challenges in Evaluating \gai}
+\label{section:13-graph-based-ai-challenges}
+
+\input{Figures/Diagrams/14_gai_challenges}
+
+A hierarchy of challenges affects \gai (Figure~\ref{figure:gai-challenges}). 
+This section briefly explains the core problems at each hierarchy level and shows how this thesis's research aim is grounded in addressing these challenges. 
+
+\textbf{Graph Challenges.} All problems in the hierarchy build on the foundational challenge of data dependence in graph processing
+Graphs of different shapes and sizes vary the algorithmic complexity and exacerbate the irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
+Graphs have no standard accepted representation method, abstractions, or primitive operations.
+The resulting landscape consists of competing approaches and no unity of effort in accelerating graph processing generally. 
+
+\textbf{\gai Challenges.} Graph processing is the bottleneck in \gai, meaning that improving \gai performance is directly dependent on elevating the graph processing bottlenecks. 
+It is difficult to achieve a universal improvement in \gai because each problem in the taxonomy has different computational characteristics and behaves differently on the same data. 
+
+
+\textbf{Real-World Challenges.} Graph and \gai processing difficulties are exacerbated by the constraints inherent to deploying them in the real world. 
+In particular, \gai solutions must be delivered within the efficiency, effectiveness, and cost constraints. 
+For example, where a real-world problem requires an hourly solution but the \gai task that generates it requires ninety minutes to run, compromises must be made to the effectiveness or cost to meet the efficiency constraint. 
+Addressing this problem is not as simple as just `accelerating' the \gai task.
+For example, hardware accelerators for graph processing are specialized \ac{ASIC} optimized for the specific algorithm, representation, abstraction, and programming model.
+Because one system may need to support many \gai tasks, an accelerator will need to improve the performance of all those tasks to be a wise investment. 
+
+\textbf{User Challenges.} The user then must decide whether to trade effectiveness for efficiency or pay a higher cost to achieve the desired results.
+Gathering the data to make that decision has historically included choosing between a simple competitive benchmark of systems or an invasive workload analysis to determine which combination of hardware, representation, abstraction model, and algorithm will best meet requirements. 
+
+\textbf{The Evaluation Challenge.}The challenges culminate in the research contribution of this thesis, \textit{determining \textit{if}, \textit{how} and \textit{when} to speed up problem-solving on linked data given a set of operating constraints.}
+
+
+\section{Overview of the \gai Framework}
+\label{section:graph-based-ai-framework}
+
+\input{Figures/Diagrams/15_gai_framework}
+
+The \gai Benchmark Framework shown in figure~\ref{figure:gai-framework-overview} is an Input/Output benchmark that evaluates the performance of a system under test by providing problems, recording the time to solution, and verifying the correctness of an answer. 
+The ideal system under test achieves a perfect effectiveness score in minimal time and cost, but all three dimensions will vary in the systems assessed. 
+
+The benchmark is designed so that the system under test is completely independent of the benchmark itself. 
+Using the Input/Output paradigm only requires the \ac{SUT} to interact with an \ac{API} (the observation apparatus). It so places no constraints on how a \ac{SUT} configures its hardware, software stack, or specific \gai implementation to solve the problem. 
+
+The benchmark definition of the \gai framework is comprised of independent benchmark problem modules. 
+Each module contains a collection of datasets designed to stress the efficiency and effectiveness of \ac{SUT} and uses \textit{problem-centric} task definitions to ensure problems are grounded in the real world and to encourage innovative solutions by removing the constraints on kernel-level tasks most existing benchmarks enforce. 
+
+The independence of the benchmark specification from the \ac{SUT} means that an analyst, engineer, or researcher using the benchmark can quickly modify their \ac{SUT} and validate performance changes on a known benchmark. 
+The careful design of the component benchmark problems to achieve the `grey-box' analysis of a \gai \ac{SUT} requires a formal methodology for transparency, reproducibility, and verifiability. 
+
+
+\section{Overview of the \gai Benchmark Problem Development Methodology}
+\label{section:graph-based-ai-problem-methodology}
+\input{Figures/Diagrams/04_benchmark_framework}
+
+A formal method for designing benchmark problems ensures the transparency, verifiability, and reproducibility of benchmark problems and guides the extension of the benchmark to include emerging \gai problems. 
+Figure~\ref{figure:framework} shows how the process comprises six steps that generate the components of the benchmark specification and the observation apparatus.
+
+The process begins by identifying a real-world use case to ground the problem in real-world datasets and current approaches. 
+A more detailed analysis of the problem yields information about the size and shape of the data and formally specifies the everyday tasks associated with that problem in natural language. 
+Formalizing the study's phenomena includes identifying what specific interactions of dataset and task are likely to yield interesting results, providing the first significant contribution to the problem's `grey box' approach. 
+Considering the phenomena, exploratory analysis of the domain builds the base of knowledge to make initial hypotheses about behavior. 
+The hypotheses drive the data collection to study the phenomena of interest, and deviation from those hypotheses indicates interesting behavior worthy of further study. 
+The construction of the apparatus involves collecting and generating the datasets that will be used to trigger the conditions the hypotheses predict will stimulate the phenomena of interest. 
+It also involves developing any required \ac{API} extensions to facilitate the problem and evaluate the solutions. 
+The benchmark user is responsible for all results analysis beyond the return of the efficiency and effectiveness reports by the benchmark. 
+
+The methodology for designing benchmark problems yields a collection of datasets, tasks, and metrics that will combine to provide a `grey box' view of the \ac{SUT} stimulating phenomena of interest according to the defined hypotheses. 
+
+
+\section{Thesis Outline}
+\label{section:15-Thesis-Outline}
+The thesis continues with a review of the \gai taxonomy and key graph and computer architecture concepts in Chapter~\ref{chapter:20-Preliminaries} to identify what makes optimizing \gai approaches hard and why measuring relative performance is difficult. 
+Then, Chapter~\ref{chapter:30-Literature-Review} is a detailed review of current \gai benchmarking and workload analysis efforts to characterize the current gaps in benchmark coverage of \gai tasks, datasets, and metrics and identify what causes performance to degrade in \gai systems. 
+Chapter~\ref{chapter:40-Graph-AI-Benchmarking} introduces the \gai benchmark frameworks and outlines our methodology for developing \gai problems to constitute the benchmark framework. 
+We use the population segmentation problem from the Intelligence and Security domain to demonstrate how our development methodology is applied, describe the implementation of the \gai benchmark prototype, and outline the findings of our initial experiments in chapter~\ref{chapter:50-Community-Detection-Case-Study}.
+Finally, chapter~\ref{chapter:60-Conclusion} concludes after identifying specific directions for future work.
