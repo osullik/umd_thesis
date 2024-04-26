@@ -3,12 +3,12 @@
 
 Graph-Based Artificial Intelligence (\gai) is the collection of intelligence algorithms and machine learning models that learn and reason over information represented in graph data structures.
 Surveying graph processing, \ac{AI} and \ac{ML} literature shows that many algorithms and models share goals and characteristics. 
-The \gai Taxonomy extends prior work to define \gai taxonomies~\cite{Chen2020a, Smith2021, Zhou2020a, Xia2021} to include the \textit{Graph Problem Solving} and \textit{Graph Transparency} problem families, the oldest and newest work \gai respectively and group `like' tasks together to refine prior work that is less structured~\cite{Blagec2022}\footnote{\scriptsize \url{https://openbiolink.github.io/ITOExplorer/}}.
-Using the \gai taxonomy as a lens to contextualize and extend a survey of \ac{IandS} problems then shows how \textit{Graph Mining} is the most in-demand \gai task.
+The \gai Taxonomy extends prior \gai taxonomies~\cite{Chen2020a, Smith2021, Zhou2020a, Xia2021} to include the \textit{Graph Problem Solving} and \textit{Graph Transparency} problem families, the oldest and newest work \gai respectively, and group `like' tasks together to refine prior, less-structured taxonomies~\cite{Blagec2022}\footnote{\scriptsize \url{https://openbiolink.github.io/ITOExplorer/}}.
+Using our \gai taxonomy as a lens to contextualize and extend a survey of \ac{IandS} problems then shows how \textit{Graph Mining} is the most in-demand \gai task. \nrscomment{is this a relevant conclusion to the rest of your work, or just a fun fact?}
 
 \subsection{A Taxonomy of \gai}
-The \gai taxonomy results from a \ac{SLR} following an abridged version of Okoli's method~\cite{Okoli2015}. 
-\nrscomment{"The survey targeted specific \gai tasks by searching textbooks, survey papers, and scientific papers containing the term `graph' and at least one of the terms `artificial intelligence' or `machine learning'."}
+The \gai taxonomy results from a \ac{SLR} \nrscomment{do you really need to acronym and capitalize this one?} following an abridged version of Okoli's method~\cite{Okoli2015}. 
+\nrscomment{"Our survey targeted specific \gai tasks by searching textbooks, survey papers, and scientific papers containing the term `graph' and at least one of the terms `artificial intelligence' or `machine learning'." and then cut to end of centering}
 The survey target was the specific \gai tasks and was conducted by initially searching textbooks, then survey papers, and then scientific papers meeting the criteria of:
 \begin{center}
     {\texttt{\scriptsize `Graph' AND (`Artificial Intelligence' OR `Machine Learning')}} \\
@@ -16,8 +16,8 @@ The survey target was the specific \gai tasks and was conducted by initially sea
 \noindent After collecting the tasks, \nrscomment{we grouped them} they were grouped thematically by goal into \gai problems and then by characteristics into a broader \ac{AI} category. 
 
 The resulting taxonomy divides \gai into six overarching ``AI Problem'' categories (\textit{Graph Problem Solving; Graph Mining; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Graph Transparency}), summarized in Table~\ref{table:taxonomy}. 
-The key deduction from the survey to generate the taxonomy is that the breadth of tasks in the taxonomy means that a single system trying to support all of them needs to account for varying computation patterns, dataset shapes, dataset sizes, static graphs, and dynamic graphs. 
-Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of designing a benchmark to measure performance across all \gai tasks.
+\nrscomment{"From our survey we conclude a \gai system must account for a wide variety of possible computation patterns, ..."} The key deduction from the survey to generate the taxonomy is that the breadth of tasks in the taxonomy means that a single system trying to support all of them needs to account for varying computation patterns, dataset shapes, dataset sizes, static graphs, and dynamic graphs. 
+Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of designing a benchmark to measure performance across \nrscomment{the \gai tasks surveyed.} all \gai tasks.
 
 \input{Tables/10_graph_based_ai}
 
@@ -26,7 +26,7 @@ Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of design
 \gai is used heavily in real-world problem-solving. 
 To contextualize the \gai taxonomy, we extend a recent survey of the problems, datasets, and challenges faced by \ac{IandS} professionals published by the \ac{ARLIS}~\cite{Regli2022a}.
 The survey aims to identify specific examples of \gai tasks being applied to problems with \ac{IandS} characteristics.
-The survey also followed an abridged \ac{SLR} process~\cite{Okoli2015} and used two series of searches to identify relevant case studies. 
+The survey also followed an abridged \ac{SLR} \nrscomment{acronym is a bit much} process~\cite{Okoli2015} \nrscomment{", using a set of search terms pertaining to the \ac{ARLIS} \ac{IandS} problems (`\<\ac{IandS} Problem\>' AND (`Artificial Intelligence' OR `Machine Learning')) and another set of terms pertaining to each task in our \gai taxonomy (`\<GraphAI Task\>' AND `Case Study' AND (`Intelligence' OR `Security' OR `Defense'))." and cut the rest up to "For each paper..."} and used two series of searches to identify relevant case studies. 
 First, searches identify papers relevant to each of the \ac{IandS} problems identified in the \ac{ARLIS} survey using: 
 \begin{center}
     \texttt{\scriptsize `<\ac{IandS} Problem>' AND (`Artificial Intelligence' OR `Machine Learning')}\\
@@ -35,10 +35,10 @@ First, searches identify papers relevant to each of the \ac{IandS} problems iden
 \begin{center}
     \texttt{\scriptsize `<GraphAI Task>' AND `Case Study' AND ('Intelligence' OR 'Security' OR 'Defense')}\\
 \end{center}
-\noindent For each paper identified as relevant, the \gai tasks were extracted along with the typical input data and constraints present in the case study and grouped by the specific \ac{IandS} domain they supported. 
+\noindent For each paper identified as relevant, we extracted the \gai tasks and the typical input data and constraints present in the case study and grouped them by the specific \ac{IandS} domain they supported. 
 
 The survey results are summarized in table~\ref{table:problem-survey}. 
-The key takeaways from the survey are that many of the real-world \ac{IandS} problems are network problems well suited for the application of \gai, that large dynamic knowledge graphs are a standard input format, and that many use cases have temporal constraints that preclude \gai approaches that cannot produce solutions in minutes to hours. 
+The key takeaways from the survey are \nrscomment{i would make this a bulleted list so its easier to quickly identify, and because it reads awkwardly to have a comma separated list of 3 'thats'} that many of the real-world \ac{IandS} problems are network problems well suited for the application of \gai, that large dynamic knowledge graphs are a standard input format, and that many use cases have temporal constraints that preclude \gai approaches that cannot produce solutions in minutes to hours. 
 
 \input{Tables/11_problem_survey.tex}
 
