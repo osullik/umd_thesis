@@ -1,25 +1,21 @@
-\section{Background}
+\section{Benchmark Mechanics}
 \label{section:42-GAI-Background}
 This section briefly extends the literature review from chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation.
 
-\subsection{Benchmark Design Principles}
-
-Benchmark design must consider the purpose of the benchmark, general principles of benchmark design, and the granularity of the problem~\cite{Carpinetti2002}.
-The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
-The purpose of the benchmark also drives its level of \textit{granularity}. 
+A benchmark designer must consider the purpose of the benchmark, general principles of benchmark design, and the granularity of the problem~\cite{Carpinetti2002}.
+The purpose of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
+The purpose of the benchmark also drives its level of granularity. 
 From most to least granular, benchmarks of \textit{atomic operations, kernels, toy programs, synthetic programs} and \textit{real programs} provide different information about the systems under test and the metrics that describe them~\cite{Hennessy2019}.
 The \gai benchmark design follows the principles of benchmark design. It extends beyond the popular kernel-only benchmarks to balance understanding the performance of individual components with the system's performance as a whole.
 
-\subsection{Components of a Benchmark}
-
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
-Figure~\ref{figure:gai-framework-overview-ch4}, shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the figure and the concrete \textit{system under test} (SUT) in the bottom half. 
+Figure~\ref{figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
 These two components interact, and those interactions are what the benchmark measures using our novel \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
 
-\subsubsection{Benchmark Specification}
+\subsection{Benchmark Specification}
 The benchmark specification is the main component of the \gai benchmark framework. 
-The framework is a collection of problem-specific benchmarks, each of which have its own \textit{Datasets} drawn from a domain of interest, \textit{tasks} drawn from a relevant problem space, and \textit{metrics} that are tailored to reflect the specific evaluation criteria.
+The framework is a collection of problem-specific benchmarks, each of which has its own \textit{datasets} drawn from a domain of interest, \textit{tasks} drawn from a relevant problem space, and \textit{metrics} that are tailored to reflect the specific evaluation criteria.
 More specifically:
 
 \textbf{Datasets.}
@@ -38,7 +34,7 @@ These are how we define, collect, and compute the observable interactions of a S
 Metrics are defined abstractly as evaluation criteria, collected from the outputs of the SUT as measurements, and then compared to develop a relative performance model between systems. 
 The most common metrics describe the efficiency, effectiveness, and cost of running a given workload on a \ac{SUT}.
 
-\subsubsection{System Under Test}
+\subsection{System Under Test}
 The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} and the \textit{implementations}, which are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
 Figure~\ref{figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
 
@@ -58,15 +54,13 @@ One \ac{SUT} can have many implementations.
 The \ac{SUT} is ultimately the target of the evaluation, and the benchmark specification defines what the \ac{SUT} needs to do to complete the benchmarking process. 
 The distinction between the specification and the SUT is clouded in kit-based benchmarks that provide reference implementations as baselines of performance or host-based benchmarks that expect all implementations to run on provided hardware.
 
-\subsubsection{Experimental Design}
+\subsection{Grey-Box Evaluation}
 \input{Tables/41_component_variance}
 
 Experimentation using benchmark suites involves modifying the benchmark specification or changing the SUT.
-Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design and is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
-Table~\ref{table:component-variance} summarizes what metrics are expected to change when one benchmark component from figure~\ref{figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
+Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design. It is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
+Table~\ref{table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
 For example, as the hardware component of the \ac{SUT} is varied, assuming all other factors are fixed, we expect to see a change in the efficiency and cost metrics but not effectiveness. 
-
-
 
 % Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
 % Synthetic programs make heavy use of stubs and other mocks to simulate a real program, which is the highest level of abstraction. 
