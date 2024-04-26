@@ -8,21 +8,21 @@ These four components are the concrete implementation of the benchmark.
 Combined, they have two key roles. 
 First, they must interact with the \ac{SUT} -- problems and datasets go in, and solutions for evaluation come out.
 Second, they must monitor the phenomena emerging from the \ac{SUT} throughout the process.
-Figure~\ref{figure:cd-apparatus} is the envisaged workflow for the Population Segmentation problem benchmark, showing how the physical components of the observation apparatus are implemented and how they interact between the benchmark and the \ac{SUT}.
-It is representative of the expected workflow for most Problems in the \gai Benchmark Framework.
+Figure~\ref{figure:cd-apparatus} is the envisaged workflow for the Population Segmentation problem benchmark, showing how the physical components of the observation apparatus \nrscomment{cut until 'interact'} are implemented and how they interact between the benchmark and the \ac{SUT}.
+\nrscomment{"The population segmentation benchmark workflow is representative of the expected workflow for most problems in the \gai taxonomy." -- you should add to the end of this the reason its representative. And you have representative of most problems in the \gai benchmark framework-- what does that mean? i changed it to in the \gai taxonomy.} It is representative of the expected workflow for most Problems in the \gai Benchmark Framework.
 
 In the remainder of this section, we summarize the concrete components of the apparatus, showing how they were created and identifying expansion opportunities. 
 
 \subsection{Observation Apparatus}
-The observation apparatus is a component we add to our benchmark design to explicitly represent the decisions about how the benchmark will interact with the \ac{SUT}.
+The observation apparatus is a component we include in our benchmark design to explicitly represent the decisions about how the benchmark will interact with the \ac{SUT}.
 We implement an Input/Output benchmark, augmented with constraint-based hypotheses testing.
 While the Input/Output approach prevents us from monitoring the system's internal state, it maximally accommodates researchers altering the hardware, software stack, and implementation.
 System variance reflects the benchmark's real-world implications; if someone can afford to buy and run expensive hardware to achieve better results, they are free to do so.
 
 More specifically, we choose the Input/Output model to accommodate the wide variety in \gai acceleration approaches. 
-Hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2019, Wu2015, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016}, \ac{GNN} accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} are proliferating rapidly. 
-Implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019} for community detection approaches.
-Configuring instrumentation for all of these systems is infeasible, and a hosted benchmark would exclude too many of the approaches, leading us to an enhanced Input/Output model for the benchmark. 
+Hardware accelerator designs~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2019, Wu2015, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and \ac{GNN} accelerator designs~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} are proliferating rapidly. 
+Implementations exist for canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019} for community detection approaches. \nrscomment{see comment on slack}
+Configuring instrumentation for all of these systems is infeasible, and a hosted benchmark would exclude too many of the approaches, leading us to select an enhanced Input/Output model for the benchmark. 
 
 \subsection{Datasets}
 Datasets in the \gai population segmentation problem are expected to be large, scale-free, and heterogeneous attributed graphs.
@@ -31,11 +31,11 @@ The review of \ac{CD} problems also shows that \ac{CD} can be applied to dynamic
 
 To stress across these parameters, we first look for datasets in the \textit{Tiny, Small, Medium, Large} and \textit{Huge} range. 
 We define \textit{Tiny} datasets as those that fit in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold (\url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}})}.
-\textit{Small} can be processed in memory on a personal computer, no larger than $\sim16$Gb, the \textit{medium} should fit in the memory of a commercial system, no larger than $\sim1$Tb \textit{large} should be fit within the memory of a commercial system (smaller than $5$Tb) and \textit{Huge} should be more extensive than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
+\textit{Small} can be processed in memory on a personal computer, no larger than $\sim16$Gb, the \textit{medium} should fit in the memory of a commercial system, no larger than $\sim1$Tb, \textit{large} should be fit within the memory of a commercial system (smaller than $5$Tb), and \textit{Huge} should be more extensive than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
 
-Building on the review of dataset coverage in table~ref {table:cd-datasets}, we should aim for full coverage of scale-free, uniform-random, and mesh shapes.
+Building on the review of dataset coverage in table~\ref{table:cd-datasets}, we should aim for full coverage of scale-free, uniform-random, and mesh shapes.
 All datasets require ground-truth communities/clusters/partitions for \ac{NMI} calculation.
-Some datasets should be weighted and attributed, and partial assignments of vertices to communities should be made available to test the extra stress on memory and allow approaches to exploit the additional information in their solutions. 
+Some datasets should be weighted and attributed, and partial assignments of vertices to communities should be made available as an additional stress on memory and to allow approaches to exploit this additional information in their solutions. 
 Dynamic graphs should be suitable for batch updating and continuous streaming to evaluate dynamic processing algorithms alongside static solutions.
 Finally, graphs should be available to stress effectiveness with varying community distributions, mean degree, `fuzziness,' and overlapping and nested communities.
 
@@ -46,7 +46,7 @@ Noting the lack of mesh and random graphs, we generate our own.
 \subsubsection{Mesh Graph Generation}
 There were no publicly available mesh graphs with ground truth community labels. 
 We develop a tool to generate directed, weighted, attributed graphs with hierarchical and overlapping communities from \ac{OSM} road network data\footnote{\scriptsize tool available at \url{https://github.com/osullik/umd_thesis/blob/main/md_roads/osmg.py}}. 
-Our tool queries the \ac{OSM} \ac{API} for a given city, county, or state, extracts the road segments (ways), and creates a vertex where two segments' ends meet or intersect. 
+Our tool queries the \ac{OSM} \ac{API} for a given city, county, or state, extracts the road segments (ways), and creates a vertex where two segment ends meet or intersect. 
 We construct the graph using Python's NetworkX~\cite{Hagberg2008} and assign each vertex the attributes of its latitude, longitude, and street name. 
 We group the vertices by subordinate communities. 
 For example, a state has community groups at the county and city levels.
@@ -57,7 +57,7 @@ We use the tool to create six tiny and small datasets with very low density, wid
 
 While random graphs are not an adequate substitute for real-world graphs from the target domain, they are helpful supplemental tools for covering real-world data gaps and developing datasets to stress specific system components.
 As figure~\ref{figure:cd-datasets} shows, we lack real-world coverage of the spectrum of graph shapes between mesh and scale-free. 
-Imitative generators are not yet mature enough to generate the medium and large datasets we require, nor are suitable statistical summaries of graphs available to seed imitative generators.
+Imitative generators are not yet mature enough to generate the medium and large datasets we require, and suitable statistical summaries of graphs are not available to seed imitative generators.
 Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, and GenCAT~\cite{Maekawa2023} can generate graphs with ground-truth communities following mathematical distributions, and we use them to fill in the gaps shown in figure~\ref{figure:cd-datasets}.
 
 \input{Tables/52_CD_Datasets}
@@ -66,12 +66,12 @@ Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMAR
 
 \subsection{Tasks}
 We draw on the problems identified in table~\ref{table:cd-problem-definition} for our specific tasks. 
-To enhance the benchmark, we intend for the tasks to be publicly and generically specified, with specific values provided only at experiment time, to reduce researchers `gaming' the system.
-Figure~\ref{figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$.
+To enhance the benchmark, we intend for the tasks to be \nrscomment{what do you mean by publicly and generically specified? publicly available and generically specified?} publicly and generically specified, with specific values provided only at experiment time, to \nrscomment{replace the rest with "ensure fairness."} reduce researchers `gaming' the system.
+Figure~\ref{figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$. \nrscomment{this feels kind of tacked on here. can you add some words to the sentence that ties it back to tasks? like this is the process by which tasks are presented to the SUTs and results are collected?}
 
 \subsection{Metrics} 
-The input/output paradigm limits telemetry collection to observing what data is passed into a system, what data comes out, and how much time elapses between input and output events. 
-Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test and a \ac{BS}. 
+The Input/Output paradigm limits telemetry collection to observing what data is passed into a system, what data comes out, and how much time elapses between input and output events. 
+Figure~\ref{figure:cd-apparatus} shows what the Input/Output operations and internal processes look like for the population segmentation problem between a System Under Test and a \ac{BS}. \nrscomment{you already introduced this in the context of tasks, so id reword a bit to make this metric specific. Like it shows the polling period in which results are repeatedly collected along with metrics about time elapsed or something}
 % The problem definitions above are available in advance so that systems can be prepared to solve the task. 
 % The test begins when the SUT specifies which problem to solve. 
 % The BS randomly selects a workload and commences the transfer to the SUT, which sends a hash of the received file as proof that the transfer has been completed. 
@@ -81,19 +81,19 @@ The shaded region denotes the polling period.
 During the polling period, the \ac{BS} will periodically poll the SUT for its current answer and log the time and content of the response, identifying partial or approximate answers where they are available before the algorithm officially `completes.' 
 % When the ETL is complete, the SUT sends a message and the summary statistics for the graph (vertex count, edge count, mean degree) to show that the entire graph has been constructed.
 % When processing is finished, the BS sends a message with the final results. 
-At each process step, the \ac{BS} logs the time for generating the efficiency metrics \textit{\ac{TxT}, \ac{ETLT}, \ac{ExT}, \ac{BL}} and \textit{\ac{BR}}. 
+At each process step, the \ac{BS} logs the time for generating the efficiency metrics \textit{\ac{TxT}, \ac{ETLT}, \ac{ExT}, \ac{BL}} and \textit{\ac{BR}}. \nrscomment{it logs the time taken to compute NMI?}
 The effectiveness metric for all problems requiring comparing communities in the ground truth and predicted nodes is \textit{\ac{NMI}}.
 % 
 \subsection{Limitations}
 Several limitations exist in the current design of the population segmentation problem benchmark. 
-First, data transfer is highly sensitive to network bandwidth and latency, disadvantaging remote researchers. 
-Using static datasets can lead to gaming the system, so we implement the randomized problem parameters, hash checks, and network data summaries to verify that the benchmark process is being followed. 
-It is still possible to game, but it requires deliberate effort. 
+First, data transfer is highly sensitive to network bandwidth and latency, disadvantaging remote \nrscomment{systems, not researchers?} researchers. 
+\nrscomment{just say "Given the benchmark uses static datasets, we minimize the chances systems can `cheat' by implementing randomized...} Using static datasets can lead to gaming the system, so we implement randomized problem parameters, hash checks, and network data summaries to verify that the benchmark process is being followed. 
+It is still possible to game, but it requires deliberate effort. \nrscomment{cut this sentence}
 
 \input{Figures/Diagrams/05_cd_apparatus}
 
 \subsection{Outputs}
-The apparatus construction step yields the dataset observation apparatus and \gai problem instance used for testing and will produce the experiment results. 
+The apparatus construction step yields the dataset observation apparatus and \gai problem instance used for testing \nrscomment{'that' instead of 'and'} and will produce the experiment results. \nrscomment{what about the datasets? that seems like the main output here...}
 
 % The Input/Output approach is limited
 % First, transfer time is highly dependent on network connectivity, and transferring all but minor graphs will result in heavy network traffic.
