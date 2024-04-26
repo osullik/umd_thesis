@@ -5,31 +5,32 @@ We make the following observations based on the results described in section~\re
 \textbf{The NetworkX GPU is much faster across all data shapes.}
 Execution time increases proportional to the size of the graph, approximately quadratically to the number of vertices across all implementations. 
 The OSM-WA dataset is the most extensive mesh graph, yet the OSM-MD mesh graph takes the longest to complete.
-Both have comparable edge densities, and the somewhat irregular shape of the state of Maryland likely yields a larger diameter, emphasizing how the shape of the input graph has as much influence as the size. 
-Our datasets are weighted towards mesh graphs where the number of $|E|\rightarrow|V|$.
-While mesh graphs do not represent typical real-world community structures, it shows that the assertion that the Louvain algorithm and its derivatives are `near linear in practice~\cite{Blondel2008, Traag2019} is misleading on \ac{CPU} based systems.
+Both have comparable edge densities, and the somewhat irregular shape of the state of Maryland likely yields a larger diameter, emphasizing how the shape of the input graph has as much influence as the size. \nrscomment{this seems like a really tenuous conclusion given it hinges entirely on a guess about the diameter of the graphs--which you could measure to verify}
+Our datasets \nrscomment{can you cut "weighted towards" and jsut say they are mesh graphs?} are weighted towards mesh graphs where the number of $|E|\rightarrow|V|$. \nrscomment{that sentence should go before the one starting with "The OSM-WA dataset is the most extensive mesh graph..."}
+While mesh graphs do not represent typical real-world community structures, it shows that the assertion that the Louvain algorithm and its derivatives are `near linear in practice~\cite{Blondel2008, Traag2019} is misleading on \ac{CPU} based systems. \nrscomment{why are you qualifying this with 'on CPU' systems if this paragraph says that across all implementations it was quadratic? it seem slike you should be making a stronger claim than you are}
 
 \textbf{Execution time dominates, but ETL time is non-trivial for small graphs and \ac{GPU}s.}
 Benchmarks typically focus on execution time because the execution phase is frequently the processing bottleneck, and the \ac{ETL} costs in static graph processing are assumed to be amortized over the life of the graph.
-The results in figure~\ref{fig:proportions} show that for small graphs on \ac{CPU} based systems, \ac{ETL} can take up to $20\%$ of total experiment time, and for \ac{GPU} based systems can approach $75\%$ on larger graphs.
-While the \ac{GPU} results in part emphasize the processing phase's speed, it highlights the overheads associated with using external accelerators that require data in a specific format for processing.
-As we implement support for dynamic graphs involving many small \ac{ETL} activities over time, we expect \ac{ETL} to take more significant proportions of the total experiment runtime. 
+The results in figure~\ref{fig:proportions} show that for small graphs on \ac{CPU} based systems, \ac{ETL} can take up to $20\%$ of total experiment time, and for \ac{GPU} based systems it can approach $75\%$ on larger graphs.
+While the \ac{GPU} results in part emphasize the processing phase's speed, it highlights the overheads associated with using external accelerators that require data in a specific format for processing. \nrscomment{i dont see how the claim follows from the evidence. need to explain how external accelerators and processing formats relates to ETL time}
+As we implement support for dynamic graphs involving many small \ac{ETL} activities over time, we expect \ac{ETL} to take more significant proportions of the total experiment runtime. \nrscomment{so what? "... which will exacerbate...." relate it back to the claims you made}
 
 \textbf{The Louvain Partitions implementation does not yield incremental solutions.}
 Reviewing the batch latency (figure~\ref{sub@figure:batch-latency}) shows that the NetworkX implementation of Louvain Partitions does not yield an answer after each partition.
 Instead, it completes the algorithm and returns a generator containing all the partitions.
-To effectively measure the `benefit' of an incremental solution through batch latency, an incremental algorithm must return results in real-time, or at least in batches smaller than $99\%$ of the total runtime.
+To effectively measure the `benefit' of an incremental solution through batch latency, an incremental algorithm must return results in real-time, or \nrscomment{in significantly less than the total runtime of the algorithm.} at least in batches smaller than $99\%$ of the total runtime.
+\nrscomment{so what? need to say what this finding implies- that effort should be directed that way or something. can work it into the last sentence maybe.}
 
 \textbf{The Louvain Partition implementation behaves inconsistently between \ac{SUT}.}
 One assumption about the benefit of an incremental or approximate approach to balancing effectiveness and efficiency is that it should improve monotonically. 
 That is, the longer it runs, the better the solution gets. 
 Figure~\ref{fig:monotonics} shows erratic variation in the size of communities and the NMI at each step for the baseline \ac{SUT}, suggesting that we cannot make predictable trade-offs of efficiency and effectiveness on the baseline system.
 The \ac{GPU} \ac{SUT} does not support the iterative louvain partition implementation. 
-However, the \ac{CPU} \ac{SUT} exhibits the expected monotonic behavior, allowing users to trade-off between effectiveness and efficiency if the implementation is adjusted to print results in-stride, as an alternative approach to work within constraints if it is impractical to use a \ac{GPU}.
+However, the \ac{CPU} \ac{SUT} exhibits the expected monotonic behavior, allowing users to trade-off between effectiveness and efficiency if the implementation is adjusted to \nrscomment{"output" not "print"} print results in-stride, as an alternative approach to work within \nrscomment{time} constraints if \nrscomment{"a GPU is too costly."} it is impractical to use a \ac{GPU}.
 
 \textbf{Summary.}
-Our small experiments show how the engineer can determine that the current baseline implementation has some issues with the effectiveness that warrant moving quickly to a different solution, that the \ac{GPU} will provide a significant speed-up on datasets at the tiny and small sizes, and that the NetworkX Louvain Partitions implementation must be updated for to trade effectiveness for efficiency.
-As the \textit{NVIDIA RTXA5000} \ac{GPU} retails for approximately $USD\$2500$, above the cost of the host system without the \ac{GPU}, the engineer now has empirical solid proof to justify their system architecture for the specific problem of population segmentation. 
-For all other \gai problems significant to the analysts the system will support, the engineer should repeat the benchmarking process with the respective \gai benchmark problems to gain an understanding of the trade-offs using a \ac{GPU} based approach that may require another \gai tasks. 
+Our small experiments show how the engineer can determine that the current baseline implementation has some issues with the effectiveness that warrant moving quickly to a different solution, that the \ac{GPU} will provide a significant speed-up on datasets at the tiny and small sizes, and that the NetworkX Louvain Partitions implementation must be updated to trade effectiveness for efficiency.
+As the \textit{NVIDIA RTXA5000} \ac{GPU} retails for approximately $USD\$2500$, above the cost of the host system without the \ac{GPU}, the engineer now has empirical solid proof to justify their system architecture for the specific problem of population segmentation. \nrscomment{i really dont think you should talk about dollar amounts in here. at most you should say that knowing the empirical gains expected from procuring the hardware, the engineer can make an informed, data-driven decision about whether the cost of that hardware is justified for the use case.}
+For all other \gai problems significant to the analysts the system will support, the engineer should repeat the benchmarking process with the respective \gai benchmark problems to gain an understanding of the trade-offs using a \ac{GPU} based approach that may require another \gai tasks. \nrscomment{this is wordy- say it more concisely}
 
 
