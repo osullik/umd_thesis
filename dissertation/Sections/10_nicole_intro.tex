@@ -4,6 +4,7 @@
 
 \section{Motivation}
 Graphs are expressive data structures that encode evidence as vertices and contextual relationships between evidence as edges. 
+\nrscomment{"As powerful abstractions of the real world, graphs lend themselves well to learning and reasoning tasks, which encompass an emerging area of work we term Graph-Based Artificial Intelligence (\gai)." -- otherwise "as powerful abstractions" applies to graphs lending themselves or to learning and reasoning, neither of which make sense}
 Graphs lend themselves well to learning and reasoning tasks as powerful abstractions of the real world, encompassing an emerging area of work we term Graph-Based Artificial Intelligence (\gai).
 We taxonomize \gai within the existing AI landscape, covering the well-known areas of \ac{GP}~\cite{Smith2021, Zhou2020a, Xia2021} and \ac{GM}~\cite{Chen2022a} and extending those to include \ac{GPS}, \ac{GR}, \ac{GA}, and \ac{GT}, which are detailed in Figure~\ref{figure:gai-taxonomy}.
 Across these areas, \gai includes tasks like structural analysis, inference over graphs, and applications of graphs to AI problems like model transparency, explainability, and interpretability.
@@ -43,7 +44,8 @@ Further, most graph hardware accelerators are specialized \ac{ASIC} and are opti
 The problem with \ac{ASIC}s is that a given \gai system may need to support many graph tasks, so a specialized accelerator may not garner a broad enough improvement to justify its cost investment. 
 These real-world challenges and trade-offs are particularly pronounced for \gai because of the inherent nature of graph processing that underlies \gai problems.
 Graphs of different shapes and sizes unpredictably influence algorithmic complexity, including exacerbating irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
-When combined with the data dependence, the lack of standard graph representation methods, abstraction models, or a set of primitive operations further prevents a unity of effort toward accelerating graph processing across all graph tasks. 
+When combined with the data dependence, the lack of standard graph representation methods, abstraction models, or a set of primitive operations further prevents a unity of effort toward accelerating graph processing across all graph tasks.
+\nrscomment{"This data dependence, along with the lack of standard graph representation methods, abstraction models, and primitive operations further prevent a unity of effort toward accelerating graph processing across all graph tasks."}
 
 \input{Figures/Diagrams/14_gai_challenges}
 
