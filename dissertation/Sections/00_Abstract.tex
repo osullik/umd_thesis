@@ -27,22 +27,21 @@ Thesis Directed by: & {\large  Professor William Regli} \\
 \renewcommand{\baselinestretch}{2}
 \large \normalsize
 
-
 Graph-based Artificial Intelligence (GraphAI) encompasses AI problems formulated using graphs, operating on graphs, or relying on graph structures for learning. 
 Contemporary artificial intelligence research explores how structured knowledge from graphs can enhance existing approaches to meet the real world's demands for transparency, explainability, and performance.
 
-Characterizing GraphAI performance is challenging because different combinations of graph abstractions, representations, algorithms, and hardware acceleration techniques can trigger unpredictable changes in efficiency. 
-Although benchmarks enable testing different GraphAI implementations, most cannot currently capture the \nrscomment{complex} interaction between effectiveness and efficiency, especially across dynamic and structured knowledge graphs.
+Characterizing \gai performance is challenging because different combinations of graph abstractions, representations, algorithms, and hardware acceleration techniques can trigger unpredictable changes in efficiency. 
+Although benchmarks enable testing different \gai implementations, most cannot currently capture the \nrscomment{complex} interaction between effectiveness and efficiency, especially across dynamic and structured knowledge graphs.
 
-This work proposes an empirical `grey-box' approach to GraphAI benchmarking, providing a method that enables experimentally trading between effectiveness and efficiency across different combinations of graph abstractions, representations, algorithms, and hardware accelerators. 
-It specifies a taxonomy of GraphAI tasks and a collection of intelligence and security problems that interact with GraphAI, created with a systematic literature review that guides the development of a framework that fuses empirical computer science with constraint theory in a `grey-box' approach to benchmarking that does not require invasive workload analyses or code instrumentation.
+This work proposes an empirical `grey-box' approach to \gai benchmarking, providing a method that enables experimentally trading between effectiveness and efficiency across different combinations of graph abstractions, representations, algorithms, and hardware accelerators. 
+It specifies a taxonomy of \gai tasks and a collection of intelligence and security problems that interact with GraphAI, created with a systematic literature review that guides the development of a framework that fuses empirical computer science with constraint theory in a `grey-box' approach to benchmarking that does not require invasive workload analyses or code instrumentation.
 \nrscomment{this is a run on}
-\nrscomment{"It specifies a taxonomy of GraphAI tasks and systematically reviews intelligence and security problems that use GraphAI to drive the development of a benchmark framework that does not require invasive workload analyses or code instrumentation."}
+\nrscomment{"It specifies a taxonomy of \gai tasks and systematically reviews intelligence and security problems that use \gai to drive the development of a benchmark framework that does not require invasive workload analyses or code instrumentation."}
 \nrscomment{i dont recall you talking about constraint theory formally in here anywhere- what are you referring to with that?} you can add it back in if im just forgetting or havent read that part yet
 
 \nrscomment{cut "To populate that framework,"}
-To populate that framework, we formalize a methodology for developing problem-centric GraphAI Benchmark Problems \nrscomment{for developing problem-centric Problems??} and develop a tool to \nrscomment{the rest of this sentence comes as too much detail given what youve said so far. theres been no direct reference to CD or to a need for graphs with certain properties or structures, so it doesnt make sense. either make it more generic, or introduce it better} create directed, weighted, attributed mesh graphs with ground truth communities from OpenStreetMaps data to fill a gap in real-world mesh graph datasets for community detection. 
-Finally, this work provides a completed benchmark for the Population Segmentation Intelligence and Security problem developed using the GraphAI benchmark problem development methodology and provides experimental results that validate using the GraphAI benchmark framework to evaluate if, how, and when GraphAI acceleration should be applied to the population segmentation problem, showing that for small graphs Graphics Processing Units achieve up to a $127\times$ speed-up.
+To populate that framework, we formalize a methodology for developing problem-centric \gai Benchmark Problems \nrscomment{for developing problem-centric Problems??} and develop a tool to \nrscomment{the rest of this sentence comes as too much detail given what youve said so far. theres been no direct reference to CD or to a need for graphs with certain properties or structures, so it doesnt make sense. either make it more generic, or introduce it better} create directed, weighted, attributed mesh graphs with ground truth communities from OpenStreetMaps data to fill a gap in real-world mesh graph datasets for community detection. 
+Finally, this work provides a completed benchmark for the Population Segmentation Intelligence and Security problem developed using the \gai benchmark problem development methodology and provides experimental results that validate using the GraphAI benchmark framework to evaluate if, how, and when \gai acceleration should be applied to the population segmentation problem, showing that for small graphs Graphics Processing Units achieve up to a $127\times$ speed-up.
 \nrscomment{this is a run on, and i think this should come before you talk about the tool- the tool only makes sense in the context of having done this}
 
 
