@@ -87,10 +87,11 @@ Following our proposed methodology, we construct a \gai benchmark for the Popula
 
 %Tasks
 Following our \textit{problem-centric} methodology, the population segmentation tasks we select for our benchmark are real-world problem statements rather than simplified kernels. 
+\nrscomment{dont say following our proposed methodology then follow it up with following our problem-centric methodology. change the second one.}
 For example, we include the task `\textit{What are the population segments, and who is in each?}' instead of the common \textit{kernel} task `\textit{run \ac{GC}}'.
 
 %Datsets
-To achieve our `grey-box' effect, we identify that the primary contributor to degraded \textit{efficiency} is increasing dataset size and that the primary contributor to degraded benchmark \textit{effectiveness} is increasing `fuzziness' in community structure. 
+To achieve our `grey-box' effect, we identify that the primary contributor to degraded \textit{efficiency} is increasing dataset size and that the primary contributor to degraded \nrscomment{why is the word 'benchmark' here} benchmark \textit{effectiveness} is increasing `fuzziness' in community structure. 
 We select real-world scale-free datasets with ground-truth community labels from the \ac{SLNDC} dataset and generate real-world mesh datasets using a tool we create for converting \ac{OSM} road network data to directed, weighted, attributed graphs with ground-truth communities.
 To address the gaps in real-world data for datasets of large size and middling `fuzziness' we use the \ac{LFR}~\cite{Lancichinetti2008} and \textit{GenCAT}~\cite{Maekawa2023} community data generators. 
 
