@@ -3,14 +3,14 @@
     \begin{subfigure}[b]{0.45\textwidth}  % Width of first subfigure
         \centering
         \includesvg[width=\textwidth]{Experiment_Results/gt_vs_predicted_communities}  % Include first image
-        \caption{NMI appears to improve as the number of communities increases.}
+        \caption{\acs{NMI} appears to improve as the number of communities increases.}
         \label{fig:gt-community-nmi}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}  % Width of second subfigure
         \centering
         \includesvg[width=\textwidth]{Experiment_Results/gt_vs_predicted_communities_sizes}  % Include second image
-        \caption{Community Size mispredictin grows as graph size does. Values closer to zero are better. (outlier excluded)}
+        \caption{Community size misprediction grows as graph size does. Values closer to zero are better. (outlier excluded)}
         \label{fig:gt-community-sizes}
     \end{subfigure}
     \caption{NMI appears disconnected from predicting the correct number of communities.}

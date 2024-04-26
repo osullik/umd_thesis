@@ -5,17 +5,26 @@
         {\footnotesize
         \begin{tabular}{l|ccc} 
             \multicolumn{1}{c}{\textbf{Constraint}}                    & \multicolumn{3}{c}{\textbf{Dependent Metric}}           \\%&                   \\
-               Components              & Effectiveness       & Efficiency      &  Cost         \\%&   Notes         \\
+               Component              & Effectiveness       & Efficiency      &  Cost         \\%&   Notes         \\
             \hline
-               None (Baseline)         &  ---                &  ---            &  ---             \\%&& Baseline                  \\
+                None (Baseline)         &  ---                &  ---            &  ---             \\%&& Baseline                  \\
                 Time                    & $\downarrow$        &  ---            & $\downarrow$  \\%&&                           \\
-               Accuracy                & ---                 & $\uparrow$      & $\downarrow$  \\%&&                           \\
-              Cost                    & $\downarrow$        & $\downarrow$    &  ---          \\%&&                           \\
+                Accuracy                & ---                 & $\uparrow$      & $\downarrow$  \\%&&                           \\
+                Cost                    & $\downarrow$        & $\downarrow$    &  ---          \\%&&                           \\
 
         \end{tabular}
-        \caption{Summary of expected metric behaviors ($\uparrow$ Improve, --- Stable, $\downarrow$ Degrade) when a benchmark component is constrained } 
+        \caption{Summary of expected metric behaviors when a benchmark component is constrained.} 
         \label{table:gai-variance}
         }
         \end{center}
+        {
+            \noindent
+            \footnotesize
+            Where: 
+            $\uparrow$ = Improve,
+            --- = Stable, 
+            $\downarrow$ = Degrade
+            }
     \end{table*}
+
 % \end{landscape}

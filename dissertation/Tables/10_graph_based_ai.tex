@@ -2,36 +2,36 @@
     
     \begin{table}[t]
         \begin{center}
-        {\footnotesize
+        {\scriptsize
             \begin{tabular}{lll} 
                 AI Problem              &  \gai Problem              &       Example Tasks      \\%&       \textbf{Citation(s)}    \\
                 \hline
                 & & \\
-                \textbf{Graph Problem Solving} & Search                   & \acs{BFS}, \acs{DFS}, \acs{UCS}, \acs{A*}, MinMax              \\%& \cite{Russell2021}            \\
+                \textbf{\acl{GPS} (\acs{GPS})}           & Search                   & \acs{BFS}, \acs{DFS}, \acs{UCS}, \acs{A*}, MinMax              \\%& \cite{Russell2021}            \\
                 \textit{Formulate as graph problem}~\cite{Russell2021} & Constraint Satisfaction  & Forward Checking, Backtracking        \\%& \cite{Russell2021}            \\
                                             & Planning                 & GraphPlan, \acs{SSSP}, \acs{MST}                  \\%& \cite{Russell2021}            \\
                                             & Scheduling               & CriticalPath                          \\%& \cite{Russell2021}            \\
                                             & Inference                & Variable Elimination (Bayes Net)      \\% & \cite{Russell2021}            \\
                                             & Reinforcement Learning   & Q-Learning                            \\% & \cite{Russell2021}            \\
                 & & \\
-                \textbf{Graph Mining}        & Pattern Matching         & Subgraph Matching, Spatial Pattern Matching\\%\cite{Zeng2020,Osullivan2023} \\%& \cite{Osullivan2023}          \\
+                \textbf{\acl{GM} (\acs{GM})}        & Pattern Matching         & Subgraph Matching, Spatial Pattern Matching\\%\cite{Zeng2020,Osullivan2023} \\%& \cite{Osullivan2023}          \\
                 \textit{Operate on graph topology}~\cite{Zeng2020,Osullivan2023,Girvan2002,Brandes2006,Page1998,Brandes2001,Leskovec2014,DeRaedt2016,Blagec2022} & Characterization         & \acs{WCC}, \acs{SCC}, \acs{LCC}, \acs{GCC}, \acs{TC}  \\
                 & Graph Clustering         & Community Detection\\%~\cite{Girvan2002}             \\
                                                     & Graph Partitioning       & Modularity Optimization\\%~\cite{Brandes2006}            \\
                                                     & Influence Mapping        & PageRank, Belief Propogation, Max Flow\\%~\cite{Page1998, Brandes2001}  \\
                                             
                 & & \\
-                \textbf{Graph Reasoning} & Knowledge Acquisition    & Knowledge Graph Completion, Ontology Learning\\%~\cite{Ji2021, Maedche2004}          \\
+                \textbf{\acl{GR} (\acs{GR})} & Knowledge Acquisition    & Knowledge Graph Completion, Ontology Learning\\%~\cite{Ji2021, Maedche2004}          \\
                 \textit{Operate on graph knowledge}~\cite{Ji2021,Maedche2004,Chen2020,Bosselut2019,Perevalov2022,Blagec2022} & Logic-Based Reasoning    & Logical Inference, Ontological Inference\\%~\cite{Chen2020} \\
                                             & Representation Reasoning & Tensor Factorization, Semantic Matching\\%~\cite{Chen2020} \\
                                             & Neural Reasoning         & Relation Inference, Entity Resolution\\%~\cite{Chen2020} \\
                                             & Natural Language Processing& Question Answering, Textual Entailment\\%~\cite{Chen2020} \\
                 & & \\
-                \textbf{Graph Abstraction}  & Topological Representation Learning  & Node2Vec, DeepWalk\\%~\cite{Grover2016, Perozzi2014} \\
+                \textbf{\acl{GA} (\acs{GR})}  & Topological Representation Learning  & Node2Vec, DeepWalk\\%~\cite{Grover2016, Perozzi2014} \\
                 \textit{Transform for downstream tasks}~\cite{Grover2016,Perozzi2014,Ji2021,Du2021,Bonifati2020,Tsitsulin2022,Maekawa2019,Maekawa2023,Zahirnia2024,Blagec2022} & Knowledge Representation Learning & Complex Vector Embeddings\\%~\cite{Ji2021} \\
                                             & Graph Generation                     & Privacy Preservation; Imitative Synthetic Graphs              \\             
                 & & \\
-                \textbf{Graph Prediction}           & Graph Classification     & Node, Edge \& Graph Classification\\
+                \textbf{\acl{GP} (\acs{GP})}           & Graph Classification     & Node, Edge \& Graph Classification\\
                 \textit{Learn directly on graphs}~\cite{Cen2023,Baruah2021,Wu2020,Blagec2022}   & Graph Completion         & Link \& Property Prediction, Knowledge Acquisition \\
                                                     & Dynamic Graph Prediction & Traffic Flow Prediction\\
                 % Graph Prediction            & Recurrent GNN             & Time Series Prediction               \\% & \cite{Wu2020} \\
@@ -39,7 +39,7 @@
                 %                             & Graph AutoEncoders        & Link Prediction                       \\%& \cite{Wu2020} \\
                 %                             & Spatio-Temporal GNN       & Traffic Flow Prediction               \\%& \cite{Wu2020} \\
                 & & \\
-                \textbf{Graph Transparency}  & Grounding & NeuroSymbolic Systems \\
+                \textbf{\acl{GT} (\acs{GT})}  & Grounding & NeuroSymbolic Systems \\
                 \textit{Explainability \& Interpretability}~\cite{Yuan2020,Pfeifer2022,Lenat2023,Yu2022,Zhao2024,Pan2024,Hendrycks2021,Tiddi2020,Tiddi2022,Sheth2023} & Knowledge Structuring & Retrieval Augmented Generation \\
                                                               & Output Interpretation & Post-Hoc Explanation\\%~\cite{Yuan2020,Pfeifer2022} \\ 
                 % Explainability \& Interpretability& Post-Hoc Explanations & XGNN                         \\% & \cite{Yuan2020} \\
@@ -47,10 +47,12 @@
 
                                                 
             \end{tabular}
-        \caption{A brief taxonomy of \gai Problems} 
+        \caption{The \gai taxonomy groups \gai tasks into \gai problems and broader \gai problem areas.} 
         \label{table:taxonomy}
         }
         \end{center}
     \end{table}
+
+    {\scriptsize Where: \acl{BFS} (\acs{BFS}), \ac{DFS}, \ac{UCS}, \ac{A*}, \ac{SSSP}, ac{MST}, \ac{WCC}, \ac{SCC}, \ac{LCC}, \ac{GCC}, \ac{TC} }
 
 \end{landscape}

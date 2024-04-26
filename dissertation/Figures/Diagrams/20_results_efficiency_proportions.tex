@@ -1,26 +1,10 @@
 \begin{figure}[htbp]
-    % \centering
-    % \begin{subfigure}[b]{0.45\textwidth}  % Width of first subfigure
-    %     \centering
-    %     \includesvg[width=\textwidth]{Experiment_Results/et_vs_exp_by_hardware}
-    %     \caption{\ac{GPU} speeds up \ac{ExT} by up to 172$\times$ compared to baseline performance}
-    %     \label{figure:exec-time}
-    % \end{subfigure}
-    % \hfill
-    % \begin{subfigure}[b]{0.45\textwidth}  % Width of second subfigure
-    %     \centering
-    %     \includesvg[width=\textwidth]{Experiment_Results/batch_latency_by_experiment}  % Include second image
-    %     \caption{Batch latency for first result is $\sim$total execution time. \ac{GPU} has no incremental implementation.}
-    %     \label{figure:batch-latency}
-    % \end{subfigure}
-    % \caption{The \ac{GPU} implementation is drastically faster than the Baseline and Xeon SUT for the same tasks.}
-    % \label{figure:cd-results-efficency-time}
 
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
         \includesvg[width=0.75\columnwidth]{Experiment_Results/proportion_of_time_in_exp_phase}
-        \caption{Comparing SUTs across all systems shows GPUs spend a greater proportion of their time on ETL than CPU based approaches.}
+        \caption{Comparing \acs{SUT}s across all systems shows \acs{GPU}s spend a greater proportion of their time on \acs{ETL} than \acs{CPU} based approaches.}
         \label{figure:exp-prop}
     \end{subfigure}
 
@@ -30,14 +14,14 @@
         \begin{subfigure}[b]{\textwidth}
             \centering
             \includesvg[width=0.8\textwidth]{Experiment_Results/Average_proportion_of_time_in_exp_phase_by_dataset}
-            \caption{Average time per phase across all datasets}
+            \caption{Average time per experiment phase across all datasets.}
             \label{fig:avg-prop}
         \end{subfigure}
         \vfill
         \begin{subfigure}[b]{\textwidth}
             \centering
             \includesvg[width=0.8\textwidth]{Experiment_Results/Baseline_proportion_of_time_in_exp_phase_by_dataset}
-            \caption{Time per phase across all datasets for the Baseline SUT}
+            \caption{Time in seconds per phase across all datasets for the baseline \acs{SUT}}
             \label{fig:baseline-prop}
         \end{subfigure}
     \end{minipage}
@@ -47,18 +31,18 @@
         \begin{subfigure}[b]{\textwidth}
             \centering
             \includesvg[width=0.8\textwidth]{Experiment_Results/Xeon_proportion_of_time_in_exp_phase_by_dataset}
-            \caption{Time per phase across all datasets for the CPU SUT}
+            \caption{Time in seconds per phase across all datasets for the \acs{CPU} \acs{SUT}.}
             \label{fig:cpu-prop}
         \end{subfigure}
         \vfill
         \begin{subfigure}[b]{\textwidth}
             \centering
             \includesvg[width=0.8\textwidth]{Experiment_Results/GPU_proportion_of_time_in_exp_phase_by_dataset}
-            \caption{Time per phase across all datasets for the GPU SUT}
+            \caption{Time in seconds per phase across all datasets for the \acs{GPU} \acs{SUT}.}
             \label{fig:gpu-prop}
         \end{subfigure}
     \end{minipage}
-    \caption{Porportion of a total experiment shows GPU spend more time on ETL relative to total Execution Time}
+    \caption{Porportion of a total experiment shows \acs{GPU} spend more time on \acs{ETL} relative to total \acl{ExT}.}
     \label{fig:proportions}
 
 \end{figure}
