@@ -1,37 +1,31 @@
 \section{Identify and Characterize Phenomena of Interest}
 \label{section:52-CD-Phenomena}
-We identify the phenomena of interest from the results of the problem survey (table~\ref{table:problem-survey}) that indicate the prevalence of temporal constraints that force trading off \nrscomment{"effectiveness for faster partial or low-resolution solutions." and cut the rest of this sentence} a perfectly effective approach that takes a long time to execute with a more efficient approach that might only provide partially correct, or low-resolution solutions. 
+We identify the phenomena of interest from the results of the problem survey (table~\ref{table:problem-survey}) that indicate the prevalence of temporal constraints that force trading off effectiveness for faster partial or low-resolution solutions.
 This section describes how we characterize the phenomena of interest as the trade-off between effectiveness, efficiency, and cost. 
 
 \subsection{Efficiency}
 Efficiency measurements are similar from problem to problem in \gai. 
-We use the ubiquitous \textit{Execution Time} but add support for \nrscomment{is this an ac?} \textit{Extract, Transform, Load Time}. 
-Many approaches to population segmentation use iterative algorithms and so are well suited to providing interim solutions, making the measures of \textit{batch latency} (time from data being sent until a result is generated) and batch rate (average time to produce an interim result) well suited for comparing static and dynamic approaches to the problem under the same framework.
+We use the ubiquitous \ac{ExT} but add support for \ac{ETL}. 
+Additionally, many approaches to population segmentation use iterative algorithms and so are well suited to providing interim solutions, making the measures of \ac{BL} (time from data being sent until a result is generated) and \ac{BR} (average time to produce an interim result) well suited for comparing static and dynamic approaches to the problem under the same framework.
 
 \subsection{Effectiveness}
 There are two ways to evaluate population segmentation's effectiveness: ground truth labels or structural characteristics. 
-\nrscomment{make it active- who prefers?} Ground truth label-based evaluation is strongly preferred, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
+\nrscomment{make it active- who prefers?} Effectiveness evaluations strongly prefer ground-truth label-based methods, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
 NMI's Scalability limitations drive alternate methods like Network-F1 (NF1)~\cite{Rossetti2016, Rossetti2017, Rossetti2018} but have not gained widespread traction. 
 Without ground truth labels, the `goodness' of a segment is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
 These methods are limited in their ability to provide a reliable evaluation, as they effectively model the probability that the community is more connected than a random graph. 
 Further, optimizing the modularity metric is $NP$-Complete~\cite{Brandes2006}, and heuristic approaches degrade for small communities and skewed community distributions~\cite{Fortunato2007}, which are typical of scale-free graphs~\cite{Barabasi1999, Girvan2002} that characterize the problem domain. 
 
 \subsection{Cost}
-
 Cost is ideally measured as a function of power consumption or as an estimated `cost per minute' based on the SUT's specifications.
-\nrscomment{i would reword the rest a little by saying Cost is challenging to measure under an Input/Output paradigm because the system internal states (...) are unknown.}
-The \gai benchmark framework initially focuses on an Input/Output benchmark paradigm, which means the system's internal states (power consumption, etc.) are unknown.
-\nrscomment{To better address cost in future, we propose deploying...}
-Future work is deploying a hosted benchmark instance to the ARLIS \textit{Quantum Inspired Classical Computing} (QUICC) testbed.
-The testbed will provide measurements of power consumption by the controlling \nrscomment{should docker be capitalized and cited, or just say generic containers?} docker containers using \textit{Kepler}\footnote{{\scriptsize \url{https://sustainable-computing.io/design/architecture/}}}.
+The \gai benchmark framework initially focuses on an Input/Output benchmark paradigm.
+Consequently, `cost' is challenging to measure because the system's internal state (power consumption, memory usage, processor cycles etc.) is unknown.
+To better address cost in the future, we propose deploying a hosted benchmark instance to the ARLIS \textit{Quantum Inspired Classical Computing} (QUICC) testbed.
+The testbed will provide measurements of power consumption by the controlling containers using \textit{Kepler}\footnote{{\scriptsize \url{https://sustainable-computing.io/design/architecture/}}}.
 Further, we aim to develop a daemon to deploy to a SUT to collect power consumption statistics using the \textit{PowerAPI Project}\footnote{{\scriptsize \url{https://powerapi.org/}}}, which would be an optional component of the benchmark limited to running on compatible physical Linux-based systems. 
 \nrscomment{At present, cost is excluded...} However, the cost is excluded from the Population Segmentation benchmark problem \nrscomment{due to the lack of an accurate measurement avenue and the inherent drawbacks of predictive cost models.} because we cannot collect accurate cost measurements or develop a fair and accurate predictive cost model. 
 
 \subsection{Outputs}
-\nrscomment{"In the phenomena identification step, we identify the interaction between effectiveness and efficiency as the phenomena of interest, namely whether it is possible to trade lower effectiveness for better efficiency."}
-By completing the phenomena identification step, we are interested in observing the interaction between the effectiveness and efficiency of approaches, mainly whether we can trade lower effectiveness for better efficiency. 
-Effectiveness metrics of \textit{NMI} (preferred) or \textit{modularity} will be used as proxies for effectiveness and efficiency. \nrscomment{those are for efficiency as well??}
+In the phenomena identification step, we identify the interaction between effectiveness and efficiency as the phenomena of interest, namely whether it is possible to trade lower effectiveness for better efficiency.
+Effectiveness metrics of \textit{NMI} (preferred) or \textit{modularity} will be used as proxies for effectiveness. 
 Metrics of \textit{ETL Time, Execution Time} and \textit{Batch Latency} will be used as proxies for efficiency. 
-No proxy will be collected for cost at this time. \nrscomment{drop that, you already said no cost above}
-
-The phenomena of interest for the initial runs of the benchmark is the relationship between the NMI and batch latency, which should tell us if we can trade effectiveness for efficiency. \nrscomment{this is also a bit redundant to what you just said and can be dropped} 

@@ -5,7 +5,7 @@ In this section, we describe the population segmentation problem defined in the 
 
 \subsection{Definition}
 A Population Segmentation Analysis aims to divide a population into groups based on geography, demography, attitude toward an issue, or other thematic lines.
-These groups or `segments' are a subset of the population with common attributes to which \nrscomment{organizations often want to tailor their communications} an organization can tailor its communication~\cite{Army2023}.
+These groups or `segments' are a subset of the population with common attributes to which organizations often want to tailor their communications~\cite{Army2023}.
 Beyond its \ac{IandS} applications to \ac{IPB}, \ac{IO}, and \ac{CIMIC}, population segmentation is used heavily in marketing, and the same underlying technical approaches can be used to identify how to arrange graphs in memory to reduce memory access overheads~\cite{Balaji2018}.
 
 Traditionally, segmentation is done using data collected through surveys or observation.
@@ -22,36 +22,39 @@ Weights may reflect the volume or durations of interactions, and attributes for 
 Graph Partitioning takes a \textit{top-down} approach and Graph Clustering a \textit{bottom-up} approach to the task of optimally dividing a graph into $K$ subgraphs such that each vertex belongs to exactly one partition, all partitions are disjoint, and some objective function is optimized. 
 Both graph partitioning and graph clustering have been proven $NP$-complete. 
 Community Detection is a more general form of the problem that involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
-Community detection is closely related to partitioning and clustering, with the distinction that communities are a more general structure that does not necessarily enforce the requirements for independence that clusters and partitions do. \nrscomment{that sentence has weird pluralization in the second half}
+Community detection is closely related to partitioning and clustering. However, it is distinct that communities are a more general structure that do not adhere to the requirements for independence that clusters and partitions enforce. 
 
 Based on the problem survey (section~\ref{section:20-graph-based-ai}), available datasets, and expected tasks, we identify the initial collection of problems in table~\ref{table:cd-problem-definition}, presented in a general form.
 These problems are reflective of real-world user needs, and many of them require combining kernel-level tasks to generate a solution to the problem.
 Their general specification allows users to identify the approach that they believe will work best, given their systems' constraints. 
-For example, task 1 \textit{``Who is in the same group as (x)\nrscomment{?}''} requires that the vertex labeled `x' be located, and then some process must identify to which group `x' belongs. 
-
-\nrscomment{isnt this out of scope of identifying tasks?} One approach might be to apply a community detection algorithm like \textit{Louvain}~\cite{Blondel2008} or \textit{Leiden}~\cite{Traag2019}, but another could perform \ac{BFS} for the node and return the nodes within a k-hop neighborhood.
+For example, task 1 \textit{``Who is in the same group as (x)?''} requires that the vertex labeled `x' be located, and then some process must identify to which group `x' belongs. 
+The problem-centric view means many approaches could be used to solve the problem. 
+One approach might apply a community detection algorithm like \textit{Louvain}~\cite{Blondel2008} or \textit{Leiden}~\cite{Traag2019}. 
+However, another could perform \ac{BFS} for the node and return the nodes within a k-hop neighborhood as an approximate solution.
 
 \input{Tables/53_CD_Problems.tex}
 
 \subsection{Datasets}
-Population segmentation focuses on human social networks, which are typically scale-free (see section~\ref{section:22-graph-topology}).
-\nrscomment{the above statement isnt connected to the rest of the paragraph. the implicit connection you arent stating is that scale free graphs have well defined communities centered on the high degree nodes, isnt it? you should state that, and then state that on the flipside you can have the exact opposite, flat degree graphs with poorly-defined communities, and describe that (you already describe it). the connection between graph shape and the community structure isnt clear enough here}
+Population segmentation focuses on human social networks, which are typically scale-free (see section~\ref{section:22-graph-topology}) and tend to exhibit well-defined segments.
+Segments can also exist in mesh graphs, but they typically are poorly defined or have boundaries that do not necessarily match the shape of the graph. 
+For example, a road network may be divided into segments along county lines. 
+However, those lines can be arbitrary in terms of the road density and the population living there. 
+In the context of \gai, these segments are called \textit{communities}, which are ``a subgraph whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
 
-The community definition reinforces that graph topologies are expected to consist of smaller, densely connected subgraphs within the containing graph.
+The \textit{community} definition reinforces that graph topologies are expected to consist of smaller, densely connected subgraphs within the containing graph.
 At the well-defined end of `communities,' a graph will consist of cliques (completely connected subgraphs) connected to other cliques by single-edge `bridges.' 
-At the exceptionally poorly defined end, a graph or multigraph can be fully connected with no topological community structure, and node attributes must be included to provide clues about community structure. 
+At the poorly defined end, a graph or multigraph can be fully connected with no topological community structure, and node attributes must be included to provide clues about community structure. 
 The `fuzzy' community is effectively a uniform random distribution, where the `closeness' of any given community is no greater than that of the graph as a whole.
 
 \subsection{Outputs}
 Completing the problem definition step identifies the problems, everyday tasks, and datasets we use to inform the next steps. 
 
-\textbf{Problems.} Table~\ref{table:cd-problem-definition} formally defines several problems \nrscomment{"in the population segmentation space that vary from single kernel-level tasks to complicated problems requiring intricate solutions."} that may involve a single kernel-level task to complete or might require combining several kernels to make a more complicated solution. 
-They are broad enough to encourage creativity but specific enough that we can evaluate them programmatically. \nrscomment{id just drop that last sentence, its kind of opinion-based and doesnt really add much} 
+\textbf{Problems.} Table~\ref{table:cd-problem-definition} formally defines several problems in the population segmentation space that vary from single kernel-level tasks to complicated problems requiring intricate solutions.
 
-\textbf{Tasks.} The three most common approaches to population segmentation are Graph Partitioning, Graph Clustering, and Community Detection. 
-\nrscomment{these are approaches, not tasks. I thought the task is find the neighbors of x and such?}
+\textbf{Tasks.} 
+The literature's three most common approaches to population segmentation are Graph Partitioning, Graph Clustering, and Community Detection. 
+When we take a problem-centric view and consider why these approaches exist, we develop a collection of tasks that are general enough to accommodate many approaches and are reflective of real-world needs. 
 
 \textbf{Datasets.} Typical datasets are Scale-Free and vary between having well-defined communities (cliques) and no clear community structure (fuzzy).
-We expect community detection approaches to be more effective on cliquey datasets than on fuzzy or topologically bland \nrscomment{flat instead of bland?} communities (e.g., fully connected graphs). 
-Skewed distributions of community sizes degrade community detection performance.
-\nrscomment{this last sentence comes out of the blue in what should otherwise be a summary of the conclusions drawn in the previous paragraphs, and its the only thing in here that talks about performance-- isnt this more of a hypothesis/explore the problem piece of info for later?}
+We expect community detection approaches to be more effective on cliquey datasets than on fuzzy or topologically flat communities (e.g., fully connected graphs). 
+% Skewed distributions of community sizes degrade community detection performance.
