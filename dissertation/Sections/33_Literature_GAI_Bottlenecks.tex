@@ -56,7 +56,7 @@ To implement the \textit{grey-box} approach, the \gai benchmark framework adopts
 % \subsection{Data-Dependence}
 % \nrscomment{this is also kind of arbitrary, and definitely doesnt belong in the bottleneck Section. i think you basically covered all of this already in prelim and can just cut it. if you want to keep this as a summary of all the properties that affect efficiency, again move it to design considerations or somewhere in ch4}
 % There is an inherent dependence between the efficiency and effectiveness of \gai tasks and the size, shape, sparsity, content and velocity of the data they operate on~\cite{Fu2014, Osama2022}.
-% Large datasets need to be distributed or compressed to fit in memory and the complexity of many \gai tasks requires large graph problems to be parallelized to be tracTable~\cite{Hong2012}.
+% Large datasets need to be distributed or compressed to fit in memory and the complexity of many \gai tasks requires large graph problems to be parallelized to be trac Table~\cite{Hong2012}.
 % Varying topologies and sparsities can impact a graph's locality properties and memory access patterns~\cite{Lenharth2016, Beamer2015}. 
 % The content (attributes) of a graph can introduce memory access overheads, but also simplify some algorithms by acting as filters to reduce the size of the graph~\cite{Mccreesh2018,Hamilton2017} and the ever-increasing velocity of data drives the use of dynamic graphs in real-world situations~\cite{Regli2022a, Basak2020, Zang2012}.
 
@@ -67,12 +67,12 @@ To implement the \textit{grey-box} approach, the \gai benchmark framework adopts
 % To improve the overall performance of a system under test, we must identify the bottleneck, exploit that bottleneck to maximize performance with the resources at hand, subordinate the rest of the system to that bottleneck, elevate the capacity of the bottleneck and then re-evaluate the system to find the new bottleneck~\cite{Goldratt1990}.
 % This Section reviews the prior work in identifying the bottlenecks known to occur during \gai, setting the scene for the discussion of acceleration techniques to \textit{exploit} and \textit{elevate} those constraints in Section~\ref{section:34-literature-gai-acceleration}.
 
-% Table~\ref{Table:benchmark-metrics} in Section~\ref{section:32-literature-benchmarking-gai} shows that most benchmark suites cannot capture the detailed metrics required to identify specific bottlenecks because of limited access to the systems under test to implement code instrumentation and system profiling.
+%  Table~\ref{ Table:benchmark-metrics} in Section~\ref{section:32-literature-benchmarking-gai} shows that most benchmark suites cannot capture the detailed metrics required to identify specific bottlenecks because of limited access to the systems under test to implement code instrumentation and system profiling.
 % \textit{Workload Analyses} are the more detailed, invasive investigations that have access to the environment and the implementation to gather the required data. 
 % A review of existing workload analyses reveals three key \textit{efficency} bottlenecks exist for \gai applications. 
 % \textit{Memory, computation} and \textit{communication} bottlenecks.
 % Less explored, but important to consider is the idea of \textit{accuracy tolerances}. 
-% An accuracy tolerance determines how accurate a solution needs to be to be accepTable, and is particularly important for approximate or incremental algorithms, where larger computing times may yield more accurate solutions.
+% An accuracy tolerance determines how accurate a solution needs to be to be accep Table, and is particularly important for approximate or incremental algorithms, where larger computing times may yield more accurate solutions.
 % \subsection{Memory Bottlenecks}
 % Memory bottlenecks occur when a system is unable to keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
 % Graph algorithms are widely understood to be \textit{memory bound}~\cite{Beamer2015}. 
@@ -327,7 +327,7 @@ To implement the \textit{grey-box} approach, the \gai benchmark framework adopts
 
 % %
 % \nrscomment{ok, in that case you need a Section explicitly outlining those classes, and possibly 
-% a Table comparing them across the characteristics you're about to describe. you currently have it mixed in with the characteristics, so i come away not understanding what the classes are or what the characteristics are. decouple them.}
+% a  Table comparing them across the characteristics you're about to describe. you currently have it mixed in with the characteristics, so i come away not understanding what the classes are or what the characteristics are. decouple them.}
 % %
 
 % \textbf{Size Matters.}
@@ -448,7 +448,7 @@ To implement the \textit{grey-box} approach, the \gai benchmark framework adopts
 % \subsection{Processing Bottlenecks}
 % \label{section:126-processing-bottlenecks}
 
-% \osullikomment{Intent is to use the exploit and elevate framwework i introduce here to taxonomize the acceleration methods, probably generate a Table or taxonomic graph of them for a pretty visual.}
+% \osullikomment{Intent is to use the exploit and elevate framwework i introduce here to taxonomize the acceleration methods, probably generate a  Table or taxonomic graph of them for a pretty visual.}
 
 % Graph processing began, as most computer science problems do, as a math problem--the K{\"o}nigsberg bridge problem--asking if the seven bridges of K{\"o}nigsberg could be traversed in a single trip without doubling back, ending back at the start point. 
 % Euler's answer to this problem is generally heralded as the birth of graph theory~\cite{Barnett2005}.

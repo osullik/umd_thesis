@@ -1,9 +1,77 @@
 \section{Develop Hypotheses}
 \label{section:54-CD-Hypotheses}
 
+Hypotheses are the mechanisms we use to link the results of the problem and phenomenon definitions with what we learned about the domain from exploratory experiments to design the inputs and expected outputs for the `grey-box' approach to developing benchmarks. 
+For each hypothesis, we consider what system characteristic or bottleneck we want to stimulate and build a hypothesis about how to shape the input to trigger an observable change in the output compared to some baseline of performance.
+
+\noindent \textbf{Inputs.}
+The \textit{size, shape} and \textit{community structure} of the input graph are the three parameters that we can vary to elicit observable responses from the system. 
+
+\noindent \textbf{Outputs.}
+The \textit{\ac{ETLT}, \ac{ExT}, \ac{BL}} and \textit{NMI} of the solution are the observable components of the output that we can use to interpret the effect of the impact. 
+
+\noindent \textbf{Baseline.}
+All hypotheses are developed relative to a baseline configuration of a single socket \ac{CPU}, representing the graph as an adjacency list and implementing a sequential single-shot algorithm on a small uniform random graph. 
+
+Our grey-box approach targets three areas: \textit{hardware} hypotheses that seek to stress specific configurations, \textit{abstraction} hypotheses that stress different methods of representing and operating on graphs, and \textit{implementation} hypotheses that target different algorithmic approaches.
+As Section~\ref{section:11-introduction-to-problem} explains, there can be unexpected interactions as we combine hardware, abstractions, and approaches; detecting these interactions is one of the goals of hypotheses design.
+Hardware hypotheses are derived 
+
+\subsection{Hardware Hypotheses}
+The hardware configuration of a \ac{SUT} directly impacts processing efficiency. 
+While some improvements will yield a linear improvement, for example, increasing available \ac{RAM}, or increasing the memory bandwidth, other approaches like distributing computing~\cite{Beamer2015}, using multi-socket \ac{CPU} systems~\cite{Dhulipala2021}, using \ac{GPU}~\cite{Wang2016} or other specific hardware accelerators~\cite{Aananthakrishnan2020} can have more dramatic impacts on efficiency. 
+From reviewing the literature on \gai benchmarking, workload analysis (see: Section~\ref{section:33-literature-gai-bottlenecks}) and the results of our exploratory analysis (see: Section~\ref{section:53-CD-Exploration}) we know that the size of a graph (number of vertices), density of the graph (number of edges) and shape of the graph can cause bottlenecks in different hardware configurations. 
+To stimulate these bottlenecks, we vary two parameters in the input graph, the vertex count and graph shape, and observe the impact on benchmark efficiency outputs. 
+
+\hyp{Distributed hardware approaches will have a longer \ac{ETL} time relative to the same input and implementation on the baseline system}
+
+\hyp{Distributed hardware approaches operating on scale-free input graphs will have a longer \ac{ExT} than they do on mesh input graphs of comparable size.}
+
+\hyp{A distributed hardware implementation will have a longer \ac{ExT} than a shared-memory parallel implementation for the same input data.}
+
+\hyp{\ac{GPU} and other \ac{GHA} hardware configurations will have a longer \ac{ETL} time relative to the same input data and implementation on the baseline system.}
+
+\hyp{\ac{GPU} and other \ac{GHA} hardware configurations will fail as input graph sizes become larger than their on-chip memory.}
+
+\hyp{\ac{GPU} will have longer \ac{ETL} time for scale-free input graphs than for mesh input graphs of the same size.}
+
+\subsection{Abstraction Hypotheses}
+The cho
+
+\subsection{Implementation Hypotheses}
+
+
+% INPUTS:
+    % Dataset Size
+    % Dataset Shape
+    % Community Structure
+
+%OUTPUTS:
+    % Execution Time
+    % Batch Latency
+    % Solution Quality 
+
+% Stimulating Hardware 
+    % Sequential CPU [Baseline]
+    % Distributed [Longer ETL Time to partition graph; Longer ExT compared to SM because of comms]
+    % GHA [Longer ETL to load to memory; Fail when on-chip memory full; Shorter ExT because of matrix; Scale-free graphs will cause OOM errors at lower vertex count than Mesh]
+    % Parallel-SM [Longer ETL to partition graph; Shorter ExT because of Parallel workers]
+
+% Stimulating Abstractions
+    % Canonical Adj List [baseline]
+    % Linear Algebraic [Longer ETL time to transform into Matrix; Longer ETL time for abstraction overheads]
+    % Compression [Larger graphs can fit in memory; Sequential Approaches will slow but parallel SM should remain constant]
+
+% Stimulating Approaches
+    % Single-Shot [Baseline; BL == ExT] 
+    % Iterative [BL << ExT; Answer Quality Improves over time]
+    % Approximate [ExT << Single Shott ExT; Answer Quality Lower than Baseline]
+
+
+
 To construct the hypotheses, we review the use case context, the problem, and the exploratory analysis to identify the likely interactions that will yield the phenomena we wish to investigate. 
 For the Population Segmentation problem, we are particularly interested in the phenomena surrounding the trade-off between effectiveness and efficiency.
-We combine the specific observations from the previous Sections in this Chapter with the constraint levers identified in Table~\ref{Table:gai-variance} to develop the hypotheses, presenting them grouped \nrscomment{the rest of this sentence is weird- grouped by efficiency, effectiveness, and constraint-specific tests? what does the last bit mean?} by efficiency and effectiveness and constraint-specific tests. 
+We combine the specific observations from the previous Sections in this Chapter with the constraint levers identified in  Table~\ref{ Table:gai-variance} to develop the hypotheses, presenting them grouped \nrscomment{the rest of this sentence is weird- grouped by efficiency, effectiveness, and constraint-specific tests? what does the last bit mean?} by efficiency and effectiveness and constraint-specific tests. 
 
 \nrscomment{For some of these id like to have seen a reason for the hypothesis, since you went through a lot of info in the previous Section and then dump all the hypotheses here without referring back to that info.}
 

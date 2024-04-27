@@ -15,11 +15,11 @@ The survey target was the specific \gai tasks and was conducted by initially sea
 \end{center}
 \noindent After collecting the tasks, \nrscomment{we grouped them} they were grouped thematically by goal into \gai problems and then by characteristics into a broader \ac{AI} category. 
 
-The resulting taxonomy divides \gai into six overarching ``AI Problem'' categories (\textit{Graph Problem Solving; Graph Mining; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Graph Transparency}), summarized in Table~\ref{Table:taxonomy}. 
+The resulting taxonomy divides \gai into six overarching ``AI Problem'' categories (\textit{Graph Problem Solving; Graph Mining; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Graph Transparency}), summarized in  Table~\ref{ Table:taxonomy}. 
 \nrscomment{"From our survey we conclude a \gai system must account for a wide variety of possible computation patterns, ..."} The key deduction from the survey to generate the taxonomy is that the breadth of tasks in the taxonomy means that a single system trying to support all of them needs to account for varying computation patterns, dataset shapes, dataset sizes, static graphs, and dynamic graphs. 
 Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of designing a benchmark to measure performance across \nrscomment{the \gai tasks surveyed.} all \gai tasks.
 
-\input{Tables/10_graph_based_ai}
+\input{ tables/10_graph_based_ai}
 
 \subsection{Real-World Uses of \gai}
 
@@ -37,15 +37,15 @@ First, searches identify papers relevant to each of the \ac{IandS} problems iden
 \end{center}
 \noindent For each paper identified as relevant, we extracted the \gai tasks and the typical input data and constraints present in the case study and grouped them by the specific \ac{IandS} domain they supported. 
 
-The survey results are summarized in Table~\ref{Table:problem-survey}. 
+The survey results are summarized in  Table~\ref{ Table:problem-survey}. 
 The key takeaways from the survey are \nrscomment{i would make this a bulleted list so its easier to quickly identify, and because it reads awkwardly to have a comma separated list of 3 'thats'} that many of the real-world \ac{IandS} problems are network problems well suited for the application of \gai, that large dynamic knowledge graphs are a standard input format, and that many use cases have temporal constraints that preclude \gai approaches that cannot produce solutions in minutes to hours. 
 
-\input{Tables/11_problem_survey.tex}
+\input{ tables/11_problem_survey.tex}
 
 % \subsection{\gai Challenges}
 % Developing efficient and effective \gai is challenging because of the \textit{massive, heterogeneous} and increasingly \textit{dynamic} nature of input data. 
 % From the problem survey, we identify a requirement to support graph processing at the billions-of-edges level on heterogeneous, dynamic graphs.
-% To make the problems more tracTable, simplification approaches to the data like sampling and dimensionality reduction trade-off completeness of information to gain processing speed.
+% To make the problems more trac Table, simplification approaches to the data like sampling and dimensionality reduction trade-off completeness of information to gain processing speed.
 % The trade-offs become more pronounced in resource-constrained settings when time, size, weight and power are limited, users may accept a reduction in one dimension to gain in another. 
 % The willingness to trade off effectiveness for efficiency for complex problems and when under externally imposed constraints is the precedent that our approach in Chapter~\ref{chapter:40-Graph-AI-Benchmarking} leverages for constructing the benchmark. 
 
@@ -58,7 +58,7 @@ The key takeaways from the survey are \nrscomment{i would make this a bulleted l
 % They are usually targeted to reduce uncertainty about how long a problem will take to solve for a general audience and thus focus on simple metrics.
 % The focus on execution time is typically beneficial as it is usually the best indicator of a system's performance~\cite{Hennessy2019}.
 % Current benchmarks for \gai programs are almost exclusively focused on simplified, static graphs and generally exclude Extract, Transform and Load (ETL) time
-% Benchmarks rarely report the \textit{effectiveness} metrics along with the \textit{efficiency} metrics, making them unsuiTable for evaluating approximate or incremental approaches.  
+% Benchmarks rarely report the \textit{effectiveness} metrics along with the \textit{efficiency} metrics, making them unsui Table for evaluating approximate or incremental approaches.  
 % As a result, benchmarks provide some useful insight, but to robustly compare \gai requires an approach that goes beyond `racing' systems against each other.
 
 % \textbf{Workload Analyses.}
@@ -92,20 +92,20 @@ The key takeaways from the survey are \nrscomment{i would make this a bulleted l
 
 %
 
-% Most \gai approaches focus on analyzing the graph topology, which is suiTable for exploring search spaces in planning problems, and basic pattern matching. 
+% Most \gai approaches focus on analyzing the graph topology, which is sui Table for exploring search spaces in planning problems, and basic pattern matching. 
 % For problems that require reasoning over the attributes of the graph, or the combination of its topology and attributes, the field still lacks appropriate approaches for dynamic graphs, heterogeneous graphs, and graphs at the exa-scale. 
 % Most recently, the focus has shifted to using graphs to improve other AI models, such as with the Retrieval Augmented Generation (RAG) paradigm, where symbolic AI reasoning over graphs grounds generated content in curated, traceable facts.
 
-% \nrscomment{replace this chunk with "We divide \gai into a taxonomy covering several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}), which are outlined in Table~\ref{Table:taxonomy}. Each AI problem category is associated with a few key \gai problems that each involve low-level graph processing tasks. We include a few typical examples of such tasks for each \gai problem to convey the breadth of tasks that a \gai benchmarking framework must cover." then add something like "In Section xxx we discuss the challenges associated with designing a benchmark that can measure performance across all \gai tasks." or something like that to tie into why we went through all this}
+% \nrscomment{replace this chunk with "We divide \gai into a taxonomy covering several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}), which are outlined in  Table~\ref{ Table:taxonomy}. Each AI problem category is associated with a few key \gai problems that each involve low-level graph processing tasks. We include a few typical examples of such tasks for each \gai problem to convey the breadth of tasks that a \gai benchmarking framework must cover." then add something like "In Section xxx we discuss the challenges associated with designing a benchmark that can measure performance across all \gai tasks." or something like that to tie into why we went through all this}
 
-% \gai problems can be broken down into several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in Table~\ref{Table:taxonomy}. 
+% \gai problems can be broken down into several overarching ``AI Problem'' categories (\textit{Searching, Planning \& Scheduling; Structural Analysis; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Trustworthy AI}) which are outlined in  Table~\ref{ Table:taxonomy}. 
 % Each \gai problem \nrscomment{you list the tasks, the graph problems don't list them. reword.} lists several typical tasks within the \gai problem space. 
 % The \gai taxonomy highlights the breadth of problems that a framework for benchmarking \gai must cover and emphasizes how difficult it is to achieve `good performance' across all \gai tasks.
 
 % The complexities of streaming and heterogeneous graph data are discussed in detail in Section~\ref{section:32-related-benchmarking-gai}, but generally, they increase complexity and degrade the efficiency of \gai tasks. 
 % Given the most commonly identified \nrscomment{by who? you or the authors of the implementation?} constraint is temporal \nrscomment{dont use parens for content that should be in your sentence, its lazy and disrupts your flow, and usually hides that the logic of the sentence is off when you drop the parens and read it directly. reading it that way, I think you never link why temporal constraints imply the tension you refer to.} (either because of the need to support real-time monitoring and reporting or because of limited data availability windows) There is a direct tension between the nature of the input data, the complexity of the \gai tasks and the constraints on processing those problems. 
 
-% \nrscomment{I would introduce the Table instead by saying something like "IandS problems spanning xyz are graph native or otherwise require analysis of the relationships between data and can benefit from graphAI. We review several of the major ... in Table x." then maybe talk about whatever the takeaway is, I'm guessing its where the constraints are since you took the time to add that column in.}
+% \nrscomment{I would introduce the  Table instead by saying something like "IandS problems spanning xyz are graph native or otherwise require analysis of the relationships between data and can benefit from graphAI. We review several of the major ... in  Table x." then maybe talk about whatever the takeaway is, I'm guessing its where the constraints are since you took the time to add that column in.}
 
 
 
@@ -116,7 +116,7 @@ The key takeaways from the survey are \nrscomment{i would make this a bulleted l
 % Of note, almost all the input data are heterogeneous attributed multigraphs, and many of the problems are expected to receive continuous update streams. 
 % Graph heterogeneity and streaming are two known sources of complexity in \gai.
 
-% The problems are spread across four of the six domains identified in the \gai Taxonomy (Table~\ref{Table:taxonomy}).
+% The problems are spread across four of the six domains identified in the \gai Taxonomy ( Table~\ref{ Table:taxonomy}).
 
 % \nrscomment{why are we talking about these 2 problems specifically? And the point you are making with them isn't really clear. is there one?}
 % \textit{Graph abstraction} is implicitly present in the \textit{graph prediction} (a downstream ML model can be used in place of a GNN), and \textit{Trustworthy AI} is an ongoing goal for all organizations, and will support human interfaces to these \gai tasks in the back-end. 
@@ -148,7 +148,7 @@ The key takeaways from the survey are \nrscomment{i would make this a bulleted l
 % In particular, as \textit{Knowledge Graphs} (KG) become an increasingly common representation they add attribute information to the vertices and edges, complicating the topology of the graph by creating complex structures like multi-graphs and hyper-edges.
 % These complications in content and structure can dramatically increase the complexity of graph processing. 
 
-% \nrscomment{the previous bit wraps up nicely, it's a bit unexpected to then dive into each category and explain them. and then there's no wrap-up takeaway to this subsection. I almost think you don't need these, though it's nice to have a reference to what these tasks mean. I think either find a way to transition into this more smoothly, and then a way to transition out at the end, or remove this from the prose altogether and add it to a new Table of AI problem spaces. this is still the intro so the prose should move pretty quickly through all the key points you need to cover to get across what your thesis is contributing-- I don't think this cuts. I didn't read these explanations so if they end up somewhere I'll read them there.}
+% \nrscomment{the previous bit wraps up nicely, it's a bit unexpected to then dive into each category and explain them. and then there's no wrap-up takeaway to this subsection. I almost think you don't need these, though it's nice to have a reference to what these tasks mean. I think either find a way to transition into this more smoothly, and then a way to transition out at the end, or remove this from the prose altogether and add it to a new  Table of AI problem spaces. this is still the intro so the prose should move pretty quickly through all the key points you need to cover to get across what your thesis is contributing-- I don't think this cuts. I didn't read these explanations so if they end up somewhere I'll read them there.}
 
 % \textbf{Searching, Planning and Scheduling (SPS).}
 % These problems are the `classical' AI problems that are common in simple agent-based systems.
@@ -202,13 +202,13 @@ The key takeaways from the survey are \nrscomment{i would make this a bulleted l
 % Because it is high-velocity, data is constantly arriving and the \gai developer cannot assume that they will be operating on a static graph. 
 % With new information constantly being added, updated and deleted, the required representation is a dynamic graph (streaming) graph architecture. 
 % Dynamic graphs require interleaving graph construction and analysis, meaning that the costs of creating and updating the graphs cannot be assumed away as a one-time cost, driving the adoption of graph representations that have fast insertion, lookup and deletion operations.
-% Further, live data correlates with a demand for live answers, and algorithms that cannot run in near-real time are unsuiTable for these applications. 
+% Further, live data correlates with a demand for live answers, and algorithms that cannot run in near-real time are unsui Table for these applications. 
 % Dynamic graph processing is under-explored in traditional graph processing and almost completely untouched concerning \gai.
 % Effective \gai solutions must support dynamic graphs to remain relevant in the future. 
 
 % \textbf{Balancing Algorithmic complexity and information loss.}
 
-% Optimal solutions to \gai problems are broadly intracTable without complexity reduction, which comes at the cost of information loss. 
+% Optimal solutions to \gai problems are broadly intrac Table without complexity reduction, which comes at the cost of information loss. 
 % Balancing optimality (effectiveness) with tractability (efficiency) \nrscomment{is} becomes a critical tradeoff when implementing a \gai system.
 % While many of the \gai tasks within the \nrscomment{spell it out} SA problem category use heuristic approaches to \nrscomment{find} get approximate answers, very few algorithms from any category use approximate or incremental algorithms~\cite{Panyala2017, Tauer2019}.
 % The tradeoff between effectiveness and efficiency may change \nrscomment{"by task and evolve" and cut till the comma} from day to day and task to task, so algorithms that generate approximate solutions initially, and refine \nrscomment{insert "them"; cut "to more optimal solutions"} to more optimal solutions over time \nrscomment{"provide more flexibility to manage the tradeoff between efficiency and effectiveness, as circumstances dictate." cut the rest from here} will give \gai developers, (and more importantly \gai users) the ability to balance these competing priorities for themselves depending on their circumstances. 

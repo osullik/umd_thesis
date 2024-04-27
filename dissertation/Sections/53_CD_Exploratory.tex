@@ -1,7 +1,7 @@
 \section{Conduct Exploratory Experimentation}
 \label{section:53-CD-Exploration}
 
-For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach (Table~\ref{Table:cd-survey}).
+For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach ( Table~\ref{ Table:cd-survey}).
 % Dynamic approaches are explicitly called out because they tend to operate on temporal graphs and have a different data structure from the other approaches. 
 Almost all prior work falls within the `community detection' approach discussed in Section~\ref{section:51-CD-Problem}, and so the language of this Section reflects that focus.
 For each approach, we identify the reported worst-case complexity for the algorithm as the efficiency bottleneck and factors that degrade the quality of communities as the effectiveness bottlenecks. 
@@ -9,20 +9,20 @@ For each approach, we identify the reported worst-case complexity for the algori
 Below, we characterize our observations of the stressors to community detection performance: datasets, algorithmic weaknesses, modularity optimization flaws, and dynamic graph processing challenges.
 During our exploration, we identified two techniques to improve performance: external information and approximate solutions. 
 
-\input{Tables/51_CD_Survey}
+\input{ tables/51_CD_Survey}
 
 \subsection{Datasets Observations}
 
-\textbf{Graph Size.}
-From the survey in Table~\ref{Table:cd-survey}, the worst-case complexity is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
+\textbf{Graph size.}
+From the survey in  Table~\ref{ Table:cd-survey}, the worst-case complexity is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
 We observe that in many cases, efficiency decreases as $|E|\gg|V|$. 
 
-\textbf{Graph Shape.}
+\textbf{Graph shape.}
 Further, we identify that the effectiveness of community detection approaches degrades when the communities are `fuzzy' rather than `cliquey' and when the mean degree of the graph is high.
 
 \subsection{Implementation Observations}
 
-\textbf{Algorithmic Weaknesses Exist in Community Detection.}
+\textbf{Algorithmic weaknesses exist in community detection.}
 Many approaches require the number of communities, clusters, or partitions to be known in advance, or they must run an algorithm like K-Means multiple times to discover the optimal number of communities (\cite{Kernighan1970, Reichardt2004, Ng2001, White2005, Yang2016, Wang2017}), significantly increasing the computational cost when the number of communities is large. 
 Knowing the number of communities a priori does not reflect the discovery process expected in the real world~\cite{Regli2022a}.
 Recursive-bisection partitioning approaches fail when there are three equally sized communities at a given recursion level; at least one will be mistakenly grouped with another and will usually be split across both. 
@@ -30,25 +30,25 @@ Greedy-agglomerative clustering approaches fail when two cliques are connected b
 Most approaches cannot assign a vertex to multiple communities because of the underlying assumptions about clustering and partitioning, so overlapping communities rely on graph attributes for effective community detection on heterogeneous graph structures~\cite{Reichardt2006}.
 The most popular implementation (Louvain~\cite{Blondel2008}) has been shown to produce disconnected communities when the shape of the input graph contains hierarchical community structures that contain cliques joined by bridge nodes~\cite{Traag2019}.
 
-\textbf{Modularity Optimization is not a reliable strategy.}
+\textbf{Modularity optimization is not a reliable strategy.}
 Modularity has several problems despite being the dominant metric in measuring community goodness. 
 Modularity optimization is $NP$-Complete~\cite{Brandes2006}, so algorithms must take heuristic approaches to apply it. 
 Modularity is also scale dependent, meaning it has a scaling factor where a community with a density of internal edges of the order of the $\sqrt[]{2|E|}$ times the edges in the graph will not be resolved by modularity optimization.
 That is, small communities will be missed by modularity optimization.
 In general, `loosely connected' communities are mistakenly combined, especially when the community size distribution has long tails~\cite{Fortunato2007}.
 
-\textbf{Dynamic Processing relies on Short Batch Latency.}
+\textbf{Dynamic processing relies on short batch latency.}
 The inputs to dynamic graph processing algorithms are either a collection of related graphs describing the same problem at $T$ time slices or may have a stream of updates to reflect when a vertex is added, deleted, or updates its properties.
 Consequently, the task is typically to identify when a community changes or which communities persist for extended periods (i.e., the co-traveler problem).
 Many dynamic processing approaches batch the updates and apply a static community detection approach at each iteration, then calculate the similarity in communities between each timestep, with more efficient implementations keeping the prior state in memory to reduce computation~\cite{Rossetti2018}.
 These batching approaches fail in real-time settings where the batch latency exceeds the length of each timestep $T$.
 
-\textbf{Community Detection is suiTable for Approximate and Incremental approaches.}
+\textbf{Community Detection is sui Table for approximate and incremental approaches.}
 Clustering, partitioning, and \ac{CD} are typically implemented as iterative algorithms that converge to a heuristically optimal solution but can return some information at each iteration step and are vulnerable to local maxima.
 Running an approximate algorithm may provide a less accurate result in a shorter timeframe, and iterative approaches that yield incremental improvements as time proceeds can take longer to converge than approaches that use a single-shot approach.
 Datasets with hierarchical communities can have correct solutions at different resolution levels, meaning that an iterative algorithm can yield communities at different resolutions over time. 
 
-\textbf{Weights and Attributes are critical for segmenting fuzzy and overlapping communities.} 
+\textbf{Weights and attributes are critical for segmenting fuzzy and overlapping communities.} 
 Graph partitioning, clustering, and community detection are traditionally topology-only algorithms. 
 However, access to some states, like the sentiment of an edge~\cite{Yang2007}, or the weights associated with edges~\cite{Rosvall2008} yield superior segments. 
 The same is true of attributes, and prior knowledge about group membership of some nodes dramatically improves the identification of overlapping and fuzzy communities~\cite{Zhang2013}. 
@@ -56,13 +56,13 @@ The same is true of attributes, and prior knowledge about group membership of so
 \subsection{Outputs}
 Completing the exploratory analysis through a literature review reveals the bottlenecks that impact population segmentation approaches, guiding hypothesis development in the next step. 
 
-\textbf{Efficiency Bottlenecks.}
-We expect that increasing the number of vertices and the number of edges will both degrade the efficiency of the approaches, given the worst-case complexity estimates in Table~\ref{Table:cd-survey}.
+\textbf{Efficiency bottlenecks.}
+We expect that increasing the number of vertices and the number of edges will both degrade the efficiency of the approaches, given the worst-case complexity estimates in  Table~\ref{ Table:cd-survey}.
 
-\textbf{Effectiveness Bottlenecks.} 
+\textbf{Effectiveness bottlenecks.} 
 The effectiveness of community detection approaches is vulnerable to fuzzy and overlapping communities, denser graphs, and when `bridges' exist between cliquey structures.
 
-\textbf{Friction Points.} 
+\textbf{Friction points.} 
 We identify additional friction points, including the requirement for a priori knowledge of the number of communities by many approaches, the lack of support for overlapping communities, and the lack of work in dynamic \ac{CD} benchmarks.
 
 % \nrscomment{can you cut this paragraph? its not really a relevant output that you use in constructing the benchmark is it? and it's kind of redundant to the phenomena ID phase where you say trading off effectiveness and efficiency}
