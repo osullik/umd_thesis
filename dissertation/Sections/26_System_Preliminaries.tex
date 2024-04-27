@@ -7,11 +7,11 @@ Graphs lack locality.
 
 \subsection{Locality}
 Locality is a term in computer architecture referring to the properties of data that enable it to be pre-emptively cached because it is nearby and more likely to be needed than data that is far away (spatial locality) or is necessary and likely to be reused soon (temporal locality).
-Figure~\ref{figure:locality-simple} is a simplified example of the divergence between topological proximity and memory proximity in graphs at the root of the locality issues.
+Figure~\ref{Figure:locality-simple} is a simplified example of the divergence between topological proximity and memory proximity in graphs at the root of the locality issues.
 
 \textbf{Spatial Locality.}
 We store related data together, and the idea of optimizing for spatial locality is that when data is needed for processing, data stored near it in memory is also likely to be needed for processing soon so that proximal memory blocks can be pre-emptively fetched to the cache for quick access~\cite{Hennessy2019}.
-In figure~\ref{figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
+In Figure~\ref{Figure:locality-simple}, the vertices are stored in memory in \textit{vertex-order}, that is, written to memory in the order they are created (irrespective of edges).
 
 This storage method typically leads to vertices that are topologically close in the graph not being close in memory. 
 In other words, they lack spatial locality.
@@ -25,7 +25,7 @@ The processor will have to access the main memory to retrieve the data~\cite{Chu
 We tend to transition between related tasks, so data important for what we are doing now is likely necessary for what we do next. 
 Temporal locality is the idea that when a piece of data is needed for processing, it will likely be needed for processing again soon, so it can be retained in the cache for quick access.
 To exploit \textit{temporal locality}, systems can cache high-degree vertices since they are likely to be needed often~\cite{Beamer2015} as is frequently the case for \textit{scale-free} graphs.
-Consider figure~\ref{figure:locality-simple} again. 
+Consider Figure~\ref{Figure:locality-simple} again. 
 While it is a rudimentary graph sketch, vertex \textbf{D} has a much higher \textit{degree} than the other vertices. 
 It is likely to be visited multiple times during processing, so caching will reduce the frequency at which it needs to be retrieved from memory.
 
@@ -33,7 +33,7 @@ It is likely to be visited multiple times during processing, so caching will red
 
 \textbf{Attributed Graphs and Locality.}
 Attributed graphs exacerbate the latency problem because graph attributes are often stored separately in memory~\cite{Buluc2013}. 
-Figure~\ref{figure:locality-attributed} expands on the example from figure~\ref{figure:locality-simple} by adding vertex attributes. 
+Figure~\ref{Figure:locality-attributed} expands on the example from Figure~\ref{Figure:locality-simple} by adding vertex attributes. 
 The attributes are stored at separate memory locations, with pointers from the topological vertex (memory positions $1-9$) to their respective attributes (memory positions $10-29$). 
 Attributes consume more memory than topological data, so more bandwidth is required to load them.
 The heterogeneous data types being loaded in attributed graphs (like knowledge graphs) have been shown to increase the number of Dynamic Random Access Memory (DRAM) accesses and, hence, increase latency and memory bandwidth pressure~\cite{Basak2019}.
@@ -43,17 +43,17 @@ In the worst case, this is a memory access each time a vertex is checked, or, if
 
 
 \section{Summary: Optimizing and Evaluating \gai is a Hard Problem}
-This chapter outlines the breadth of \gai problems and identifies the real-world factors that impact their performance.
+This Chapter outlines the breadth of \gai problems and identifies the real-world factors that impact their performance.
 Further, it explains how the size, shape, representation, storage, abstraction, and choice of primitive operations can impact the efficiency and effectiveness of graph operations. 
-These factors combine into the hierarchy of challenges introduced in figure~\ref{figure:gai-challenges} to create an interdependent web of considerations that make both the optimization of \gai difficult along with the evaluation of how different combinations of representations, abstractions, and primitives will interact with algorithmic and hardware acceleration techniques.
+These factors combine into the hierarchy of challenges introduced in Figure~\ref{Figure:gai-challenges} to create an interdependent web of considerations that make both the optimization of \gai difficult along with the evaluation of how different combinations of representations, abstractions, and primitives will interact with algorithmic and hardware acceleration techniques.
 The \gai benchmark framework addresses these complicating factors by adopting an Input/Output model to allow for the quick modification of experimental configurations by benchmark users. 
 It combines constraint theory with an empirical approach for studying algorithms to develop a method of creating datasets and tasks that provide a `grey-box' view of a \ac{SUT}.
 
 % \nrscomment{cut next sentence}
 % Assuming we can load a block of $3$ contiguous vertices at a time from memory to a simple single-level cache as an example, the benefit of exploiting \textit{spatial locality} is evident.
 % In most BFS implementations, the vertices linked by outgoing edges from the source vertex (\textbf{A} for this example) are added to a queue, with each being processed in turn until the target vertex is found.
-% \nrscomment{This isnt a terribly hard concept to understand,e specially if the figure is goo, i dont think you need to step through it in the prose}
-% So, for the graph in figure~\ref{figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
+% \nrscomment{This isnt a terribly hard concept to understand,e specially if the Figure is goo, i dont think you need to step through it in the prose}
+% So, for the graph in Figure~\ref{Figure:locality-simple}, we would load the first three vertices from memory (\textbf{A, B} and \textbf{C}) to the cache for quick retrieval. 
 % The first `expansion' of \textbf{A} enqueues the pointers to \textbf{B} and \textbf{F}.
 % \textbf{B} is already in the cache and the `cache hit' when it is dequeued for expansion means that the vertex is quickly retrieved, exploiting the spatial locality of \textbf{A} and \textbf{B} in this instance. 
 % The processor expands \textbf{B} to add the pointer to its neighbor \textbf{C} to the queue.

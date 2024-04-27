@@ -1,7 +1,7 @@
 \section{Identify and Characterize the Population Segmentation Problem}
 \label{section:51-CD-Problem}
 
-In this section, we describe the population segmentation problem defined in the \ac{IandS} domain and identify the typical tasks and the characteristics of real-world system deployment datasets. 
+In this Section, we describe the population segmentation problem defined in the \ac{IandS} domain and identify the typical tasks and the characteristics of real-world system deployment datasets. 
 
 \subsection{Definition}
 A Population Segmentation Analysis aims to divide a population into groups based on geography, demography, attitude toward an issue, or other thematic lines.
@@ -24,7 +24,7 @@ Both graph partitioning and graph clustering have been proven $NP$-complete.
 Community Detection is a more general form of the problem that involves the discovery of latent \textit{Communities}, or ``subgraphs whose members are more tightly connected than the broader graph''~\cite{Fortunato2007}.
 Community detection is closely related to partitioning and clustering. However, it is distinct that communities are a more general structure that do not adhere to the requirements for independence that clusters and partitions enforce. 
 
-Based on the problem survey (section~\ref{section:20-graph-based-ai}), available datasets, and expected tasks, we identify the initial collection of problems in table~\ref{table:cd-problem-definition}, presented in a general form.
+Based on the problem survey (section~\ref{section:20-graph-based-ai}), available datasets, and expected tasks, we identify the initial collection of problems in Table~\ref{Table:cd-problem-definition}, presented in a general form.
 These problems are reflective of real-world user needs, and many of them require combining kernel-level tasks to generate a solution to the problem.
 Their general specification allows users to identify the approach that they believe will work best, given their systems' constraints. 
 For example, task 1 \textit{``Who is in the same group as (x)?''} requires that the vertex labeled `x' be located, and then some process must identify to which group `x' belongs. 
@@ -35,7 +35,7 @@ However, another could perform \ac{BFS} for the node and return the nodes within
 \input{Tables/53_CD_Problems.tex}
 
 \subsection{Datasets}
-Population segmentation focuses on human social networks, which are typically scale-free (see section~\ref{section:22-graph-topology}) and tend to exhibit well-defined segments.
+Population segmentation focuses on human social networks, which are typically scale-free (see Section~\ref{section:22-graph-topology}) and tend to exhibit well-defined segments.
 Segments can also exist in mesh graphs, but they typically are poorly defined or have boundaries that do not necessarily match the shape of the graph. 
 For example, a road network may be divided into segments along county lines. 
 However, those lines can be arbitrary in terms of the road density and the population living there. 
@@ -49,7 +49,7 @@ The `fuzzy' community is effectively a uniform random distribution, where the `c
 \subsection{Outputs}
 Completing the problem definition step identifies the problems, everyday tasks, and datasets we use to inform the next steps. 
 
-\textbf{Problems.} Table~\ref{table:cd-problem-definition} formally defines several problems in the population segmentation space that vary from single kernel-level tasks to complicated problems requiring intricate solutions.
+\textbf{Problems.} Table~\ref{Table:cd-problem-definition} formally defines several problems in the population segmentation space that vary from single kernel-level tasks to complicated problems requiring intricate solutions.
 
 \textbf{Tasks.} 
 The literature's three most common approaches to population segmentation are Graph Partitioning, Graph Clustering, and Community Detection. 

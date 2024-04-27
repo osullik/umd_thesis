@@ -1,9 +1,9 @@
 \section{Conduct Exploratory Experimentation}
 \label{section:53-CD-Exploration}
 
-For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach (Table~\ref{table:cd-survey}).
+For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach (Table~\ref{Table:cd-survey}).
 % Dynamic approaches are explicitly called out because they tend to operate on temporal graphs and have a different data structure from the other approaches. 
-Almost all prior work falls within the `community detection' approach discussed in Section~\ref{section:51-CD-Problem}, and so the language of this section reflects that focus.
+Almost all prior work falls within the `community detection' approach discussed in Section~\ref{section:51-CD-Problem}, and so the language of this Section reflects that focus.
 For each approach, we identify the reported worst-case complexity for the algorithm as the efficiency bottleneck and factors that degrade the quality of communities as the effectiveness bottlenecks. 
 
 Below, we characterize our observations of the stressors to community detection performance: datasets, algorithmic weaknesses, modularity optimization flaws, and dynamic graph processing challenges.
@@ -14,7 +14,7 @@ During our exploration, we identified two techniques to improve performance: ext
 \subsection{Datasets Observations}
 
 \textbf{Graph Size.}
-From the survey in table~\ref{table:cd-survey}, the worst-case complexity is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
+From the survey in Table~\ref{Table:cd-survey}, the worst-case complexity is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
 We observe that in many cases, efficiency decreases as $|E|\gg|V|$. 
 
 \textbf{Graph Shape.}
@@ -43,7 +43,7 @@ Consequently, the task is typically to identify when a community changes or whic
 Many dynamic processing approaches batch the updates and apply a static community detection approach at each iteration, then calculate the similarity in communities between each timestep, with more efficient implementations keeping the prior state in memory to reduce computation~\cite{Rossetti2018}.
 These batching approaches fail in real-time settings where the batch latency exceeds the length of each timestep $T$.
 
-\textbf{Community Detection is suitable for Approximate and Incremental approaches.}
+\textbf{Community Detection is suiTable for Approximate and Incremental approaches.}
 Clustering, partitioning, and \ac{CD} are typically implemented as iterative algorithms that converge to a heuristically optimal solution but can return some information at each iteration step and are vulnerable to local maxima.
 Running an approximate algorithm may provide a less accurate result in a shorter timeframe, and iterative approaches that yield incremental improvements as time proceeds can take longer to converge than approaches that use a single-shot approach.
 Datasets with hierarchical communities can have correct solutions at different resolution levels, meaning that an iterative algorithm can yield communities at different resolutions over time. 
@@ -57,7 +57,7 @@ The same is true of attributes, and prior knowledge about group membership of so
 Completing the exploratory analysis through a literature review reveals the bottlenecks that impact population segmentation approaches, guiding hypothesis development in the next step. 
 
 \textbf{Efficiency Bottlenecks.}
-We expect that increasing the number of vertices and the number of edges will both degrade the efficiency of the approaches, given the worst-case complexity estimates in table~\ref{table:cd-survey}.
+We expect that increasing the number of vertices and the number of edges will both degrade the efficiency of the approaches, given the worst-case complexity estimates in Table~\ref{Table:cd-survey}.
 
 \textbf{Effectiveness Bottlenecks.} 
 The effectiveness of community detection approaches is vulnerable to fuzzy and overlapping communities, denser graphs, and when `bridges' exist between cliquey structures.

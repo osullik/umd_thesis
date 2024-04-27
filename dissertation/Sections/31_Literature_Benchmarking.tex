@@ -40,7 +40,7 @@ Third-party entities typically maintain hosted benchmarks that accept submission
 The hosted approach relies on shared problem formats and everyday primitive operations and constrains developers to implementations that can run on the provided environment. 
 For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations and publish the results to public leaderboards.
 The salient limitation of a hosted benchmark is that it prevents comparisons of different hardware configurations; it only allows the comparison of implementations that must be compatible with the host platform.
-For graph and \gai problems where many of the available acceleration techniques use hardware and representation changes, a hosted benchmark is rarely suitable for an evaluation that reflects real-world conditions.
+For graph and \gai problems where many of the available acceleration techniques use hardware and representation changes, a hosted benchmark is rarely suiTable for an evaluation that reflects real-world conditions.
 
 \subsection{Constrained Benchmarks}
 \textit{Constrained benchmarks} are a promising alternative to competitive and hosted benchmarks.
@@ -54,19 +54,19 @@ Competitive benchmarks are flexible, accessible computational footraces that tel
 Empirical benchmarks are labor-intensive and impose constraints on the systems being studied. 
 While competitive benchmarks take a creative approach, they focus on only one dimension during evaluation. 
 Constrained benchmarks show how careful manipulation of the input data and operating environment can stimulate innovation by researchers and interesting behavior in the \ac{SUT}.
-The approach we propose in chapter~\ref{chapter:40-Graph-AI-Benchmarking} proposes combining the accessibility of competitive benchmarks with the informativeness of a formal empirical benchmark by leveraging the ideas from constraint-based benchmarks about how to stimulate behavior in the system under test in a `grey-box' approach to the benchmarking problem. 
+The approach we propose in Chapter~\ref{chapter:40-Graph-AI-Benchmarking} proposes combining the accessibility of competitive benchmarks with the informativeness of a formal empirical benchmark by leveraging the ideas from constraint-based benchmarks about how to stimulate behavior in the system under test in a `grey-box' approach to the benchmarking problem. 
 
 \input{Figures/Diagrams/01_benchmark_components}
 
 Regardless of the specific benchmarking approach, all benchmarks feature a specification for the \textit{Datasets, Tasks} and \textit{Metrics}, and are expected to evaluate a \textit{System Under Test} that comprises of some \textit{Hardware} and \textit{Software Stack} and the specific \textit{Implementation} that will solve the specified tasks on the provided datasets and be monitored to generate the target metrics. 
 When the benchmark is hosted, the hardware and software stack are frozen, and only the implementation is measured.
-These basic components in figure~\ref{figure:benchmark-components} are explained in more detail in section~\ref{section:42-GAI-Background}
-The following section examines \gai specific approaches to benchmarking, identifying how these paradigms are used and their limitations in practice. 
+These basic components in Figure~\ref{Figure:benchmark-components} are explained in more detail in Section~\ref{section:42-GAI-Background}
+The following Section examines \gai specific approaches to benchmarking, identifying how these paradigms are used and their limitations in practice. 
 
 
-% % % % % % % % % % MOVED TO PROBLEM SECTION % % % % % % % % % % %
+% % % % % % % % % % MOVED TO PROBLEM Section % % % % % % % % % % %
 
-% \nrscomment{this is PROBLEM section}
+% \nrscomment{this is PROBLEM Section}
 
 % \nrscomment{"Benchmarking is a process by which systems or components are compared according to some criteria, which are captured in a benchmark~\cite{Kistowski2015}."}
 % Benchmarking is a process for the evaluation and comparison of systems or components according to some specific criteria or characteristics~\cite{Kistowski2015}.
@@ -77,7 +77,7 @@ The following section examines \gai specific approaches to benchmarking, identif
 % \nrscomment{progress can be substantial or fast but it cant really be effective}
 % Reduction in uncertainty leads to better decision-making and more effective progress. 
 
-% Benchmarking is a process that \nrscomment{is used in} applies to many fields and there are many different tasks, \nrscomment{rest of this sentence: isnt this chunk supposed to be about benchmarking abstractly and empirical CS principles for it? why narrow to graphAI and name your metrics in this section?} but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficiency}, which will be collectively called \textit{performance}.
+% Benchmarking is a process that \nrscomment{is used in} applies to many fields and there are many different tasks, \nrscomment{rest of this sentence: isnt this chunk supposed to be about benchmarking abstractly and empirical CS principles for it? why narrow to graphAI and name your metrics in this Section?} but here specifically refers to evaluating and comparing \gai \textit{effectiveness} and \textit{efficiency}, which will be collectively called \textit{performance}.
 
 % \nrscomment{ok, i guess efficiency and effectiveness are very generically applicable, but i still think its better to start with the higher level methodological approach}
 % Effectiveness is a measure of `how well' a problem is solved and typically uses metrics like accuracy, precision, recall, and error rate.
@@ -86,7 +86,7 @@ The following section examines \gai specific approaches to benchmarking, identif
 % Ideally, a system should maximize its efficiency (minimize its cost).
 
 % \nrscomment{not sure you need another signpost so soon after the last one}
-% This section identifies why benchmarking is useful for both users and developers identifies the core principles of benchmark design and development, and how balancing the trade-offs between effectiveness and efficiency is at the core of decision-making. 
+% This Section identifies why benchmarking is useful for both users and developers identifies the core principles of benchmark design and development, and how balancing the trade-offs between effectiveness and efficiency is at the core of decision-making. 
 
 
 % \subsection{Why Benchmark}
@@ -101,14 +101,14 @@ The following section examines \gai specific approaches to benchmarking, identif
 
 % Whether for a user or a developer, that benchmarking process relies on measuring the \textit{effectiveness} and \textit{efficiency} of systems to reduce their uncertainty about the aspects of \gai relevant to them.
 % Benchmarks for high-performance computing like the Standard Performance Evaluation Corporation (SPEC) benchmarks~\cite{Hennessy2019}, for solving linear equations like the LINPACK Top500~\cite{Dongarra2003}, for satisfiability problems like SATLIB~\cite{Hoos2000}, and far more have been essential in driving acquisition decisions for users and guiding optimization efforts for developers across all these fields. 
-% Benchmarks are a useful tool, and section~\ref{section:32-related-benchmarking-gai} shows how they have been useful for \gai specifically.
+% Benchmarks are a useful tool, and Section~\ref{section:32-related-benchmarking-gai} shows how they have been useful for \gai specifically.
 
-% % % % % % % % % % /MOVED TO PROBLEM SECTION % % % % % % % % % % %
+% % % % % % % % % % /MOVED TO PROBLEM Section % % % % % % % % % % %
 
 
-% % % % % % % % % % MOVED TO CHAPTER 4  % % % % % % % % % % %
+% % % % % % % % % % MOVED TO Chapter 4  % % % % % % % % % % %
 % \subsection{Design Considerations}
-% \nrscomment{this is not RW, its part of the abstract benchmark methodology section. it needs to be condensed down to only the relevant pieces, but ill read it for that when its moved down}
+% \nrscomment{this is not RW, its part of the abstract benchmark methodology Section. it needs to be condensed down to only the relevant pieces, but ill read it for that when its moved down}
 % Benchmark design must consider the purpose of the benchmark, general principles of benchmark design and the granularity of the problem~\cite{Carpinetti2002}.
 
 % The \textit{purpose} of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design ()\textit{relevance, fairness, reproduciblity} and \textit{verifiability}~\cite{Huppler2009, Kistowski2015}. 
@@ -125,9 +125,9 @@ The following section examines \gai specific approaches to benchmarking, identif
 % An effective benchmark has a clearly defined purpose, abides by the principles of benchmark design and decomposes to an appropriate layer of granularity to balance understanding the performance of individual components with the performance of the system as a whole. 
 
 % \subsection{Components of a Benchmark}
-% \nrscomment{i maintain that this section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
+% \nrscomment{i maintain that this Section goes at the start of abstract methods. it sets the stage for the pieces that youll be telling the reader how to select, and doesnt refer to specific other works, so it snot RW}
 % \nrscomment{rephrase this as "Benchmarks contain three major components, which are outlined in fig x: datasets drawn from a domain of interest, tasks drawn from a relevant problem space, and metrics covering relevant evaluation criteria." then skip the bit about SUT for now and go into your explanation of datasets/tasks/etc.. Talk about SUT once youre done with that.}
-% There are three abstract dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{figure:benchmark_components}).
+% There are three abstract dimensions to a benchmark (\textit{domain, problem} and \textit{evaluation}) and two concrete components comprising a system under test (\textit{environment} and \textit{implementation}) (Figure~\ref{Figure:benchmark_components}).
 
 % The abstract dimensions of the a benchmark define what the `challenge' is that needs to be solved, and how to differentiate performance.
 % The domain is source of the \textit{datasets} that will be used as input to the benchmark.
@@ -140,20 +140,20 @@ The following section examines \gai specific approaches to benchmarking, identif
 % Metrics must be relevant to the purpose of the benchmark and fair to all of the systems under test. 
 % Careful definition and documentation of the abstract dimensions of benchmark design are essential to developing a benchmark that is \textit{verifiable} and \textit{reproducible}.
 
-% \nrscomment{Id open this with something like: "Benchmarks provide the tools to compare systems or system components. The systems under test (SUTs) by the benchmark are comprised of hardware..." then tie it together with "To gain useful insight, all but one aspect of the Benchmark-SUT framework is held constant, and the difference in performance attributable to the aspect that varied is measured. For instance, one can add or remove hardware, ..."}
+% \nrscomment{Id open this with something like: "Benchmarks provide the tools to compare systems or system components. The systems under test (SUTs) by the benchmark are comprised of hardware..." then tie it together with "To gain useful insight, all but one aspect of the Benchmark-SUT framework is held constant, and the difference in performance attribuTable to the aspect that varied is measured. For instance, one can add or remove hardware, ..."}
 % The system under test is what is being measured by the benchmark. 
 % The environment consists of the \textit{hardware} and underlying \textit{software stack} that defines the system under test. 
 % Changes to the environment typically look like adding or removing hardware (e.g. adding DRAM, modifying cache), adding accelerators (GPUs, TPUs etc), using a distributed system or even changing the operating system or database components of the software that don't directly participate in solving tasks on a given dataset but may that may elevate existing bottlenecks in a given workload.
 % The implementations are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
 % Changes in implementations might look like trailing new data structures, abstractions, programming models, algorithms or other techniques to exploit the latent capacity of a system under test to execute a workload more efficiently or effectively. 
 
-% \nrscomment{Are there enough things that can be varied that they warrant a bulleted list or table or something?}
+% \nrscomment{Are there enough things that can be varied that they warrant a bulleted list or Table or something?}
 
 % \input{Figures/Diagrams/01_benchmark_components.tex}
 
 % \subsection{Summary of Benchmarks}
 
-% % % % % % % % % % /MOVED TO CHAPTER 4  % % % % % % % % % % %
+% % % % % % % % % % /MOVED TO Chapter 4  % % % % % % % % % % %
 
 
 
@@ -184,7 +184,7 @@ The following section examines \gai specific approaches to benchmarking, identif
 
 
 % %
-% \nrscomment{this section currently reads as a bunch of facts about competitive and empirical benchmarks. you bounce back and forth between the types, and its hard to follow. theres too much info- none of this belongs in the problem statement section. i would replace this entire section with a description of the problem, in very simple terms. you can do this without going into detail about any specific benchmarks. choose one or two examples of how current benchmarks dont suffice and explain that to prime us for what youre going to solve with your methodology.}
+% \nrscomment{this Section currently reads as a bunch of facts about competitive and empirical benchmarks. you bounce back and forth between the types, and its hard to follow. theres too much info- none of this belongs in the problem statement Section. i would replace this entire Section with a description of the problem, in very simple terms. you can do this without going into detail about any specific benchmarks. choose one or two examples of how current benchmarks dont suffice and explain that to prime us for what youre going to solve with your methodology.}
 % %
 
 
@@ -212,10 +212,10 @@ The following section examines \gai specific approaches to benchmarking, identif
 
 
 
-% So the problem that this benchmark suite seeks to solve is \\ \textit{"What is a suitable benchmarking methodology for graph-based artificial intelligence applications that reduces uncertainty in the user community and facilitates ongoing research?}
+% So the problem that this benchmark suite seeks to solve is \\ \textit{"What is a suiTable benchmarking methodology for graph-based artificial intelligence applications that reduces uncertainty in the user community and facilitates ongoing research?}
 
 % %
-% \nrscomment{is this the RQ for your thesis? suitable is weak. "How should we benchmark graph AI systems to enable comprehensive comparison across ... that reveals ..." or something like that}
+% \nrscomment{is this the RQ for your thesis? suiTable is weak. "How should we benchmark graph AI systems to enable comprehensive comparison across ... that reveals ..." or something like that}
 % %
 
 

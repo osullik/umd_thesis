@@ -1,54 +1,54 @@
 \section{Analyze Results, Develop Theoretic Explanation and Iterate}
 \label{section:56-CD-Results}
-This results section and the following discussion demonstrate how an engineer would use the population segmentation benchmark problem as a component of the \gai benchmark framework to evaluate several shortlisted system configurations for procurement. 
+This results Section and the following discussion demonstrate how an engineer would use the population segmentation benchmark problem as a component of the \gai benchmark framework to evaluate several shortlisted system configurations for procurement. 
 The engineer is aware of analyst requirements for their \gai tasks to complete within a limited timeframe and a willingness of analysts to sacrifice the optimality of the solution for a faster result.
 First, we describe the specifics of the experiment setup, and second, we describe the results. 
 
 \subsection{Experiment Setup}
 We implement the \gai population segmentation benchmark in Python 3.11.5 and make the environment\footnote{\scriptsize \url{https://github.com/osullik/umd_thesis/tree/main}} details available \nrscomment{move the footnote to here, it interrupts the flow of the sentence where it currently stands}.
-The implementation follows the design from figure~\ref{figure:cd-apparatus}, except that the benchmark server is located on the system under test and that the polling is done passively by checking the timestamps of an interim-results folder after the experiment. 
+The implementation follows the design from Figure~\ref{Figure:cd-apparatus}, except that the benchmark server is located on the system under test and that the polling is done passively by checking the timestamps of an interim-results folder after the experiment. 
 To run the benchmark, the researcher specifies the problem and dataset. 
 
 \input{Figures/Diagrams/19_experiment_specification}
 
-We provide experiment specifications for the experiments shown in figure~\ref{figure:experiment-specification}, and listed in table~\ref{table:cd-experiments} as \texttt{json} files\footnote{\scriptsize available at: \url{https://github.com/osullik/umd_thesis/tree/main/gaib/experiment_definitions}} that the \texttt{benchmark server} uses to \nrscomment{execute instead of create?} create the experiments. \nrscomment{this reads a bit like "we follow the design except that we kind of fake it by just writing to a file" maybe reword it a bit to hint at why you do it this way- i assume it's for simplicity because we are only testing 3 implementations that are running on the same hardware and software? -- coming back after reading more, nvm you have different hardware. why are you doing it with a file then? because you have access to the systems? i think you need to provide some vague justification, even if its tenuous}
-The process is entirely automated to maximize usability, from requesting a benchmark problem from the server until the server provides the data and figures in the return report.
+We provide experiment specifications for the experiments shown in Figure~\ref{Figure:experiment-specification}, and listed in Table~\ref{Table:cd-experiments} as \texttt{json} files\footnote{\scriptsize available at: \url{https://github.com/osullik/umd_thesis/tree/main/gaib/experiment_definitions}} that the \texttt{benchmark server} uses to \nrscomment{execute instead of create?} create the experiments. \nrscomment{this reads a bit like "we follow the design except that we kind of fake it by just writing to a file" maybe reword it a bit to hint at why you do it this way- i assume it's for simplicity because we are only testing 3 implementations that are running on the same hardware and software? -- coming back after reading more, nvm you have different hardware. why are you doing it with a file then? because you have access to the systems? i think you need to provide some vague justification, even if its tenuous}
+The process is entirely automated to maximize usability, from requesting a benchmark problem from the server until the server provides the data and Figures in the return report.
 There are three \ac{SUT}. \nrscomment{Instead say "We test the following three SUTs:" and then list them}
 The \textit{Baseline} system is a personal laptop computer, representing the existing capability of the Engineer's team\footnote{\scriptsize 2023 Apple Macbook Pro; $12$ Core M2 Max Processor, 32GB Hynix LPDDR5 RAM; MacOS 14.1-Darwin-23.4.0}.
 The \textit{CPU} system is a single-socket of a \ac{HPC} cluster\footnote{\scriptsize $16$ Core Intel Xeon Silver 4216 3.2GHz, 32GB RAM; RedHat Enterprise Linux 8.9} and the \ac{GPU} system is a single GPU hosted on a \ac{HPC} cluster\footnote{\scriptsize As per \ac{CPU} system, with addition of $1\times$ NVIDIA RTXA5000 (8192 Cores, $24$GB GDDR6, $768$DB/s memory bandwidth), \ac{CUDA} v12.4}.
 We limit our choice of implementations to the NetworkX library to standardize the representation and \ac{ETL} processes between implementations. 
-The static approach uses the NetworkX \textit{Louvain Communities}\footnote{\scriptsize \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html}} implementation and the incremental use the NetworkX \textit{Louvain Partitions}\footnote{\scriptsize \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_partitions.html}} library, which iteratively yields communities at decreasing granularity. 
+The static approach uses the NetworkX \textit{Louvain Communities}\footnote{\scriptsize \url{https://networkx.org/documentation/sTable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html}} implementation and the incremental use the NetworkX \textit{Louvain Partitions}\footnote{\scriptsize \url{https://networkx.org/documentation/sTable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_partitions.html}} library, which iteratively yields communities at decreasing granularity. 
 
 \input{Tables/54_experiments}
 
 \subsection{Experiment Results}
 
-We tie the evaluation closely to the Hypotheses from section~\ref{section:54-CD-Hypotheses} and group the results by efficiency, effectiveness, and constraints.
+We tie the evaluation closely to the Hypotheses from Section~\ref{section:54-CD-Hypotheses} and group the results by efficiency, effectiveness, and constraints.
 Hypotheses are used as a guide for investigation rather than a formal testing mechanism, so we abstain from statistical analysis of results at this time but intend to automate evaluation against the hypotheses as part of future work. 
 
 \subsubsection{Efficiency Results}
 \input{Figures/Diagrams/18_results_efficiency_hw_et}
 \input{Figures/Diagrams/21_results_effectiveness_static_nmi}
 
-Figure~\ref{figure:cd-results-efficency-time} shows how the \ac{GPU} \ac{SUT} completes the \gai population segmentation benchmark problems up to $172\times$ faster than the baseline \ac{SUT} using the static implementation. 
+Figure~\ref{Figure:cd-results-efficency-time} shows how the \ac{GPU} \ac{SUT} completes the \gai population segmentation benchmark problems up to $172\times$ faster than the baseline \ac{SUT} using the static implementation. 
 The \ac{GPU} \ac{SUT} does not support the iterative implementation of the algorithm. 
 However, the batch latency for the first results shows that the NetworkX implementation computes the results iteratively but does not yield them to the user until convergence. 
 
 \input{Figures/Diagrams/20_results_efficiency_proportions}
 
 \subsubsection{Effectiveness Results}
-Figure~\ref{figure:results-static-nmi} shows that all approaches have comparable effectiveness for static processing approaches. \nrscomment{are they high? low?}
+Figure~\ref{Figure:results-static-nmi} shows that all approaches have comparable effectiveness for static processing approaches. \nrscomment{are they high? low?}
 
 
 
 
 \subsubsection{Constraint Results}
-Figure~\ref{fig:monotonics} shows that the choice of hardware impacts the execution of the iterative algorithm, with no implementation for the \ac{GPU} and erratic behavior identified for the baseline \ac{SUT}. \nrscomment{how is this a constraint result? when you constrain the hardware type? and what do you mean by erratic- be more specific. not monotonically improving NMI?}
+Figure~\ref{Figure:monotonics} shows that the choice of hardware impacts the execution of the iterative algorithm, with no implementation for the \ac{GPU} and erratic behavior identified for the baseline \ac{SUT}. \nrscomment{how is this a constraint result? when you constrain the hardware type? and what do you mean by erratic- be more specific. not monotonically improving NMI?}
 
 \input{Figures/Diagrams/22_results_effectiveness_iterative_nmi}
 
 % \subsubsection{Efficency Results}
-% The total experiment time across all experiments is dominated by the execution time (figure~\ref{fig:cd-results-efficency-proportions}), which scales quadratically in the number of vertices (figure~\ref{fig:cd-results-efficency}). 
+% The total experiment time across all experiments is dominated by the execution time (Figure~\ref{fig:cd-results-efficency-proportions}), which scales quadratically in the number of vertices (Figure~\ref{fig:cd-results-efficency}). 
 % The batch latencies are equivalent for both the static and incremental approaches. 
 
 % \input{Figures/Diagrams/08_results_efficiency.tex}
@@ -56,7 +56,7 @@ Figure~\ref{fig:monotonics} shows that the choice of hardware impacts the execut
 % \input{Figures/Diagrams/09_results_efficiency_proportions}
 
 % \subsubsection{Effectiveness Results}
-% Examining the number of predicted versus ground truth communities shows that NMI increases as the number of predicted communities increases but that there is a concurrently increasing delta between the number of predicted and ground truth communities~(figure~\ref{fig:cd-results-effectiveness-communities}). 
+% Examining the number of predicted versus ground truth communities shows that NMI increases as the number of predicted communities increases but that there is a concurrently increasing delta between the number of predicted and ground truth communities~(Figure~\ref{fig:cd-results-effectiveness-communities}). 
 % Both of these covary with the size of the graph. 
 % Examining the effectiveness of the iterative algorithm over each increment in Figure~\ref{fig:cd-results-effectiveness-community-lines} shows that while the NMI converges to a higher value and the number of communities decreases as iterations continue, they do not `improve' monotonically over time.
 
@@ -65,7 +65,7 @@ Figure~\ref{fig:monotonics} shows that the choice of hardware impacts the execut
 % \input{Figures/Diagrams/11_results_effectiveness_lines}
 
 % \subsubsection{Constraint Results}
-% In addition to the observations about the relationship between efficiency and effectiveness of the incremental approach about figure~\ref{fig:cd-results-effectiveness-community-lines}, there is no statistically significant difference between the distribution of NMI at each iteration (figure~\ref{figure:results-constraint}).
+% In addition to the observations about the relationship between efficiency and effectiveness of the incremental approach about Figure~\ref{fig:cd-results-effectiveness-community-lines}, there is no statistically significant difference between the distribution of NMI at each iteration (Figure~\ref{Figure:results-constraint}).
 
 % \input{Figures/Diagrams/12_results_constraints.tex}
 

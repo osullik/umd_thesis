@@ -3,17 +3,17 @@
 A graph's representation and abstraction model fundamentally affect how it is processed. 
 The representation format of the input graph is a crucial contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs.
 The tradeoff between memory efficiency (how much space a graph consumes) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
-This section introduces fundamental concepts of graph representation, including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
+This Section introduces fundamental concepts of graph representation, including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
 
 \subsection{Graph Storage}
 A graph's storage format directly impacts the space it consumes in memory, the operations that can be performed on it, and the speed of those operations.
-This section discusses the common ways a graph's topological information can be stored and how compression and abstraction models can impact performance. 
-The following examples show the common representations used to store the graph in figure~\ref{figure:graph-example}. 
+This Section discusses the common ways a graph's topological information can be stored and how compression and abstraction models can impact performance. 
+The following examples show the common representations used to store the graph in Figure~\ref{Figure:graph-example}. 
 
 \input{Figures/Graphs/08_example_graph.tex}
 
 \subsubsection{Adjacency Lists}
-The adjacency list representation (Figure~\ref{figure:graph-adj-list}) uses a linked list or array.
+The adjacency list representation (Figure~\ref{Figure:graph-adj-list}) uses a linked list or array.
 The first entry in each line is the source vertex, and each subsequent entry indicates an edge on the listed vertex.
 Adjacency lists can represent directed or undirected graphs and can represent weights using lists of tuples.
 Representing weights is possible using a list of tuples.
@@ -22,7 +22,7 @@ Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but find
 \input{Figures/Graphs/09_adj-list.tex}
 
 \subsubsection{Adjacency Matrices}
-An adjacency matrix (Figure~\ref{figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix ($M$) to represent the graph.
+An adjacency matrix (Figure~\ref{Figure:adjacency_matrix}) uses a $|V|\times|V|$ matrix ($M$) to represent the graph.
 A $1$ at location $M_{i,j}$ indicates the existence of an edge from vertex $i$ to vertex $j$. 
 Adjacency matrices can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent a weighted edge. 
 Adjacency matrices have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
@@ -31,7 +31,7 @@ One of their major drawbacks is the space-inefficient requirement to store all t
 \input{Figures/Graphs/10_adjacency.tex}
 
 \subsubsection{Incidence Matrices}
-Incidence Matrices (Figure~\ref{figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
+Incidence Matrices (Figure~\ref{Figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
 An edge is represented with two values: a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
 Here, $i$ represents the edge's index, and $j$ and $k$ represent the vertices that the edge connects.
 Incidence matrices are the most expressive representation of those listed here since they can encode \textit{multi-graphs} and \textit{hyper-graphs}.
@@ -45,7 +45,7 @@ Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$ since it requires sc
 
 \subsubsection{Compressed representations}
 Compressed representations aim to balance expressiveness, memory consumption, and computability. 
-The dominant choices are the \ac{CSR} and \ac{CSC} formats (Figure~\ref{figure:csr}).
+The dominant choices are the \ac{CSR} and \ac{CSC} formats (Figure~\ref{Figure:csr}).
 The \ac{CSR} format uses three lists to compress the rows of a sparse (adjacency) matrix~\cite{Bulucc2009}. 
 The \ac{CSC} format reverses the format so that the columns are compressed.
 The space efficiency for \ac{CSR}/\ac{CSC} format is $\mathcal{O}(|V|\log(|M_{nonzero}|)+|M_{nonzero}|\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(|M_{nonzero}|))$ time to check the existence of an edge where $|M_{nonzero}|$ is the count of non zero entries in the matrix. 
@@ -61,7 +61,7 @@ The choice of abstraction model directly influences the primitives used, the sto
 \subsubsection{Canonical}
 The canonical representation explicitly represents vertices and edges in memory.
 Operations on canonical graphs need to explicitly `follow' the edges of a graph, traversing them in turn until target vertices are found. 
-The canonical paradigm is more easily interpretable by humans and is generally used when explaining representations and operations. 
+The canonical paradigm is more easily interpreTable by humans and is generally used when explaining representations and operations. 
 
 To enable more powerful parallel processing methods and hardware accelerators, \textit{vertex-centric}, \textit{edge-centric}, \textit{graph-centric}, and \textit{data-centric} abstractions have been developed.
 

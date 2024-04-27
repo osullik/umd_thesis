@@ -1,6 +1,6 @@
 \section{Benchmark Mechanics}
 \label{section:42-GAI-Background}
-This section briefly extends the literature review from chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation.
+This Section briefly extends the literature review from Chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation.
 
 A benchmark designer must consider the purpose of the benchmark, general principles of benchmark design, and the granularity of the problem~\cite{Carpinetti2002}.
 The purpose of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
@@ -10,7 +10,7 @@ The \gai benchmark design follows the principles of benchmark design. It extends
 
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
-Figure~\ref{figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
+Figure~\ref{Figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
 These two components interact, and those interactions are what the benchmark measures using our novel \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
 
 \subsection{Benchmark Specification}
@@ -36,7 +36,7 @@ The most common metrics describe the efficiency, effectiveness, and cost of runn
 
 \subsection{System Under Test}
 The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} and the \textit{implementations}, which are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
-Figure~\ref{figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
+Figure~\ref{Figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
 
 \textbf{Hardware.}
 The environment component refers to all the physical components of the SUT, including host machines, hardware accelerators, or distributed systems.  
@@ -59,7 +59,7 @@ The distinction between the specification and the SUT is clouded in kit-based be
 
 Experimentation using benchmark suites involves modifying the benchmark specification or changing the SUT.
 Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design. It is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
-Table~\ref{table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
+Table~\ref{Table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{Figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
 For example, as the hardware component of the \ac{SUT} is varied, assuming all other factors are fixed, we expect to see a change in the efficiency and cost metrics but not effectiveness. 
 
 % Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
@@ -72,7 +72,7 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 
 % Changes to the environment typically look like adding or removing hardware (e.g. adding DRAM, modifying cache), adding accelerators (GPUs, TPUs etc), using a distributed system or even changing the operating system or database components of the software that don't directly participate in solving tasks on a given dataset but may that may elevate existing bottlenecks in a given workload.
 % Changes in implementations might look like trailing new data structures, abstractions, programming models, algorithms or other techniques to exploit the latent capacity of a system under test to execute a workload more efficiently or effectively. 
-% \nrscomment{Are there enough things that can be varied that they warrant a bulleted list or table or something?}
+% \nrscomment{Are there enough things that can be varied that they warrant a bulleted list or Table or something?}
 
 
 % \subsection{Summary of Benchmarks}
@@ -82,7 +82,7 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % %
 
 % At a high level, the research methodology to develop the benchmarking framework is qualitative. 
-% A literature review of benchmark design principles, components of a good benchmark, existing graph and AI benchmarks and empirical methods in computer science yields the framework outlined in section~\ref{section:33-GAI-Design}.
+% A literature review of benchmark design principles, components of a good benchmark, existing graph and AI benchmarks and empirical methods in computer science yields the framework outlined in Section~\ref{section:33-GAI-Design}.
 
 % \osullikomment{Optional to include a bit of benchmark history here}
 
@@ -108,9 +108,9 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 
 % \subsection{Benchmark Components}
 
-% \nrscomment{replace this section with a walkthrough of my diagram and keep the bit you have about how you fix everything and vary one component to see the effects, but just state it as a general principle rather than an example. CD will be your example later, this section is meant to be abstract.}
+% \nrscomment{replace this Section with a walkthrough of my diagram and keep the bit you have about how you fix everything and vary one component to see the effects, but just state it as a general principle rather than an example. CD will be your example later, this Section is meant to be abstract.}
 
-% The simplest \textit{benchmark} architecture consists of a \textit{system} under test and the \textit{workloads} executed on that system~\cite{Hennessy2019} (figure~\ref{figure:taxonomy-benchmark}).
+% The simplest \textit{benchmark} architecture consists of a \textit{system} under test and the \textit{workloads} executed on that system~\cite{Hennessy2019} (Figure~\ref{Figure:taxonomy-benchmark}).
 % Here, the \textit{system} is the underlying hardware, operating system and software stack that enables an application to run, while the \textit{workload} is comprised of some \textit{problems} and \textit{programs}.
 % \textit{Problems} composed of \textit{tasks} and  \textit{datasets}, representative of the distribution of data that the system is expected to process in the real world, where a \textit{task} is the goal that processing the \textit{datasets} with a \textit{program} is working towards--how we measure success.
 % \textit{Programs} are the implemented data structures and algorithms that achieve the task(s) required to solve the problem.
@@ -134,7 +134,7 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % \textit{Efficency} metrics describe the resource consumption to run a \textit{workload} on a \textit{system}, whereas \textit{Effectiveness} metrics capture how well the \textit{program} solves the \textit{problem}.
 
 % The \textit{metrics} are heavily dependent on the component of the benchmark ecosystem being compared, the user's requirements and what the goal of the benchmarking is. 
-% The \textit{system} and \textit{problems} form the inputs to the benchmark (figure~\ref{figure:taxonomy-benchmark}). 
+% The \textit{system} and \textit{problems} form the inputs to the benchmark (Figure~\ref{Figure:taxonomy-benchmark}). 
 % All measurable outputs are filtered through the \textit{program} lens. 
 % Even the simplest \textit{atomic} microbenchmark is a \textit{program} performing some \textit{task} on a \textit{dataset} hosted on a \textit{system}. 
 % While the \textit{program} itself is an input, all measurements are dependent on the execution of the program that generates observable outputs.
@@ -177,20 +177,20 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 
 % For metrics to be effective they need to meet the needs of the user. 
 % Trying to cater to too many customers simultaneously is a fraught path, however, provided that telemetry is well-implemented the \textit{cometetive} metrics can be extracted as a subset of the more detailed \textit{empirical} metrics that will inform further research.
-% Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in section~\ref{section:33-GAI-Design}.
+% Instrumenting systems and collecting telemetry to generate metrics are covered in more detail in Section~\ref{section:33-GAI-Design}.
 
 % %
-% \nrscomment{the beginning of empirical metrics about them being more in-depth and helping you find bottle necks is good. the laundry list of metrics shouldnt be in the prose- move it to a table. the formulas dont add any value and putting whole words in math cursive is impossible to parse. id scrap them and give formulas for whatever metrcis you use in the CD case study, formatted like proper math equations.}
+% \nrscomment{the beginning of empirical metrics about them being more in-depth and helping you find bottle necks is good. the laundry list of metrics shouldnt be in the prose- move it to a Table. the formulas dont add any value and putting whole words in math cursive is impossible to parse. id scrap them and give formulas for whatever metrcis you use in the CD case study, formatted like proper math equations.}
 % %
 
 % %
-% \nrscomment{i was expecting this section to teach me how to choose metrics, and didnt really get that. id boil it down based on my comments above and then see if you can synthesize that into something that resembles an abstract framework for choosing benchmark metrics}
+% \nrscomment{i was expecting this Section to teach me how to choose metrics, and didnt really get that. id boil it down based on my comments above and then see if you can synthesize that into something that resembles an abstract framework for choosing benchmark metrics}
 % %
 
 % \subsection{Benchmarking Graph Applications}
 
 % %
-% \nrscomment{this section is an info dump that gives me nothing of value. what are you trying to get across here?}
+% \nrscomment{this Section is an info dump that gives me nothing of value. what are you trying to get across here?}
 % %
 
 %Relevant, Fair, Reproducible, Verifiable, Usable, Economic
@@ -211,7 +211,7 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % % \input{Tables/31_kernels.tex}
 
 % \textbf{Task Coverage.}
-% Table~\ref{table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
+% Table~\ref{Table:benchmark-kernels} summarizes the major benchmark contributions for graph-based AI, focusing on `traditional' graph workloads, \textit{Graph Databases} (GDB) and GNNs.
 % The coverage of graph-based AI tasks from Chapter~\ref{chapter:10-Introduction} is recorded for each benchmark. 
 % In general, task coverage clusters around the core operations of the underlying programs, and results in GDB benchmarks focusing on the \textit{Create, Read, Update, Delete} (CRUD) operations, and GNN benchmarks focusing on prediction tasks.
 % Within the graph benchmarks 47 distinct kernels are studied. 
@@ -231,7 +231,7 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % %
 
 % The performance of graph-based AI tasks is highly dependent on the shape of the input data. 
-% Table~\ref{table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
+% Table~\ref{Table:benchmark-datasets} shows that most benchmarks use several distinct datasets, and that there is significant variance in the maximal size of datasets in their collection from up to $70$ trillion edges in Graph500~\cite{Murphy2010} down to just $20$ thousand edges in one of the GNN workload analyses~\cite{Huang2021}.
 % While the GNN graphs are typically much smaller, these datasets will often have hundreds or thousands of graphs belonging to the same dataset for the GNN to learn on. 
 % Most of the benchmarks have at least one random and one scale-free graph in their collections, though mesh graphs and dynamic graphs are very under-represented. 
 % Interestingly, traditional graph datasets make minimal use of `knowledge-graph' like structures.
@@ -243,9 +243,9 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % \textbf{Metric Coverage.}
 
 % %
-% \nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
+% \nrscomment{this also feels a bit too heavy on the related work focus. maybe instead structure it 1. ideally this is the metric coverage we want 2. current benchmarks fall short of it because ... 3. this methodology overcomes those limitations (hopefully?) by ... . otherwise the whole thing is a criticism of current practices while acknowledging its a hard problem, and i dont come away feeling like youve done anything to solve it. assume the reader understands the state of things by the time they get to Chapter 3 and you can focus on what your benchmark methodology does differently than the rest.}
 % %
-% The coverage of the metrics of interest by the existing benchmarks (~\ref{table:benchmark-metrics}) reflects the reality of benchmarking.
+% The coverage of the metrics of interest by the existing benchmarks (~\ref{Table:benchmark-metrics}) reflects the reality of benchmarking.
 % To collect interesting and useful metrics about compute, memory, network and power, the system under test needs to be under the control of the benchmark owner so that the code can be correctly instrumented and the underlying system sampled throughout execution. 
 % Execution time is the most commonly used metric, though few of the benchmarks include the \textit{Extract, Transform, Load} of the graph into the format for processing. 
 % The lack of \textit{effectiveness} metrics reflects that many of the graph problems are deterministic, and so for the other metrics to be admissible, they need to be correct, and reporting an accuracy of $1.0$ is unnecessary. 
@@ -276,10 +276,10 @@ For example, as the hardware component of the \ac{SUT} is varied, assuming all o
 % \subsection{Principles for designing a Graph-Based AI Benchmark}
 
 % \nrscomment{this is benchmark usage- it doesnt belong here. maybe a paragraph after you present the design}
-% To gain useful insight, our approach holds all but one aspect of the Benchmark framework is constant, and the difference in performance attributable to the aspect that varied is measured.
+% To gain useful insight, our approach holds all but one aspect of the Benchmark framework is constant, and the difference in performance attribuTable to the aspect that varied is measured.
 % For instance, one can add or remove hardware, run the same implementation on the same workloads and observe the change in efficiency, effectiveness and cost between hardware configurations.
-% \nrscomment{i dont understand this table. what do the check marks represent? that those performance aspects vary together? and what is 'Notes'? I really ahve no idea how to read the table or what the takeaway is, even after reading this blurb about it}
-% Table~\ref{table:component-variance} summarizes the expected consequences of varying each component, based on observable metrics of effectiveness, efficiency and cost. 
+% \nrscomment{i dont understand this Table. what do the check marks represent? that those performance aspects vary together? and what is 'Notes'? I really ahve no idea how to read the Table or what the takeaway is, even after reading this blurb about it}
+% Table~\ref{Table:component-variance} summarizes the expected consequences of varying each component, based on observable metrics of effectiveness, efficiency and cost. 
 % It is unfair to compare \gai tasks to each other individually, so only examine the distribution of metrics over the subset of tasks specified by the user.
 % The comparison of tasks is motivated by the desire to understand which SUT configuration is likely to provide the best performance `on average' for their particular needs. 
 % Varying metrics generally only cause the illusion of change.

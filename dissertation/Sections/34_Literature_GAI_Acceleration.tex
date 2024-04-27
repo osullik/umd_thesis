@@ -1,9 +1,9 @@
-%%%% THIS SECTION REMOVED FOR NOW DUE TO LACK OF RELEVANCE --- GOOD INFORMATION IN HERE THOUGH %%%%%%%%
+%%%% THIS Section REMOVED FOR NOW DUE TO LACK OF RELEVANCE --- GOOD INFORMATION IN HERE THOUGH %%%%%%%%
 
 \section{\gai Acceleration}
 \label{section:34-literature-gai-acceleration}
 
-This section reviews current efforts to accelerate \gai to identify what the current areas of focus are and to inform which metrics are likely to make the benchmark a useful discriminative tool.
+This Section reviews current efforts to accelerate \gai to identify what the current areas of focus are and to inform which metrics are likely to make the benchmark a useful discriminative tool.
 After identifying a bottleneck, the three options to proceed are \textit{exploit the bottleneck}, \textit{elevate the bottleneck} or \textit{accept the bottleneck}~\cite{Goldratt1990,Goldratt2004}.
 Accepting the bottleneck is a business decision that may be made if the costs of exploiting or elevating the bottleneck outweigh the benefits. 
 
@@ -24,13 +24,13 @@ Graph reordering is a preprocessing technique that aims to optimize the order in
 Traversal scheduling is an execution-time activity that aims to pick the optimal order to traverse edges to maximize temporal locality in graph processing~\cite{Mukkara2018}.. 
 Both are computationally demanding and can outweigh any benefits gained from a well-ordered graph, particularly in dynamic settings. 
 
-% \nrscomment{cut this section about compression. you already covered compressed formats in the graph representation section earlier}
+% \nrscomment{cut this Section about compression. you already covered compressed formats in the graph representation Section earlier}
 % Compression is useful for balancing the size of a graph in memory with the speed of computation. 
 % An adjacency list is more compact than an adjacency matrix is more compact than an incidence matrix~\cite{Kepner2015}, but each level of expansion here has additional information.
 % The CSR/CSC format is much more compact than a regular adjacency matrix and is the de facto standard representation for graphs~\cite{Saad2003}.
 % Compression beyond the CSR/CSC level has shown to be highly effective in parallel graph processing~\cite{Dhulipala2021}, but the encoding/decoding overheads must be offset by computation gains, and so is generally infeasible for sequential implementations~\cite{Shun2015}.
 
-\nrscomment{this is interesting and does feel like its worth mentioning that GNN stuff uses a very different approach than traditional graph tasks. But i dont think you should have a section on exploit/elevate techniques at all, so im not sure where this would go. Maybe earlier when discussing the problem categories? it seems like it belongs with explaining the GraphAI problems when you get to GNNs "Oh btw they dont ever operate on the full graph b/c it would be intractable, they do sampling". it gets lost buried down here, and i want to have known this before i hear about datasets and tasks in benchmarks so i can really understand how to interpret the fact that, for instance, GNN benchmark OGB has graphs with 1.6B edges. Thats way less impressive once you know how GNNs sample. hence i think this bit of info belongs much earlier with explaining GNNs, and maybe giving some similar context to some of the tasks might be worthwhile as well.}
+\nrscomment{this is interesting and does feel like its worth mentioning that GNN stuff uses a very different approach than traditional graph tasks. But i dont think you should have a Section on exploit/elevate techniques at all, so im not sure where this would go. Maybe earlier when discussing the problem categories? it seems like it belongs with explaining the GraphAI problems when you get to GNNs "Oh btw they dont ever operate on the full graph b/c it would be intracTable, they do sampling". it gets lost buried down here, and i want to have known this before i hear about datasets and tasks in benchmarks so i can really understand how to interpret the fact that, for instance, GNN benchmark OGB has graphs with 1.6B edges. Thats way less impressive once you know how GNNs sample. hence i think this bit of info belongs much earlier with explaining GNNs, and maybe giving some similar context to some of the tasks might be worthwhile as well.}
 Many machine learning models make aggressive use of sampling to reduce the complexity of computation. 
 Embedding methods like deepwalk~\cite{Perozzi2014} and node2vec~\cite{Grover2016} use techniques like random walks to build embeddings reflective of nodes and their neighborhoods. 
 Work on GNNs finds that by combining topological and attribute information, a sampling approach can yield results very close to the performance of full-graph analysis~\cite{Hamilton2017}.
@@ -46,7 +46,7 @@ One exploration of incremental graph partitioning for entity resolution on dynam
 
 \subsection{Elevation Techniques}
 
-\nrscomment{i think you should also cut this section. after reading it, the only thing i learned that i think might matter to benchmarking is the fact most of the GPU isnt being used most of the time during GNN processing. that makes me want a benchmark that would let that sort of thing be easily discovered, and possibly help find ways to use it more effectively. you can probably kill the rest of this section and move that one bit up to problem (where is the gap in benchmarking currently, assuming whats out there cant tell you that sort of thing easily) or down to abstract methods motivation (why do we need your empirical approach to designing a benchmark), though i lean towards up rather than down. it could probably support either, but its not RW. your diagram of problem type taxonomy that includes traversal, compute intensive, hybrid, probably goes along with that-- since GNNs are hybrid. that figure could go in prelim, near Graph Operations, with a cursory overview of graph problem classes, where you sort graphAI tasks by compute intensive, etc.. }
+\nrscomment{i think you should also cut this Section. after reading it, the only thing i learned that i think might matter to benchmarking is the fact most of the GPU isnt being used most of the time during GNN processing. that makes me want a benchmark that would let that sort of thing be easily discovered, and possibly help find ways to use it more effectively. you can probably kill the rest of this Section and move that one bit up to problem (where is the gap in benchmarking currently, assuming whats out there cant tell you that sort of thing easily) or down to abstract methods motivation (why do we need your empirical approach to designing a benchmark), though i lean towards up rather than down. it could probably support either, but its not RW. your diagram of problem type taxonomy that includes traversal, compute intensive, hybrid, probably goes along with that-- since GNNs are hybrid. that Figure could go in prelim, near Graph Operations, with a cursory overview of graph problem classes, where you sort graphAI tasks by compute intensive, etc.. }
 
 \textit{Elevating} a bottleneck involves upgrading the environment to increase the capacity of the bottleneck.
 We discuss elevation as a split of `conventional' techniques like distributing computing, adding memory, upgrading the environment and `hardware acceleration' using GPUs and other accelerators as \textit{elevation} techniques.
@@ -72,7 +72,7 @@ GPUs are commonly added to improve dense computing processes like training and i
 GPUs use high-speed on-chip memory to accelerate their operations, have significantly more memory bandwidth than a standard CPU architecture and are optimized for dense, regular computations. 
 These features allow GPUs to \textit{brute-force} their way through some of the memory-boundedness of CPU-based implementations of algorithms~\cite{Aananthakrishnan2020}.
 GPUs are used heavily in the training and acceleration of GNNs~\cite{Wu2021a, Baruah2021, Zhang2023}, and have been used to successfully accelerate traditional graph processing~\cite{Fu2014, Wang2016}.
-GPUs are, however, suboptimal for graph processing because of limited on-chip memory, irregular computation patterns, load-balancing issues, unpredictable execution pathways and data movement overheads.
+GPUs are, however, suboptimal for graph processing because of limited on-chip memory, irregular computation patterns, load-balancing issues, unpredicTable execution pathways and data movement overheads.
 
 The data that they are processing needs to fit in the on-chip memory, which is typically much smaller than the main memory of the host system making it infeasible for them to process large graphs on a single node~\cite{Aananthakrishnan2020}, forcing parallel processing and the associated communications overheads. 
 The limited memory availability makes it particularly difficult to implement algorithms with large intermediate representations~\cite{Sundaram2015} or that use the GPU densification trick~\cite{Aananthakrishnan2020}.  
@@ -87,7 +87,7 @@ The impact of input data shape is evident, with more regular degree distribution
 Imbalance in the graph because of a skewed degree distribution exacerbates the unpredictability of load-balancing that comes from not being able to pre-assign the threads and can result in uncoalesced memory patterns, and thread divergence, severely hampering GPU performance relative to dense regular tasks~\cite{Fu2014}. 
 Load balancing is the primary challenge when using GPUs to execute graph algorithms~\cite{Wang2016}.
 The irregular processing patterns mean that the thread assignments for the GPU can't be known until execution time because of their dependence on the data. 
-Thread assignment is a common step in GPU pre-processing and deferring it to execution time because of unpredictable graph dependencies degrades GPU performance relative to a typically dense, regular workload~\cite{Fu2014}.
+Thread assignment is a common step in GPU pre-processing and deferring it to execution time because of unpredicTable graph dependencies degrades GPU performance relative to a typically dense, regular workload~\cite{Fu2014}.
 In a distributed setting, branches cause thread divergence and synchronization overheads limit thread progress~\cite{Aananthakrishnan2020}.
 
 For the use of an accelerator to be beneficial the efficiency gain in execution time must outweigh the cost of the partitioning and data movement from the main memory to the accelerator and back~\cite{Azad2021}.
@@ -126,7 +126,7 @@ Different GNN models may be better suited depending on the shape of the input gr
 % vertex scheduling can be offline or online, though online approaches are generally infeasible because of their computational cost~\cite{Mukkara2018}.
 % Another optimization that aims to reduce memory bandwidth consumption and latency is `cache-blocking' where the graph is decomposed to subgraphs that can fit into the available cache. 
 % Closely related is the idea of \textit{graph-partitioning} which seeks to optimize the division of the graph between worker nodes in a parallel setting so that there are minimal cross-worker dependencies~\cite{Balaji2018}.
-% As is discussed in section~\ref{section:124-general-characteristics}, optimal graph partitioning is $NP$-Complete.
+% As is discussed in Section~\ref{section:124-general-characteristics}, optimal graph partitioning is $NP$-Complete.
 % But sub-optimal partitioning leads to load imbalance and contention between workers for high-degree vertices~\cite{Chen2019}.
 % So, heuristic approaches approximate the partitions.
 % These approaches can involve computationally expensive eigendecompositions~\cite{Ng2001}, or complex test-and-adjust approaches like the \textit{Kernighan-Lin} algorithm~\cite{Kernighan1970} among others.
@@ -164,7 +164,7 @@ Different GNN models may be better suited depending on the shape of the input gr
 % \subsubsection{GPU Acceleration}
 % The use of GPUs to accelerate computation has seen enormous success in the deep learning community in recent years~\cite{Dally2021}.
 % GPUs have significantly more memory bandwidth than a standard CPU architecture and are optimized for dense, regular computations. 
-% The increased memory bandwidth allows them to \textit{brute-force} their way through some of the memory-boundedness of CPU-based implementations of algorithms~\cite{Aananthakrishnan2020}, but they have several notable drawbacks. 
+% The increased memory bandwidth allows them to \textit{brute-force} their way through some of the memory-boundedness of CPU-based implementations of algorithms~\cite{Aananthakrishnan2020}, but they have several noTable drawbacks. 
 
 % \textbf{GPU Memory.}
 % GPUs use high-speed on-chip memory to accelerate their operations. 

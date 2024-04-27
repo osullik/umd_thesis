@@ -8,15 +8,15 @@ The prior work in the empirical analysis of algorithms determines \textit{how} w
 \subsection{Empirical Benchmark Design}
 
 We elect to design our \gai benchmark empirically, which involves applying the scientific method to drive the selection of datasets, tasks, and metrics that are included in the benchmark. 
-The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this section.
+The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this Section.
 The empirical benchmark design process is marked by the iterative development and testing of hypotheses that characterize the typical class of problems that a system or algorithm will face, many of which are informed by real-world data distributions. 
 
-Our approach draws from John Hooker's framework for the empirical analysis of algorithms, summarized in Figure~\ref{figure:gai-empirical-method}. 
+Our approach draws from John Hooker's framework for the empirical analysis of algorithms, summarized in Figure~\ref{Figure:gai-empirical-method}. 
 His method identifies four key components: the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}.
 Before explaining the method, we define these four components:
 The \textit{problem} here studies what we are trying to do (achieve some outcome in the domain and problem space).
 The \textit{approach} here studies the dataset and task features we can use to stimulate the problem (identify datasets, tasks).
-The \textit{phenomena} studies the interactions of an approach with a problem (identify suitable metrics and where to find them).
+The \textit{phenomena} studies the interactions of an approach with a problem (identify suiTable metrics and where to find them).
 The \textit{apparatus} are the tools and techniques we use to investigate, measure, or otherwise study those interactions between the phenomena and the problem(get datasets, implement tasks, instrument system, monitor execution, etc).
 
 \input{Figures/Diagrams/06_empirical_method}
