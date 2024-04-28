@@ -11,26 +11,26 @@ The \gai benchmark design follows the principles of benchmark design. It extends
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
 Figure~\ref{Figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
-These two components interact, and those interactions are what the benchmark measures using our novel \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
+These two components interact, and those interactions are what the benchmark measures using our \nrscomment{did you really invent polling benchmarks?} novel \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
 
 \subsection{Benchmark Specification}
 The benchmark specification is the main component of the \gai benchmark framework. 
 The framework is a collection of problem-specific benchmarks, each of which has its own \textit{datasets} drawn from a domain of interest, \textit{tasks} drawn from a relevant problem space, and \textit{metrics} that are tailored to reflect the specific evaluation criteria.
 More specifically:
 
-\textbf{Datasets.}
-These are the challenges that a benchmark needs to `solve.'
-Source domains provide many datasets that become input to an \ac{SUT}, which can be real-world or synthetic. 
-The \ac{SUT} receives the dataset (the `challenge') and auxiliary information like ground-truth answers for evaluation.
+\textbf{Datasets}
+are the challenges that a benchmark needs to `solve.'
+Source domains provide many datasets that become input to an \ac{SUT}, which can be real-world or synthetic. \nrscomment{you mean real or synthetic} 
+The \ac{SUT} receives \nrscomment{as input} the dataset (the `challenge') and auxiliary information like ground-truth answers for evaluation.
 
-\textbf{Tasks.}
-These are the specific processes a benchmark needs to complete as part of the evaluation process.
+\textbf{Tasks}
+are the specific processes a benchmark needs to complete as part of the evaluation process.
 They are derived from the problem space and define a specific problem to be solved. 
 A task is a blueprint for an implementation.
-A dataset and a task comprise a \textit{workload}.
+Together, a dataset and a task comprise a \textit{workload}.
 
-\textbf{Metrics.}
-These are how we define, collect, and compute the observable interactions of a SUT and a workload. 
+\textbf{Metrics}
+are how we define, collect, and compute the observable interactions of a SUT and a workload. 
 Metrics are defined abstractly as evaluation criteria, collected from the outputs of the SUT as measurements, and then compared to develop a relative performance model between systems. 
 The most common metrics describe the efficiency, effectiveness, and cost of running a given workload on a \ac{SUT}.
 
@@ -38,16 +38,16 @@ The most common metrics describe the efficiency, effectiveness, and cost of runn
 The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} and the \textit{implementations}, which are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
 Figure~\ref{Figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
 
-\textbf{Hardware.}
+\textbf{Hardware.} \nrscomment{integrate 'Hardware' to be part of the sentence like i did for the others}
 The environment component refers to all the physical components of the SUT, including host machines, hardware accelerators, or distributed systems.  
 Hardware is the most commonly studied component of the SUT in benchmarks and workload analyses and is a popular target for acceleration.
 Identifying under what circumstances a hardware accelerator is justified is a valuable result of this benchmarking framework.  
 
-\textbf{Software Stack.}
-Is the environment component referring to all the software components that are not directly part of the implementation, including the operating system and enabling tools like a database where the focus of the evaluation is not on the database itself, 
+The \textbf{Software Stack}
+is the environment \nrscomment{aspect? dont reuse component} component referring to all the software components that are not directly part of the implementation, including the operating system and enabling tools like a database where the focus of the evaluation is not on the database itself.
 
-\textbf{Implementation.}
-The implementation is how the SUT approaches a given task.
+The \textbf{Implementation}
+is how the SUT approaches a given task.
 Implementations consist of the abstraction model, data structures, algorithms, and programming language used to solve a given \gai problem.
 One \ac{SUT} can have many implementations.
 
@@ -58,9 +58,9 @@ The distinction between the specification and the SUT is clouded in kit-based be
 \input{Tables/41_component_variance}
 
 Experimentation using benchmark suites involves modifying the benchmark specification or changing the SUT.
-Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design. It is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
+Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design, and is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
 Table~\ref{Table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{Figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
-For example, as the hardware component of the \ac{SUT} is varied, assuming all other factors are fixed, we expect to see a change in the efficiency and cost metrics but not effectiveness. 
+For example, as the hardware component of the \ac{SUT} is varied, assuming all other factors are fixed, we expect to see a change in the efficiency and cost metrics, but not in the effectiveness metrics. 
 
 % Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
 % Synthetic programs make heavy use of stubs and other mocks to simulate a real program, which is the highest level of abstraction. 

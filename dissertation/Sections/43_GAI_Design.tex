@@ -8,22 +8,22 @@ The prior work in the empirical analysis of algorithms determines \textit{how} w
 \subsection{Empirical Benchmark Design}
 
 We elect to design our \gai benchmark empirically, which involves applying the scientific method to drive the selection of datasets, tasks, and metrics that are included in the benchmark. 
-The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this Section.
+The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this Section. \nrscomment{why caps on Section
 The empirical benchmark design process is marked by the iterative development and testing of hypotheses that characterize the typical class of problems that a system or algorithm will face, many of which are informed by real-world data distributions. 
 
 Our approach draws from John Hooker's framework for the empirical analysis of algorithms, summarized in Figure~\ref{Figure:gai-empirical-method}. 
-His method identifies four key components: the \textit{problem}, the \textit{approach}, the \textit{phenomena} and the \textit{apparatus}.
+His method identifies four key components: the \textit{problem}, the \textit{approach}, the \textit{phenomena}, and the \textit{apparatus}.
 Before explaining the method, we define these four components:
 The \textit{problem} here studies what we are trying to do (achieve some outcome in the domain and problem space).
 The \textit{approach} here studies the dataset and task features we can use to stimulate the problem (identify datasets, tasks).
 The \textit{phenomena} studies the interactions of an approach with a problem (identify suitable metrics and where to find them).
-The \textit{apparatus} are the tools and techniques we use to investigate, measure, or otherwise study those interactions between the phenomena and the problem(get datasets, implement tasks, instrument system, monitor execution, etc).
+The \textit{apparatus} are the tools and techniques we use to investigate, measure, or otherwise study those interactions between the phenomena and the problem (get datasets, implement tasks, instrument system, monitor execution, etc.).
 
 \input{Figures/Diagrams/06_empirical_method}
 
-The process begins by \textbf{Identifying and Characterizing a Relevant Problem}, selects a use case to study, and identifies the typical tasks, datasets, and challenges. 
-\textbf{Identifying and Characterizing the Phenomena of Interest} then investigates the `interesting things' we expect to observe and why measuring them helps us understand the underlying problem.
-After characterizing the problem and phenomena \textbf{Exploratory Experimentation} gathers the foundational understanding of the bottlenecks, friction points, curiosities, and insights about how to stimulate them.
+The process begins by \textbf{Identifying and Characterizing a Relevant Problem}, selecting a use case to study, and identifying the typical tasks, datasets, and challenges. 
+\textbf{Identifying and Characterizing the Phenomena of Interest} then investigates the `interesting things' we expect to observe and \nrscomment{missing a verb here} why measuring them helps us understand the underlying problem.
+After characterizing the problem and phenomena \textbf{Exploratory Experimentation} gathers the foundational understanding of the bottlenecks, friction points, curiosities, and insights about how to stimulate those bottlenecks.
 These insights are used to design meaningful experiments and valid \textbf{Hypotheses}.
 The hypotheses focus the analysis and inform data collection by specifying what phenomena we expect to observe given a problem and an approach under study.
 With the hypotheses established and the phenomena identified, the next step is to \textbf{Construct the Investigation Apparatus} that will coordinate interactions between the benchmark and the system, generate tasks and datasets, and collect the observable behaviors to produce the metrics of interest.
@@ -33,7 +33,8 @@ The design of the \gai framework fuses Hooker's empirical approach with Goldratt
 Constraint theory uses `five focusing steps' to identify and remediate system bottlenecks. 
 First, \textbf{identify} the bottleneck, then \textbf{exlploit} it by improving the system's efficiency surrounding the bottleneck.
 Next, \textbf{subordinating} the rest of the system to the bottleneck sets the system's throughput equal to that of the bottleneck to prevent a buildup of work-in-progress.
-Eventually, we aim to \textbf{elevate} the bottleneck by expanding its capacity until it is no longer the bottleneck before \textbf{iterating} to find the new constraint. 
+Eventually, we aim to \textbf{elevate} the bottleneck by expanding its capacity until it is no longer the bottleneck, before \textbf{iterating} to find the new constraint. 
+\nrscomment{this is an interesting point. say it more explicitly by swapping "We use these steps in reverse..." for "We leverage this process in reverse order by designing tasks and datasets that promote potential bottlenecks to constrain the system's performance."}
 We use these steps in reverse, using exploratory analysis to identify the bottlenecks and then designing tasks and datasets that will promote the bottleneck to constrain the system's performance. 
 It is then up to the \ac{SUT} to identify how to use the acceleration techniques to exploit or elevate the constraints that the adversarially shaped input data causes for the problem-centric tasks.
 
