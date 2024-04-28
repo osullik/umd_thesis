@@ -55,11 +55,11 @@ The \ac{SUT} is ultimately the target of the evaluation, and the benchmark speci
 The distinction between the specification and the SUT is clouded in kit-based benchmarks that provide reference implementations as baselines of performance or host-based benchmarks that expect all implementations to run on provided hardware.
 
 \subsection{Grey-Box Evaluation}
-\input{ tables/41_component_variance}
+\input{Tables/41_component_variance}
 
 Experimentation using benchmark suites involves modifying the benchmark specification or changing the SUT.
 Understanding the likely consequences of varying a benchmark component is essential to our `grey-box' design. It is part of how we use constraints to trigger bottleneck behavior in a \ac{SUT}.
- Table~\ref{ Table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{Figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
+Table~\ref{Table:component-variance} summarizes what metrics are expected to change when one benchmark component from Figure~\ref{Figure:gai-framework-overview-ch4} is varied, assuming all others are fixed. 
 For example, as the hardware component of the \ac{SUT} is varied, assuming all other factors are fixed, we expect to see a change in the efficiency and cost metrics but not effectiveness. 
 
 % Atomic operations benchmarks measure how quickly a particular operation takes, kernels compose some number of atomic operations together and toy programs combine kernels. 
