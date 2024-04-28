@@ -6,12 +6,12 @@ It has many avenues for future work, including simple implementation and enginee
 
 
 \textbf{Engineering challenges.}
-Many engineering and data collection problems must be addressed to build the benchmark system, expanding the dataset coverage using synthetic data generators, adding a linear algebraic approach to community detection, and testing the benchmark on a distributed \ac{SUT}, a shared-memory parallel \ac{SUT} and hardware-accelerated \ac{SUT}. 
+Many engineering and data collection problems must be addressed to build the benchmark system, including expanding the dataset coverage using synthetic data generators, adding a linear algebraic approach to \ac{CD}, and testing the benchmark on a distributed \ac{SUT}, a shared-memory parallel \ac{SUT} and hardware-accelerated \ac{SUT}. 
 
 \textbf{A Benchmarking Maturity Model.}
-Reviewing many benchmark approaches suggests an implicit maturity model in benchmark development. 
+After reviewing many benchmark approaches, we have identified that there appears to be an implicit maturity model in benchmark development. 
 For a given field, early benchmarks focus on proving functionality.
-Over time, the focus shifts to improving the effectiveness of others' solutions and, finally, to making solutions more efficient. 
+Over time, the focus shifts to improving the effectiveness relative to other solutions and, finally, to making solutions more efficient. 
 Poorly constructed maturity models resulting from a related study and compiled without a formal methodology have gained negative attention recently~\cite{Lahrmann2011, Sadiq2021}. 
 So, the formal development of a maturity model for benchmarking was scoped out of this thesis.
 However, it will be helpful for future work in investigating the correlation between benchmark availability and field maturity. 
@@ -23,19 +23,19 @@ However, it will be helpful for future work in investigating the correlation bet
 
 \textbf{Dynamic Graph Processing.}
 The current \gai benchmark can evaluate static and dynamic problems together but does not have the datasets or the transfer mechanism to feed datasets dynamically to the \ac{SUT}.
-An important avenue of future work to emphasize the importance of investing in dynamic graph processing is extending the \gai benchmark framework observation apparatus to support dynamic graphs. 
+% An important avenue of future work to emphasize the importance of investing in dynamic graph processing is extending the \gai benchmark framework observation apparatus to support dynamic graphs. 
 An important avenue of future work is to extend the \gai benchmark framework observation apparatus to support dynamic graphs, which we will implement with a `push' based system configured in the same fashion as the current polling system.
 
 \textbf{Automated Hypothesis Evaluation.}
 Our design process involves the development of hypotheses to guide the design of the investigation apparatus and collection of data. 
 Creating an alert mechanism to notify a benchmark user when a hypothesis is violated is a valuable augmentation to the current approach. 
-It will boost the utility of the benchmark and move it away from being a tool for `racing systems' to a platform for meaningful research.
+It will boost the utility of the benchmark and move it further away from being a tool for `racing systems' to a platform for meaningful research.
 
 \textbf{Non-Invasive Cost Measurement.}
-The major limitation of the \gai benchmark framework is its inability to measure a cost accurately.
+The major limitation of the \gai benchmark framework is its inability to measure cost accurately.
 Prior approaches focus on estimation using a cost model or selecting a proxy metric like power consumption as the basis of cost estimates. 
 We must develop a method to measure cost from the Input/Output interface to add the third crucial performance metric that should be considered alongside efficiency and effectiveness.
-Alternatively, developing a method to characterize a remote system so that the benchmark framework can estimate costs for the system under test may be feasible by providing a micro benchmarking task that they run to provide the seed value for a predictive cost model
+Alternatively, developing a method to characterize a remote system so that the benchmark framework can estimate costs for the system under test may be feasible by providing a micro benchmarking task that a \ac{SUT} runs to provide the seed value for a predictive cost model.
 However, a micro benchmarking approach will break down when using bespoke hardware accelerators that may not support the benchmark as written or whose engineering breaks the assumptions of a cost model. 
 
 \textbf{Constraint-Based Experimentation.}
