@@ -1,47 +1,46 @@
 \section{Future Work}
 \label{section:61-Future-Work}
 
-\nrscomment{your structure here is weird. the first paragraph starts out wanting to be a signpost, which you need if youre about to have a bunch of bold paragraph headers, but then it lists engineering challenges kind of randomly and then jumps into the bold headers. can you move the engineering challenges somewhere else?}
+The \gai benchmark framework is in its infancy. 
+It has many avenues for future work, including simple implementation and engineering challenges, the development of a complementary maturity model, support for dynamic inputs, cost measurement, and further development of constraint-based experimentation.
 
-The \gai benchmark framework is in its infancy and has many avenues for future work. 
-Many engineering and data collection problems must be addressed to build the benchmark system, including rectifying the deficiencies in the dataset coverage, choice of metric, and breadth of implementations the Population Segmentation experiments found.
-Specific engineering challenges of immediate interest are adding a linear algebraic approach to community detection and testing the benchmark on \nrscomment{is this a list of system types or one compound adjective? it reads as one crazy compound adjective} distributed shared-memory parallel and hardware-accelerated systems. 
+
+\textbf{Engineering challenges.}
+Many engineering and data collection problems must be addressed to build the benchmark system, expanding the dataset coverage using synthetic data generators, adding a linear algebraic approach to community detection, and testing the benchmark on a distributed \ac{SUT}, a shared-memory parallel \ac{SUT} and hardware-accelerated \ac{SUT}. 
 
 \textbf{A Benchmarking Maturity Model.}
 Reviewing many benchmark approaches suggests an implicit maturity model in benchmark development. 
 For a given field, early benchmarks focus on proving functionality.
 Over time, the focus shifts to improving the effectiveness of others' solutions and, finally, to making solutions more efficient. 
-Poorly constructed maturity models have gained negative attention recently~\cite{Lahrmann2011, Sadiq2021}. 
-So, the formal development of a maturity model for benchmarking was scoped out of this thesis. \nrscomment{this makes it sound like you should have done it but were afraid to. reword it. whats the actual reason they got bad attention? theres obv some downsides to the way they have been done- focus on those as the reason you didnt do it}
+Poorly constructed maturity models resulting from a related study and compiled without a formal methodology have gained negative attention recently~\cite{Lahrmann2011, Sadiq2021}. 
+So, the formal development of a maturity model for benchmarking was scoped out of this thesis.
 However, it will be helpful for future work in investigating the correlation between benchmark availability and field maturity. 
 
-\textbf{Monotonically Improving Algorithms.}
-The Population Segmentation benchmark problems reveal that trading off effectiveness and efficiency requires monotonically improving solutions for incremental and approximate algorithms. \nrscomment{is it really fair to say they reveal this? isnt this intrinsically true, and they reveal that the particular implementation you tested violated this assumption thereby inhibiting the users ability to make the appropriate trade-off?}
-Further work must identify existing algorithms with these guarantees across the \gai framework. \nrscomment{and also emphasize development of algorithms with this guarantee, right? especially if they will be dynamic algos?}
-For problems where none exist, the real-world drivers identified in this thesis provide a solid incentive to develop them. \nrscomment{what? the real-world drivers? what are you trying to say here?}
+% \textbf{Monotonically Improving Algorithms.}
+% The Population Segmentation benchmark problems reveal that trading off effectiveness and efficiency requires monotonically improving solutions for incremental and approximate algorithms. \nrscomment{is it really fair to say they reveal this? isnt this intrinsically true, and they reveal that the particular implementation you tested violated this assumption thereby inhibiting the users ability to make the appropriate trade-off?}
+% Further work must identify existing algorithms with these guarantees across the \gai framework. \nrscomment{and also emphasize development of algorithms with this guarantee, right? especially if they will be dynamic algos?}
+% For problems where none exist, the real-world drivers identified in this thesis provide a solid incentive to develop them. \nrscomment{what? the real-world drivers? what are you trying to say here?}
 
 \textbf{Dynamic Graph Processing.}
 The current \gai benchmark can evaluate static and dynamic problems together but does not have the datasets or the transfer mechanism to feed datasets dynamically to the \ac{SUT}.
 An important avenue of future work to emphasize the importance of investing in dynamic graph processing is extending the \gai benchmark framework observation apparatus to support dynamic graphs. 
-\nrscomment{"An important avenue of future work is to extend the \gai benchmark framework observation apparatus to support dynamic graphs." and maybe add another clause saying how youd do that}
+An important avenue of future work is to extend the \gai benchmark framework observation apparatus to support dynamic graphs, which we will implement with a `push' based system configured in the same fashion as the current polling system.
 
 \textbf{Automated Hypothesis Evaluation.}
 Our design process involves the development of hypotheses to guide the design of the investigation apparatus and collection of data. 
-\nrscomment{Youd be adding an alert mechanism, not encoding hypotheses so the hypotheses can alert- the sentence has the wrong subject} Encoding the hypotheses so that they alert when a benchmark submission violates their assumptions is a valuable augmentation to the current approach.
-Violating the `conventional wisdom' they represent likely indicates an innovative approach or manipulating the system at worst. \nrscomment{this sentence is malformed and depends too strongly on the previous one- explicitly reidentify the hypotheses as the subject}
-Improving the automated evaluation will boost the utility of the benchmark and move it away from being a tool for `racing systems' to a platform for meaningful research.
+Creating an alert mechanism to notify a benchmark user when a hypothesis is violated is a valuable augmentation to the current approach. 
+It will boost the utility of the benchmark and move it away from being a tool for `racing systems' to a platform for meaningful research.
 
 \textbf{Non-Invasive Cost Measurement.}
 The major limitation of the \gai benchmark framework is its inability to measure a cost accurately.
-Current \nrscomment{"Prior" not current?} approaches focus on estimation using a cost model or selecting a proxy metric like power consumption as the basis of cost estimates. 
-We must develop a method to measure cost from the Input/Output interface to add the third crucial \nrscomment{"performance metric that should be considered alongside efficiency and effectiveness."} dimension to the efficiency and effectiveness metrics already collected. 
-Alternatively, developing a method to characterize a remote system so that the benchmark framework can estimate costs for the system under test may be feasible. \nrscomment{this is vague- i have no idea what youre referring to. can you describe it more precisely or give an example of what that characterization method might look like?}
-However, \nrscomment{what is limited? the characterization method you allude to?} it is limited by \nrscomment{currently if 'it' refers to the method then youre saying the method is using bespoke hardware which doesnt make sense- youd want to say the method is limited by the fact systems often use bespoke hardware} using bespoke hardware accelerators that may not support a general-purpose tool running on their system to collect that information. \nrscomment{id just try to rephrase that sentence, maybe by flipping it so the part about the hardware comes first, then "which can limit the utility of such methods, which cannot run on those systems." or something like that}
+Prior approaches focus on estimation using a cost model or selecting a proxy metric like power consumption as the basis of cost estimates. 
+We must develop a method to measure cost from the Input/Output interface to add the third crucial performance metric that should be considered alongside efficiency and effectiveness.
+Alternatively, developing a method to characterize a remote system so that the benchmark framework can estimate costs for the system under test may be feasible by providing a micro benchmarking task that they run to provide the seed value for a predictive cost model
+However, a micro benchmarking approach will break down when using bespoke hardware accelerators that may not support the benchmark as written or whose engineering breaks the assumptions of a cost model. 
 
 \textbf{Constraint-Based Experimentation.}
-Real-world \gai systems are required to operate under efficiency, effectiveness, and cost constraints. 
+Real-world \gai systems must operate under efficiency, effectiveness, and cost constraints. 
 The experiments in Section~\ref{section:56-CD-Results} show how efficiency and effectiveness can be easily tracked and limited to simulate constrained environments. 
-The \gai benchmark system can be easily extended for exploratory experimentation to investigate how \gai will perform under constraints, making it highly suited for simulating edge-computing, low \ac{SWaP} thresholds, and other business or policy constraints. 
-\nrscomment{the last sentence implies the current framework doesnt support constraints, but the previous sentences says they can be easily tracked and limited-- one of those two things has to be false. which is it?}
+The \gai benchmark system can be easily extended for exploratory experimentation to investigate how \gai will perform under specific constraints beyond what has been explored by the benchmark in terms of evaluating hardware, representation, and implementation variations.
+Extending the experiments will evolve the \gai benchmark framework into a platform for simulating more complicated `what-if' scenarios, potentially simulating edge-computing, low \ac{SWaP} thresholds, and other business or policy constraints. 
 
-\osullikomment{Hosted benchmark.}
