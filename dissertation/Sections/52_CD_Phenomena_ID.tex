@@ -10,7 +10,7 @@ Additionally, many approaches to population segmentation use iterative algorithm
 
 \subsection{Effectiveness}
 There are two ways to evaluate population segmentation's effectiveness: ground truth labels or structural characteristics. 
-\nrscomment{make it active- who prefers?} Effectiveness evaluations strongly prefer ground-truth label-based methods, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
+We prefer effectiveness evaluations ground-truth label-based methods, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
 NMI's Scalability limitations drive alternate methods like Network-F1 (NF1)~\cite{Rossetti2016, Rossetti2017, Rossetti2018} but have not gained widespread traction. 
 Without ground truth labels, the `goodness' of a segment is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
 These methods are limited in their ability to provide a reliable evaluation, as they effectively model the probability that the community is more connected than a random graph. 
@@ -23,7 +23,7 @@ Consequently, `cost' is challenging to measure because the system's internal sta
 To better address cost in the future, we propose deploying a hosted benchmark instance to the ARLIS \textit{Quantum Inspired Classical Computing} (QUICC) testbed.
 The testbed will provide measurements of power consumption by the controlling containers using \textit{Kepler}\footnote{{\scriptsize \url{https://sustainable-computing.io/design/architecture/}}}.
 Further, we aim to develop a daemon to deploy to a SUT to collect power consumption statistics using the \textit{PowerAPI Project}\footnote{{\scriptsize \url{https://powerapi.org/}}}, which would be an optional component of the benchmark limited to running on compatible physical Linux-based systems. 
-\nrscomment{At present, cost is excluded...} However, the cost is excluded from the Population Segmentation benchmark problem \nrscomment{due to the lack of an accurate measurement avenue and the inherent drawbacks of predictive cost models.} because we cannot collect accurate cost measurements or develop a fair and accurate predictive cost model. 
+Currently, cost is excluded from the Population Segmentation benchmark problem due to the lack of an accurate measurement avenue and the inherent drawbacks of predictive cost models.
 
 \subsection{Outputs}
 In the phenomena identification step, we identify the interaction between effectiveness and efficiency as the phenomena of interest, namely whether it is possible to trade lower effectiveness for better efficiency.

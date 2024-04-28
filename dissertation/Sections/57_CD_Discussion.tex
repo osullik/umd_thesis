@@ -31,9 +31,17 @@ Figure~\ref{Figure:monotonics} shows erratic variation in the size of communitie
 The \ac{GPU} \ac{SUT} does not support the iterative louvain partition implementation. 
 However, the \ac{CPU} \ac{SUT} exhibits the expected monotonic behavior, allowing users to trade-off between effectiveness and efficiency if the implementation is adjusted to output results in-stride, as an alternative approach to work within time constraints if a \ac{GPU} is too costly.
 
-\textbf{Summary.}
-Our small experiments show how the engineer can determine that the current baseline implementation has some issues with the effectiveness that warrant moving quickly to a different solution, that the \ac{GPU} will provide a significant speed-up on datasets at the tiny and small sizes, and that the NetworkX Louvain Partitions implementation must be updated to trade effectiveness for efficiency.
+\textbf{The population segmentation benchmark supports hardware selection.}
+Our experiments show how the engineer can determine that the current baseline implementation has some issues with the effectiveness that warrant moving quickly to a different solution, that the \ac{GPU} will provide a significant speed-up on datasets at the tiny and small sizes, and that the NetworkX Louvain Partitions implementation must be updated to trade effectiveness for efficiency.
 Knowing the empirical gains expected from procuring the hardware, the engineer can make an informed, data-driven decision about whether the cost of that hardware is justified for the use case.
 For a fully-informed view, the engineer should repeat the benchmarking process with the respective \gai benchmark problems to understand the trade-offs using a \ac{GPU} based approach that may require another \gai tasks.
+
+\textbf{The benchmark development methodology creates a useful tool for evaluating \gai systems.}
+The population segmentation benchmark shows how the \gai benchmark development methodology can create a helpful component benchmark for the \gai benchmark framework. 
+It shows how selecting the tasks and datasets allows us to manipulate the inputs to trigger observable behaviors that reveal something about the bottlenecks in the hardware, representation, and implementation acceleration techniques.
+As the benchmark continues to be used, we will develop more hypotheses to map the input graphs to expected outputs, given the presence of some combination of hardware, representation, and implementation acceleration techniques.
+
+% \textbf{Summary.}
+
 
 

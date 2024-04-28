@@ -11,7 +11,7 @@ The \gai benchmark design follows the principles of benchmark design. It extends
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
 Figure~\ref{Figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
-These two components interact, and those interactions are what the benchmark measures using our \nrscomment{did you really invent polling benchmarks?} novel \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
+These two components interact, and those interactions are what the benchmark measures using our \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
 
 \subsection{Benchmark Specification}
 The benchmark specification is the main component of the \gai benchmark framework. 
@@ -20,8 +20,8 @@ More specifically:
 
 \textbf{Datasets}
 are the challenges that a benchmark needs to `solve.'
-Source domains provide many datasets that become input to an \ac{SUT}, which can be real-world or synthetic. \nrscomment{you mean real or synthetic} 
-The \ac{SUT} receives \nrscomment{as input} the dataset (the `challenge') and auxiliary information like ground-truth answers for evaluation.
+Source domains provide many datasets that become input to an \ac{SUT}, which can be real or synthetic. 
+The \ac{SUT} receives the dataset (the `challenge') as input and auxiliary information like ground-truth answers for evaluation.
 
 \textbf{Tasks}
 are the specific processes a benchmark needs to complete as part of the evaluation process.
@@ -38,13 +38,13 @@ The most common metrics describe the efficiency, effectiveness, and cost of runn
 The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} and the \textit{implementations}, which are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
 Figure~\ref{Figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
 
-\textbf{Hardware.} \nrscomment{integrate 'Hardware' to be part of the sentence like i did for the others}
-The environment component refers to all the physical components of the SUT, including host machines, hardware accelerators, or distributed systems.  
+\textbf{Hardware}  
+is the environment component referring to all the physical components of the SUT, including host machines, hardware accelerators, or distributed systems.  
 Hardware is the most commonly studied component of the SUT in benchmarks and workload analyses and is a popular target for acceleration.
 Identifying under what circumstances a hardware accelerator is justified is a valuable result of this benchmarking framework.  
 
 The \textbf{Software Stack}
-is the environment \nrscomment{aspect? dont reuse component} component referring to all the software components that are not directly part of the implementation, including the operating system and enabling tools like a database where the focus of the evaluation is not on the database itself.
+refers to all the software components that are not directly part of the implementation, including the operating system and enabling tools like a database where the focus of the evaluation is not on the database itself.
 
 The \textbf{Implementation}
 is how the SUT approaches a given task.

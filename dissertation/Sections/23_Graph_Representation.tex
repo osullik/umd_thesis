@@ -85,7 +85,7 @@ The graph is the central unit of data in this abstraction.
 It is distinct from the graph-centric model in that rather than explicitly partitioning the graph, it implicitly segments it into `active' and `inactive' parts.
 There is a single graph, but most vertices are ignored at any given time, reducing the computation load and stress on memory. 
 `Active' nodes are added to a `\textit{frontier}' that allows for more efficient computing by limiting the number of edges or vertices processed at any time. 
-The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}
+The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}.
 
 These canonical abstractions all have tradeoffs. 
 Vertex and edge-centric abstractions tend to inflict high communication overheads as each vertex and edge are treated individually. 
