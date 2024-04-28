@@ -3,18 +3,18 @@
 
 Graphs are the fundamental data structure across \gai problems.
 The underlying graphs drive the efficiency, effectiveness, and cost problems that impact \gai tasks. 
-This Section defines the components, characteristics, and graph classes for explaining and analyzing \gai problems. 
+This section defines the components, characteristics, and graph classes for explaining and analyzing \gai problems. 
 
 \subsection{Graph Components}
 Graph components are the building blocks of graphs that persist across representations, abstractions, and programming models. 
 
 \define{Graph ($G$)}{The data structure comprising of the related vertices and edges such that $G=\{V, E\}$. It is also called a `network'. $|G|$ represents the size of the graph, and when used in this general sense, it means the sum of the number of vertices and edges.}
-\define{Vertex ($V$)}{Represents an `entity' or `thing.' Also called a node. $|V|$ is the number of vertices (size of the vertex set).}
-\define{Edge ($E$)}{Represents a relationship between two vertices. Also called arcs or links. $|E|$  represents the number of edges (size of the edge set).}
-\define{Attribute}{A label, property, or other information encoded in a graph's vertices or edges. For example, a vertex might have a `name' attribute. Graphs with attributes are called attributed graphs.}
+\define{Vertex ($V$)}{Represents an `entity' or `thing.' Also called a node. $|V|$ is the number of vertices in the graph (size of the vertex set).}
+\define{Edge ($E$)}{Represents a relationship between two vertices. Also called an arc or a link. $|E|$  represents the number of edges in the graph (size of the edge set).}
+\define{Attribute}{A label, property, or other information encoded in a vertex or edge. For example, a vertex might have a `name' attribute. Graphs with attributes are called attributed graphs.}
 \define{Weight}{A numerical value assigned to an edge to describe some real-world value it represents, like the number of citations, length of a road, or cost of an action. Graphs with weights are called weighted graphs.}
 \define{Direction}{The flow of information across an edge from the source node to the destination node. Graphs having edges with direction are called directed graphs.}
-\define{Multi-Edge}{A special case of directed edge where more than one edge may exist between a given pair of vertices. Graphs with multi-edges are called multi-graphs and are typical of heterogeneous graphs like knowledge graphs.} 
+\define{Multi-Edge}{A special case of a directed edge where more than one edge may exist between a given pair of vertices. Graphs with multi-edges are called multi-graphs and are typical of heterogeneous graphs like knowledge graphs.} 
 \define{Hyper-Edge}{An edge that connects an arbitrary number of vertices. Graphs with hyper-edges are called hyper-graphs.}\\
 
 \subsection{Graph Characteristics}
@@ -30,7 +30,7 @@ Graph components are the building blocks of graphs that persist across represent
 \subsection{Graph Types}
 \noindent Although graphs can have a variety of characteristics, they can be broadly categorized as simple or heterogeneous and static or dynamic.
 
-\define{Simple Graph}{The most basic form of a graph. It can be directed, weighted, and attributed, but the attributes are of a consistent type (e.g., all vertex labels are of type 'name').}
-\define{Heterogeneous Graph}{A graph with multiple `types' of vertex, such as a social graph with vertices to represent `person' and vertices to represent `organization.' Heterogeneous graphs are more complicated to process than simple graphs because they require type-checking before acting on a given vertex or edge.}
-\define{Static Graph}{A graph whose vertices, edges, weights, and attributes are known apriori and do not change. Static graphs are generally simpler to process than dynamic graphs.}
+\define{Simple Graph}{The most basic form of a graph. It can be directed, weighted, and attributed, but the attributes are of a consistent type (e.g., all vertex labels are of type `name').}
+\define{Heterogeneous Graph}{A graph with multiple types of vertex, such as a social graph with vertices to represent `person' and vertices to represent `organization.' Heterogeneous graphs are more complicated to process than simple graphs because they require type-checking before acting on a given vertex or edge.}
+\define{Static Graph}{A graph whose vertices, edges, weights, and attributes are known a priori and do not change. Static graphs are generally simpler to process than dynamic graphs.}
 \define{Dynamic Graph}{A graph that evolves with its vertices, edges, attributes, and weights being created, updated, and deleted over time. Also called a streaming graph. Dynamic graphs introduce temporal constraints on graph processing, making many well-researched static approaches unviable.}

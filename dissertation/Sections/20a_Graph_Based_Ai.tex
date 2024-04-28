@@ -1,13 +1,13 @@
 \section{Graph-Based Artificial Intelligence}
 \label{section:20-graph-based-ai}
 
-Graph-Based Artificial Intelligence (\gai) is the collection of intelligence algorithms and machine learning models that learn and reason over information represented in graph data structures.
+\gai is the collection of intelligent algorithms and machine learning models that learn and reason over information represented in graph data structures.
 Surveying graph processing, \ac{AI} and \ac{ML} literature shows that many algorithms and models share goals and characteristics. 
-The \gai Taxonomy extends prior \gai taxonomies~\cite{Chen2020a, Smith2021, Zhou2020a, Xia2021} to include the \textit{Graph Problem Solving} and \textit{Graph Transparency} problem families, the oldest and newest work \gai respectively, and group `like' tasks together to refine prior, less-structured taxonomies~\cite{Blagec2022}\footnote{\scriptsize \url{https://openbiolink.github.io/ITOExplorer/}}.
-Using our \gai taxonomy as a lens to contextualize and extend a survey of \ac{IandS} problems then shows how \textit{Graph Mining} is the most in-demand \gai task, informing our choice of case-study in Chapter~\ref{chapter:50-Community-Detection-Case-Study}.
+Our \gai taxonomy extends prior \gai taxonomies~\cite{Chen2020a, Smith2021, Zhou2020a, Xia2021} to include the \ac{GPS} and \ac{GT} problem families, and group `like' tasks together to refine prior, less-structured taxonomies~\cite{Blagec2022}\footnote{\scriptsize \url{https://openbiolink.github.io/ITOExplorer/}}.
+We use our \gai taxonomy as a lens to contextualize and extend a survey of \ac{IandS} problems to show how \ac{GM} is the most in-demand \gai task, informing our choice of case-study in Chapter~\ref{chapter:50-Community-Detection-Case-Study}.
 
 \subsection{A Taxonomy of \gai}
-The \gai taxonomy results from a systematic literature review following an abridged version of Okoli's method~\cite{Okoli2015}. 
+Our \gai taxonomy results from a systematic literature review following an abridged version of Okoli's method~\cite{Okoli2015}. 
 Our survey targeted specific \gai tasks by searching textbooks, survey papers, and scientific papers containing the term `graph' and at least one of the terms `artificial intelligence' or `machine learning'. 
 % The survey target was the specific \gai tasks and was conducted by initially searching textbooks, then survey papers, and then scientific papers meeting the criteria of:
 % \begin{center}
@@ -17,7 +17,7 @@ Our survey targeted specific \gai tasks by searching textbooks, survey papers, a
 
 The resulting taxonomy divides \gai into six overarching ``AI Problem'' categories (\textit{Graph Problem Solving; Graph Mining; Reasoning; Graph Abstraction; Graph Prediction} and \textit{Graph Transparency}), summarized in Table~\ref{Table:taxonomy}. 
 Our survey concludes that a \gai system must account for various possible computation patterns, dataset shapes, dataset sizes, and static and dynamic graphs. 
-Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of designing a benchmark to measure performance across the \gai tasks surveyed.
+Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of designing a benchmark to measure performance across those variables on the collection of \gai tasks surveyed.
 
 \input{Tables/10_graph_based_ai}
 
@@ -25,8 +25,8 @@ Chapter~\ref{chapter:40-Graph-AI-Benchmarking} explores the challenges of design
 
 \gai is used heavily in real-world problem-solving. 
 To contextualize the \gai taxonomy, we extend a recent survey of the problems, datasets, and challenges faced by \ac{IandS} professionals~\cite{Regli2022a}.
-The survey aims to identify specific examples of \gai tasks being applied to problems with \ac{IandS} characteristics.
-The survey also followed an abridged systemic literature review process~\cite{Okoli2015}, using a set of search terms about the \ac{IandS} problems (`$\langle$\ac{IandS} Problem$\rangle$ ' AND (`Artificial Intelligence' OR `Machine Learning')) and another set of terms about each task in our \gai taxonomy (`$\langle$GraphAI Task$\rangle$' AND `Case Study' AND (`Intelligence' OR `Security' OR `Defense')).
+Our survey aims to identify specific examples of \gai tasks being applied to problems with \ac{IandS} characteristics.
+Our survey also followed an abridged systemic literature review process~\cite{Okoli2015}, using a set of search terms about the \ac{IandS} problems (`$\langle$\ac{IandS} Problem$\rangle$ ' AND (`Artificial Intelligence' OR `Machine Learning')) and another set of terms about each task in our \gai taxonomy (`$\langle$GraphAI Task$\rangle$' AND `Case Study' AND (`Intelligence' OR `Security' OR `Defense')).
 % First, searches identify papers relevant to each of the \ac{IandS} problems identified in the \ac{ARLIS} survey using: 
 % \begin{center}
 %     \texttt{\scriptsize `<\ac{IandS} Problem>' AND (`Artificial Intelligence' OR `Machine Learning')}\\
@@ -36,15 +36,13 @@ The survey also followed an abridged systemic literature review process~\cite{Ok
 %     \texttt{\scriptsize `<GraphAI Task>' AND `Case Study' AND ('Intelligence' OR 'Security' OR 'Defense')}\\
 % \end{center}
 \noindent For each paper identified as relevant, we extracted the \gai tasks and the typical input data and constraints present in the case study. 
-We grouped them by the specific \ac{IandS} domain they supported. 
+We grouped them by the specific \ac{IandS} subdomain they supported. 
 
-\noindent The survey results are summarized in  Table~\ref{Table:problem-survey}. 
-The key takeaways from the survey are:
-\begin{itemize}
-    \item many of the real-world \ac{IandS} problems are network problems well suited for the application of \gai
-    \item large dynamic knowledge graphs are a standard input format
-    \item many use cases have temporal constraints that preclude \gai approaches that cannot produce solutions in minutes to hours
-\end{itemize}
+The survey results are summarized in  Table~\ref{Table:problem-survey}. 
+The key takeaways from the survey are 
+(i) many of the real-world \ac{IandS} problems are network problems well suited for the application of,
+(ii) large dynamic knowledge graphs are a standard input format, and 
+(iii) many use cases have temporal constraints that preclude \gai approaches that cannot produce solutions in minutes to hours.
 
 \input{Tables/11_problem_survey.tex}
 

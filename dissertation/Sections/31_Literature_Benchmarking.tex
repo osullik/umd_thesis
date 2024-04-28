@@ -1,67 +1,69 @@
 \section{Benchmarking}
 \label{section:31-literature-benchmarking}
 
-Benchmarking is a process by which systems or components are compared according to criteria, determining their relative performance~\cite{Kistowski2015}.
-Benchmarks like SPEC, LINPACK, and SATLIB have successfully been used to advance research in \ac{HPC}, dynamic programming, and satisfiability~\cite{Hennessy2019, Dongarra2003, Hoos2000}.
+Benchmarking is a process by which systems or components are compared according to some criteria, determining their relative performance~\cite{Kistowski2015}.
+Benchmarks like SPEC~\cite{Hennessy2019}, LINPACK~\cite{Dongarra2003}, and SATLIB~\cite{Hoos2000} have successfully been used to advance research in \ac{HPC}, dynamic programming, and satisfiability.
 
 Benchmarks can be \textit{specification-based}, meaning only input and output requirements are defined, \textit{kit-based}, meaning substantive components are provided, or hybrid, meaning somewhere in between.
 Specification-based benchmarks provide formal definitions of tasks, and users report their results to them. In contrast, kit-based approaches often have some instrumentation to measure a system's performance.
 Because of their flexibility, specification-based approaches like Graph500~\cite{Murphy2010} are more popular.
-Whether specification or kit-based, the two main approaches to benchmarking are \textit{competitive} and \textit{empirical} benchmarks. 
+Whether specification or kit-based, the two main approaches to benchmarking are \textit{competitive} and \textit{white-box} benchmarks. 
 
 \subsection{Competitive `Black-Box' Benchmarks}
 Competitive benchmarks are extremely popular in the \ac{AI} community. 
-They involve selecting a metric or metrics and `racing' systems as black boxes to identify which can maximize that metric. 
-They are typically specification-based, and the only factors considered are the results and the time to generate them.
-For example, in computer vision, the \ac{COCO} challenge for object detection uses average precision\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
+They involve selecting a metric or metrics and `racing' systems as black boxes to identify which system maximizes that metric. 
+They are typically specification-based, and the only factors considered are the results or the time to generate them.
+For example, in \ac{CV}, the \ac{COCO} challenge for object detection uses average precision\footnote{\scriptsize \url{https://cocodataset.org/\#detection-leaderboard}}~\cite{Lin2014}.
 VQAv2 uses \ac{VQA} accuracy\footnote{\scriptsize \url{https://visualqa.org/roe.html}}~\cite{Goyal2017}, and the \ac{LLM} challenge ChatBot Arena\footnote{\scriptsize \url{https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard}}~\cite{Zheng2024} uses `user preference' as the metric.
-A recent study of \ac{AI} benchmarks for \ac{CV} and \ac{NLP} finds that models overfit to the benchmark problems, similar problem areas are over-saturated, and they cluster on an increasingly centralized collection of problems, calling for future benchmarks to focus on versatility, breadth of coverage and real-world applicability~\cite{Barbosa2022}. 
+A recent study of \ac{AI} benchmarks for \ac{CV} and \ac{NLP} finds that models overfit to the benchmark problems, similar problem areas are over-saturated, and they cluster on an increasingly centralized collection of problems, calling for future benchmarks to focus on versatility, breadth of coverage, and real-world applicability~\cite{Barbosa2022}. 
 
 Competitive benchmarks help get a quick overview of the current \ac{SOTA} but have three significant drawbacks. 
 First, they provide a `black box' view of the systems, making it difficult to tell why one system performed better than another or how to improve them~\cite{Saavedra1996, Hooker1994}.
-Second, this `leaderboard' style of challenge encourages optimizing for the benchmark rather than progressing the knowledge of the field~\cite{Hooker1995}. 
-The third drawback is that competitive benchmarks emphasize effectiveness measures, ignoring efficiency altogether.
-The problem with over-emphasizing effectiveness is missing the broader picture and rewarding a result that uses more resources to achieve a slightly better result than an efficient algorithm that uses fewer resources.
+Second, the `leaderboard' style of challenge encourages optimizing for the benchmark rather than progressing the knowledge of the field~\cite{Hooker1995}. 
+The third drawback is that competitive benchmarks emphasize effectiveness measures, often ignoring efficiency altogether.
+The problem with over-emphasizing effectiveness is the possibility of missing the broader picture and rewarding an inefficient algorithm that that uses more resources to brute-force a slightly better result than an efficient algorithm that uses fewer resources.
 
-\subsection{Empirical `White-Box' Benchmarks}
-Empirical benchmarks take the opposite approach to competitive benchmarks, instead focusing on identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
-Empirical benchmarks follow either the workload analysis or hosted benchmark paradigms.
+\subsection{`White-Box' Benchmarks}
+`White-Box' benchmarks take the opposite approach to competitive benchmarks, instead focusing on identifying bottlenecks and providing a platform for further research~\cite{Hooker1994, Hooker1995}.
+`White-Box' benchmarks follow either the workload analysis or the hosted benchmark paradigm.
 
 \textbf{Workload Analyses.}
-Workload Analyses are detailed white-box studies of the internal states of a system while undertaking a series of tasks on a collection of datasets.
-They focus on more detailed memory usage, network bandwidth, and processor measurements.
-Workload analyses are invasive and require complete access to the system under test to instrument the implementation and profile the environment during execution.
+Workload Analyses are detailed white-box studies of the internal states of a system that is undertaking a series of tasks on a collection of datasets.
+They focus on more detailed measurements like memory usage, network bandwidth, and processor measurements.
+Workload analyses are invasive and require complete access to the \ac{SUT} to instrument the implementation and profile the environment during execution.
 Reports are typically generated manually, focusing on a single system or comparing a few systems. 
 Although workload analyses provide a detailed understanding of a system's behavior, they are work-intensive and do not scale well.
 
 \textbf{Hosted Benchmarks.}
 Hosted benchmarks provide a shared environment where implementations can be tested under fixed conditions.
 Third-party entities typically maintain hosted benchmarks that accept submissions, run them, and report the results. 
-The hosted approach relies on shared problem formats and everyday primitive operations and constrains developers to implementations that can run on the provided environment. 
-For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations and publish the results to public leaderboards.
+The hosted approach relies on shared problem formats and common primitive operations. 
+These limitations constrain developers to implementations that can run on the provided environment. 
+For example, the StarExec project for logic solvers~\cite{Stump2014} allows users to submit implementations and publish the results to public leaderboards, but only if their approach meets the requirements to run on the StarExec cluster.
 The salient limitation of a hosted benchmark is that it prevents comparisons of different hardware configurations; it only allows the comparison of implementations that must be compatible with the host platform.
 For graph and \gai problems where many of the available acceleration techniques use hardware and representation changes, a hosted benchmark is rarely suitable for an evaluation that reflects real-world conditions.
 
 \subsection{Constrained Benchmarks}
 \textit{Constrained benchmarks} are a promising alternative to competitive and hosted benchmarks.
-A constrained benchmark limits the time or resources available to competitors while requiring them to maximize their effectiveness metric.
-For example, the \textit{efficientQA} efficient open domain question answering competition required competitors to maximize Question Answering Accuracy while adhering to strict memory budgets, forcing trade-offs between the size of the model's size of the reference corpora~\cite{Min2020}. 
-A constrained benchmarking approach shows how, even without explicit access to the internal state of a system required for an empirical benchmark, we can still achieve a more thorough comparison than a simple competitive `race' for effectiveness.
+A constrained benchmark limits the time or resources available to competitors while requiring them to maximize an effectiveness metric.
+For example, the \textit{efficientQA} Efficient Open Domain Question Answering Competition required competitors to maximize Question Answering Accuracy while adhering to strict memory budgets, forcing trade-offs between the size of the model and the size of the reference corpora~\cite{Min2020}. 
+A constrained benchmarking approach shows how, even without explicit access to the internal state of a system required for an `white-box' benchmark, we can still achieve a more thorough comparison than a simple competitive `race' for effectiveness.
 
 \subsection{Summary}
 Current benchmarking approaches give us three paradigms.
-Competitive benchmarks are flexible, accessible computational footraces that tell us which system is the fastest or the most accurate but not why. 
-Empirical benchmarks are labor-intensive and impose constraints on the systems being studied. 
-While competitive benchmarks take a creative approach, they focus on only one dimension during evaluation. 
+Competitive benchmarks are flexible, accessible computational competitions that tell us which system is the fastest or the most accurate but not why. 
+`White-box' benchmarks are labor-intensive and impose constraints on the systems being studied. 
+While constrained benchmarks take a alternative approach, they focus on only one dimension during evaluation. 
 Constrained benchmarks show how careful manipulation of the input data and operating environment can stimulate innovation by researchers and interesting behavior in the \ac{SUT}.
-The approach we propose in Chapter~\ref{chapter:40-Graph-AI-Benchmarking} proposes combining the accessibility of competitive benchmarks with the informativeness of a formal empirical benchmark by leveraging the ideas from constraint-based benchmarks about how to stimulate behavior in the system under test in a `grey-box' approach to the benchmarking problem. 
+The approach we present in Chapter~\ref{chapter:40-Graph-AI-Benchmarking} proposes combining the accessibility of competitive benchmarks with the informativeness of a formal `white-box' benchmark by leveraging the ideas from 
+constrained based benchmarks about how to stimulate behavior in the \ac{SUT} in a `grey-box' approach to the benchmarking problem. 
 
 \input{Figures/Diagrams/01_benchmark_components}
 
-Regardless of the specific benchmarking approach, all benchmarks feature a specification for the \textit{Datasets, Tasks} and \textit{Metrics}, and are expected to evaluate a \textit{System Under Test} that comprises of some \textit{Hardware} and \textit{Software Stack} and the specific \textit{Implementation} that will solve the specified tasks on the provided datasets and be monitored to generate the target metrics. 
+Regardless of the specific benchmarking approach, all benchmarks feature a specification for the \textit{datasets, tasks} and \textit{metrics}, and are expected to evaluate a \ac{SUT} that comprises of some hardware and software stack and the specific implementation that will solve the specified tasks on the provided datasets and be monitored to generate the target metrics. 
 When the benchmark is hosted, the hardware and software stack are frozen, and only the implementation is measured.
-These basic components in Figure~\ref{Figure:benchmark-components} are explained in more detail in Section~\ref{section:42-GAI-Background}
-The following Section examines \gai specific approaches to benchmarking, identifying how these paradigms are used and their limitations in practice. 
+These basic components in Figure~\ref{Figure:benchmark-components} are explained in more detail in Section~\ref{section:42-GAI-Background}.
+The following section examines \gai-specific approaches to benchmarking, identifying how these paradigms are used and their limitations in practice. 
 
 
 % % % % % % % % % % MOVED TO PROBLEM Section % % % % % % % % % % %

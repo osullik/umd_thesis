@@ -7,10 +7,10 @@ Having a set of common primitive operations is extremely helpful in building har
 However, there has yet to be an agreement on exactly what the building blocks of graph processing should be~\cite{Satish2014} since graph operations tend to depend on the abstraction model and implementation used.
 
 The complexity of parallel operations on graphs has driven the development of several primitive families, including the \ac{GAS} family derived from Map-Reduce~\cite{Malewicz2010} and the hierarchical collections of graph primitives built on work-efficient atomic and parallel processing primitives~\cite{Shun2013, Shun2015, Dhulipala2017, Dhulipala2021}.
-Graph Manipulation Primitives have inherited the \ac{CRUD} primitives because of their proximity to databases~\cite{Vukotic2015}, but are not used in most graph processing approaches. 
-One of the most promising primitive families is Matrix Operations. 
-Suites like the \ac{CombBLAS} and \ac{GraphBLAS} use a linear-algebraic abstraction of the graph and matrix manipulations to carry out graph operations~\cite{Buluc2011, Azad2021, Mattson2013, Kepner2015, Kepner2016}.
-Matrix-based abstractions are fascinating because of their close relationship to other linear algebraic operations, which have been the focus of years of hardware acceleration and performance optimization.
+Graph manipulation primitives have inherited the \ac{CRUD} primitives because of their proximity to databases~\cite{Vukotic2015}, but are not used in most graph processing approaches. 
+One of the most promising primitive families is matrix operations. 
+Suites like the \ac{CombBLAS} and the \ac{GraphBLAS} use a linear-algebraic abstraction of the graph meaning the primitive operations are matrix manipulations that carry out graph operations~\cite{Buluc2011, Azad2021, Mattson2013, Kepner2015, Kepner2016}.
+% Matrix-based abstractions are fascinating because of their close relationship to other linear algebraic operations, which have been the focus of years of hardware acceleration and performance optimization.
 
 % \textbf{Sequential Primitives.}
 % Sequential graph processing implementations tend to operate directly on the data structures without using formally defined frameworks or a set of pre-defined primitives.

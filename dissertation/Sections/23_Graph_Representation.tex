@@ -3,21 +3,20 @@
 A graph's representation and abstraction model fundamentally affect how it is processed. 
 The representation format of the input graph is a crucial contributor to the cost, effectiveness, and efficiency of \gai tasks operating on graphs.
 The tradeoff between memory efficiency (how much space a graph consumes) and lookup efficiency (how fast information can be accessed) is a core tension in graph processing.
-This Section introduces fundamental concepts of graph representation, including storage and abstractions as the primary levers used to balance memory consumption and compute efficiency. 
+This section introduces fundamental concepts of graph representation, including storage and abstractions as the primary levers used to balance memory consumption and computational efficiency. 
 
 \subsection{Graph Storage}
 A graph's storage format directly impacts the space it consumes in memory, the operations that can be performed on it, and the speed of those operations.
-This Section discusses the common ways a graph's topological information can be stored and how compression and abstraction models can impact performance. 
+This section discusses the common ways a graph's topological information can be stored and how compression and abstraction models can impact performance. 
 The following examples show the common representations used to store the graph in Figure~\ref{Figure:graph-example}. 
 
 \input{Figures/Graphs/08_example_graph.tex}
 
 \subsubsection{Adjacency Lists}
 The adjacency list representation (Figure~\ref{Figure:graph-adj-list}) uses a linked list or array.
-The first entry in each line is the source vertex, and each subsequent entry indicates an edge on the listed vertex.
+The first entry in each line is the source vertex, and each subsequent entry indicates an edge between the source and the listed vertex.
 Adjacency lists can represent directed or undirected graphs and can represent weights using lists of tuples.
-Representing weights is possible using a list of tuples.
-Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular edge is expensive -- linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
+Adjacency lists have a small memory footprint ($\mathcal{O}(|V|+|E|)$), but finding a particular vertex is expensive -- linear in the number of vertices ($\mathcal{O}(|V|)$) in the worst case.
 
 \input{Figures/Graphs/09_adj-list.tex}
 
@@ -26,7 +25,7 @@ An adjacency matrix (Figure~\ref{Figure:adjacency_matrix}) uses a $|V|\times|V|$
 A $1$ at location $M_{i,j}$ indicates the existence of an edge from vertex $i$ to vertex $j$. 
 Adjacency matrices can represent directed or undirected graphs, and the value at position $M_{i,j}$ can be changed to represent a weighted edge. 
 Adjacency matrices have a memory footprint of $\mathcal{O}(|V|^{2})$ but a constant lookup time ($\mathcal{O}(1)$).
-One of their major drawbacks is the space-inefficient requirement to store all the $0$s where edges do not exist.
+One of their major drawbacks is the space-inefficient requirement to store all of the $0$s where edges do not exist.
 
 \input{Figures/Graphs/10_adjacency.tex}
 
@@ -34,11 +33,11 @@ One of their major drawbacks is the space-inefficient requirement to store all t
 Incidence Matrices (Figure~\ref{Figure:incidence_matrix}) use a $|E|\times|V|$ matrix ($M$) to represent the graph. 
 An edge is represented with two values: a $-1$ at position $M_{i,j}$ to indicate the source and a $1$ at position $M_{i,k}$ to indicate the destination.
 Here, $i$ represents the edge's index, and $j$ and $k$ represent the vertices that the edge connects.
-Incidence matrices are the most expressive representation of those listed here since they can encode \textit{multi-graphs} and \textit{hyper-graphs}.
+Incidence matrices are the most expressive representation of those listed here since they can encode multi-graphs and hyper-graphs.
 Weights can be expressed by modifying the numbers in the matrix. 
 A multi-graph encoding requires inserting source values at $M_{a,j}$ and $M_{a,k}$ and destination values at $M_{b,j}$ and $M_{b,k}$, describing two directed edges going from vertex $j$ to $k$. 
 A hyper-edge encoding requires placing a source value at $M_{a,j}$ and destination values at $M_{a,k}$, $M_{a,l}$, and $M_{a,m}$, describing a single edge that connects the vertex $j$ to $k,l$ and $m$.
-The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$, and so for sparse graphs, the incidence matrix format may be more space-efficient than an adjacency matrix, but in general, it will consume significantly more memory in the typical case where $|E|\gg|V|$. 
+The space complexity of an incidence matrix is $\mathcal{O}(|V|\times|E|)$, and so for sparse graphs, the incidence matrix format may be more space-efficient than an adjacency matrix, but in general, it will consume significantly more memory where $|E|\gg|V|$. 
 Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$ since it requires scanning the entire edge list for each vertex of interest, which is more expensive than the $\mathcal{O}(|V|)$ edge lookup using adjacency lists.
 
 \input{Figures/Graphs/11_incidence.tex}
@@ -47,9 +46,10 @@ Edge lookup using an incidence matrix is $\mathcal{O}(|E|)$ since it requires sc
 Compressed representations aim to balance expressiveness, memory consumption, and computability. 
 The dominant choices are the \ac{CSR} and \ac{CSC} formats (Figure~\ref{Figure:csr}).
 The \ac{CSR} format uses three lists to compress the rows of a sparse (adjacency) matrix~\cite{Bulucc2009}. 
-The \ac{CSC} format reverses the format so that the columns are compressed.
-The space efficiency for \ac{CSR}/\ac{CSC} format is $\mathcal{O}(|V|\log(|M_{nonzero}|)+|M_{nonzero}|\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009} and takes $\mathcal{O}(\log(|M_{nonzero}|))$ time to check the existence of an edge where $|M_{nonzero}|$ is the count of non zero entries in the matrix. 
-More complicated representations exist that can compress the graph representations even further but require more computational overhead for the encoding and decoding process~\cite{Shun2015}, precluding them from being used outside of optimized parallel implementations that `hide' the encode/decode time.
+The \ac{CSC} format reverses the \ac{CSR} format so that the columns are compressed.
+The space efficiency for \ac{CSR} and \ac{CSC} formats is $\mathcal{O}(|V|\log(|M_{nonzero}|)+|M_{nonzero}|\log(|V|))$ for an adjacency matrix $M$, encoding $|V|$ vertices~\cite{Bulucc2009}.
+\ac{CSR} and \ac{CSC} formats take $\mathcal{O}(\log(|M_{nonzero}|))$ time to check the existence of an edge where $|M_{nonzero}|$ is the count of non zero entries in the matrix. 
+More complicated representations exist that can compress the graph representations even further but they require more computational overhead for the encoding and decoding process~\cite{Shun2015}, precluding them from being used outside of optimized parallel implementations that `hide' the encode/decode time.
 
 \input{Figures/Graphs/12_csr.tex}
 
@@ -68,24 +68,24 @@ To enable more powerful parallel processing methods and hardware accelerators, \
 \textbf{Vertex-Centric.} 
 The vertex is the central unit of data in this abstraction. 
 The abstraction uses iterative operations on vertices, updating their states based on the properties of neighboring vertices~\cite{Mccune2015}.
-Google's Pregel System~\cite{Malewicz2010} and Apache Girafe~\cite{Sakr2016} follow the vertex-centric approach.
+Google's Pregel System~\cite{Malewicz2010} and Apache Giraph~\cite{Sakr2016} follow the vertex-centric approach.
 
 \textbf{Edge-Centric.}
 The edge is the central unit of data in this abstraction.  
 Edges are updated based on the properties of the incident vertices~\cite{Liu2019}.
-The X-Stream~\cite{Roy2013} and GraphX~\cite{Gonzalez2014} implement the edge-centric approach. 
+The X-Stream~\cite{Roy2013} and GraphX~\cite{Gonzalez2014} libraries implement the edge-centric approach. 
 
 \textbf{Graph-Centric.} 
 The graph itself is the central unit of data in this abstraction. 
 This paradigm explicitly partitions the input graphs into subgraphs for processing~\cite{Coimbra2021}.
-ApacheGiraffe++ is a noted adopter of the graph-centric abstraction~\cite{Kalavri2017}.
+ApacheGiraph++ is a noted adopter of the graph-centric abstraction~\cite{Kalavri2017}.
 
 \textbf{Data-Centric.} 
 The graph is the central unit of data in this abstraction.   
 It is distinct from the graph-centric model in that rather than explicitly partitioning the graph, it implicitly segments it into `active' and `inactive' parts.
 There is a single graph, but most vertices are ignored at any given time, reducing the computation load and stress on memory. 
 `Active' nodes are added to a `\textit{frontier}' that allows for more efficient computing by limiting the number of edges or vertices processed at any time. 
-The \textit{Gunrock} framework introduced and champions the data-centric frontier abstraction~\cite{Wang2016}.
+The \textit{Gunrock} framework introduced and continues to champion the data-centric frontier abstraction~\cite{Wang2016}.
 
 These canonical abstractions all have tradeoffs. 
 Vertex and edge-centric abstractions tend to inflict high communication overheads as each vertex and edge are treated individually. 
@@ -96,9 +96,9 @@ Data-centric abstractions using the frontier have shown significant improvements
 Linear-algebraic abstractions exploit the ability to represent graphs as sparse matrices using their incidence and adjacency matrices. 
 The \ac{CombBLAS}~\cite{Buluc2011, Azad2021} and \ac{GraphBLAS}~\cite{Mattson2013, Kepner2015} are the two most popular linear algebraic graph abstractions. 
 The linear algebraic abstraction exploits the latent coarse-grained parallelism within graphs and builds on advances in high-performance linear algebra processing to improve graph processing~\cite{Buluc2011}. 
-Both similarly identify that many graph operations can be composed of general and sparse matrix-vector multiplications, so actions like a single step in a \ac{BFS} can be represented as a single linear-algebraic operation~\cite{Kepner2016}.
-Linear algebraic representations are robust and offer a promising direction but cannot support certain classes of algorithms, like those leveraging priority queues~\cite{Buluc2011}. 
+Both abstractions similarly identify that many graph operations can be composed of general and sparse matrix-vector multiplications, so actions like a single step in a \ac{BFS} can be represented as a single linear-algebraic operation~\cite{Kepner2016}.
+Linear algebraic representations are robust and offer a promising direction for \gai but cannot support certain classes of algorithms, like those leveraging priority queues~\cite{Buluc2011}. 
 They can also be memory-intensive~\cite{Sundaram2015} and are less performant than implementations optimized for the hardware they run on~\cite{Azad2020}.
-As a result, despite promising potential to use highly optimized linear algebraic operations and hardware while providing users with an abstract hardware-agnostic programming model, they have not been widely adopted because of the implicit performance penalty their use incurs. 
+As a result, they have not been widely adopted because of the implicit performance penalty their use incurs. 
 
 
