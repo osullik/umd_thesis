@@ -44,8 +44,6 @@ The problem with \ac{ASIC}s is that a given \gai system may need to support many
 These real-world challenges and trade-offs are particularly pronounced for \gai because of the inherent nature of graph processing that underlies \gai problems.
 Graphs of different shapes and sizes unpredictably influence algorithmic complexity, including exacerbating irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
 When combined with the data dependence, the lack of standard graph representation methods, abstraction models, or a set of primitive operations further prevents a unity of effort toward accelerating graph processing across all graph tasks.
-\nrscomment{prev and sub sentences are redundant}
-This data dependence, along with the lack of standard graph representation methods, abstraction models, and primitive operations, further prevents a unity of effort toward accelerating graph processing across all graph tasks.
 
 \input{Figures/Diagrams/14_gai_challenges}
 
@@ -61,27 +59,26 @@ We address these \gai issues by contributing our \gai benchmark framework, shown
 It is an Input/Output benchmark that evaluates the performance of a \ac{SUT} using an Input/Output observation apparatus to provide the \ac{SUT} problem-centric tasks and data, record the time to solution, and verify the correctness of an answer. 
 Each \gai benchmark in the \gai benchmark framework is independent, and we contribute an empirical methodology for constructing a problem-centric, accelerator-agnostic, `grey-box' \gai benchmark that can evaluate both the \textit{efficiency} and the \textit{effectiveness} of dynamic and static \gai implementations and systems.
 
-By `grey-box', we mean an approach to benchmarking between the fully opaque black-box view and the invasive white-box view (Figure~\ref{Figure:grey-box}). \nrscomment{need to tie black box to competitive benchmarks and white box to workload analyses that you just talked about above}
+By `grey-box', we mean an approach to benchmarking between the fully opaque black-box view that naively races systems against each other and the invasive white-box view that painstakingly monitors the internal state of a system(Figure~\ref{Figure:grey-box}). 
 In implementing a grey-box view, we use the \gai benchmark design methodology to identify expected system and implementation bottlenecks and design adversarial inputs we expect to stimulate those bottlenecks. 
 By evaluating the output and analyzing the efficiency and effectiveness across datasets, we can infer which expected bottleneck will likely cause an observed output without invasive instrumentation.
 
-We employ a formal method (Figure~\ref{Figure:ch1-framework}) that emphasizes the transparency, verifiability, and reproducibility of benchmark problems and balances the generality of competitive benchmarks and the detail of workload analyses without requiring invasive system access. \nrscomment{the back half of the above sentence is now somewhat redundantt to the text just above about grey box. instead of saying it balances... maybe combine with next sentence and just have this as one introductory sentence for method, that can be part of the subsequent paragraph}
-Our method comprises six steps that generate the components of the benchmark specification and the observation apparatus.
+We employ a formal method (Figure~\ref{Figure:ch1-framework}) that emphasizes the transparency, verifiability, and reproducibility of benchmark problems.
+The method comprises six steps that generate the components of the benchmark specification and the observation apparatus.
 
 The process begins by identifying a use case to ground the problem in real-world datasets and current approaches. 
 A more detailed analysis of the problem yields information about the size and shape of the data and formally specifies the everyday tasks associated with that problem in natural language. 
 Formalizing the study's phenomena includes identifying what specific interactions of dataset and task are likely to yield interesting results, providing the first significant contribution to the problem's `grey box' approach. 
 Considering the phenomena, exploratory analysis of the domain builds the base of knowledge to make initial hypotheses about expected behavior under some conditions. 
 The hypotheses drive the data collection to study the phenomena of interest and observed deviation from those hypotheses indicates interesting behavior warranting further study. 
-The construction of the apparatus involves collecting and generating the datasets that will be used to trigger the conditions the hypotheses predict will stimulate the phenomena of interest, which may require developing \ac{API} extensions to facilitate the problem and evaluate the solutions. \nrscomment{this is a really long sentence can you compress it a bit?}
+The construction of the apparatus involves collecting and generating the datasets that will be used to trigger the conditions the hypotheses predict will stimulate the phenomena of interest.
 
 Our proposed methodology for designing benchmark problems yields a collection of datasets, tasks, and metrics that combine to provide a `grey box' view of the \ac{SUT}, stimulating phenomena of interest according to the defined hypotheses. 
 The repeatable process we propose delivers an extensible framework that can be continually improved to evaluate new \gai problems as they emerge.
 
 
 \section{Applying our \gai benchmark framework}
-\nrscomment{id start this with "To validate the utility of our proposed methodology, we..."}
-Following our proposed methodology, we construct a \gai benchmark for the Population Segmentation use case in the \ac{IandS} domain.
+To validate the utility of our proposed methodology, we construct a \gai benchmark for the Population Segmentation use case in the \ac{IandS} domain.
 %
 %Tasks
 The \textit{problem-centric} population segmentation tasks we select for our benchmark are real-world problem statements rather than simplified kernels. 
@@ -108,6 +105,6 @@ Because the benchmark specification is independent of the \ac{SUT}, an analyst, 
 \label{section:15-Thesis-Outline}
 The thesis continues with an introduction to the \gai taxonomy and key graph and computer architecture concepts in Chapter~\ref{chapter:20-Preliminaries} to identify what makes optimizing \gai approaches hard and why measuring relative performance is especially difficult. 
 Then, Chapter~\ref{chapter:30-Literature-Review} presents a detailed review of current \gai benchmarking and workload analysis efforts to characterize the current gaps in benchmark coverage of \gai tasks, datasets, and metrics and identify what causes performance to degrade in \gai systems. 
-Chapter~\ref{chapter:40-Graph-AI-Benchmarking} introduces the \gai benchmark frameworks \nrscomment{frameworkS plural?} and details our methodology for developing \gai problems to constitute the benchmark framework. 
+Chapter~\ref{chapter:40-Graph-AI-Benchmarking} introduces the \gai benchmark framework and details our methodology for developing \gai problems to constitute the benchmark framework. 
 We use the population segmentation problem from the Intelligence and Security domain to demonstrate how our development methodology is applied, describe the implementation of our \gai benchmark prototype, and outline the findings of our initial experiments in Chapter~\ref{chapter:50-Community-Detection-Case-Study}.
 Finally, Chapter~\ref{chapter:60-Conclusion} concludes after identifying specific directions for future work.
