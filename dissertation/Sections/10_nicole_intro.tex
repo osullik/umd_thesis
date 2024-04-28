@@ -4,8 +4,7 @@
 
 \section{Motivation}
 Graphs are expressive data structures that encode evidence as vertices and contextual relationships between evidence as edges. 
-\nrscomment{"As powerful abstractions of the real world, graphs lend themselves well to learning and reasoning tasks, which encompass an emerging area of work we term Graph-Based Artificial Intelligence (\gai)." -- otherwise "as powerful abstractions" applies to graphs lending themselves or to learning and reasoning, neither of which make sense}
-Graphs lend themselves well to learning and reasoning tasks as powerful abstractions of the real world, encompassing an emerging area of work we term Graph-Based Artificial Intelligence (\gai).
+As powerful abstractions of the real world, graphs lend themselves well to learning and reasoning tasks, which encompass an emerging area of work we term Graph-Based Artificial Intelligence (\gai).
 We taxonomize \gai within the existing AI landscape, covering the well-known areas of \ac{GP}~\cite{Smith2021, Zhou2020a, Xia2021} and \ac{GM}~\cite{Chen2022a} and extending those to include \ac{GPS}, \ac{GR}, \ac{GA}, and \ac{GT}, which are detailed in Figure~\ref{Figure:gai-taxonomy}.
 Across these areas, \gai includes tasks like structural analysis, inference over graphs, and applications of graphs to AI problems like model transparency, explainability, and interpretability.
 
@@ -45,7 +44,7 @@ The problem with \ac{ASIC}s is that a given \gai system may need to support many
 These real-world challenges and trade-offs are particularly pronounced for \gai because of the inherent nature of graph processing that underlies \gai problems.
 Graphs of different shapes and sizes unpredictably influence algorithmic complexity, including exacerbating irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
 When combined with the data dependence, the lack of standard graph representation methods, abstraction models, or a set of primitive operations further prevents a unity of effort toward accelerating graph processing across all graph tasks.
-\nrscomment{"This data dependence, along with the lack of standard graph representation methods, abstraction models, and primitive operations further prevent a unity of effort toward accelerating graph processing across all graph tasks."}
+This data dependence, along with the lack of standard graph representation methods, abstraction models, and primitive operations, further prevents a unity of effort toward accelerating graph processing across all graph tasks.
 
 \input{Figures/Diagrams/14_gai_challenges}
 
@@ -83,30 +82,19 @@ The repea Table process we propose delivers an extensible framework that can be 
 
 Following our proposed methodology, we construct a \gai benchmark for the Population Segmentation use case in the \ac{IandS} domain.
 
-% The benchmark definition of our \gai framework comprises independent benchmark problem modules containing a collection of datasets and problems selected to stress the efficiency and effectiveness of the \ac{SUT}. 
-
 %Tasks
-Following our \textit{problem-centric} methodology, the population segmentation tasks we select for our benchmark are real-world problem statements rather than simplified kernels. 
-\nrscomment{dont say following our proposed methodology then follow it up with following our problem-centric methodology. change the second one.}
+The \textit{problem-centric} population segmentation tasks we select for our benchmark are real-world problem statements rather than simplified kernels. 
 For example, we include the task `\textit{What are the population segments, and who is in each?}' instead of the common \textit{kernel} task `\textit{run \ac{GC}}'.
 
 %Datsets
-To achieve our `grey-box' effect, we identify that the primary contributor to degraded \textit{efficiency} is increasing dataset size and that the primary contributor to degraded \nrscomment{why is the word 'benchmark' here} benchmark \textit{effectiveness} is increasing `fuzziness' in community structure. 
+To achieve our `grey-box' effect, we identify that the primary contributor to degraded \textit{efficiency} is increasing dataset size and that the primary contributor to degraded \textit{effectiveness} is increasing `fuzziness' in community structure. 
 We select real-world scale-free datasets with ground-truth community labels from the \ac{SLNDC} dataset and generate real-world mesh datasets using a tool we create for converting \ac{OSM} road network data to directed, weighted, attributed graphs with ground-truth communities.
-To address the gaps in real-world data for datasets of large size and middling `fuzziness' we use the \ac{LFR}~\cite{Lancichinetti2008} and \textit{GenCAT}~\cite{Maekawa2023} community data generators. 
+To address the gaps in real-world data for datasets of large size and middling `fuzziness,' we use the \ac{LFR}~\cite{Lancichinetti2008} and \textit{GenCAT}~\cite{Maekawa2023} community data generators. 
 
 %Metrics
 We select the effectiveness metric of \ac{NMI} to measure the similarity of predicted communities to ground truth and the efficiency metrics of \ac{ExT} and \ac{BL}, allowing us to compare static and dynamic approaches as well as the trade-off between efficiency and effectiveness all under the same framework. 
 
-% The problem-centric view is flexible enough to support comparing existing approaches \nrscomment{like (example of existing population segmentation approach)} to innovative new ones \nrscomment{like (example of a new population segmentation approach if you have one)}, since the benchmark tasks do not presuppose particular approaches. 
-
-% \nrscomment{describe metrics here ....fill in...}
-% By exploring the interaction between efficiency and effectiveness, the benchmark allows for the notion that a fast partial solution can be more beneficial than a slow complete one.
-
 \input{Figures/Diagrams/15_gai_framework}
-% , a benchmark for the \gai problem of population segmentation and a collection of experiments to demonstrate how the \gai benchmarking framework supports engineers and procurement officers in identifying if, when and how to accelerate systems for \gai.
-% We leverage constraint theory with an empirical approach to algorithmic analysis to develop inputs that specifically trigger bottleneck behavior. 
-
 
 \section{Applications  and impact of the \gai benchmarking framework}
 Our \gai benchmark framework is a flexible experimentation and exploratory analysis tool for analysts, engineers, and researchers.
