@@ -1,7 +1,7 @@
 \section{Identify and Characterize Phenomena of Interest}
 \label{section:52-CD-Phenomena}
-We identify the phenomena of interest from the results of the problem survey ( Table~\ref{ Table:problem-survey}) that indicate the prevalence of temporal constraints that force trading off effectiveness for faster partial or low-resolution solutions.
-This Section describes how we characterize the phenomena of interest as the trade-off between effectiveness, efficiency, and cost. 
+We identify the phenomena of interest from the results of the problem survey (Table~\ref{Table:problem-survey}) that indicate the prevalence of temporal constraints that force trading off effectiveness for faster partial or low-resolution solutions.
+This section describes how we characterize the phenomena of interest as the trade-off between effectiveness, efficiency, and cost. 
 
 \subsection{Efficiency}
 Efficiency measurements are similar from problem to problem in \gai. 
@@ -10,8 +10,8 @@ Additionally, many approaches to population segmentation use iterative algorithm
 
 \subsection{Effectiveness}
 There are two ways to evaluate population segmentation's effectiveness: ground truth labels or structural characteristics. 
-We prefer effectiveness evaluations ground-truth label-based methods, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
-NMI's Scalability limitations drive alternate methods like Network-F1 (NF1)~\cite{Rossetti2016, Rossetti2017, Rossetti2018} but have not gained widespread traction. 
+We prefer effectiveness evaluations using ground-truth label-based methods, and Normalized Mutual Information (NMI)~\cite{Strehl2002} is the most commonly used metric to evaluate predicted segments against ground truth. 
+NMI's scalability limitations drive alternate methods like Network-F1 (NF1)~\cite{Rossetti2016, Rossetti2017, Rossetti2018} but have not gained widespread traction. 
 Without ground truth labels, the `goodness' of a segment is calculated using a metric like \textit{modularity}~\cite{Newman2004a}, \textit{conductance}~\cite{Leskovec2010a}, or the \textit{Constant Potts Model}~\cite{Traag2011}.
 These methods are limited in their ability to provide a reliable evaluation, as they effectively model the probability that the community is more connected than a random graph. 
 Further, optimizing the modularity metric is $NP$-Complete~\cite{Brandes2006}, and heuristic approaches degrade for small communities and skewed community distributions~\cite{Fortunato2007}, which are typical of scale-free graphs~\cite{Barabasi1999, Girvan2002} that characterize the problem domain. 
@@ -28,4 +28,4 @@ Currently, cost is excluded from the Population Segmentation benchmark problem d
 \subsection{Outputs}
 In the phenomena identification step, we identify the interaction between effectiveness and efficiency as the phenomena of interest, namely whether it is possible to trade lower effectiveness for better efficiency.
 Effectiveness metrics of \textit{NMI} (preferred) or \textit{modularity} will be used as proxies for effectiveness. 
-Metrics of \textit{ETL Time, Execution Time} and \textit{Batch Latency} will be used as proxies for efficiency. 
+Metrics of \ac{ETLT}, \ac{ExT}, and \ac{BL} will be used as proxies for efficiency. 

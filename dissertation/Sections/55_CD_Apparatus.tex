@@ -3,17 +3,17 @@
 
 The apparatus is the physical instantiation of the problem benchmark.
 Figure~\ref{Figure:ch1-framework} shows how the apparatus is derived from each process step. 
-Three of the components (Datasets, Tasks, and Metrics) are consistent with the approach of traditional benchmarking approaches (see Figure~\ref{Figure:benchmark-components}), and we add the explicit definition of the observation apparatus. 
+Three of the components (datasets, tasks, and metrics) are consistent with traditional benchmarking approaches (see Figure~\ref{Figure:benchmark-components}).
+We add the explicit definition of the observation apparatus. 
 These four components are the concrete implementation of the benchmark. 
 Combined, they have two key roles. 
 First, they must interact with the \ac{SUT} -- problems and datasets go in, and solutions for evaluation come out.
 Second, they must monitor the phenomena emerging from the \ac{SUT} throughout the process.
-Figure~\ref{Figure:cd-apparatus} is the envisaged workflow for the Population Segmentation problem benchmark, showing how the physical components of the observation apparatus interact between the benchmark and the \ac{SUT}.
-%
+Figure~\ref{Figure:cd-apparatus} is the envisaged workflow for the population segmentation problem benchmark, showing how the physical components of the observation apparatus interact between the benchmark and the \ac{SUT}.
+
 The population segmentation benchmark workflow is representative of the expected workflow for most problems in the \gai taxonomy because, as a \ac{GM} task, it is in the family of \gai problems used most by the \ac{IandS} community.
 It can be solved in multiple ways (including with \ac{GNN}s), focuses on graph topology but can also use attribute information, admits approximate and iterative solutions, has a linear algebraic implementation, and has real-world temporal constraints that may benefit from trading effectiveness for efficiency.
-
-In the remainder of this Section, we summarize the concrete components of the apparatus, showing how they were created and identifying expansion opportunities. 
+In the remainder of this section, we summarize the concrete components of the apparatus, showing how they were created and identifying expansion opportunities. 
 
 \subsection{Observation Apparatus}
 The observation apparatus is a component we include in our benchmark design to explicitly represent the decisions about how the benchmark will interact with the \ac{SUT}.
@@ -24,7 +24,7 @@ System variance reflects the benchmark's real-world implications; if someone can
 More specifically, we choose the Input/Output model to accommodate the wide variety in \gai acceleration approaches.
 For hardware-based acceleration, \ac{GHA}~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2019, Wu2015, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and \ac{GNN} accelerators~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} are proliferating rapidly, and a future-proof benchmarking framework must accommodate as many variations as possible to remain relevant.
 % 
-Represenation-based acceleration techniques for \ac{CD} have created multiple different implementations including canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019} for community detection approaches that need to be accommodated by the benchmark system.
+Represenation-based acceleration techniques for \ac{CD} have created multiple different implementations including canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019}.
 Configuring instrumentation for all of these systems is infeasible, and a hosted benchmark would exclude too many of the approaches, leading us to select an enhanced Input/Output model for the benchmark. 
 
 \subsection{Datasets}
@@ -49,7 +49,7 @@ Noting the lack of mesh and random graphs, we generate our own.
 \subsubsection{Mesh Graph Generation}
 There were no publicly available mesh graphs with ground truth community labels. 
 We develop a tool to generate directed, weighted, attributed graphs with hierarchical and overlapping communities from \ac{OSM} road network data\footnote{\scriptsize tool available at \url{https://github.com/osullik/umd_thesis/blob/main/md_roads/osmg.py}}. 
-Our tool queries the \ac{OSM} \ac{API} for a given city, county, or state, extracts the road segments (ways), and creates a vertex where two segment ends meet or intersect. 
+Our tool queries the \ac{OSM} \ac{API} for a given city, county, or state, extracts the road segments (ways), and creates a vertex where segment ends meet or multiple segments intersect. 
 We construct the graph using Python's NetworkX~\cite{Hagberg2008} and assign each vertex the attributes of its latitude, longitude, and street name. 
 We group the vertices by subordinate communities. 
 For example, a state has community groups at the county and city levels.
@@ -60,7 +60,7 @@ We use the tool to create six tiny and small datasets with very low density, wid
 
 While random graphs are not an adequate substitute for real-world graphs from the target domain, they are helpful supplemental tools for covering real-world data gaps and developing datasets to stress specific system components.
 As Figure~\ref{Figure:cd-datasets} shows, we lack real-world coverage of the spectrum of graph shapes between mesh and scale-free. 
-Imitative generators are not yet mature enough to generate the medium and large datasets we require, and sui Table statistical summaries of graphs are not available to seed imitative generators.
+Imitative generators are not yet mature enough to generate the medium and large datasets we require, and suitable statistical summaries of graphs are not available to seed imitative generators.
 Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, and GenCAT~\cite{Maekawa2023} can generate graphs with ground-truth communities following mathematical distributions, and we use them to fill in the gaps shown in Figure~\ref{Figure:cd-datasets}.
 
 \input{Tables/52_CD_Datasets}
@@ -71,8 +71,8 @@ Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMAR
 We draw on the problems identified in Table~\ref{Table:cd-problem-definition} for our specific tasks. 
 To enhance the benchmark, we intend for the tasks to be publicly and generically specified.
 That means the complete list of problem-centric task templates will be available to benchmark users in advance to prepare and test systems. 
-However, the specific values for those provided will only be provided at experiment time to ensure fairness.
-For example, the public generic definition might be \texttt{`What other nodes are in the same group as vertex (x)?'}, but when the benchmark is actually run, the specific problem of \texttt{`What other nodes are in the same group as the vertex with name=="Mr\_Black'?}
+However, the specific values will only be provided at experiment time to ensure fairness.
+For example, the public generic definition might be \texttt{`What other nodes are in the same group as vertex (x)?'}, but when the benchmark is actually run, the specific problem of \texttt{``What other nodes are in the same group as the vertex with name==`Mr\_Black' ''?}
 Figure~\ref{Figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$, which is how all tasks are provided to the \ac{SUT} by the \ac{BS}.
 
 \subsection{Metrics} 
@@ -83,17 +83,17 @@ Figure~\ref{Figure:cd-apparatus} shows in grey the polling period in which inter
 % The BS randomly selects a workload and commences the transfer to the SUT, which sends a hash of the received file as proof that the transfer has been completed. 
 % When that hash is received, the Benchmark Server sends the specific task, filling in the variables in the problem statement with the details for the receiving server. 
 ETL and processing are shown linearly but could be interleaved if a \ac{SUT} takes an incremental approach. 
-The shaded region denotes the polling period.
+% The shaded region denotes the polling period.
 During the polling period, the \ac{BS} will periodically poll the SUT for its current answer and log the time and content of the response, identifying partial or approximate answers where they are available before the algorithm officially `completes.' 
 % When the ETL is complete, the SUT sends a message and the summary statistics for the graph (vertex count, edge count, mean degree) to show that the entire graph has been constructed.
 % When processing is finished, the BS sends a message with the final results. 
 At each process step, the \ac{BS} logs the time taken to that point to provide the data for generating the efficiency metrics \textit{\ac{TxT}, \ac{ETLT}, \ac{ExT}, \ac{BL}} and \textit{\ac{BR}} during the final evlauation phase.
-The effectiveness metric for all problems requiring comparing communities in the ground truth and predicted nodes is \textit{\ac{NMI}}.
+The effectiveness metric for all problems requiring comparing predicted communities to the the ground truth is \textit{\ac{NMI}}.
 % 
 \subsection{Limitations}
 Several limitations exist in the current design of the population segmentation problem benchmark. 
 First, data transfer is highly sensitive to network bandwidth and latency, disadvantaging remote systems. 
-Given that the benchmark uses static datasets, we minimize the chances that systems can `cheat' by implementing randomized problem parameters, hash checks, and network data summaries to verify that the benchmark process is being followed. 
+Given that the benchmark uses static datasets, we minimize the chances that systems can `cheat' by implementing randomized problem parameters, hash checks, and graph data summaries to verify that the benchmark process is being followed. 
 
 \input{Figures/Diagrams/05_cd_apparatus}
 
