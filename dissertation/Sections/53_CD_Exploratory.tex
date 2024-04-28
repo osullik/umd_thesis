@@ -1,7 +1,7 @@
 \section{Conduct Exploratory Experimentation}
 \label{section:53-CD-Exploration}
 
-For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach ( Table~\ref{ Table:cd-survey}).
+For our exploratory analysis, we conduct a survey of prior work in \gai benchmarking, workload analysis, and acceleration for the population segmentation problem, grouped broadly by approach (Table~\ref{ Table:cd-survey}).
 % Dynamic approaches are explicitly called out because they tend to operate on temporal graphs and have a different data structure from the other approaches. 
 Almost all prior work falls within the `community detection' approach discussed in Section~\ref{section:51-CD-Problem}, and so the language of this Section reflects that focus.
 For each approach, we identify the reported worst-case complexity for the algorithm as the efficiency bottleneck and factors that degrade the quality of communities as the effectiveness bottlenecks. 
@@ -9,7 +9,7 @@ For each approach, we identify the reported worst-case complexity for the algori
 Below, we characterize our observations of the stressors to community detection performance: datasets, algorithmic weaknesses, modularity optimization flaws, and dynamic graph processing challenges.
 During our exploration, we identified two techniques to improve performance: external information and approximate solutions. 
 
-\input{ tables/51_CD_Survey}
+\input{Tables/51_CD_Survey}
 
 \subsection{Datasets Observations}
 

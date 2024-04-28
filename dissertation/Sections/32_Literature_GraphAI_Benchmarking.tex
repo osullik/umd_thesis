@@ -7,19 +7,19 @@ From Section~\ref{section:31-literature-benchmarking} and the benchmarks this Se
 The three abstract components that form the benchmark specification are \textit{Datasests}, \textit{Tasks} and \textit{Metrics}.
 We use these components as the focal points for the literature review of $23$ prior benchmarks in graph analytics, \ac{GDB}, and graph neural networks \ac{GNN} to identify gaps that a \gai benchmark should cover.
 
-\input{ tables/31_kernels.tex}
+\input{Tables/31_kernels.tex}
 
 \subsection{Task Coverage.}
 A benchmark task is a specific action that needs to be taken or a problem that needs to be solved; it specifies what the system must do for the benchmark run.
 We identify $23$ graph benchmarks that satisfy at least one category from our \gai taxonomy.
 The reported tasks cluster around traditional graph tasks, GDB-specific tasks, or \ac{GNN} prediction tasks, depending on the focus area of the benchmark.
 
-In  Table~\ref{ Table:benchmark-kernels}, benchmarks are shown grouped according to their focus area-- traditional graph analytics (Graphs), \ac{GDB}, or \ac{GNN}s.
+In  Table~\ref{Table:benchmark-kernels}, benchmarks are shown grouped according to their focus area-- traditional graph analytics (Graphs), \ac{GDB}, or \ac{GNN}s.
 For each benchmark surveyed, we list the total number of tasks and whether at least one task covers each problem area in our \gai taxonomy.
 In addition to those categorizations, we add a column called \ac{ETL} to reflect whether the benchmark measures the critical \ac{ETL} operations for \ac{GDB}s and dynamic graph processing. 
 The coverage of the \ac{ETL} column suggests graph manipulations are often scoped out of traditional graph and \ac{GNN} benchmarks because of their focus on static graph processing and the associated assumption of \ac{ETL} cost amortization.
 
-We identify two key takeaways about the task coverage of current \gai benchmarks based on the information collected in  Table~\ref{ Table:benchmark-kernels}.
+We identify two key takeaways about the task coverage of current \gai benchmarks based on the information collected in  Table~\ref{Table:benchmark-kernels}.
 
 \textbf{Tasks focus on specific operations rather than general problems.}
 In total, we identified $62$ distinct \gai tasks by reviewing benchmark specifications, published results, and public code repositories, suggesting that a wide variety of task coverage is in the literature, just not all in one benchmark.

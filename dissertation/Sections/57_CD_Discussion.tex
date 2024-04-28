@@ -24,7 +24,7 @@ To effectively measure the `benefit' of an incremental solution through batch la
 \textbf{The Louvain Partition implementation behaves inconsistently between \ac{SUT}.}
 One assumption about the benefit of an incremental or approximate approach to balancing effectiveness and efficiency is that it should improve monotonically. 
 That is, the longer it runs, the better the solution gets. 
-Figure~\ref{Figure:monotonics} shows erratic variation in the size of communities and the NMI at each step for the baseline \ac{SUT}, suggesting that we cannot make predic Table trade-offs of efficiency and effectiveness on the baseline system.
+Figure~\ref{Figure:monotonics} shows erratic variation in the size of communities and the NMI at each step for the baseline \ac{SUT}, suggesting that we cannot make predictable trade-offs of efficiency and effectiveness on the baseline system.
 The \ac{GPU} \ac{SUT} does not support the iterative louvain partition implementation. 
 However, the \ac{CPU} \ac{SUT} exhibits the expected monotonic behavior, allowing users to trade-off between effectiveness and efficiency if the implementation is adjusted to \nrscomment{"output" not "print"} print results in-stride, as an alternative approach to work within \nrscomment{time} constraints if \nrscomment{"a GPU is too costly."} it is impractical to use a \ac{GPU}.
 

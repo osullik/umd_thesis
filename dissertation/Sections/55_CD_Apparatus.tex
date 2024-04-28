@@ -33,14 +33,14 @@ To stress across these parameters, we first look for datasets in the \textit{Tin
 We define \textit{Tiny} datasets as those that fit in the cache of a commercial system, $<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold (\url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}})}.
 \textit{Small} can be processed in memory on a personal computer, no larger than $\sim16$Gb, the \textit{medium} should fit in the memory of a commercial system, no larger than $\sim1$Tb, \textit{large} should be fit within the memory of a commercial system (smaller than $5$Tb), and \textit{Huge} should be more extensive than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
 
-Building on the review of dataset coverage in  Table~\ref{ Table:cd-datasets}, we should aim for full coverage of scale-free, uniform-random, and mesh shapes.
+Building on the review of dataset coverage in  Table~\ref{Table:cd-datasets}, we should aim for full coverage of scale-free, uniform-random, and mesh shapes.
 All datasets require ground-truth communities/clusters/partitions for \ac{NMI} calculation.
 Some datasets should be weighted and attributed, and partial assignments of vertices to communities should be made available as an additional stress on memory and to allow approaches to exploit this additional information in their solutions. 
-Dynamic graphs should be sui Table for batch updating and continuous streaming to evaluate dynamic processing algorithms alongside static solutions.
+Dynamic graphs should be suitable for batch updating and continuous streaming to evaluate dynamic processing algorithms alongside static solutions.
 Finally, graphs should be available to stress effectiveness with varying community distributions, mean degree, `fuzziness,' and overlapping and nested communities.
 
-Our datasets are summarized in  Table~\ref{ Table:cd-datasets}, with coverage of our target efficiency and effectiveness difficulty levels shown in Figure~\ref{Figure:cd-datasets}.
-We identify seven sui Table datasets from the \ac{SLNDC} repository ranging from tiny to medium, which are scale-free and cover the distribution of community sizes from small to large. 
+Our datasets are summarized in Table~\ref{Table:cd-datasets}, with coverage of our target efficiency and effectiveness difficulty levels shown in Figure~\ref{Figure:cd-datasets}.
+We identify seven suitable datasets from the \ac{SLNDC} repository ranging from tiny to medium, which are scale-free and cover the distribution of community sizes from small to large. 
 Noting the lack of mesh and random graphs, we generate our own.
 
 \subsubsection{Mesh Graph Generation}
@@ -60,12 +60,12 @@ As Figure~\ref{Figure:cd-datasets} shows, we lack real-world coverage of the spe
 Imitative generators are not yet mature enough to generate the medium and large datasets we require, and sui Table statistical summaries of graphs are not available to seed imitative generators.
 Specific community-detection generators like LFR~\cite{Lancichinetti2008}, AcMARK~\cite{Maekawa2019}, and GenCAT~\cite{Maekawa2023} can generate graphs with ground-truth communities following mathematical distributions, and we use them to fill in the gaps shown in Figure~\ref{Figure:cd-datasets}.
 
-\input{ tables/52_CD_Datasets}
+\input{Tables/52_CD_Datasets}
 
 \input{Figures/Diagrams/17_cd_datasets}
 
 \subsection{Tasks}
-We draw on the problems identified in  Table~\ref{ Table:cd-problem-definition} for our specific tasks. 
+We draw on the problems identified in Table~\ref{Table:cd-problem-definition} for our specific tasks. 
 To enhance the benchmark, we intend for the tasks to be \nrscomment{what do you mean by publicly and generically specified? publicly available and generically specified?} publicly and generically specified, with specific values provided only at experiment time, to \nrscomment{replace the rest with "ensure fairness."} reduce researchers `gaming' the system.
 Figure~\ref{Figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$. \nrscomment{this feels kind of tacked on here. can you add some words to the sentence that ties it back to tasks? like this is the process by which tasks are presented to the SUTs and results are collected?}
 
