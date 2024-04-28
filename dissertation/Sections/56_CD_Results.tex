@@ -5,15 +5,16 @@ The engineer is aware of analyst requirements for their \gai tasks to complete w
 First, we describe the specifics of the experiment setup, and second, we describe the results. 
 
 \subsection{Experiment Setup}
-We implement the \gai population segmentation benchmark in Python 3.11.5 and make the environment\footnote{\scriptsize \url{https://github.com/osullik/umd_thesis/tree/main}} details available \nrscomment{move the footnote to here, it interrupts the flow of the sentence where it currently stands}.
+We implement the \gai population segmentation benchmark in Python 3.11.5 and make the environment details available\footnote{\scriptsize \url{https://github.com/osullik/umd_thesis/tree/main}}.
 The implementation follows the design from Figure~\ref{Figure:cd-apparatus}, except that the benchmark server is located on the system under test and that the polling is done passively by checking the timestamps of an interim-results folder after the experiment. 
 To run the benchmark, the researcher specifies the problem and dataset. 
 
 \input{Figures/Diagrams/19_experiment_specification}
 
-We provide experiment specifications for the experiments shown in Figure~\ref{Figure:experiment-specification}, and listed in Table~\ref{Table:cd-experiments} as \texttt{json} files\footnote{\scriptsize available at: \url{https://github.com/osullik/umd_thesis/tree/main/gaib/experiment_definitions}} that the \texttt{benchmark server} uses to \nrscomment{execute instead of create?} create the experiments. \nrscomment{this reads a bit like "we follow the design except that we kind of fake it by just writing to a file" maybe reword it a bit to hint at why you do it this way- i assume it's for simplicity because we are only testing 3 implementations that are running on the same hardware and software? -- coming back after reading more, nvm you have different hardware. why are you doing it with a file then? because you have access to the systems? i think you need to provide some vague justification, even if its tenuous}
+We provide experiment specifications for the experiments shown in Figure~\ref{Figure:experiment-specification}, and listed in Table~\ref{Table:cd-experiments} as \texttt{json} files\footnote{\scriptsize available at: \url{https://github.com/osullik/umd_thesis/tree/main/gaib/experiment_definitions}} that the \texttt{benchmark server} uses to execute the experiments. 
+% \nrscomment{this reads a bit like "we follow the design except that we kind of fake it by just writing to a file" maybe reword it a bit to hint at why you do it this way- i assume it's for simplicity because we are only testing 3 implementations that are running on the same hardware and software? -- coming back after reading more, nvm you have different hardware. why are you doing it with a file then? because you have access to the systems? i think you need to provide some vague justification, even if its tenuous}
 The process is entirely automated to maximize usability, from requesting a benchmark problem from the server until the server provides the data and Figures in the return report.
-There are three \ac{SUT}. \nrscomment{Instead say "We test the following three SUTs:" and then list them}
+We test the following three SUTs, a \textit{Baseline} system to represent the `start point' of a prototype \gai system, a \textit{CPU} system to represent a \ac{HPC} cluster and a \ac{GPU} system to represent a \ac{HPC} system with a \ac{GPU} installed.
 The \textit{Baseline} system is a personal laptop computer, representing the existing capability of the Engineer's team\footnote{\scriptsize 2023 Apple Macbook Pro; $12$ Core M2 Max Processor, 32GB Hynix LPDDR5 RAM; MacOS 14.1-Darwin-23.4.0}.
 The \textit{CPU} system is a single-socket of a \ac{HPC} cluster\footnote{\scriptsize $16$ Core Intel Xeon Silver 4216 3.2GHz, 32GB RAM; RedHat Enterprise Linux 8.9} and the \ac{GPU} system is a single GPU hosted on a \ac{HPC} cluster\footnote{\scriptsize As per \ac{CPU} system, with addition of $1\times$ NVIDIA RTXA5000 (8192 Cores, $24$GB GDDR6, $768$DB/s memory bandwidth), \ac{CUDA} v12.4}.
 We limit our choice of implementations to the NetworkX library to standardize the representation and \ac{ETL} processes between implementations. 
@@ -23,10 +24,10 @@ The static approach uses the NetworkX \textit{Louvain Communities}\footnote{\scr
 
 \subsection{Experiment Results}
 
-We tie the evaluation closely to the Hypotheses from Section~\ref{section:54-CD-Hypotheses} and group the results by efficiency, effectiveness, and constraints.
+We tie the evaluation closely to the Hypotheses from Section~\ref{section:54-CD-Hypotheses} and group the results by experiments based on hardware stimulation and implementation stimulation hypotheses.
 Hypotheses are used as a guide for investigation rather than a formal testing mechanism, so we abstain from statistical analysis of results at this time but intend to automate evaluation against the hypotheses as part of future work. 
 
-\subsubsection{Efficiency Results}
+\subsubsection{Hardware Stimulation Results}
 \input{Figures/Diagrams/18_results_efficiency_hw_et}
 \input{Figures/Diagrams/21_results_effectiveness_static_nmi}
 
@@ -36,14 +37,10 @@ However, the batch latency for the first results shows that the NetworkX impleme
 
 \input{Figures/Diagrams/20_results_efficiency_proportions}
 
-\subsubsection{Effectiveness Results}
-Figure~\ref{Figure:results-static-nmi} shows that all approaches have comparable effectiveness for static processing approaches. \nrscomment{are they high? low?}
+\subsubsection{Implementation Stimulation Results}
+Figure~\ref{Figure:results-static-nmi} shows that all approaches have comparable effectiveness for static processing approaches, with the effectiveness varying relative to the input dataset and contradicting the hypothesis that scale-free input datasets would have a higher \ac{NMI} than mesh input datasets.
 
-
-
-
-\subsubsection{Constraint Results}
-Figure~\ref{Figure:monotonics} shows that the choice of hardware impacts the execution of the iterative algorithm, with no implementation for the \ac{GPU} and erratic behavior identified for the baseline \ac{SUT}. \nrscomment{how is this a constraint result? when you constrain the hardware type? and what do you mean by erratic- be more specific. not monotonically improving NMI?}
+Figure~\ref{Figure:monotonics} shows that the choice of hardware impacts the execution of the iterative algorithm, with no implementation for the \ac{GPU} and erratic non-monotonic improvement identified for the baseline \ac{SUT}.
 
 \input{Figures/Diagrams/22_results_effectiveness_iterative_nmi}
 
