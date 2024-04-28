@@ -1,19 +1,21 @@
 \section{\gai Benchmark Design}
 \label{section:43-GAI-Design}
 
-Our design of the \gai benchmarking framework draws jointly from the established methods of benchmark design and methods for the empirical studies of algorithms~\cite{Hooker1994, Hooker1995}.
+Our design of the \gai benchmarking framework draws jointly from the established methods of benchmark design, methods for the empirical study of algorithms~\cite{Hooker1994, Hooker1995} and the theory of constraints~\cite{Goldratt1990, Goldratt2004}.
 The prior work in benchmark design guides \textit{what} components to include in the \gai benchmark, namely the \textit{datasets, tasks, metrics} and \textit{system under test}.
-The prior work in the empirical analysis of algorithms determines \textit{how} we determine the composition of those components to maximize the effectiveness and efficiency of a \ac{SUT} for a specific workload. 
+The prior work in the empirical analysis of algorithms determines \textit{how} we compose those components to measure the effectiveness and efficiency of a \ac{SUT} for a specific workload.
+The prior work in constraint theory determines how we identify bottlenecks and design inputs to trigger bottleneck behavior in a \ac{SUT}.
 
 \subsection{Empirical Benchmark Design}
 
 We elect to design our \gai benchmark empirically, which involves applying the scientific method to drive the selection of datasets, tasks, and metrics that are included in the benchmark. 
 The empirical process provides a formal structure that enables transparent, reproducible benchmark development, which we describe in this section.
-The empirical benchmark design process is marked by the iterative development and testing of hypotheses that characterize the typical class of problems that a system or algorithm will face, many of which are informed by real-world data distributions. 
+The empirical benchmark design process is marked by the iterative development and testing of hypotheses that map from input datasets to expected outputs. 
+The hypothesis-based mapping allows a benchmark user to infer the system's internal state based on the observed (input, output) pair.
 
 Our approach draws from John Hooker's framework for the empirical analysis of algorithms, summarized in Figure~\ref{Figure:gai-empirical-method}. 
 His method identifies four key components: the \textit{problem}, the \textit{approach}, the \textit{phenomena}, and the \textit{apparatus}.
-Before explaining the method, we define these four components:
+Before explaining the method, we define these four components.
 The \textit{problem} here studies what we are trying to do (achieve some outcome in the domain and problem space).
 The \textit{approach} here studies the dataset and task features we can use to stimulate the problem (identify datasets, tasks).
 The \textit{phenomena} studies the interactions of an approach with a problem (identify suitable metrics and where to find them).
@@ -28,6 +30,8 @@ These insights are used to design meaningful experiments and valid \textbf{Hypot
 The hypotheses focus the analysis and inform data collection by specifying what phenomena we expect to observe given a problem and an approach under study.
 With the hypotheses established and the phenomena identified, the next step is to \textbf{Construct the Investigation Apparatus} that will coordinate interactions between the benchmark and the system, generate tasks and datasets, and collect the observable behaviors to produce the metrics of interest.
 Finally, the experimenter must \textbf{Analyze the Results, Develop a Theoretic Explanation and Iterate} to move closer to understanding the foundational truths of the problem being studied.
+
+\subsection{Design using the Theory of Constraints}
 
 The design of the \gai framework fuses Hooker's empirical approach with Goldratt's constraint theory~\cite{Goldratt1990, Goldratt2004}.
 Constraint theory uses `five focusing steps' to identify and remediate system bottlenecks. 

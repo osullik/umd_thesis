@@ -1,6 +1,6 @@
 \section{Benchmark Mechanics}
 \label{section:42-GAI-Background}
-This Section briefly extends the literature review from Chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation.
+This section briefly extends the literature review from Chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation.
 
 A benchmark designer must consider the purpose of the benchmark, general principles of benchmark design, and the granularity of the problem~\cite{Carpinetti2002}.
 The purpose of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
@@ -10,8 +10,8 @@ The \gai benchmark design follows the principles of benchmark design. It extends
 
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
-Figure~\ref{Figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete \textit{system under test} (SUT) in the bottom half. 
-These two components interact, and those interactions are what the benchmark measures using our \textit{Observation Apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
+Figure~\ref{Figure:gai-framework-overview-ch4} shows the high-level components of the \gai benchmark framework: the abstract \textit{benchmark specification} in the top half of the Figure and the concrete (SUT) in the bottom half. 
+These two components interact, and those interactions are what the benchmark measures using our \textit{observation apparatus} that acts as an intermediary \ac{API} between the benchmark specification and \ac{SUT}. 
 
 \subsection{Benchmark Specification}
 The benchmark specification is the main component of the \gai benchmark framework. 
@@ -20,7 +20,7 @@ More specifically:
 
 \textbf{Datasets}
 are the challenges that a benchmark needs to `solve.'
-Source domains provide many datasets that become input to an \ac{SUT}, which can be real or synthetic. 
+Source domains provide many datasets that become input to a \ac{SUT}, which can be real or synthetic. 
 The \ac{SUT} receives the dataset (the `challenge') as input and auxiliary information like ground-truth answers for evaluation.
 
 \textbf{Tasks}
@@ -35,7 +35,7 @@ Metrics are defined abstractly as evaluation criteria, collected from the output
 The most common metrics describe the efficiency, effectiveness, and cost of running a given workload on a \ac{SUT}.
 
 \subsection{System Under Test}
-The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} and the \textit{implementations}, which are the specific programs written to execute the workloads specified by the abstract dimensions of the benchmark. 
+The \ac{SUT} by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} as well as the \textit{implementations}, which are the specific programs written to execute the workloads required by the benchmark specification. 
 Figure~\ref{Figure:benchmark-components} shows how the exact benchmark specification can have many SUTs complete the same tasks on the same datasets to generate the same metrics for comparison.
 
 \textbf{Hardware}  
