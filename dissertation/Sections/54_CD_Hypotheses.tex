@@ -43,7 +43,7 @@ To stimulate these bottlenecks, we vary two parameters in the input graph, the v
 Representational choices about storage, abstraction, primitive operations, and programming models can directly impact the efficiency of a \ac{SUT}.
 For example, prior work reviewing linear algebraic graph processing discussed in Sections~\ref{section:23-graph-representations} and~\ref{section:53-CD-Exploration} has shown that the cost of converting between the canonical and linear algebraic representation can increase \ac{ETL} time. 
 Despite the linear algebraic efficiency gains, the \ac{ExT} of linear algebraic approaches for \ac{CD} is slower than a system operating with the \ac{GAS} processing model because of the transformation overheads~\cite{Low2020}. 
-The baseline for representations is an uncompressed adjacency list-based representation (i.e., \ac{CSC}/\ac{CSR}).
+The baseline for representations is an adjacency list-based representation (i.e., \ac{CSC}/\ac{CSR}).
 To stimulate these bottlenecks, we vary the size and shape of the input graphs and define the following hypotheses about the expected impact of varying the input:
 
 \hyp{Linear Algebraic representations used in \ac{CD} will have a longer \ac{ETL} time for the same input data than the baseline approach.}

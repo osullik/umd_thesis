@@ -14,7 +14,7 @@ During our exploration, we identified two techniques to improve performance: ext
 \subsection{Datasets Observations}
 
 \textbf{Graph size.}
-From the survey in  Table~\ref{Table:cd-survey}, the worst-case complexity \nrscomment{of....} is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
+From the survey in  Table~\ref{Table:cd-survey}, the worst-case time complexity is quadratic in the number of vertices, particularly for the dominant algorithms like Louvain~\cite{Blondel2008} and Leiden~\cite{Traag2019}.
 We observe that in many cases, efficiency decreases as $|E|\gg|V|$. 
 
 \textbf{Graph shape.}
@@ -23,7 +23,7 @@ Further, we identify that the effectiveness of community detection approaches de
 \subsection{Implementation Observations}
 
 \textbf{Algorithmic weaknesses exist in community detection.}
-Many approaches require the number of communities, clusters, or partitions to be known in advance, or they must run an algorithm like K-Means multiple times to discover the optimal number of communities \nrscomment{why are you doing the list of cites in parentheses as well?}(\cite{Kernighan1970, Reichardt2004, Ng2001, White2005, Yang2016, Wang2017}), significantly increasing the computational cost when the number of communities is large. 
+Many approaches require the number of communities, clusters, or partitions to be known in advance, or they must run an algorithm like K-Means multiple times to discover the optimal number of communities~\cite{Kernighan1970, Reichardt2004, Ng2001, White2005, Yang2016, Wang2017}, significantly increasing the computational cost when the number of communities is large. 
 Knowing the number of communities a priori does not reflect the discovery process expected in the real world~\cite{Regli2022a}.
 Recursive-bisection partitioning approaches fail when there are three equally sized communities at a given recursion level; at least one will be mistakenly grouped with another and will usually be split across both. 
 Greedy-agglomerative clustering approaches fail when two cliques are connected by nodes of a lower degree than the clique, pulling the `bridge' nodes into the cluster they bridge to rather than their own. 
@@ -33,12 +33,12 @@ The most popular implementation (Louvain~\cite{Blondel2008}) has been shown to p
 \textbf{Modularity optimization is not a reliable strategy.}
 Modularity has several problems despite being the dominant metric in measuring community goodness. 
 Modularity optimization is $NP$-Complete~\cite{Brandes2006}, so algorithms must take heuristic approaches to apply it. 
-Modularity is also scale dependent, meaning it has a scaling factor where a community with a density of internal edges of the order of the $\sqrt[]{2|E|}$ times the \nrscomment{number of} edges in the graph will not be resolved by modularity optimization. \nrscomment{that sentence is too complex. -- youre saying: Mod is scale dependent meaning it has a scaling factor where a community with density on the order of x will not be resolved by mod opt. What has the scaling factor? modularity or modularity optimization?}
+Modularity is also scale-dependent, and optimization techniques suffer from a scaling factor where a community with a density of internal edges of the order of the $\sqrt[]{2|E|}$ times the number of edges in the graph will not be resolved.
 That is, small communities will be missed by modularity optimization.
 In general, `loosely connected' communities are mistakenly combined, especially when the community size distribution has long tails~\cite{Fortunato2007}.
 
-\textbf{Dynamic processing relies on short batch latency.} \nrscomment{youre using T as number of time slices and then at the end of the para using it as a single timestep. pick one. or simply drop it altogether (i.e. several time slices instead of T time slices)}
-The inputs to dynamic graph processing algorithms are either a collection of related graphs describing the same problem at $T$ time slices or may have a stream of updates to reflect when a vertex is added, deleted, or \nrscomment{'modified' instead of updates (present tense) its props?} updates its properties.
+\textbf{Dynamic processing relies on short batch latency.} 
+The inputs to dynamic graph processing algorithms are either a collection of related graphs describing the same problem at several time slices or may have a stream of updates to reflect when a vertex is added, deleted, or modified its properties.
 Consequently, the task is typically to identify when a community changes or which communities persist for extended periods (i.e., the co-traveler problem).
 Many dynamic processing approaches batch the updates and apply a static community detection approach at each iteration, then calculate the similarity in communities between each timestep, with more efficient implementations keeping the prior state in memory to reduce computation~\cite{Rossetti2018}.
 These batching approaches fail in real-time settings where the batch latency exceeds the length of each timestep $T$.
@@ -57,7 +57,7 @@ The same is true of attributes, and prior knowledge about group membership of so
 Completing the exploratory analysis through a literature review reveals the bottlenecks that impact population segmentation approaches, guiding hypothesis development in the next step. 
 
 \textbf{Efficiency bottlenecks.}
-We expect that increasing the number of vertices and the number of edges will degrade the efficiency of \nrscomment{replace definite article with CD or pop seg} the approaches, given the worst-case complexity estimates in  Table~\ref{Table:cd-survey}.
+We expect that increasing the number of vertices and the number of edges will degrade the efficiency of population segmentation approaches, given the worst-case complexity estimates in  Table~\ref{Table:cd-survey}.
 
 \textbf{Effectiveness bottlenecks.} 
 The effectiveness of \ac{CD} approaches is vulnerable to fuzzy and overlapping communities, denser graphs, and the existence of `bridges' between cliquey structures.
@@ -68,5 +68,5 @@ We identify additional friction points, including the requirement for a priori k
 % \nrscomment{can you cut this paragraph? its not really a relevant output that you use in constructing the benchmark is it? and it's kind of redundant to the phenomena ID phase where you say trading off effectiveness and efficiency}
 %Kent: I could, but it emphasizes that there is an iterative approach, which we use for the second implementation on SUTs  
 \textbf{Curiosities and opportunities.} 
-The salient opportunity is to explore the efficiency-effectiveness trade-off using an iterative approach to community detection that outputs interim results as they are generated \nrscomment{remainder of sentence is repetitive to start of sentence} and offers the opportunity to experiment with trading off efficiency and effectiveness. 
-Another interesting constraint-based problem is in finding the optimal timestep $T$ \nrscomment{drop T} length for a dynamic \ac{CD} approach to determine how long it should wait when receiving a stream before commencing a batch update. 
+The salient opportunity is to explore the efficiency-effectiveness trade-off using an iterative approach to community detection that outputs interim results as they are generated. 
+Another interesting constraint-based problem is in finding the optimal timestep length for a dynamic \ac{CD} approach to determine how long it should wait when receiving a stream before commencing a batch update. 
