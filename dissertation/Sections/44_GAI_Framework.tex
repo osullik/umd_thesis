@@ -2,35 +2,34 @@
 \label{section:44-GAI-Framework}
 
 % \nrscomment{this first sentence has too high overlap with the previous paragraph}
-This section will present each of the steps in our proposed benchmark development methodology summarized in Figure~\ref{Figure:gai-framework-overview-ch4}, to develop a `grey-box' approach to \gai benchmarking using an Input/Output model.
+This section presents each of the steps in our proposed benchmark development methodology summarized in Figure~\ref{Figure:gai-framework-overview-ch4}, to develop a `grey-box' approach to \gai benchmarking using an Input/Output model.
 It should be used as a guide for applying the methodology to develop a single \gai benchmark problem to be inserted into the framework. 
 Figure~\ref{Figure:gai-framework-overview-ch4} consists of six steps across the six black boxes. 
-The grey circles are the focusing questions for each step, and the questions below the lines in the black boxes are the output prompts that define what the step should be producing. 
+The grey circles are the focusing questions for each step, and the questions below the lines in the black boxes are the output prompts that define what each step should produce. 
 The arrows show how each step contributes to the benchmark framework. 
 Note that the \gai benchmark design is independent of the \ac{SUT}, defining the observation apparatus as a single interaction point between the \gai benchmark framework and the \ac{SUT}.
-We present the critical methodological considerations at each step to develop a single benchmark to be added to the framework and make some general observations about the requirement for and design of the observation apparatus. 
-Chapter~\ref{chapter:50-Community-Detection-Case-Study} demonstrates a worked example of how the methodology is implemented for a specific problem.
+After presenting the critical methodological considerations and general observations about the requirement for and design of the observation apparatus in this chapter, we demonstrate a worked example of how the methodology can be implemented for a specific problem in Chapter~\ref{chapter:50-Community-Detection-Case-Study}. \nrscomment{check this sentence i reworded}
 
 % \input{Figures/Diagrams/07_gai_framework}
 
 \textbf{Identifying the Use Case.}
 The first step in creating the benchmark is to identify the underlying domain for the benchmark and select several problem use cases. 
 The use case may be driven by necessity or the target of exploratory research.
-The domain should be from the real world, but provided there are open problems and some representative datasets are available, most problems can be formalized into a use case.
+The domain should be from the real world, but provided there are open problems and some representative datasets are available, most problems can be formalized into a use case. \nrscomment{how does the first clause of that sentence contrast the second? domain should be from real world but if there are datasets most problems can be use cases? meaning non real world problems can be as well? if thats what you mean then thats fine, disregard}
 
 \textbf{Identifying and Characterizing a Relevant Problem.}
-Characterizing the problem is about identifying what we want to test and identifying the tasks and datasets typical of the domain with a background study. 
+Characterizing the problem requires identifying what we want to test and identifying the tasks and datasets typical of the domain with a background study. 
 Tasks should be defined as general goals and challenges rather than specific kernels.
-Formulating problem-centric tasks instead of abstracting them to a kernel encourages innovative problem-solving approaches. 
-For example, in \gai, a problem definition might be \textit{`Given the input X, identify who the immediate associates of a person with name Y, provide the output as a list of vertex IDs'} rather than kernels like \textit{`BFS to node X'}, \textit{`search for X in a GDB'}, etc..
-The problem-centric approach still allows for comparing like-approaches (e.g., comparing the same BFS algorithm on two different SUTs) by freezing all other benchmark components and varying the SUT hardware. 
+Formulating problem-centric tasks instead of abstracting them to kernels encourages innovative problem-solving approaches. 
+For example, in \gai, a problem definition might be \textit{`Given the input X, identify the immediate associates of a person with name Y. Provide the output as a list of vertex IDs.'} rather than kernels like \textit{`BFS to node X.'}, \textit{`Search for X in a GDB.'}, etc..
+The problem-centric approach still allows for comparing like approaches (e.g., comparing the same BFS algorithm on two different \ac{SUT}s) by freezing all other benchmark components and varying the \ac{SUT} hardware. 
 
 \textbf{Identifying and Characterizing the Phenomena of Interest.}
 The goal of characterizing the phenomena is to identify what we want to understand about the problems and what metrics we need to collect to understand them. 
-The phenomena of interest is the trade-off between the efficiency, effectiveness, and cost of \gai systems.
+In \gai, the phenomena of interest is the trade-off between the efficiency, effectiveness, and cost. \nrscomment{check wording i changed on prev sent}
 Thus, the metrics selected for the benchmark should characterize the trade-off between those aspects of performance. 
-While not shown explicitly in Figure~\ref{Figure:gai-framework-overview-ch4}, the phenomena are generated by the interactions of the approaches, datasets, and tasks within a given problem and collected by the observation apparatus.
-For example, in most \gai tasks, we expect \ac{ETLT}, \ac{ExT}, \ac{BL}footnote{\textnormal{\scriptsize The time between when a vertex or edge is added to a graph and when it appears in the result of a workload~\cite{Basak2020}}} and \textit{Cost} to be the chosen metrics.
+While not shown explicitly in Figure~\ref{Figure:gai-framework-overview-ch4}, the phenomena are generated by the interactions of the approaches, datasets, and tasks within a given problem and are collected by the observation apparatus.
+For example, in most \gai tasks, we expect \ac{ETLT}, \ac{ExT}, \ac{BL}\footnote{\textnormal{\scriptsize The time between when a vertex or edge is added to a graph and when it appears in the result of a workload~\cite{Basak2020}}}, and \textit{Cost} to be the chosen metrics.
 For each problem, the phenomena must be tailored so that an output's assessed `goodness' is meaningful.
 
 \textbf{Conduct Exploratory Experimentation.}
@@ -46,7 +45,7 @@ Hypotheses are developed in this methodology by using the knowledge gathered dur
 Hypotheses are effectively the mapping from input shapes to expected outputs in the context of some bottlenecks we expect to stimulate in the system.
 Consequently, it can be helpful to derive them by applying the three constraint levers of time (efficiency), resources (cost), and accuracy (effectiveness). 
 These levers provide a mechanism to identify the trade-offs in \gai between efficiency, effectiveness, and cost by constraining one (or more) and observing changes in the phenomena under observation.
-Table~\ref{Table:gai-variance} summarizes the behavior we expect to stimulate from a SUT by constraining time, accuracy, or cost across any \gai problem and defines an important interaction of constraint theory with the empirical approach to the study of algorithms, showing how manipulating the input or the constraints on efficiency, effectiveness and cost can shift the stress points within a \ac{SUT} to provide a `grey-box' view.
+Table~\ref{Table:gai-variance} summarizes the behavior we expect to stimulate from a \ac{SUT} by constraining time, accuracy, or cost across any \gai problem and defines an important interaction of constraint theory with the empirical approach to the study of algorithms, showing how manipulating the input or the constraints on efficiency, effectiveness and cost can shift the stress points within a \ac{SUT} to provide a `grey-box' view.
 
 \input{Tables/42_gai_variance}
 
@@ -59,23 +58,23 @@ Table~\ref{Table:gai-variance} summarizes the behavior we expect to stimulate fr
 The investigation apparatus is constructed in three key steps.
 First is collecting or generating datasets that will stress each hypothesis to stimulate the phenomena we intend to observe. 
 The second is defining the metrics of interest and developing a mechanism to collect the data needed to generate them. 
-The third step is integrating the SUT into the apparatus.
-There will be some API configurations in an input/output paradigm, but for a hosted solution, it may involve test compilations, etc.. 
-Specific to the \gai benchmark is a need to trade-off between effectiveness and efficiency that will require sampling the available answers over time and evaluating correctness as a distance from the ground-truth solution rather than a binary judgment of correctness. 
+The third step is integrating the \ac{SUT} into the apparatus.
+There will be some API configurations in an Input/Output paradigm, but for a hosted solution, it may involve test compilations, etc.. \nrscomment{can you say "and other ..." instead of etc? basically clarify what class of other things you mean?}
+Specific to the \gai benchmark is a need to trade off between effectiveness and efficiency that requires sampling the available answers over time and evaluating correctness as a distance from the ground-truth solution rather than a binary judgment. 
 
 \textbf{Analyze the Results, Developing a Theoretic Explanation and Iterating.}
 These three steps are combined because they are largely beyond the scope of the benchmark itself. 
-The researcher is responsible for these, but the benchmark must enable the researcher to conduct their analysis. 
+The researcher is responsible for these steps, but the benchmark must enable the researcher to conduct their analysis. 
 To that end, the benchmark should report the \textit{efficiency, effectiveness}, and \textit{cost} (performance metrics) of each workload on each \ac{SUT} configuration. 
-It should also report the details of the datasets, implementations, and \ac{SUT} for posterity.
-Results should be viewable from the perspective of a \ac{SUT} (exploring each aspect of performance) and from the perspective of each performance aspect (comparing across \ac{SUT}s). 
+It should also report the details of the datasets, implementations, and \ac{SUT} for posterity. \nrscomment{for repeatability? isntead of posterity?}
+Results should be viewable from the perspective of a \ac{SUT} (exploring each aspect of performance) and from the perspective of a given aspect of performance (comparing performance across \ac{SUT}s). 
 The preliminary results can then be used to develop specific constraint-based experiments to be incorporated in future benchmark iterations as the hypotheses are refined and more input/output mappings are identified. 
 
 \input{Figures/Diagrams/16_gai_framework_ch4}
 
 \section{Summary: A `Grey-Box' \gai Benchmark Framework}
 This chapter develops the \gai benchmark framework by identifying the common benchmark components and the need to add an `observation apparatus' to mediate between benchmark problems and a \ac{SUT} in an Input/Output paradigm. 
-Synthesizing the empirical approach for the study of algorithms with constraint theory shows how our \gai benchmark problem development methodology empowers a benchmark developer to identify the problems and datasets that will trigger known and suspected bottlenecks in \gai algorithms and systems, creating a `grey-box' method to investigate the internal state of \ac{SUT}s without the invasive access required by traditional `white-box' approaches. 
+Synthesizing the empirical approach for the study of algorithms with constraint theory, our \gai benchmark problem development methodology empowers a benchmark developer to identify the problems and datasets that will trigger known and suspected bottlenecks in \gai algorithms and systems, creating a `grey-box' method to investigate the internal state of \ac{SUT}s without the invasive access required by traditional `white-box' approaches. \nrscomment{check prev sentence for edits}
 The next chapter shows how the \gai benchmark problem development methodology creates the \textit{Population Segmentation Benchmark Problem} for the \gai benchmark framework and how the benchmark can evaluate systems' relative performance. 
 
 
