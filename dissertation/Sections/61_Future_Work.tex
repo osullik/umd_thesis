@@ -4,8 +4,8 @@
 Our \gai benchmark framework has many avenues for future work, including simple implementation and engineering challenges, the development of a complementary maturity model, support for dynamic inputs, cost measurement, and further development of constraint-based experimentation.
 
 
-\textbf{Engineering challenges.}
-Many engineering and data collection problems must be addressed to build the benchmark system, \nrscomment{that makes it sound like it isnt built yet at all} including expanding the dataset coverage using synthetic data generators, adding a linear algebraic approach to \ac{CD}, and testing the benchmark on a distributed \ac{SUT}, a shared-memory parallel \ac{SUT}, and hardware-accelerated \ac{SUT}. 
+% \textbf{Engineering challenges.}
+% Many engineering and data collection problems must be addressed to extend the benchmark system, including expanding the dataset coverage using synthetic data generators, adding a linear algebraic approach to \ac{CD}, and testing the benchmark on a distributed \ac{SUT}, a shared-memory parallel \ac{SUT}, and hardware-accelerated \ac{SUT}. 
 
 \textbf{A Benchmarking Maturity Model.}
 After reviewing many benchmark approaches, we have identified that there appears to be an implicit maturity model in benchmark development. 
@@ -40,6 +40,6 @@ However, a micro benchmarking approach will break down when using bespoke hardwa
 \textbf{Constraint-Based Experimentation.}
 Real-world \gai systems must operate under efficiency, effectiveness, and cost constraints. 
 The experiments in Section~\ref{section:56-CD-Results} show how efficiency and effectiveness can be easily tracked and limited to simulate constrained environments. 
-Our \gai benchmark system can be easily extended to enable exploratory investigation of \gai performance under specific constraints beyond what has \nrscomment{what do you mean what has been explored by the benchmark? a benchmark cant explore. addressed maybe?} been explored by the benchmark in terms of evaluating hardware, representation, and implementation variations.
-Extending the experiments will expand the \gai benchmark framework into a platform for simulating more complicated `what-if' scenarios and potentially simulating edge-computing, low \ac{SWaP} thresholds, and other business or policy constraints. \nrscomment{check my changes to alst sentence are ok
+Our \gai benchmark system can be easily extended to enable exploratory investigation of \gai performance under specific constraints beyond what has been addressed by the benchmark in terms of evaluating hardware, representation, and implementation variations.
+Extending the experiments will expand the \gai benchmark framework into a platform for simulating more complicated `what-if' scenarios and potentially simulating edge-computing, low \ac{SWaP} thresholds, and other business or policy constraints.
 
