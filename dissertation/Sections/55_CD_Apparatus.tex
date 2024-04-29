@@ -4,17 +4,17 @@
 The apparatus is the physical instantiation of the problem benchmark.
 Figure~\ref{Figure:ch1-framework} shows how the apparatus is derived from each process step. 
 Three of the components (datasets, tasks, and metrics) are consistent with traditional benchmarking approaches (see Figure~\ref{Figure:benchmark-components}).
-We add the explicit definition of the observation apparatus, which is the fourth component comprising the concrete implementation of the benchmark. \nrscomment{check prev sentence for edits} 
-Combined, they \nrscomment{they = these components?} have two key roles. 
+We add the explicit definition of the observation apparatus, which is the fourth component of the concrete implementation of the benchmark. 
+Combined, these components have two key roles. 
 First, they must interact with the \ac{SUT} -- problems and datasets go in, and solutions for evaluation come out.
 Second, they must monitor the phenomena emerging from the \ac{SUT} throughout the process.
-Figure~\ref{Figure:cd-apparatus} is the envisaged workflow for the population segmentation problem benchmark, showing how the physical components of the observation apparatus interact between the benchmark and the \ac{SUT}.
-\nrscomment{gerund applies to the wrong subject in prev sentence. replace with "The envisaged workflow for the population segmentation problem benchmark (Figure~\ref{Figure:cd-apparatus}) shows how the physical components of the observation apparatus interact between the benchmark and the \ac{SUT}."}
+The envisaged workflow for the population segmentation problem benchmark (Figure~\ref{Figure:cd-apparatus}) shows how the physical components of the observation apparatus interact between the benchmark and the \ac{SUT}.
 
-The population segmentation benchmark workflow is representative of the expected workflow for most problems in the \gai taxonomy because, \nrscomment{the subject is currently the pop seg workflow-- which is not a GM task. fix subj-obj mismatch} as a \ac{GM} task, it is in the family of \gai problems used most by the \ac{IandS} community.
-\nrscomment{"The population segmentation benchmark workflow is representative of the expected workflow for most problems in the \gai taxonomy because population segmentation is a \ac{GM} task, which is in the family of \gai problems used most by the \ac{IandS} community."}
-\nrscomment{Pop seg} It can be solved in multiple ways (including with \ac{GNN}s), focuses on graph topology but can also use attribute information, admits approximate and iterative solutions, has a linear algebraic implementation, and has real-world temporal constraints that may benefit from trading effectiveness for efficiency. \nrscomment{that sentences says "pop seg can ..., focuses..., admits..., has..., and has... ." reword it.}
-In the remainder of this section, we summarize the concrete components of the apparatus, showing \nrscomment{showing or detailing?} how they were created and identifying \nrscomment{opportunities to expand.... what?} expansion opportunities. 
+The population segmentation benchmark workflow is representative of the expected workflow for most problems in the \gai taxonomy because population segmentation is a \ac{GM} task, which is in the family of \gai problems used most by the \ac{IandS} community.
+Population Segmentation can be solved in multiple ways (including with \ac{GNN}s). 
+Approaches focus on graph topology but can also use attribute information.
+Further, approximate and iterative solutions are acceptable, a linear algebraic implementation already exists, and real-world temporal constraints exist on the problem that necessitates trading effectiveness for efficiency. 
+In the remainder of this section, we summarize the concrete components of the apparatus and how they are implemented.
 
 \subsection{Observation Apparatus}
 The observation apparatus is a component we include in our benchmark design to explicitly represent the decisions about how the benchmark will interact with the \ac{SUT}.
@@ -25,32 +25,30 @@ System variance reflects the benchmark's real-world implications; if someone can
 More specifically, we choose the Input/Output model to accommodate the wide variety in \gai acceleration approaches.
 For hardware-based acceleration, \ac{GHA}~\cite{Aananthakrishnan2020, Fu2014, Wang2016, Sundaram2015, Liu2019, Wu2015, Zhang2023, Dadu2021, Chen2020, Song2016, Ham2016, Dysart2016} and \ac{GNN} accelerators~\cite{Wu2021a, Baruah2021, Zhang2023, Kiningham2022, Yan2020, Lin2023, Zhang2023b, Lin2024, Zhu2023, Zhong2023, Zhang2023a, Chen2023, Abi2023} are proliferating rapidly, and a future-proof benchmarking framework must accommodate as many variations as possible to remain relevant.
 % 
-Represenation-based acceleration techniques for \ac{CD} have created \nrscomment{replace multiple different with various?} multiple different implementations including canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019}.
+Represenation-based acceleration techniques for \ac{CD} have created various implementations including canonical sequential~\cite{Blondel2008}, distributed~\cite{Ghosh2018}, shared-memory~\cite{Ghosh2019} on \ac{CPU} and \ac{GPU}~\cite{Wang2016}, as well as linear-algebraic approaches for \ac{CPU}~\cite{Low2020} and \ac{GPU}~\cite{Mattson2019}.
 Configuring instrumentation for all of these systems is infeasible, and a hosted benchmark would exclude too many of the approaches, leading us to select an enhanced Input/Output model for the benchmark. 
 
 \subsection{Datasets}
 Datasets in the \gai population segmentation problem are expected to be large, scale-free, and heterogeneous attributed graphs.
-The hypotheses identify the requirement to scale the number of vertices, the density of the graphs, the distribution of degrees, and the distribution of communities, and they optionally include weights and attributes. \nrscomment{can you ref a hypothesis or several for each of those?}
+The Hypotheses identify the requirement to scale the number of vertices (H3 and H5), the density of the graphs (H5 and H11), the distribution of degrees (H5 and H11), and the distribution of communities (H5 and H11), and they optionally include weights and attributes. 
 The review of \ac{CD} problems also shows that \ac{CD} can be applied to dynamic graphs.
 
 To stress across these parameters, we first look for datasets in the \textit{Tiny, Small, Medium, Large} and \textit{Huge} range. 
-We define \textit{Tiny} datasets as those that fit in the cache of a commercial system ($<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold (\url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}})}).
-\nrscomment{the structure feels unbalanced- tiny has it sown sentence, then all the rest listed in one run-on. maybe do tiny small and medium in one then large and huge in the next?}
-\textit{Small} can be processed in memory on a personal computer, no larger than $\sim16$Gb, the \textit{medium} should fit in the memory of a commercial system, no larger than $\sim1$Tb, \textit{large} should be fit within the memory of a commercial system (smaller than $5$Tb), and \textit{Huge} should be more extensive than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
+We define \textit{Tiny} datasets as those that fit in the cache of a commercial system ($<60$Mb\footnote{\scriptsize{Based on Intel Xeon Gold (\url{https://www.intel.com/content/www/us/en/products/details/processors/xeon/scalable/gold/products.html}})}) and \textit{Small} as those that can be processed in memory on a personal computer, no larger than $\sim16$Gb.
+The \textit{medium} should fit in the memory of a commercial system, no larger than $\sim1$Tb, \textit{large} should be fit within the memory of a commercial system (smaller than $5$Tb), and \textit{Huge} should be more extensive than what will fit in the memory of a single commercial system (at least $\sim5$Tb).
 
-Building on the review of dataset coverage in  Table~\ref{Table:cd-datasets}, we \nrscomment{strive for full} should aim for full coverage of scale-free, uniform-random, and mesh shapes.
+Building on the review of dataset coverage in  Table~\ref{Table:cd-datasets}, we strive for full coverage of scale-free, uniform-random, and mesh shapes.
 All datasets require ground-truth communities/clusters/partitions for \ac{NMI} calculation.
 Some datasets should be weighted and attributed, and partial assignments of vertices to communities should be made available as an additional stress on memory and to allow approaches to exploit this additional information in their solutions. 
 Dynamic graphs should be suitable for batch updating and continuous streaming to evaluate dynamic processing algorithms alongside static solutions.
-Finally, graphs should be available to stress effectiveness with varying community distributions, mean degrees, `fuzziness,' and overlapping and nested communities. \nrscomment{'fuzziness' levels? to pluralize it explicitly?}
+Finally, graphs should be available to stress effectiveness with varying community distributions, mean degrees, `fuzziness' levels, and overlapping and nested communities.
 
 Our datasets are summarized in Table~\ref{Table:cd-datasets}, with coverage of our target efficiency and effectiveness difficulty levels shown in Figure~\ref{Figure:cd-datasets}.
 We identify seven suitable datasets from the \ac{SLNDC} repository ranging from tiny to medium, which are scale-free and cover the distribution of community sizes from small to large. 
 Noting the lack of mesh and random graphs, we generate our own.
 
 \subsubsection{Mesh Graph Generation}
-\nrscomment{To our knowledge there are no current publicly available mesh...}
-There were no publicly available mesh graphs with ground truth community labels. 
+To our knowledge, there were no publicly available mesh graphs with ground truth community labels. 
 We develop a tool to generate directed, weighted, attributed graphs with hierarchical and overlapping communities from \ac{OSM} road network data\footnote{\scriptsize tool available at \url{https://github.com/osullik/umd_thesis/blob/main/md_roads/osmg.py}}. 
 Our tool queries the \ac{OSM} \ac{API} for a given city, county, or state, extracts the road segments (ways), and creates a vertex where segment ends meet or multiple segments intersect. 
 We construct the graph using Python's NetworkX~\cite{Hagberg2008} and assign each vertex the attributes of its latitude, longitude, and street name. 
@@ -75,7 +73,7 @@ We draw on the problems identified in Table~\ref{Table:cd-problem-definition} fo
 To enhance the benchmark, we intend for the tasks to be publicly and generically specified.
 That means the complete list of problem-centric task templates will be available to benchmark users in advance to prepare and test systems. 
 However, the specific values will only be provided at experiment time to ensure fairness.
-For example, the public generic definition might be \texttt{`What other nodes are in the same group as vertex (x)?'}, but when the benchmark is actually run, the specific problem of \texttt{``What other nodes are in the same group as the vertex with name==`Mr\_Black' ''?} \nrscomment{the double quotes there look really weirdly spaced out}
+For example, the public generic definition might be \texttt{`What other nodes are in the same group as vertex (x)?'}, but when the benchmark is actually run, the specific problem of \texttt{``What other nodes are in the same group as the vertex with name==`Mr\_Black'''?}
 Figure~\ref{Figure:cd-apparatus} shows the back-and-forth process between the SUT and the benchmark as steps $1-4$, which is how all tasks are provided to the \ac{SUT} by the \ac{BS}.
 
 \subsection{Metrics} 
