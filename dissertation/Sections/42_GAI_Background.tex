@@ -1,7 +1,6 @@
 \section{Benchmark Mechanics}
 \label{section:42-GAI-Background}
-This section briefly extends the literature review from Chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation. \nrscomment{why para break here?}
-
+This section briefly extends the literature review from Chapter~\ref{chapter:30-Literature-Review} by reviewing specific work in benchmark design and construction to identify guiding principles for constructing our benchmark and conducting experimentation. 
 A benchmark designer must consider the purpose of the benchmark, general principles of benchmark design, and the granularity of the problem~\cite{Carpinetti2002}.
 The purpose of the benchmark defines how a designer scopes the benchmark and applies the four core principles of benchmark design (\textit{relevance, fairness, reproduciblity} and \textit{verifiability})~\cite{Huppler2009, Kistowski2015}. 
 The purpose of the benchmark also drives its level of granularity. 
@@ -34,9 +33,9 @@ are how we define, collect, and compute the observable interactions of a SUT and
 Metrics are defined abstractly as evaluation criteria, collected from the outputs of the SUT as measurements, and then compared to develop a relative performance model between systems. 
 The most common metrics describe the efficiency, effectiveness, and cost of running a given workload on a \ac{SUT}.
 
-\subsection{System Under Test} \nrscomment{i changed "The SUT by the benchmark" to "system undergoing test"}
+\subsection{System Under Test}
 The system undergoing test by the benchmark comprises of the \textit{environment}, which consists of the \textit{hardware} and underlying \textit{software stack} as well as the \textit{implementations}, which are the specific programs written to execute the workloads required by the benchmark specification. 
-Figure~\ref{Figure:benchmark-components} shows how the \nrscomment{the exact benchmark specification?} exact benchmark specification can have many \ac{SUT}s complete the same tasks on the same datasets to generate the same metrics for comparison.
+Figure~\ref{Figure:benchmark-components} shows how the benchmark specification can have many \ac{SUT}s complete the same tasks on the same datasets to generate the same metrics for comparison.
 
 \textbf{Hardware}  
 is the environment component referring to all the physical components of the \ac{SUT}, including host machines, hardware accelerators, or distributed systems.  
