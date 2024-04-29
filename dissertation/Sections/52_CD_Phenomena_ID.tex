@@ -17,12 +17,12 @@ These methods are limited in their ability to provide a reliable evaluation, as 
 Further, optimizing the modularity metric is $NP$-Complete~\cite{Brandes2006}, and heuristic approaches degrade for small communities and skewed community distributions~\cite{Fortunato2007}, which are typical of scale-free graphs~\cite{Barabasi1999, Girvan2002} that characterize the problem domain. 
 
 \subsection{Cost}
-Cost is ideally measured as a function of power consumption or as an estimated `cost per minute' based on the SUT's specifications.
-The \gai benchmark framework initially focuses on an Input/Output benchmark paradigm.
+Cost is ideally measured as a function of power consumption or as an estimated `cost per minute' based on the \ac{SUT}'s specifications.
+Our \gai benchmark framework initially focuses on an Input/Output benchmark paradigm.
 Consequently, `cost' is challenging to measure because the system's internal state (power consumption, memory usage, processor cycles etc.) is unknown.
-To better address cost in the future, we propose deploying a hosted benchmark instance to the ARLIS \textit{Quantum Inspired Classical Computing} (QUICC) testbed.
+To better address cost in the future, we propose deploying a hosted benchmark instance to the \ac{ARLIS} \textit{Quantum Inspired Classical Computing} (QUICC) testbed.
 The testbed will provide measurements of power consumption by the controlling containers using \textit{Kepler}\footnote{{\scriptsize \url{https://sustainable-computing.io/design/architecture/}}}.
-Further, we aim to develop a daemon to deploy to a SUT to collect power consumption statistics using the \textit{PowerAPI Project}\footnote{{\scriptsize \url{https://powerapi.org/}}}, which would be an optional component of the benchmark limited to running on compatible physical Linux-based systems. 
+Further, we aim to develop a daemon to deploy to a \ac{SUT} to collect power consumption statistics using the \textit{PowerAPI Project}\footnote{{\scriptsize \url{https://powerapi.org/}}}, which would be an optional component of the benchmark limited to running on compatible physical Linux-based systems. 
 Currently, cost is excluded from the Population Segmentation benchmark problem due to the lack of an accurate measurement avenue and the inherent drawbacks of predictive cost models.
 
 \subsection{Outputs}
