@@ -3,48 +3,52 @@
 
 A \textit{bottleneck}, or \textit{system constraint} is any resource whose capacity is less than or equal to the demand placed on it~\cite{Goldratt2004}. 
 Designing tasks that will discriminate \gai system performance to create a `grey-box' understanding of the system state requires understanding the common bottlenecks in \gai systems.
-This section summarizes the primary \gai bottlenecks commonly identified in \gai workload analyses-- \textit{memory, compute} and \textit{communication} bottlenecks.
+This section summarizes the primary \gai bottlenecks commonly identified in \gai workload analyses-- \textit{memory, compute}, and \textit{communication} bottlenecks.
 
 \subsection{Memory Bottlenecks}
-Memory bottlenecks are when the maximum capacity of a system is limited by the speed of reading from and writing to memory. 
+Memory bottlenecks manifest when the maximum capacity of a system is limited by the speed of reading from and writing to memory. \nrscomment{check edit to first sentence}
 Memory bottlenecks occur when a system cannot keep a processor fully occupied because the data required for computation cannot be moved from memory to the processor quickly enough~\cite{Hennessy2019}.
 They occur in graph processing because of the lack of locality and consequent underutilization of the cache hierarchy described in Section~\ref{section:26-system-preliminaries}. 
 Subproblems contributing to memory bottlenecks are memory bandwidth utilization and memory latency. 
-Memory bandwidth defines how much can concurrently be moved to and from memory.
+Memory bandwidth defines how much \nrscomment{how much data?} can concurrently be moved to and from memory.
 It becomes the bottleneck when there is poor cache utilization~\cite{Ahn2015}, competing parallel processes~\cite{Fu2014, Buluc2012} or irregular memory access patterns~\cite{Aananthakrishnan2020, Zhang2017, Song2016} causing the processor to stall because not enough data is getting to it~\cite{Satish2014}.
 Memory latency defines how long it takes to retrieve required data from memory and exacerbates the under-utilization of memory bandwidth~\cite{Kanev2015, Wu2021a}.
 Latency is problematic in \gai applications because the irregular data accesses coming from the inherent lack of spatial and temporal locality~\cite{Oguntebi2016, Ham2016} cause cache misses~\cite{Song2016, Zhang2017, Beamer2015} and inefficient cache usage~\cite{Ham2016, Mukkara2018, Aananthakrishnan2020}.
 These caching issues result in slow main memory accesses that even optimized pipelined architectures cannot `hide'~\cite{Dysart2016}.
-The \gai benchmark framework will use input data to trigger memory bottlenecks. 
+The \nrscomment{Our} \gai benchmark framework \nrscomment{uses} will use input data to trigger memory bottlenecks. 
 Graphs with high vertex counts and high (but regularly distributed) degrees will induce the pointer-chasing behavior that forces memory bottlenecks to manifest. 
+\nrscomment{swap the last 2 sentences: "Graphs with high vertex counts and high (but regularly distributed) degrees tend to induce pointer-chasing behavior that forces memory bottlenecks to manifest. Our \gai benchmark framework uses these types of input data to trigger memory bottlenecks in \ac{SUT}s."}
 
 \subsection{Computation Bottlenecks}
 Computation bottlenecks occur when the system can serve data to the processor faster than operations can be performed on them. 
-Optimizations for general-purpose architectures fail to deliver many benefits because of the irregular data-dependent executions in graph processing~\cite{Dadu2021}. 
+Optimizations for general-purpose architectures fail to deliver many benefits \nrscomment{to \gai systems} because of the irregular data-dependent executions in graph processing~\cite{Dadu2021}. 
 For example, branch misprediction is common~\cite{Aananthakrishnan2020}, and distributed workloads frequently become unbalanced~\cite{Aananthakrishnan2020, Ozdal2017}.
 
-Looking at \ac{GNN}, they have hybrid computing patterns that combine irregular graph processing and regular dense neural network processing. 
-As a result, they suffer from both memory and computation bottlenecks and are challenging to implement efficiently on general-purpose architectures~\cite{Yan2020}. 
-To mitigate the impact of hybrid computing patterns, \ac{GNN}s break algorithms into collections of the \ac{GAS} primitives to take advantage of distributed and accelerated computing built for that abstraction model. 
-For the \gai benchmark, we implement an Input/Output benchmark design so that a benchmark user can bring any arbitrary system configuration to test, trialing different hardware accelerators and system configurations to try and elevate the computation bottleneck.
+Hybrid computing patterns trigger both memory and computation bottlenecks. 
+For instance, \ac{GNN}s combine irregular graph processing and regular dense neural network processing, making them challenging to implement efficiently on general-purpose architectures~\cite{Yan2020}.
+To mitigate the impact of hybrid computing patterns, \ac{GNN}s break algorithms into collections of the \ac{GAS} primitives to take advantage of distributed and accelerated computing built for that abstraction model. \nrscomment{check this paragraph i reworded it}
+
+\nrscomment{i think this sentence is the conclusion of Computation bottleneck so it belongs above the GNN stuff. Hybrid should be after you finish talking about Mem and Comp. Hybrid is its own paragraph after those 2. Probably doesnt warrant a header, just put it after youre fully done with Comp}
+Our \gai benchmark implements an Input/Output benchmark design, allowing a benchmark user to test an arbitrary system configuration, trialing different hardware accelerators and system configurations to try to elevate the computation bottleneck. \nrscomment{you say system config twice-- test a system config, trialing different system configs... change the second one or drop it}
 
 
 \subsection{Communication Bottlenecks}
 Communication bottlenecks occur when a system lacks the bandwidth to transfer data between workers, or communication latency makes frequent communications impractical.
 They are caused by transferring large amounts of data and communication-intensive algorithms that require a lot of network traffic to stay synchronized.
-For graph processing, communication bottlenecks occur in parallel computing settings or when an external hardware accelerator is used.
-These are caused by separation, movement, and synchronization overheads.
+For graph processing, communication bottlenecks occur in parallel computing settings or when an external hardware accelerator is used, causing separation, movement, and synchronization overheads. \nrscomment{check edits}
 Parallel processing requires the data to be divided up between workers. 
 Partitioning graphs is a known $NP$-complete problem, and the time taken to partition graphs for processing significantly impacts overall efficiency~\cite{Mccune2015}.
 When partitioned, the graph must be copied to a distributed worker node (or an accelerator), and the time taken to copy the data for processing degrades efficiency~\cite{Mutlu2023, Kiningham2022}.
 Synchronizing parallel worker nodes is challenging when the algorithm needs to access all vertices each iteration~\cite{Satish2014} or when the graph partitioning between workers is suboptimal~\cite{Chen2019}.
 Distributed parallel approaches incur both penalties, resulting in severe communication bottlenecks~\cite{Beamer2015, Dhulipala2021}.
+\nrscomment{do you try to induce these in your benchmark? the other 2 you say how you did. worth mentioning here one sentence on why you didnt, or that its totally based on SUT i.e. is decided by the user? otherwise leaving this paragraph i wonder "so what?"}
 
 \section{Summary: \gai benchmarking requires a `grey-box' approach}
 This chapter has described prior work in benchmarking \gai systems. 
-It identifies the requirement to take a `grey-box' approach to estimate the internal state of a system so that the general utility of a black-box competitive benchmark balances the in-depth analytical power of the invasive white-box workload analysis. 
+It identifies the need for a `grey-box' approach to estimate the internal state of a system to balance the general utility of a black-box competitive benchmark with the in-depth analytical power of an invasive white-box workload analysis. 
 Prior efforts to evaluate \gai approaches focus on subsets of abstract kernel-level tasks, do not have adequate coverage of the varieties of graph dataset sizes and shapes, and neglect the trade-offs between efficiency, effectiveness, and cost. 
 Of the three types of bottlenecks, memory bottlenecks are the most impactful for \gai, with communication bottlenecks appearing for distributed and dynamic \gai approaches. 
+\nrscomment{this last sentence is no longer summary of lit review, and now starts describing the solution. i think its covered in the next chapter and you can drop it}
 To implement the `grey-box' approach, the \gai benchmark framework adopts an Input/Output paradigm that combines empirical algorithmic analysis with constraint theory to design the combinations of tasks and inputs that we expect to trigger system bottlenecks while giving users the flexibility to modify their \ac{SUT} without the need for burdensome reinstrumentation or adherence to environmental restrictions. 
 
 
