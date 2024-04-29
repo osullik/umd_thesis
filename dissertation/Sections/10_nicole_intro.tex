@@ -42,7 +42,7 @@ In addition to the choice in the analytic method, a hierarchy of other challenge
 Taking a user's top-down perspective of the challenge hierarchy, the user must first decide the degree to which effectiveness should be traded for efficiency or cost.
 The need to make this trade-off stems from the real-world constraints imposed on \gai systems, such as a requirement to generate a recurring solution at a pace more frequent than the algorithm's runtime allows.
 Further, most graph hardware accelerators are specialized \ac{ASIC} and are optimized to speed up a specific algorithm, representation, abstraction, and programming model.
-The problem with \ac{ASIC}s is that a given \gai system may need to support many graph tasks, so an accelerator that optimizes the performance of a singe \gai task may not garner a broad enough improvement in all \gai tasks to justify its cost. 
+The problem with \ac{ASIC}s is that a given \gai system may need to support many graph tasks, so an accelerator that optimizes the performance of a single \gai task may not garner a broad enough improvement in all \gai tasks to justify its cost. 
 These real-world challenges and trade-offs are particularly pronounced for \gai because of the inherent nature of graph processing that underlies \gai problems.
 Graphs of different shapes and sizes unpredictably influence algorithmic complexity, including exacerbating irregular memory accesses and computation patterns that undermine spatial and temporal locality. 
 When combined with the data dependence, the lack of standard graph representation methods, abstraction models, or a set of primitive operations further prevents a unity of effort toward accelerating graph processing across all graph tasks.
