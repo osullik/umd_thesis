@@ -1,3 +1,7 @@
+# Final Presentation Details: 
+
+[Presentation (Google Slides)](https://docs.google.com/presentation/d/1YWhL36Z9ZoBPv68LdjC0d5L7LNzelYCr1r33VaAmhCU/edit?usp=sharing)
+
 # LaTeX Compilation Instructions
 
 ## Prepare the environment 
