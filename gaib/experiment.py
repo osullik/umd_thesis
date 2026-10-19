@@ -26,13 +26,13 @@ class Experiment():
         self.set_results_directory(os.path.join("..","temp_results")) #self._results_directory
         
     def get_time(self, label:str)->dict:
-        now = datetime.datetime.now()
+        now = time.perf_counter()
         processor_now = time.process_time()
         self._times[label] = now
         self._times[f"processor_{label}"] = processor_now
         return {label:now}
     
-    def add_time(self, label:str, time:datetime.datetime):
+    def add_time(self, label:str, time:float):
         self._times[label] = time
         return {label:time}
     
@@ -75,14 +75,14 @@ class Experiment():
         
         return source_data
     
-    def get_experiment_name(self, filename:os.path, task:str, gt_data:str, type:str="RESULTS")->str:
+    def get_experiment_name(self, filename:os.path, task:str, gt_data:str, run_index:int, type:str="RESULTS")->str:
 
         base_file_name = os.path.basename(filename)
 
         name = base_file_name.split(".")[:-1][0]
         extension = base_file_name.split(".")[-1]
 
-        output_name = f"{name}_{task}_{gt_data}_{type}"
+        output_name = f"{name}_{task}_{gt_data}_run{run_index}_{type}"
         
         return output_name
     
@@ -221,13 +221,12 @@ class Experiment():
     
     def collect_interim_results(self):
         interim_results = {}
-        for i, file in enumerate(os.listdir(self._results_directory)):
+        stamped_files = sorted((float(file.split("_")[-1].replace(".txt","")), file) for file in os.listdir(self._results_directory))
+        for i, (stamp, file) in enumerate(stamped_files):
             with open(os.path.join(self._results_directory,file),'r') as f:
                 result = f.read()
             interim_results[i] = {}
-            time = os.path.basename(file).split("_")[-1].replace(".txt","")
-            time = datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f")
-            interim_results[i]['time'] = time
+            interim_results[i]['time'] = stamp
             interim_results[i]['results'] = result
         
         print("Purging temporary results...")
@@ -239,29 +238,33 @@ class Experiment():
 
         return interim_results
     
-    def run_process(self,graph:nx.Graph,task:str):
+    def run_process(self,graph:nx.Graph,task:str,seed:int):
         start_processing = self.get_time("START_PROCESS")
-        tasker= Task(graph=graph,task=task,output_dir=self._results_directory)
+        tasker= Task(graph=graph,task=task,seed=seed,output_dir=self._results_directory)
         final_result = tasker.result
+        seed_used = tasker.seed
         del(tasker)
         gc.collect
 
         end_processing = self.get_time("END_PROCESS")
         interim_results = self.collect_interim_results()
 
-        return final_result, interim_results
+        return final_result, interim_results, seed_used
 
 class Task():
 
+    INCREMENTAL_SEED = 123
+
     # stop_event = threading.Event()
 
-    def __init__(self, graph:nx.graph,task:str,output_dir:os.path=(os.path.join(".","temp_results")),sample_time=10):
+    def __init__(self, graph:nx.graph,task:str,seed:int,output_dir:os.path=(os.path.join(".","temp_results")),sample_time=10):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         os.makedirs(os.path.join(".","cache"), exist_ok=True)
         self.output_dir = output_dir
         self.graph = graph
         self.task = task
+        self.seed = seed
         self.result = "None"
         self.sample_time = sample_time #How often to probe for information
 
@@ -271,12 +274,14 @@ class Task():
         elif self.task == "NX_LOUVAIN":
             self.task_networkx_louvain()
         elif self.task == "NX_LOUVAIN_INCREMENTAL":
+            self.seed = Task.INCREMENTAL_SEED
             self.task_networkx_louvain_incremental()
             return
         elif self.task == "NX_LOUVAIN_GPU":
             self.task_networkx_louvain_GPU()
             return 
         elif self.task == "NX_LOUVAIN_INCREMENTAL_GPU":
+            self.seed = Task.INCREMENTAL_SEED
             self.task_networkx_louvain_incremental_GPU()
         else:
             return None
@@ -286,7 +291,7 @@ class Task():
         # while True:
         # while not Task.stop_event.is_set():    #Alternate to the Daemon config, 
         now = datetime.datetime.now()
-        FILENAME = os.path.join(self.output_dir,(self.task+"_"+str(now.isoformat())+".txt"))
+        FILENAME = os.path.join(self.output_dir,(self.task+"_"+str(time.perf_counter())+".txt"))
         print(f"Writing Interim Result: to {FILENAME}")
 
         with open(FILENAME, 'w') as f:
@@ -323,7 +328,7 @@ class Task():
                                                        weight=None,
                                                        resolution=1,
                                                        threshold=0.0000001,
-                                                       seed=123)
+                                                       seed=self.seed)
         
         self.write_interim_result()
         return
@@ -349,7 +354,7 @@ class Task():
                                                        weight=None,
                                                        resolution=1,
                                                        threshold=0.0000001,
-                                                       seed=123,
+                                                       seed=self.seed,
                                                        backend='cugraph')
         
         self.write_interim_result()

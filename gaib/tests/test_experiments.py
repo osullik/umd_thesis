@@ -33,17 +33,17 @@ class Test_experiment_framework(unittest.TestCase):
         self.assertTrue(self.experiment)
 
     def test_get_time(self):
-        start_time = datetime.datetime.now()
+        start_time = time.perf_counter()
         start_exp = self.experiment.get_time("START")
         time.sleep(0.1)
-        end_time = datetime.datetime.now()
         end_exp = self.experiment.get_time("END")
+        end_time = time.perf_counter()
 
         self.assertTrue("START" in start_exp)
         self.assertTrue("END" in end_exp)
-        self.assertAlmostEqual(start_exp["START"].timestamp(), start_time.timestamp(), places=4)
-        self.assertAlmostEqual(end_exp["END"].timestamp(), end_time.timestamp(), places=4)
-        self.assertNotAlmostEqual(start_exp["START"].timestamp(), end_exp["END"].timestamp(), places=4)
+        self.assertGreaterEqual(start_exp["START"], start_time)
+        self.assertLessEqual(end_exp["END"], end_time)
+        self.assertGreaterEqual(end_exp["END"] - start_exp["START"], 0.1)
 
     def test_get_times_dict(self):
 

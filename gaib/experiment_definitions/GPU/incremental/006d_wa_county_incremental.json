@@ -1,11 +1,12 @@
 {
-    "SOURCE_DATA":"datasets/Maryland/Maryland_adj_list.txt",
-    "GT_FILE_PATH":"datasets/Maryland/Maryland_gt_communities_county.txt",
+    "SOURCE_DATA":"datasets/Washington/Washington_adj_list.txt",
+    "GT_FILE_PATH":"datasets/Washington/Washington_gt_communities_county.txt",
     "GT_GRANULARITY":"county",
     "WORKING_DIRECTORY":"temp_workspace",
     "OUTPUT_DIRECTORY":"experiment_results",
     "TASK":"NX_LOUVAIN_INCREMENTAL",
+    "REPETITIONS":3,
     "WEIGHTED":true,
     "SNAP":false,
-    "GPU":false
+    "GPU":true
 }

@@ -5,7 +5,8 @@
     "WORKING_DIRECTORY":"temp_workspace",
     "OUTPUT_DIRECTORY":"experiment_results",
     "TASK":"NX_LOUVAIN_INCREMENTAL",
+    "REPETITIONS":3,
     "WEIGHTED":false,
     "SNAP":true,
-    "GPU":false
+    "GPU":true
 }
