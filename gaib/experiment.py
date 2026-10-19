@@ -242,12 +242,15 @@ class Experiment():
     def run_process(self,graph:nx.Graph,task:str,seed:int):
         start_processing = self.get_time("START_PROCESS")
         tasker= Task(graph=graph,task=task,seed=seed,output_dir=self._results_directory)
+        end_processing = self.get_time("END_PROCESS")
+
+        if task in Task.STATIC_TASKS:
+            tasker.write_interim_result()
         final_result = tasker.result
         seed_used = tasker.seed
         del(tasker)
         gc.collect
 
-        end_processing = self.get_time("END_PROCESS")
         interim_results = self.collect_interim_results()
 
         return final_result, interim_results, seed_used
@@ -256,6 +259,7 @@ class Task():
 
     INCREMENTAL_SEED = 123
     PAGERANK_ALPHA = 0.85
+    STATIC_TASKS = frozenset({"NX_LOUVAIN", "NX_LOUVAIN_GPU", "NX_PAGERANK", "NX_PAGERANK_GPU"})
 
     # stop_event = threading.Event()
 
@@ -336,7 +340,6 @@ class Task():
                                                        threshold=0.0000001,
                                                        seed=self.seed)
         
-        self.write_interim_result()
         return
     
     def task_networkx_louvain_incremental(self):
@@ -363,7 +366,6 @@ class Task():
                                                        seed=self.seed,
                                                        backend='cugraph')
         
-        self.write_interim_result()
         return
     
     def task_networkx_louvain_incremental_GPU(self):
@@ -385,12 +387,10 @@ class Task():
     def task_networkx_pagerank(self):
         print("Calculating PageRank")
         self.result = nx.pagerank(self.graph, alpha=Task.PAGERANK_ALPHA)
-        self.write_interim_result()
 
     def task_networkx_pagerank_GPU(self):
         print("Calculating PageRank with GPU")
         self.result = nx.pagerank(self.graph, alpha=Task.PAGERANK_ALPHA, backend='cugraph')
-        self.write_interim_result()
 
 class Evaluator():
     def __init__(self):
