@@ -35,6 +35,15 @@ class Runner():
         self.hardware = hardware
         self.pagerank_reference_directory = pagerank_reference_directory
         os.makedirs(output_directory, exist_ok=True)
+        self.check_results_csv_header()
+
+    def check_results_csv_header(self)->None:
+        if not os.path.exists(self.results_csv) or os.path.getsize(self.results_csv) == 0:
+            return
+        with open(self.results_csv, "r", newline="") as f:
+            header = next(csv.reader(f))
+        if header != RESULTS_COLUMNS:
+            raise ValueError(f"{self.results_csv} has columns {header}, but this version writes {RESULTS_COLUMNS}. Use a new --results-csv path.")
         
 
     def calculate_effectiveness(self, graph:nx.Graph, final_result:list, interim_results:dict, gt_labels_file:os.path, snap_format:bool=False)->dict:
