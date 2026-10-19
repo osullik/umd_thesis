@@ -250,7 +250,7 @@ class Runner():
                                     snap_format=spec['SNAP'])
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(allow_abbrev=False)
     ap.add_argument("--hardware", type=str, required=True, help="Hardware label recorded with every run")
     ap.add_argument("--definitions", type=str, default=os.path.join(".","experiment_definitions"), help="Directory of experiment definition JSON files")
     ap.add_argument("--output-directory", type=str, default=os.path.join(".","experiment_results"), help="Directory for per-run JSON reports")

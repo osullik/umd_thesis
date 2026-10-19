@@ -97,7 +97,7 @@ def write_manifest(manifest: dict, path: str) -> None:
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(allow_abbrev=False)
     ap.add_argument(
         "--datasets-list",
         type=str,
@@ -105,7 +105,7 @@ if __name__ == "__main__":
         help="JSON list of datasets to download",
     )
     ap.add_argument(
-        "--datasets-dir",
+        "--datasets-directory",
         type=str,
         default=os.path.join(".", "datasets"),
         help="Directory that receives one folder per dataset",
@@ -127,7 +127,7 @@ if __name__ == "__main__":
             manifest = json.load(f)
 
     for dataset in datasets:
-        directory = os.path.join(flags.datasets_dir, dataset["directory"])
+        directory = os.path.join(flags.datasets_directory, dataset["directory"])
         if is_current(dataset, directory, manifest.get(dataset["name"])):
             print(f"{dataset['name']} already present with matching hash - skipping")
             continue
