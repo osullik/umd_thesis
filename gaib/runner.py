@@ -125,6 +125,7 @@ class Runner():
         self.experiment.get_time("START_EXPERIMENT")
 
         #Transfer The data
+        os.makedirs(working_directory, exist_ok=True)
         s,e,m,working_path = self.experiment.data_transfer(source=source_data,dest=working_directory)
 
         if not m:
