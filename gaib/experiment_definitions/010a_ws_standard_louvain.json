@@ -1,0 +1,11 @@
+{
+    "SOURCE_DATA":"datasets/Web-Stanford/web-Stanford.txt",
+    "GT_FILE_PATH":null,
+    "GT_GRANULARITY":"standard",
+    "WORKING_DIRECTORY":"temp_workspace",
+    "OUTPUT_DIRECTORY":"experiment_results",
+    "TASK":"NX_LOUVAIN",
+    "WEIGHTED":false,
+    "SNAP":true,
+    "GPU":false
+}

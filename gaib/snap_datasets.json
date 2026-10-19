@@ -1,0 +1,20 @@
+[
+    {
+        "name":"email-Eu-core",
+        "directory":"Email_EU_Core",
+        "graph_url":"https://snap.stanford.edu/data/email-Eu-core.txt.gz",
+        "ground_truth_url":"https://snap.stanford.edu/data/email-Eu-core-department-labels.txt.gz"
+    },
+    {
+        "name":"wiki-topcats",
+        "directory":"Wiki-Topcats",
+        "graph_url":"https://snap.stanford.edu/data/wiki-topcats.txt.gz",
+        "ground_truth_url":null
+    },
+    {
+        "name":"web-Stanford",
+        "directory":"Web-Stanford",
+        "graph_url":"https://snap.stanford.edu/data/web-Stanford.txt.gz",
+        "ground_truth_url":null
+    }
+]

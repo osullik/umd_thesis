@@ -1,0 +1,54 @@
+{
+  "email-Eu-core": {
+    "directory": "Email_EU_Core",
+    "downloaded": "2026-10-19",
+    "vertices": 1005,
+    "edges": 16706,
+    "files": [
+      {
+        "role": "graph",
+        "url": "https://snap.stanford.edu/data/email-Eu-core.txt.gz",
+        "raw_file": "email-Eu-core.txt.gz",
+        "file": "email-Eu-core.txt",
+        "sha256": "4b47acdb80197b085fe63c819c357ae488131ee904ed93d1b219a68b0f9e245f"
+      },
+      {
+        "role": "ground_truth",
+        "url": "https://snap.stanford.edu/data/email-Eu-core-department-labels.txt.gz",
+        "raw_file": "email-Eu-core-department-labels.txt.gz",
+        "file": "email-Eu-core-department-labels.txt",
+        "sha256": "e5abe5b4581a480032a63adcf2576c161785f45692642c6ebb0b1276f0f33669"
+      }
+    ]
+  },
+  "wiki-topcats": {
+    "directory": "Wiki-Topcats",
+    "downloaded": "2026-10-19",
+    "vertices": 1791489,
+    "edges": 25447873,
+    "files": [
+      {
+        "role": "graph",
+        "url": "https://snap.stanford.edu/data/wiki-topcats.txt.gz",
+        "raw_file": "wiki-topcats.txt.gz",
+        "file": "wiki-topcats.txt",
+        "sha256": "b1b80cbad72f4518af8150c71f77aecfa6a7b1692d207d1f3ca4d942b4d2e590"
+      }
+    ]
+  },
+  "web-Stanford": {
+    "directory": "Web-Stanford",
+    "downloaded": "2026-10-19",
+    "vertices": 281903,
+    "edges": 1992636,
+    "files": [
+      {
+        "role": "graph",
+        "url": "https://snap.stanford.edu/data/web-Stanford.txt.gz",
+        "raw_file": "web-Stanford.txt.gz",
+        "file": "web-Stanford.txt",
+        "sha256": "49bfc0e366c3028dbd84e8557b09287cbd61051bde29d160c277688c727cb679"
+      }
+    ]
+  }
+}
