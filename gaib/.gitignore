@@ -2,3 +2,4 @@ datasets/*
 !datasets/test/
 !datasets/manifest.json
 pagerank_references/
+cache/
