@@ -66,7 +66,8 @@ class Runner():
 
     def pagerank_reference(self, graph:nx.Graph, source_data:os.path)->dict:
         graph_type = "directed" if graph.is_directed() else "undirected"
-        path = os.path.join(self.pagerank_reference_directory, f"{self.experiment.get_hash(source_data)}_{graph_type}.json")
+        key = f"{self.experiment.get_hash(source_data)}_{graph_type}_alpha{Task.PAGERANK_ALPHA}_tol{PAGERANK_REFERENCE_TOL}_maxiter{PAGERANK_REFERENCE_MAX_ITER}"
+        path = os.path.join(self.pagerank_reference_directory, f"{key}.json")
         if os.path.exists(path):
             with open(path, "r") as f:
                 return json.load(f)["scores"]
