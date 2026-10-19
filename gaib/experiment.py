@@ -178,9 +178,9 @@ class Experiment():
         new_hash = self.get_hash(os.path.join(dest,file_name))
         return(start_tx,end_tx,original_hash==new_hash,os.path.join(dest,file_name))
     
-    def load_weighted_graph(self,source:os.path)->nx.Graph:
+    def load_weighted_graph(self,source:os.path,directed:bool=False)->nx.Graph:
 
-        G = nx.Graph()
+        G = nx.DiGraph() if directed else nx.Graph()
 
         with open(source,'r') as f:
             data = f.readlines()
@@ -194,21 +194,22 @@ class Experiment():
 
         return(G)
     
-    def etl(self, source:os.path, weighted:bool, stats:tuple[str],snap_format:bool=False)->tuple:
+    def etl(self, source:os.path, weighted:bool, stats:tuple[str],snap_format:bool=False,directed:bool=False)->tuple:
         graphs_match = False
         num_nodes, num_edges = stats 
+        graph_type = nx.DiGraph if directed else nx.Graph
 
         start_etl = self.get_time("START_ETL")
         if weighted:
 
-            G = self.load_weighted_graph(source)
+            G = self.load_weighted_graph(source,directed=directed)
         
         elif snap_format:
-            G = nx.read_edgelist(path=source, comments="#")
+            G = nx.read_edgelist(path=source, comments="#", create_using=graph_type)
             print(f"GRAPH has {len(G.nodes())} nodes and {len(G.edges())} Edges")
 
         else:
-            G = nx.read_adjlist(path=source, comments="#")
+            G = nx.read_adjlist(path=source, comments="#", create_using=graph_type)
 
         
         end_etl = self.get_time("END_ETL")
@@ -254,6 +255,7 @@ class Experiment():
 class Task():
 
     INCREMENTAL_SEED = 123
+    PAGERANK_ALPHA = 0.85
 
     # stop_event = threading.Event()
 
@@ -283,6 +285,10 @@ class Task():
         elif self.task == "NX_LOUVAIN_INCREMENTAL_GPU":
             self.seed = Task.INCREMENTAL_SEED
             self.task_networkx_louvain_incremental_GPU()
+        elif self.task == "NX_PAGERANK":
+            self.task_networkx_pagerank()
+        elif self.task == "NX_PAGERANK_GPU":
+            self.task_networkx_pagerank_GPU()
         else:
             return None
 
@@ -376,6 +382,16 @@ class Task():
         
         return
 
+    def task_networkx_pagerank(self):
+        print("Calculating PageRank")
+        self.result = nx.pagerank(self.graph, alpha=Task.PAGERANK_ALPHA)
+        self.write_interim_result()
+
+    def task_networkx_pagerank_GPU(self):
+        print("Calculating PageRank with GPU")
+        self.result = nx.pagerank(self.graph, alpha=Task.PAGERANK_ALPHA, backend='cugraph')
+        self.write_interim_result()
+
 class Evaluator():
     def __init__(self):
         pass 
@@ -386,6 +402,16 @@ class Evaluator():
 
     def calculate_modularity(self, graph:nx.Graph, communities:list)->float:
         return nx.community.modularity(graph, communities, weight=None, resolution=1)
+
+    def calculate_l1_distance(self, scores:dict, reference:dict)->float:
+        return sum(abs(scores.get(node, 0.0) - reference.get(node, 0.0)) for node in scores.keys() | reference.keys())
+
+    def top_k(self, scores:dict, k:int)->set:
+        return set(sorted(scores, key=lambda node: (-scores[node], node))[:k])
+
+    def calculate_top_k_overlap(self, scores:dict, reference:dict, k:int)->float:
+        k = min(k, len(reference))
+        return len(self.top_k(scores, k) & self.top_k(reference, k)) / k
     
     def parse_gt_labels(self, gt_labels_path:os.path,snap_format:bool):
         delimiters = [" ", "\t"]

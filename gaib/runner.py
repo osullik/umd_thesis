@@ -21,14 +21,19 @@ from experiment import Experiment, Evaluator, Task
 
 RESULTS_COLUMNS = ["timestamp", "hostname", "hardware", "library", "backend", "library_versions",
                    "task", "dataset", "gt_granularity", "vertices", "edges", "run_index", "seed",
-                   "etl_s", "processing_s", "total_s", "predicted_communities", "nmi", "nmi_s", "modularity", "modularity_s"]
+                   "etl_s", "processing_s", "total_s", "predicted_communities", "nmi", "nmi_s", "modularity", "modularity_s",
+                   "pagerank_l1", "pagerank_top100", "pagerank_score_s"]
+
+PAGERANK_REFERENCE_TOL = 1e-10
+PAGERANK_REFERENCE_MAX_ITER = 10000
 
 class Runner():
-    def __init__(self, output_directory:os.path, results_csv:os.path, hardware:str):
+    def __init__(self, output_directory:os.path, results_csv:os.path, hardware:str, pagerank_reference_directory:os.path):
         self.evaluator = Evaluator()
         self.output_directory = output_directory
         self.results_csv = results_csv
         self.hardware = hardware
+        self.pagerank_reference_directory = pagerank_reference_directory
         os.makedirs(output_directory, exist_ok=True)
         
 
@@ -48,8 +53,39 @@ class Runner():
             interim_predictions = self.evaluator.parse_interim_labels(interim_results[result]['results']) 
             effectiveness[f'interim_{i}']['nmi'] = self.evaluator.evaluate_CD(gt_labels_path=gt_labels_file,pred_labels=interim_predictions,snap_format=snap_format)
             effectiveness[f'interim_{i}']['num_communities'] = len(interim_predictions)
-            self.experiment.add_time(label=f'result_interim_{i}',time=interim_results[result]['time'])
         return(effectiveness)
+
+    def pagerank_reference(self, graph:nx.Graph, source_data:os.path)->dict:
+        graph_type = "directed" if graph.is_directed() else "undirected"
+        path = os.path.join(self.pagerank_reference_directory, f"{self.experiment.get_hash(source_data)}_{graph_type}.json")
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                return json.load(f)["scores"]
+
+        print("COMPUTING PAGERANK REFERENCE...")
+        start = time.perf_counter()
+        scores = nx.pagerank(graph, alpha=Task.PAGERANK_ALPHA, tol=PAGERANK_REFERENCE_TOL, max_iter=PAGERANK_REFERENCE_MAX_ITER, backend="networkx")
+        reference = {"dataset":source_data,
+                     "graph":graph_type,
+                     "alpha":Task.PAGERANK_ALPHA,
+                     "tol":PAGERANK_REFERENCE_TOL,
+                     "max_iter":PAGERANK_REFERENCE_MAX_ITER,
+                     "compute_s":time.perf_counter() - start,
+                     "scores":scores}
+        os.makedirs(self.pagerank_reference_directory, exist_ok=True)
+        with open(path + ".part", "w") as f:
+            json.dump(reference, f)
+        os.replace(path + ".part", path)
+        return scores
+
+    def calculate_pagerank_effectiveness(self, graph:nx.Graph, final_result:dict, source_data:os.path)->dict:
+        print("CALCULATING PAGERANK EFFECTIVENESS...")
+        reference = self.pagerank_reference(graph, source_data)
+        score_start = time.perf_counter()
+        effectiveness = {'final':{'pagerank_l1':self.evaluator.calculate_l1_distance(final_result, reference),
+                                  'pagerank_top100':self.evaluator.calculate_top_k_overlap(final_result, reference, 100)}}
+        effectiveness['final']['pagerank_score_s'] = time.perf_counter() - score_start
+        return effectiveness
 
     def calculate_efficiency(self):
         #Calculate Efficency:
@@ -118,7 +154,8 @@ class Runner():
                     working_directory:os.path=(os.path.join(".","temp_workspace")),
                     gt_granularity:str="standard",
                     weighted:bool=True,
-                    snap_format:bool=False):
+                    snap_format:bool=False,
+                    directed:bool=False):
 
         self.experiment = Experiment()
         exp_name = self.experiment.get_experiment_name(source_data,task=task,gt_data=gt_granularity,run_index=run_index)
@@ -139,7 +176,7 @@ class Runner():
         #Start Probing Window
         self.experiment.get_time("START_PROBING")
         #ETL
-        setl, eetl, gm, ns, es, Graph = self.experiment.etl(working_path,weighted=weighted,stats=(None,None),snap_format=snap_format)
+        setl, eetl, gm, ns, es, Graph = self.experiment.etl(working_path,weighted=weighted,stats=(None,None),snap_format=snap_format,directed=directed)
         
         # if not gm: #TODO: Re-implement when metadata is reliable
         #     experiment.save_results(experiment_name=exp_name,
@@ -155,7 +192,13 @@ class Runner():
 
         self.experiment.get_time("END_EXPERIMENT")
 
-        effectiveness_report = self.calculate_effectiveness(graph=Graph,final_result=final_result,interim_results=interim_results,gt_labels_file=gt_results,snap_format=snap_format)
+        if task.startswith("NX_PAGERANK"):
+            effectiveness_report = self.calculate_pagerank_effectiveness(graph=Graph,final_result=final_result,source_data=source_data)
+        else:
+            effectiveness_report = self.calculate_effectiveness(graph=Graph,final_result=final_result,interim_results=interim_results,gt_labels_file=gt_results,snap_format=snap_format)
+
+        for i, result in enumerate(interim_results.keys()):
+            self.experiment.add_time(label=f'result_interim_{i}',time=interim_results[result]['time'])
 
         efficiency_report = self.calculate_efficiency()
 
@@ -195,11 +238,14 @@ class Runner():
                                  "etl_s":efficiency_report["ETL"],
                                  "processing_s":efficiency_report["Processing"],
                                  "total_s":efficiency_report["Experiment_Length"],
-                                 "predicted_communities":effectiveness_report["final"]["num_communities"],
-                                 "nmi":effectiveness_report["final"]["nmi"],
-                                 "nmi_s":effectiveness_report["final"]["nmi_s"],
-                                 "modularity":effectiveness_report["final"]["modularity"],
-                                 "modularity_s":effectiveness_report["final"]["modularity_s"]})
+                                 "predicted_communities":effectiveness_report["final"].get("num_communities"),
+                                 "nmi":effectiveness_report["final"].get("nmi"),
+                                 "nmi_s":effectiveness_report["final"].get("nmi_s"),
+                                 "modularity":effectiveness_report["final"].get("modularity"),
+                                 "modularity_s":effectiveness_report["final"].get("modularity_s"),
+                                 "pagerank_l1":effectiveness_report["final"].get("pagerank_l1"),
+                                 "pagerank_top100":effectiveness_report["final"].get("pagerank_top100"),
+                                 "pagerank_score_s":effectiveness_report["final"].get("pagerank_score_s")})
 
         print("\n\n# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #")
         print(    "# # # # # # # # # # EXPERIMENT REPORT # # # # # # # # # # #")
@@ -247,7 +293,8 @@ class Runner():
                                     seed=base_seed+run_index,
                                     gt_granularity=spec["GT_GRANULARITY"],
                                     weighted=spec['WEIGHTED'],
-                                    snap_format=spec['SNAP'])
+                                    snap_format=spec['SNAP'],
+                                    directed=spec.get("DIRECTED", False))
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(allow_abbrev=False)
@@ -257,8 +304,9 @@ if __name__ == "__main__":
     ap.add_argument("--results-csv", type=str, default=os.path.join(".","experiment_results","results.csv"), help="CSV that gets one row appended per run")
     ap.add_argument("--repetitions", type=int, default=10, help="Runs per definition unless it sets REPETITIONS")
     ap.add_argument("--base-seed", type=int, default=123, help="Seed for run 0; run i uses base seed + i")
+    ap.add_argument("--pagerank-reference-directory", type=str, default=os.path.join(".","pagerank_references"), help="Cache of reference PageRank scores")
     flags = ap.parse_args()
 
-    runner = Runner(output_directory=flags.output_directory, results_csv=flags.results_csv, hardware=flags.hardware)
+    runner = Runner(output_directory=flags.output_directory, results_csv=flags.results_csv, hardware=flags.hardware, pagerank_reference_directory=flags.pagerank_reference_directory)
 
     runner.run_all_experiments(experiment_definition_directory=flags.definitions, repetitions=flags.repetitions, base_seed=flags.base_seed)
