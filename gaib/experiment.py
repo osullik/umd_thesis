@@ -186,23 +186,12 @@ class Experiment():
             data = f.readlines()
         
         for line in data:
-            line = line.strip()
-            v = None
-            w = None
-            if line.startswith("#"):
+            if not line.strip() or line.startswith("#"):
                 continue
-            ln = line.split(" ")
-            u = ln[0]
-            for i, x in enumerate(ln):
-                if i == 0:
-                    pass
-                if i%2 != 0:
-                    v = x 
-                else:
-                    w = x
-                if v is not None:
-                    G.add_edge(u_of_edge=u, v_of_edge=v, weight=w)
-        
+            u, *neighbours = line.split()
+            for v, w in zip(neighbours[0::2], neighbours[1::2]):
+                G.add_edge(u_of_edge=u, v_of_edge=v, weight=float(w))
+
         return(G)
     
     def etl(self, source:os.path, weighted:bool, stats:tuple[str],snap_format:bool=False)->tuple:
@@ -269,6 +258,7 @@ class Task():
     def __init__(self, graph:nx.graph,task:str,output_dir:os.path=(os.path.join(".","temp_results")),sample_time=10):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
+        os.makedirs(os.path.join(".","cache"), exist_ok=True)
         self.output_dir = output_dir
         self.graph = graph
         self.task = task

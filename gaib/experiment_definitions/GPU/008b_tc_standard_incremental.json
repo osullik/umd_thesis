@@ -1,6 +1,6 @@
 {
     "SOURCE_DATA":"datasets/Wiki-Topcats/wiki-topcats.txt",
-    "GT_FILE_PATH":"datasets/Wiki-Topcats/wiki-topcats-page-names.txt",
+    "GT_FILE_PATH":"datasets/Wiki-Topcats/wiki-topcats-categories.txt",
     "GT_GRANULARITY":"standard",
     "WORKING_DIRECTORY":"temp_workspace",
     "OUTPUT_DIRECTORY":"experiment_results",
