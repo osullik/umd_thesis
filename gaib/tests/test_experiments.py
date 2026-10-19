@@ -217,15 +217,15 @@ class Test_experiment_framework(unittest.TestCase):
         G.add_edges_from(ref_edges)
         REF_RESULT = 3
 
-        final, interim = self.experiment.run_process(graph=G,task="DIAMETER")
+        final, interim, _ = self.experiment.run_process(graph=G,task="DIAMETER",seed=123)
         
         self.assertEqual(final,REF_RESULT)
 
         FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
         stats_massapequa = (2063,2572)
-        start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+        start_time, end_time, status, _, _, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
         REF_RESULT_large = 134
-        final_large, interim_large = self.experiment.run_process(graph=H,task="DIAMETER")
+        final_large, interim_large, _ = self.experiment.run_process(graph=H,task="DIAMETER",seed=123)
         print(final_large)
         print(interim_large)
         self.assertEqual(final_large,REF_RESULT_large)
@@ -318,9 +318,9 @@ class Test_experiment_framework(unittest.TestCase):
 
         FILE_WEIGHTED_LARGE = os.path.join("..","datasets","Massapequa","Massapequa_adj_list.txt")
         stats_massapequa = (2063,2572)
-        start_time, end_time, status, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
+        start_time, end_time, status, _, _, H = self.experiment.etl(source=FILE_WEIGHTED_LARGE, stats=stats_massapequa, weighted=True)
 
-        final, interim = self.experiment.run_process(H,task="NX_LOUVAIN")
+        final, interim, _ = self.experiment.run_process(H,task="NX_LOUVAIN",seed=123)
 
         print("NMI@CITY", self.evaluator.evaluate_CD(gt_labels_path=GT_FILE_PATH_CITY,pred_labels=final))
         print("NMI@COUNTY",self.evaluator.evaluate_CD(gt_labels_path=GT_FILE_PATH_COUNTY,pred_labels=final))
