@@ -10,6 +10,7 @@ import datetime
 import importlib.metadata
 import socket
 import tempfile
+import time
 
 # Library Imports
 import networkx as nx
@@ -20,7 +21,7 @@ from experiment import Experiment, Evaluator, Task
 
 RESULTS_COLUMNS = ["timestamp", "hostname", "hardware", "library", "backend", "library_versions",
                    "task", "dataset", "gt_granularity", "vertices", "edges", "run_index", "seed",
-                   "etl_s", "processing_s", "total_s", "predicted_communities", "nmi"]
+                   "etl_s", "processing_s", "total_s", "predicted_communities", "nmi", "nmi_s", "modularity", "modularity_s"]
 
 class Runner():
     def __init__(self, output_directory:os.path, results_csv:os.path, hardware:str):
@@ -31,12 +32,17 @@ class Runner():
         os.makedirs(output_directory, exist_ok=True)
         
 
-    def calculate_effectiveness(self, final_result:list, interim_results:dict, gt_labels_file:os.path, snap_format:bool=False)->dict:
+    def calculate_effectiveness(self, graph:nx.Graph, final_result:list, interim_results:dict, gt_labels_file:os.path, snap_format:bool=False)->dict:
         #Calculate Effectiveness
         print("CALCULATING EFFECTIVENESS...")
         effectiveness = {'final':{}}
+        nmi_start = time.perf_counter()
         effectiveness['final']['nmi'] = self.evaluator.evaluate_CD(gt_labels_path=gt_labels_file,pred_labels=final_result,snap_format=snap_format)
+        effectiveness['final']['nmi_s'] = time.perf_counter() - nmi_start if gt_labels_file is not None else None
         effectiveness['final']['num_communities'] = len(final_result)
+        modularity_start = time.perf_counter()
+        effectiveness['final']['modularity'] = self.evaluator.calculate_modularity(graph, final_result)
+        effectiveness['final']['modularity_s'] = time.perf_counter() - modularity_start
         for i, result in enumerate(interim_results.keys()):
             effectiveness[f'interim_{i}']={}
             interim_predictions = self.evaluator.parse_interim_labels(interim_results[result]['results']) 
@@ -148,7 +154,7 @@ class Runner():
 
         self.experiment.get_time("END_EXPERIMENT")
 
-        effectiveness_report = self.calculate_effectiveness(final_result=final_result,interim_results=interim_results,gt_labels_file=gt_results,snap_format=snap_format)
+        effectiveness_report = self.calculate_effectiveness(graph=Graph,final_result=final_result,interim_results=interim_results,gt_labels_file=gt_results,snap_format=snap_format)
 
         efficiency_report = self.calculate_efficiency()
 
@@ -189,7 +195,10 @@ class Runner():
                                  "processing_s":efficiency_report["Processing"],
                                  "total_s":efficiency_report["Experiment_Length"],
                                  "predicted_communities":effectiveness_report["final"]["num_communities"],
-                                 "nmi":effectiveness_report["final"]["nmi"]})
+                                 "nmi":effectiveness_report["final"]["nmi"],
+                                 "nmi_s":effectiveness_report["final"]["nmi_s"],
+                                 "modularity":effectiveness_report["final"]["modularity"],
+                                 "modularity_s":effectiveness_report["final"]["modularity_s"]})
 
         print("\n\n# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #")
         print(    "# # # # # # # # # # EXPERIMENT REPORT # # # # # # # # # # #")

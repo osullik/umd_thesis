@@ -383,6 +383,9 @@ class Evaluator():
     def calculate_nmi(self, gt_labels:list,pred_labels:list):
 
         return (nmi(gt_labels,pred_labels))
+
+    def calculate_modularity(self, graph:nx.Graph, communities:list)->float:
+        return nx.community.modularity(graph, communities, weight=None, resolution=1)
     
     def parse_gt_labels(self, gt_labels_path:os.path,snap_format:bool):
         delimiters = [" ", "\t"]
