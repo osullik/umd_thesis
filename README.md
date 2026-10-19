@@ -22,3 +22,7 @@ python runner.py --hardware <label> --definitions experiment_definitions/GPU
 ```
 
 Each run appends a row to `experiment_results/results.csv`.
+
+## PageRank
+
+PageRank runs are scored against a reference computed once per dataset and cached in `gaib/pagerank_references/`.
