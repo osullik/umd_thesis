@@ -487,6 +487,8 @@ class Evaluator():
         return(labels)
         
     def evaluate_CD(self, gt_labels_path:os.path, pred_labels:list, snap_format:bool=False):
+        if gt_labels_path is None:
+            return None
         gt = self.parse_gt_labels(gt_labels_path,snap_format=snap_format)
         
         prepared_gt = self.prepare_community_labels(gt)

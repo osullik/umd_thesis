@@ -121,7 +121,7 @@ class Runner():
                             "edge_count": es,
                             "weighted":weighted,
                             "gt_file":gt_results,
-                            "gt_community_count":len(self.evaluator.parse_gt_labels(gt_results,snap_format=snap_format))
+                            "gt_community_count":len(self.evaluator.parse_gt_labels(gt_results,snap_format=snap_format)) if gt_results is not None else None
         }
 
         experiment_report = {"experiment":exp_name,
