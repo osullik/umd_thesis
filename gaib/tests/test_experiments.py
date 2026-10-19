@@ -2,7 +2,6 @@
 
 #Core Python Imports
 import unittest
-import datetime
 import time
 import os
 import sys
